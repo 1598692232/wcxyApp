@@ -24,7 +24,8 @@ App({
               loginId: '',
               sessionid: '',
               host: 'http://10.255.1.76',
-              code: res.code
+              code: res.code,
+              codeSrc: ''
             }
           })
           //发起网络请求
@@ -32,8 +33,8 @@ App({
             url: 'http://10.255.1.76/wxapi/init',
             data: {
               code: res.code,
-              appid: 'wx97c95abd0c52aaa9',
-              secret: '68e4da8144a28c05e057964b209f91dc',
+              // appid: 'wx97c95abd0c52aaa9',
+              // secret: '68e4da8144a28c05e057964b209f91dc',
               // grant_type: ' authorization_code'
             },
             success(res) {
