@@ -46,9 +46,10 @@ Page({
         });
 	},
 
-	toInfo() {
+	toInfo(e) {
+        console.log(e.currentTarget.dataset, 889988)
        	wx.navigateTo({
-          url: '/pages/info/info?id=1'
+            url: '/pages/info/info?url=' + e.currentTarget.dataset.url + '&name=' + e.currentTarget.dataset.name
     	})
 
         // wx.redirectTo({

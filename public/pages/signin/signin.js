@@ -36,61 +36,9 @@ Page({
                     codeWidth: res.windowWidth - 100
                 });
                 wx.setNavigationBarTitle({title: '登录'})
-
-
-
             }
-        });
+        })
 
-        //获取sessionId，并存储到storage
-        // setTimeout(() => {
-        //      let store = wx.getStorageSync('app')
-        //             console.log(store, 8888)
-            // self.setData({
-            //                 codeSrc: store.host + '/wxapi/vercode?t=' + new Date().getTime() + '&sessionid=' + store.sessionid
-            //             })
-        // }, 1000)
-
-        wx.getStorage({
-              key: 'app',
-              success: function(res) {
-                  console.log(res, 66666)
-              } 
-            })
-       
-
-        // wx.request({
-        //     url:store.host + '/wxapi/init',
-        //     header: {
-        //         'content-type': 'application/json', // 默认值
-        //     },
-        //     method: 'get',
-        //     success: function(res) {
-
-        //         if (res.data.status == 1) {
-        //             let stores = wx.getStorageSync('app')
-                   
-        //             let newStorage = Object.assign({}, stores, {
-        //                 sessionid: res.data.data.sessionid
-        //             })
-        //             wx.setStorage({
-        //               key:"app",
-        //               data: newStorage
-        //             })
-
-        //             self.setData({
-        //                 sessionid: res.data.data.sessionid,
-        //                 codeSrc: stores.host + '/wxapi/vercode?t=' + new Date().getTime() + '&sessionid=' + res.data.data.sessionid
-        //             })
-
-        //         } else {
-        //             self.consoleLoginError(res.msg)
-        //         }
-        //     }
-        // })
-
-
-         
     },
 
     onShow() {
@@ -108,6 +56,7 @@ Page({
               code: store.code
             },
             success(res) {
+                console.log(res, 77776666)
                 if (res.data.status == 1) {
                     let data = Object.assign({}, {
                         host: 'http://10.255.1.76'

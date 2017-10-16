@@ -1,10 +1,9 @@
 
 <view class="section tc" style="height: {{scrollHeightAll}}px">
-  <video id="myVideo" class="info-video" src="http://wxsnsdy.tc.qq.com/105/20210/snsdyvideodownload?filekey=30280201010421301f0201690402534804102ca905ce620b1241b726bc41dcff44e00204012882540400&bizid=1023&hy=SH&fileparam=302c020101042530230204136ffd93020457e3c4ff02024ef202031e8d7f02030f42400204045a320a0201000400" enable-danmu controls objectFit="cover" autoplay bindtimeupdate="getVideoTime"></video>
+  <video id="myVideo" class="info-video" src="{{url}}" enable-danmu controls objectFit="cover" autoplay bindtimeupdate="getVideoTime"></video>
   <view class="video-info">
       <scroll-view class="video-title" scroll-y>
-          <text>这里是中央电视台，查看全部标题请这滚动查看，查看全部标题请这滚动查看，查看全部标题请这滚动查看
-          查看全部标题请这滚动查看，查看全部标题请这滚动查看，查看全部标题请这滚动查看。</text>
+          <text>{{name}}</text>
       </scroll-view>
       <text class="video-author">pzl · 6天前 · V2</text>
   </view>
@@ -23,7 +22,7 @@
                   <text class="comment-timer" bindtap="toVideoPosition" data-index="{{item.time}}">{{item.minTime}}:{{item.secTime}}</text>
               </view>
               <view class="comment-body1">
-                 <text>{{item.text}} {{item.text}} {{item.text}} {{item.text}} </text>
+                 <text>{{item.text}} </text>
                  <view class="comment-do clearfix">
                    <text catchtap="toBackPage">回复</text>
                    <view class="comment-zan clearfix">

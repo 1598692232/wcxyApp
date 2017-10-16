@@ -30,21 +30,28 @@ Page({
         zanActive: app.data.staticImg.zanActive,
         page: 1,
         videoTime: 0,
-        focusTime: 0
+        focusTime: 0,
+
+        url: '',
+        name: ''
     },
 
     onReady: function (res) {
 	    this.videoCtx = wx.createVideoContext('myVideo')
   	},
 
-    onLoad() {
-        let that = this;
+    onLoad(options) {
+        let self = this;
+        console.log(options, 6655)
         wx.getSystemInfo({
             success: function (res) {
-                that.setData({
+                self.setData({
                 	scrollHeightAll: res.windowHeight,
-                    scrollHeight: res.windowHeight - 345
+                    scrollHeight: res.windowHeight - 345,
+                	url: options.url,
+                	name: options.name,
                 });
+    
             }
         });
     },
