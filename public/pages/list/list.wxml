@@ -1,0 +1,55 @@
+<view style="height: 100%;"> 
+   <view class="search-projects">
+      <view class="search-projects-body" bindtap="searchFocus">
+         <view class="search-input" animation="{{animationData}}">
+            <image src="{{searchImg}}" class="search-icon"></image>
+            <input bindinput="bindReplaceInput" name="searchText" placeholder="搜索项目" focus="{{searching}}" catchblur="searchBlur" bindinput="searchInput" value="{{searchText}}"/>
+            <image src="{{clearImg}}" class="clear-icon" hidden="{{hideClear}}" catchtap="clearSearch"></image>
+        </view>
+
+      </view>
+     
+    </view>
+    <view class="list-tabs">
+      <view class="list-tab" style="{{tabOne}}" bindtap="showMyProjects">
+        <text>我的项目</text>
+      </view>
+      <view class="list-tab" style="{{tabTwo}}" bindtap="showJoinProjects">
+        <text>我参与的</text>
+      </view>
+    </view>
+
+    <scroll-view class="list-body" scroll-y="true" bindscrolltolower="loadMoreMyProjects" style="height: {{scrollHeight}}px" bindscrolltoupper="refresh" hidden="{{hiddenMy}}">
+          <view class="item clearfix" wx:for="{{myProjectList}}" wx:key="index" bindtap="toProject">
+           <!--  <view class="item-left">
+              <image src="{{projectImg}}" mode="aspectFit" lazy-load="{{true}}"></image>
+            </view> -->
+             <!-- style="width: {{listInfoWidth}}px" -->
+            <view class="item-right">
+              <text class="item-title">{{item.name}}</text>
+              <!-- <text class="item-des">{{item.name}}</text> -->
+            </view>
+          </view>
+    </scroll-view>
+   <scroll-view class="list-body" scroll-y="true" bindscrolltolower="loadMoreJoinProjects" style="height: {{scrollHeight}}px" bindscrolltoupper="refresh" hidden="{{!hiddenMy}}">
+          <view class="item clearfix" wx:for="{{joinProjectList}}" wx:key="index" bindtap="toProject">
+            <!-- <view class="item-left">
+              <image src="{{projectImg}}" mode="aspectFit" lazy-load="{{true}}"></image>
+            </view> -->
+            <view class="item-right">
+              <text class="item-title">{{item.name}}</text>
+              <!-- <text class="item-des">{{item.name}}</text> -->
+            </view>
+          </view>
+    </scroll-view>
+
+  <view class="bottom" hidden="{{hideBottom}}">
+    <view>{{loadMoreData}}</view>
+    <view>{{refreshTime}}</view>
+  </view>
+</view>
+
+
+<!-- scroll-view设置高度无法触发 onReachBottom方法-->
+<!--  bindscrolltolower="loadMore" lower-threshold="100"  style="height: {{scrollHeight}}px"  -->
+

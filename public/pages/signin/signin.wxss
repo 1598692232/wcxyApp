@@ -1,0 +1,80 @@
+.logo{
+	height: 200px;
+	display: flex;
+	flex: 1;
+	align-items: center;
+	justify-content: center;
+	background: #130bec;
+}
+.logo image{
+	display: flex;
+	width: 300px;
+}
+.login-input{
+	line-height: 44px;
+	height: 44px;
+	font-size: 13px;
+	color: #666;
+}
+.login-btn{
+	width: 100%;
+	margin-top: 20px;
+	border-radius: 0;
+	background-color: #5c54ff;
+	color: #fff;
+	position:fixed;
+	bottom:0;
+	left:0;
+}
+.login-form{
+	/*display: block;*/
+	/*padding-top:20px;*/
+}
+.login-input-body{
+	height: 44px;
+	width: 100%;
+	padding:0 30px;
+	position: relative;
+	background-color:#21212d;
+	margin-bottom: 20px;
+}
+.login-input-icon{
+	position: absolute;
+	left:5px;
+	top: 12px;
+	width: 20px;
+	height: 20px;
+}
+.login-input-clear {
+	position: absolute;
+	right:5px;
+	top: 12px;
+	width: 20px;
+	height: 20px;
+}
+.login-error-modal{
+	display: flex;
+	flex: 1;
+	position: fixed;
+	left: 0;
+	top: 0;
+	height: 100%;
+	width: 100%;
+	align-items: center;
+	justify-content: center;
+	z-index: 100;
+	opacity: 0;
+}
+.login-error-body{
+	display: flex;
+	width: 200px;
+	background: rgba(0,0,0,0.4);
+	color:#fff;
+	line-height: 40px;
+	border-radius: 5px;
+}
+.login-error-body text{
+	display: block;
+	width:100%;
+	text-align: center;
+}

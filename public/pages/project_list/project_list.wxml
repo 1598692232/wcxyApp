@@ -1,0 +1,32 @@
+<view class="pl-container">
+	<scroll-view class="pl-list" scroll-y style="height: {{scrollHeight}}px" bindscrolltolower="loadMore" lower-threshold="100">
+		<view class="pl-body">
+			<view class="pl-li" wx:for="{{videoList}}" wx:key="index" style="width:{{liWidth}}px;margin-right:{{(index + 1) % 2 == 0 ? 0 : '10px'}};" bindtap="toInfo">
+				<view class="pl-img-body pl-show-count">
+
+					 <view class="pl-count">
+					 	<text>2</text>
+					 </view>
+					 <view class="pl-timer">
+					 	<text>04:39</text>
+					 </view>
+
+					<image class="pl-img" src="{{videoImg}}" mode="aspectFit" lazy-load="{{true}}"></image>
+				</view>
+				
+				<view class="pl-des-body">
+					<text class="pl-name">asd7272772727727009988ad</text>
+					<view class="pl-user clearfix">
+						<image class="pl-user-tou" src="{{manager}}" mode="aspectFit" lazy-load="{{true}}"></image>
+						<image class="pl-video-icon" src="{{sx}}" mode="aspectFit" lazy-load="{{true}}"></image>
+						<text class="pl-create-timer">2天前</text>
+					</view>
+				</view>
+			</view>
+			
+		</view>
+		
+	</scroll-view>
+</view>
+
+

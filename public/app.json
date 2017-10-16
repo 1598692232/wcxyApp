@@ -1,0 +1,18 @@
+{
+  "pages":[
+    "pages/list/list",
+    "pages/signin/signin",
+    "pages/info/info",
+    "pages/index/index",
+    "pages/logs/logs",
+    "pages/call_back/call_back",
+    "pages/project_list/project_list"
+  ],
+  "window":{
+    "backgroundTextStyle":"light",
+    "navigationBarBackgroundColor": "#21212d",
+    "navigationBarTitleText": "WeChat",
+    "navigationBarTextStyle":"#fff",
+    "enablePullDownRefresh": true
+  }
+}
