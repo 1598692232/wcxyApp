@@ -5,21 +5,43 @@ Page({
 		videoImg: app.data.staticImg.videoImg,
 		sx: app.data.staticImg.sx,
 		manager: app.data.staticImg.manager,
-		videoList: [1,2,3,4,5,6,7,9,10,11,12,13],
+		videoList: [],
 		liWidth: 0,
 		scrollHeight: 0,
 		page: 1,
 	},
 
-	onLoad() {
-		let that = this;
-        console.log(121323)
+	onLoad(options) {
+		let self = this;
+        console.log(options, 887766)
         wx.getSystemInfo({
             success: function (res) {
-                that.setData({
+                self.setData({
                 	scrollHeight: res.windowHeight,
                     liWidth: (res.windowWidth - 30) / 2
-                });
+                })
+
+                let store = wx.getStorageSync('app')
+                let reqData = Object.assign({}, store, options)
+                wx.request({
+                    url: store.host + '/wxapi/project/file',
+                    data: reqData,
+                    header: {
+                        'content-type': 'application/json' // 默认值
+                    },
+                    method: 'get',
+                    success: function(res) {
+                        console.log(res, 5544)
+                        if (res.data.status == 1) {
+                            self.setData({
+                                videoList: res.data.data.list
+                            })
+                        } else {
+
+                        }
+                    }
+                })
+
             }
         });
 	},

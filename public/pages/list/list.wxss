@@ -23,7 +23,7 @@
 }
 .item{
     box-sizing: border-box;
-    padding: 10px;
+    padding: 10px 10px 0 10px;
     width: 100%;
     /*border-bottom: 1px solid #f8f8f8;*/
 }

@@ -1,4 +1,5 @@
 const app = getApp()
+console.log(app)
 
 const exp = new RegExp('^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$'); //邮箱正则
 
@@ -42,11 +43,21 @@ Page({
         });
 
         //获取sessionId，并存储到storage
-        let store = wx.getStorageSync('app')
+        // setTimeout(() => {
+        //      let store = wx.getStorageSync('app')
+        //             console.log(store, 8888)
+            // self.setData({
+            //                 codeSrc: store.host + '/wxapi/vercode?t=' + new Date().getTime() + '&sessionid=' + store.sessionid
+            //             })
+        // }, 1000)
 
-        self.setData({
-                        codeSrc: store.host + '/wxapi/vercode?t=' + new Date().getTime() + '&sessionid=' + store.sessionid
-                    })
+        wx.getStorage({
+              key: 'app',
+              success: function(res) {
+                  console.log(res, 66666)
+              } 
+            })
+       
 
         // wx.request({
         //     url:store.host + '/wxapi/init',
@@ -87,6 +98,41 @@ Page({
           duration: 500,
           timingFunction: "cubic-bezier(0.4, 0, 0.2, 1)"
         })
+
+        let store = wx.getStorageSync('app')
+        let self = this
+        //发起网络请求
+        wx.request({
+            url: 'http://10.255.1.76/wxapi/init',
+            data: {
+              code: store.code
+            },
+            success(res) {
+                if (res.data.status == 1) {
+                    let data = Object.assign({}, {
+                        host: 'http://10.255.1.76'
+                    }, res.data.data)
+
+                    wx.setStorage({
+                        key:"app",
+                        data: data
+                    })
+
+                    wx.getStorage({
+                        key:'app',
+                        success(res) {
+    
+                            self.setData({
+                                codeSrc: res.data.host + '/wxapi/vercode?t=' + new Date().getTime() + '&sessionid=' + res.data.sessionid
+                            })
+                        }
+                    })
+                } else {
+                    consoleLoginError('初始化小程序失败')
+                }
+             
+            }
+        })
     },
 
     consoleLoginError(errText) {
@@ -115,7 +161,7 @@ Page({
     getCode() {
         let store = wx.getStorageSync('app')
         this.setData({
-            codeSrc: store.host + '/wxapi/vercode?t=' + new Date().getTime() + '&sessionid='+ this.data.sessionid
+            codeSrc: store.host + '/wxapi/vercode?t=' + new Date().getTime() + '&sessionid='+ store.sessionid
         })
         console.log(this.data.codeSrc, 77666)
     },
@@ -137,7 +183,7 @@ Page({
         // ajax处理登录，成功后存储本地信息
         // 本地存储用户信息
         let store = wx.getStorageSync('app')
-        let reqData = Object.assign({}, e.detail.value, {sessionid: self.data.sessionid})
+        let reqData = Object.assign({}, e.detail.value, {sessionid: store.sessionid})
 
         wx.request({
             url: store.host + '/wxapi/authentication', //仅为示例，并非真实的接口地址
@@ -163,6 +209,7 @@ Page({
                      wx.reLaunch({
                       url: '/pages/list/list?id=1'
                     })
+
                 } else {
                     self.consoleLoginError(res.data.msg)
                     self.getCode()

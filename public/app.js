@@ -28,19 +28,7 @@ App({
               codeSrc: ''
             }
           })
-          //发起网络请求
-          wx.request({
-            url: 'http://10.255.1.76/wxapi/init',
-            data: {
-              code: res.code,
-              // appid: 'wx97c95abd0c52aaa9',
-              // secret: '68e4da8144a28c05e057964b209f91dc',
-              // grant_type: ' authorization_code'
-            },
-            success(res) {
-                console.log(res, 887766)
-            }
-          })
+         
         } else {
           console.log('获取用户登录态失败！' + res.errMsg)
         }

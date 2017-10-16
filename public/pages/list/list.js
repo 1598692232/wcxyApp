@@ -174,17 +174,18 @@ Page({
         })
     },
 
-    toProject() {
+    toProject(e) {
+        console.log(e, 999)
         if (this.data.searching) {
-            setTimeout(() => {
-                wx.navigateTo({
-                    url: '/pages/project_list/project_list?id=1'
-                })
-            }, 300)
+            // setTimeout(() => {
+            //     wx.navigateTo({
+            //         url: '/pages/project_list/project_list?project_id=' + e.currentTarget.dataset.id
+            //     })
+            // }, 300)
             return;
         }
         wx.navigateTo({
-          url: '/pages/project_list/project_list?id=1'
+          url: '/pages/project_list/project_list?project_id=' + e.currentTarget.dataset.id
         })
     },
 
