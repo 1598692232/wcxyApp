@@ -48,41 +48,6 @@ Page({
           timingFunction: "cubic-bezier(0.4, 0, 0.2, 1)"
         })
 
-        // let store = wx.getStorageSync('app')
-        // let self = this
-        // //发起网络请求
-        // wx.request({
-        //     url: 'http://10.255.1.76/wxapi/init',
-        //     data: {
-        //       code: store.code
-        //     },
-        //     success(res) {
-        //         console.log(res, 77776666)
-        //         if (res.data.status == 1) {
-        //             let data = Object.assign({}, {
-        //                 host: 'http://10.255.1.76'
-        //             }, res.data.data)
-
-        //             wx.setStorage({
-        //                 key:"app",
-        //                 data: data
-        //             })
-
-        //             wx.getStorage({
-        //                 key:'app',
-        //                 success(res) {
-    
-        //                     self.setData({
-        //                         codeSrc: res.data.host + '/wxapi/vercode?t=' + new Date().getTime() + '&sessionid=' + res.data.sessionid
-        //                     })
-        //                 }
-        //             })
-        //         } else {
-        //             self.consoleLoginError('初始化小程序失败')
-        //         }
-             
-        //     }
-        // })
     },
 
     consoleLoginError(errText) {

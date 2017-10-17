@@ -3,14 +3,6 @@ const app = getApp()
 Page({
 
     data: {
-        // src: '',
-        // playHidden: true,
-        // pauseHidden: false,
-        // controlBodyHidden: true,
-        // doHidden: true,
-        // clearControlTimer: null,
-        // isFullScreen: false,
-        // isControls: true,
 
 	    scrollHeight: 0,
 	    commentIsFocus: false,
@@ -148,63 +140,7 @@ Page({
 	        path: '/pages/info/info?id=123',
 	        imageUrl: 'test.jpg'
 	    }
-	},
-
-
-	 // play() {
-	//   	this.setData({
-	//   		playHidden: true,
- //        	pauseHidden: false,
-	//   	})
-
-	//     this.videoCtx.play()
-	// },
-	// pause() {
- //  		this.setData({
-	//   		playHidden: false,
- //        	pauseHidden: true,
-	//   	})
-	//     this.videoCtx.pause()
-	//     console.log(1231212)
-	// },
-	// toggleControl() {
-	//   	if (this.data.isControls) {
-	//   		this.setData({
-	//         	controlBodyHidden: true
-	//         })
-	//   		return
-	//   	}
-	// 	clearTimeout(this.data.clearControlTimer)
-	// 	this.setData({
- //        	controlBodyHidden: false,
- //        	clearControlTimer: setTimeout(() => {
-	// 								this.setData({
-	// 						        	controlBodyHidden: true
-	// 							  	})
-	// 						  	}, 3000)
- //  	  	})
-	//   	console.log(this.data.controlBodyHidden, 77)
-	// },
-
-	// toFullScreen() {
-	//   	console.log(12123);
-	//   	this.videoCtx.requestFullScreen()
-	//   	this.setData({
-	//   		isFullScreen: true,
-	//   		isControls: true,
-	//   		controlBodyHidden: true,
-	//   	})
-	// },
-
-	//   // 退出全屏
-	// exitFullScreen() {
-	//   	this.videoCtx.exitFullScreen()
-	//   	this.setData({
-	//   		isFullScreen: false,
-	//   		isControls: false
-	//   	})
-	// },
-
+	}
 
 
 })
