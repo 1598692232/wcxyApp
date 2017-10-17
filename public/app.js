@@ -11,27 +11,21 @@ App({
     logs.unshift(Date.now())
     wx.setStorageSync('logs', logs)
 
-    wx.login({
-      success: function(res) {
-        console.log(res)
-        if (res.code) {
+    wx.setStorage({
+      key:"app",
+      data: {
+        email: '',
+        token: '',
+        loginId: '',
+        sessionid: '',
+        // host: 'http://10.255.1.76',
+        host: 'https://www.uxinyue.com',
+        code:'',
+        codeSrc: ''
+      }
+    })
 
-          wx.setStorage({
-            key:"app",
-            data: {
-              email: '',
-              token: '',
-              loginId: '',
-              sessionid: '',
-              host: 'http://10.255.1.76',
-              // host: 'https://www.uxinyue.com',
-              code: res.code,
-              codeSrc: ''
-            }
-          })
-
-          // 用于开发环境测试
-          // wx.setStorage({
+     // wx.setStorage({
           //   key:"app",
           //   data:{
           //     host: 'http://10.255.1.76',
@@ -42,13 +36,45 @@ App({
           //     token:"ZmEyYTIxYmM5OTQ1ZGFiNDUzNzJkMjhhMDI5OWY3NDNhNmQ1MjQ1NjczZTk0NzI1NWNjNTdjZGNkNjE0Y2M2Mw==",
           //   }
           // })
-          ///////////////////
 
-        } else {
-          console.log('获取用户登录态失败！' + res.errMsg)
-        }
-      }
-    });
+    // wx.login({
+    //   success: function(res) {
+    //     console.log(res)
+    //     if (res.code) {
+
+    //       wx.setStorage({
+    //         key:"app",
+    //         data: {
+    //           email: '',
+    //           token: '',
+    //           loginId: '',
+    //           sessionid: '',
+    //           host: 'http://10.255.1.76',
+    //           // host: 'https://www.uxinyue.com',
+    //           code: res.code,
+    //           codeSrc: ''
+    //         }
+    //       })
+
+    //       // 用于开发环境测试
+    //       // wx.setStorage({
+    //       //   key:"app",
+    //       //   data:{
+    //       //     host: 'http://10.255.1.76',
+    //       //     '3rd_session':"7b02ce75b8c256b78fbd140b3b12ed85933898f5042b50d85950967a3e55b264",
+    //       //     login_id:37,
+    //       //     openid:"ozOIQ0UTvqCT0KmHMwU3Gr96-XwI",
+    //       //     sessionid:"a30ffe6b7b4360b276ca49cfdaf847ecd7cb2dee",
+    //       //     token:"ZmEyYTIxYmM5OTQ1ZGFiNDUzNzJkMjhhMDI5OWY3NDNhNmQ1MjQ1NjczZTk0NzI1NWNjNTdjZGNkNjE0Y2M2Mw==",
+    //       //   }
+    //       // })
+    //       ///////////////////
+
+    //     } else {
+    //       console.log('获取用户登录态失败！' + res.errMsg)
+    //     }
+    //   }
+    // });
 
 
     // 获取用户信息

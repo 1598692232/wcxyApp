@@ -39,13 +39,42 @@ Page({
         let self = this
 
         self.animation = animation
+
+        wx.login({
+          success: function(res) {
+            console.log(res)
+            if (res.code) {
+
+              let store = wx.getStorageSync('app')
+              store.code = res.code
+              wx.setStorage({
+                  key:"app",
+                  data: store,
+                  success() {
+                    self.isLoginforHandle()
+                  }
+                }) 
+            } else {
+              console.log('获取用户登录态失败！' + res.errMsg)
+            }
+          }
+        });
+
+        
+
+    },
+
+
+
+    isLoginforHandle() {
+        let self = this
+
         //获取存储的code
         wx.getStorage({
-		  key: 'app',
-		  success: function(res) {
+          key: 'app',
+          success: function(res) {
 
                 let store = res.data
-
                 //发起网络请求，判断当前微信账号是否已经登录
                 wx.request({
                     url: store.host + '/wxapi/init',
@@ -103,9 +132,8 @@ Page({
                     }
                 })
 
-		  } 
-		})
-
+          } 
+        })
     },
 
     consoleLoginError(errText) {
