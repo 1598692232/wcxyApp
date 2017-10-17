@@ -75,6 +75,7 @@ Page({
           success: function(res) {
 
                 let store = res.data
+
                 //发起网络请求，判断当前微信账号是否已经登录
                 wx.request({
                     url: store.host + '/wxapi/init',
@@ -293,6 +294,10 @@ Page({
             // }, 300)
             return;
         }
+        wx.setStorage({
+            key: 'project_id',
+            data: e.currentTarget.dataset.id
+        })
         wx.navigateTo({
           url: '/pages/project_list/project_list?project_id=' + e.currentTarget.dataset.id
         })

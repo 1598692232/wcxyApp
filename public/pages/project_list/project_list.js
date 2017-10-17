@@ -46,7 +46,7 @@ Page({
 
 	toInfo(e) {
        	wx.navigateTo({
-            url: '/pages/info/info?url=' + e.currentTarget.dataset.url + '&name=' + e.currentTarget.dataset.name
+            url: '/pages/info/info?url=' + e.currentTarget.dataset.url + '&name=' + e.currentTarget.dataset.name + '&id=' +e.currentTarget.dataset.id
     	})
 
         // wx.redirectTo({

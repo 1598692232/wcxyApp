@@ -33,6 +33,7 @@ Page({
   	},
 
     onLoad(options) {
+    	console.log(options, 887766)
         let self = this;
         wx.getSystemInfo({
             success: function (res) {
@@ -41,13 +42,16 @@ Page({
                     scrollHeight: res.windowHeight - 345,
                 	url: options.url,
                 	name: options.name,
+                	project_id: wx.getStorageSync('project_id'),
+                	doc_id: options.id
                 });
-    
+
             }
         });
     },
-    
+
     onShow() {
+    	console.log(12312312)
         // 评论输入框动画注册
     	let animation = wx.createAnimation({
 	      	duration: 0,

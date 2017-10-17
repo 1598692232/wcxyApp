@@ -16,7 +16,7 @@ App({
       data: {
         email: '',
         token: '',
-        loginId: '',
+        login_id: '',
         sessionid: '',
         // host: 'http://10.255.1.76',
         host: 'https://www.uxinyue.com',
