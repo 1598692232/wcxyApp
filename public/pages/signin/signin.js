@@ -1,5 +1,4 @@
 const app = getApp()
-console.log(app)
 
 const exp = new RegExp('^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$'); //邮箱正则
 
@@ -26,15 +25,17 @@ Page({
         sessionid: ''
 	},
 
-	onLoad() {
+	onLoad(options) {
         let self = this;
+        let store = wx.getStorageSync('app')
 
         wx.getSystemInfo({
             success: function (res) {
             	self.setData({
                     scrollHeight: res.windowHeight,
-                    codeWidth: res.windowWidth - 100
-                });
+                    codeWidth: res.windowWidth - 100,
+                    codeSrc: store.host + '/wxapi/vercode?t=' + new Date().getTime() + '&sessionid=' + options.sessionid
+                })
                 wx.setNavigationBarTitle({title: '登录'})
             }
         })
@@ -47,41 +48,41 @@ Page({
           timingFunction: "cubic-bezier(0.4, 0, 0.2, 1)"
         })
 
-        let store = wx.getStorageSync('app')
-        let self = this
-        //发起网络请求
-        wx.request({
-            url: 'http://10.255.1.76/wxapi/init',
-            data: {
-              code: store.code
-            },
-            success(res) {
-                console.log(res, 77776666)
-                if (res.data.status == 1) {
-                    let data = Object.assign({}, {
-                        host: 'http://10.255.1.76'
-                    }, res.data.data)
+        // let store = wx.getStorageSync('app')
+        // let self = this
+        // //发起网络请求
+        // wx.request({
+        //     url: 'http://10.255.1.76/wxapi/init',
+        //     data: {
+        //       code: store.code
+        //     },
+        //     success(res) {
+        //         console.log(res, 77776666)
+        //         if (res.data.status == 1) {
+        //             let data = Object.assign({}, {
+        //                 host: 'http://10.255.1.76'
+        //             }, res.data.data)
 
-                    wx.setStorage({
-                        key:"app",
-                        data: data
-                    })
+        //             wx.setStorage({
+        //                 key:"app",
+        //                 data: data
+        //             })
 
-                    wx.getStorage({
-                        key:'app',
-                        success(res) {
+        //             wx.getStorage({
+        //                 key:'app',
+        //                 success(res) {
     
-                            self.setData({
-                                codeSrc: res.data.host + '/wxapi/vercode?t=' + new Date().getTime() + '&sessionid=' + res.data.sessionid
-                            })
-                        }
-                    })
-                } else {
-                    consoleLoginError('初始化小程序失败')
-                }
+        //                     self.setData({
+        //                         codeSrc: res.data.host + '/wxapi/vercode?t=' + new Date().getTime() + '&sessionid=' + res.data.sessionid
+        //                     })
+        //                 }
+        //             })
+        //         } else {
+        //             self.consoleLoginError('初始化小程序失败')
+        //         }
              
-            }
-        })
+        //     }
+        // })
     },
 
     consoleLoginError(errText) {
@@ -112,7 +113,6 @@ Page({
         this.setData({
             codeSrc: store.host + '/wxapi/vercode?t=' + new Date().getTime() + '&sessionid='+ store.sessionid
         })
-        console.log(this.data.codeSrc, 77666)
     },
 
     handleLogin(e) {
@@ -133,7 +133,7 @@ Page({
         // 本地存储用户信息
         let store = wx.getStorageSync('app')
         let reqData = Object.assign({}, e.detail.value, {sessionid: store.sessionid})
-
+console.log(reqData, 88776655)
         wx.request({
             url: store.host + '/wxapi/authentication', //仅为示例，并非真实的接口地址
             data: reqData,
@@ -142,21 +142,19 @@ Page({
             },
             method: 'post',
             success: function(res) {
+                console.log(res, 9999888888)
                 if (res.data.status == 1) {
                    
                     let stores = wx.getStorageSync('app')
                     // stores.sessionId = res.data.data.sessionid
-                    let newStorage = Object.assign({}, stores, {
-                        login_id: res.data.data.login_id,
-                        token: res.data.data.token
-                    })
+                    let newStorage = Object.assign({}, stores, res.data.data)
                 
                     wx.setStorage({
                       key:"app",
                       data: newStorage
                     })
                      wx.reLaunch({
-                      url: '/pages/list/list?id=1'
+                      url: '/pages/list/list?id=' + newStorage.login_id
                     })
 
                 } else {

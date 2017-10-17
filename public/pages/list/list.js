@@ -37,62 +37,151 @@ Page({
         })
 
         let self = this
+        console.log(12312312312312312312)
         self.animation = animation
         wx.getStorage({
 		  key: 'app',
 		  success: function(res) {
-                if (res.data.token == '') {
-                    wx.reLaunch({
-                      url: '/pages/signin/signin?id=1'
-                    })
-                    return
-                }
 
-                let store = wx.getStorageSync('app')
 
+                let store = res.data
+                // if (store.token == '') {
+                //     store.code = ''
+                // }
+            console.log(store,'liststore')
+                //发起网络请求
                 wx.request({
-                    // url: store.host + '/wxapi/project', //仅为示例，并非真实的接口地址
-                    url: store.host + '/wxapi/project',
-                    data: store,
-                    header: {
-                        'content-type': 'application/json' // 默认值
+                    url: 'http://10.255.1.76/wxapi/init',
+                    data: {
+                      code: store.code
                     },
-                    method: 'get',
-                    success: function(res) {
-                        console.log(res)
+                    success(res) {
+                        console.log(res, 77776666)
                         if (res.data.status == 1) {
-                            self.setData({
-                                myProjectList: res.data.data.list
-                            })
-                        } else {
 
+                            let data = Object.assign({}, store, res.data.data)
+
+                            if (res.data.data.token == '') {
+                               wx.setStorage({
+                                    key:"app",
+                                    data: data,
+                                    success(res) {
+                                        
+                                        wx.getStorage({
+                                            key:'app',
+                                            success(res) {
+                                                console.log(res,'signlist')
+                                                 wx.reLaunch({
+                                                  url: '/pages/signin/signin?sessionid=' + res.data.sessionid
+                                                })
+                                            }
+                                        })
+                                       
+                                    }
+                                })
+
+                                return
+                            } else {
+
+                                wx.setStorage({
+                                    key:"app",
+                                    data: data,
+                                    success() {
+                                        wx.getStorage({
+                                            key:'app',
+                                            success(res) {
+                                               
+                                                self.initList()
+                                            }
+                                        })
+                                    }
+                                })
+
+                            }
+
+                            
+                        } else {
+                            self.consoleLoginError('初始化小程序失败')
                         }
+
                     }
                 })
 
-
-                wx.request({
-                    // url: store.host + '/wxapi/project', //仅为示例，并非真实的接口地址
-                    url: store.host + '/wxapi/project/join',
-                    data: store,
-                    header: {
-                        'content-type': 'application/json' // 默认值
-                    },
-                    method: 'get',
-                    success: function(res) {
-                        console.log(res)
-                        if (res.data.status == 1) {
-                            self.setData({
-                                joinProjectList: res.data.data.list
-                            })
-                        } else {
-
-                        }
-                    }
-                })
 		  } 
 		})
 
+    },
+
+    consoleLoginError(errText) {
+        this.setData({
+            hiddenErr: false,
+            errMsg: errText
+        })
+        this.animation.opacity(1).step()
+        this.setData({
+            animationData: this.animation.export()
+        })
+
+        setTimeout(() => {
+            this.animation.opacity(0).step({duration: 1000})
+            this.setData({
+                animationData: this.animation.export(),
+            })
+            setTimeout(() => {
+                this.setData({
+                    hiddenErr: true,
+                })
+            }, 1000)
+        }, 2000)
+    },
+
+
+
+    initList() {
+        let store = wx.getStorageSync('app')
+        let self = this
+        console.log(store, 'list')
+
+        wx.request({
+            // url: store.host + '/wxapi/project', //仅为示例，并非真实的接口地址
+            url: store.host + '/wxapi/project',
+            data: store,
+            header: {
+                'content-type': 'application/json' // 默认值
+            },
+            method: 'get',
+            success: function(res) {
+                console.log(res)
+                if (res.data.status == 1) {
+                    self.setData({
+                        myProjectList: res.data.data.list
+                    })
+                } else {
+
+                }
+            }
+        })
+
+
+        wx.request({
+            // url: store.host + '/wxapi/project', //仅为示例，并非真实的接口地址
+            url: store.host + '/wxapi/project/join',
+            data: store,
+            header: {
+                'content-type': 'application/json' // 默认值
+            },
+            method: 'get',
+            success: function(res) {
+                console.log(res)
+                if (res.data.status == 1) {
+                    self.setData({
+                        joinProjectList: res.data.data.list
+                    })
+                } else {
+
+                }
+            }
+        })
     },
 
     refresh(e) {

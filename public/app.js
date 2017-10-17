@@ -24,6 +24,7 @@ App({
               loginId: '',
               sessionid: '',
               host: 'http://10.255.1.76',
+              // host: 'https://www.uxinyue.com',
               code: res.code,
               codeSrc: ''
             }
