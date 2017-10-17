@@ -37,31 +37,28 @@ Page({
         })
 
         let self = this
-        console.log(12312312312312312312)
+
         self.animation = animation
+        //获取存储的code
         wx.getStorage({
 		  key: 'app',
 		  success: function(res) {
 
-
                 let store = res.data
-                // if (store.token == '') {
-                //     store.code = ''
-                // }
-            console.log(store,'liststore')
-                //发起网络请求
+
+                //发起网络请求，判断当前微信账号是否已经登录
                 wx.request({
-                    url: 'http://10.255.1.76/wxapi/init',
+                    url: store.host + '/wxapi/init',
                     data: {
                       code: store.code
                     },
                     success(res) {
-                        console.log(res, 77776666)
                         if (res.data.status == 1) {
 
                             let data = Object.assign({}, store, res.data.data)
 
                             if (res.data.data.token == '') {
+                                //如果没有登录，设置storage，并且跳转到登录页
                                wx.setStorage({
                                     key:"app",
                                     data: data,
@@ -70,7 +67,6 @@ Page({
                                         wx.getStorage({
                                             key:'app',
                                             success(res) {
-                                                console.log(res,'signlist')
                                                  wx.reLaunch({
                                                   url: '/pages/signin/signin?sessionid=' + res.data.sessionid
                                                 })
@@ -82,7 +78,7 @@ Page({
 
                                 return
                             } else {
-
+                                //如果已经登录，设置storage，初始化列表页
                                 wx.setStorage({
                                     key:"app",
                                     data: data,
@@ -136,11 +132,10 @@ Page({
     },
 
 
-
+    //初始化列表页
     initList() {
         let store = wx.getStorageSync('app')
         let self = this
-        console.log(store, 'list')
 
         wx.request({
             // url: store.host + '/wxapi/project', //仅为示例，并非真实的接口地址
@@ -151,7 +146,6 @@ Page({
             },
             method: 'get',
             success: function(res) {
-                console.log(res)
                 if (res.data.status == 1) {
                     self.setData({
                         myProjectList: res.data.data.list
@@ -172,7 +166,6 @@ Page({
             },
             method: 'get',
             success: function(res) {
-                console.log(res)
                 if (res.data.status == 1) {
                     self.setData({
                         joinProjectList: res.data.data.list
@@ -264,7 +257,6 @@ Page({
     },
 
     toProject(e) {
-        console.log(e, 999)
         if (this.data.searching) {
             // setTimeout(() => {
             //     wx.navigateTo({

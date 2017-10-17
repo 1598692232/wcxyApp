@@ -42,7 +42,6 @@ Page({
 
     onLoad(options) {
         let self = this;
-        console.log(options, 6655)
         wx.getSystemInfo({
             success: function (res) {
                 self.setData({

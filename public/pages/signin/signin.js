@@ -133,7 +133,7 @@ Page({
         // 本地存储用户信息
         let store = wx.getStorageSync('app')
         let reqData = Object.assign({}, e.detail.value, {sessionid: store.sessionid})
-console.log(reqData, 88776655)
+
         wx.request({
             url: store.host + '/wxapi/authentication', //仅为示例，并非真实的接口地址
             data: reqData,
@@ -142,7 +142,6 @@ console.log(reqData, 88776655)
             },
             method: 'post',
             success: function(res) {
-                console.log(res, 9999888888)
                 if (res.data.status == 1) {
                    
                     let stores = wx.getStorageSync('app')

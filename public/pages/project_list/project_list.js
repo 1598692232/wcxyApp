@@ -13,7 +13,6 @@ Page({
 
 	onLoad(options) {
 		let self = this;
-        console.log(options, 887766)
         wx.getSystemInfo({
             success: function (res) {
                 self.setData({
@@ -31,7 +30,6 @@ Page({
                     },
                     method: 'get',
                     success: function(res) {
-                        console.log(res, 5544)
                         if (res.data.status == 1) {
                             self.setData({
                                 videoList: res.data.data.list
@@ -47,7 +45,6 @@ Page({
 	},
 
 	toInfo(e) {
-        console.log(e.currentTarget.dataset, 889988)
        	wx.navigateTo({
             url: '/pages/info/info?url=' + e.currentTarget.dataset.url + '&name=' + e.currentTarget.dataset.name
     	})
