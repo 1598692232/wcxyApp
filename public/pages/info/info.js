@@ -9,10 +9,10 @@ Page({
 	    hideSendComment: true,
 
 	    commentList:[
-	    {time: 10, minTime:0, secTime: 10, text: 'text'},
-	    {time: 20,minTime:0, secTime: 20, text: 'text'},
-	    {time: 30,minTime:0, secTime: 30, text: 'text'},
-	    {time: 40,minTime:0, secTime: 40, text: 'text'}
+	    // {time: 10, minTime:0, secTime: 10, text: 'text'},
+	    // {time: 20,minTime:0, secTime: 20, text: 'text'},
+	    // {time: 30,minTime:0, secTime: 30, text: 'text'},
+	    // {time: 40,minTime:0, secTime: 40, text: 'text'}
 	    ],
 	    animationData: {},
 	    commentText: '',
@@ -43,12 +43,16 @@ Page({
                 	url: options.url,
                 	name: options.name,
                 	project_id: wx.getStorageSync('project_id'),
-                	doc_id: options.id
+                	doc_id: options.id,
+                	username: options.username,
+                	createTime: options.createTime
                 });
 
             }
         });
     },
+
+    
 
     onShow() {
     	console.log(12312312)
@@ -59,6 +63,32 @@ Page({
 	    })
 
 	    this.animation = animation
+	    var self = this
+
+	    let store = wx.getStorageSync('app')
+  		console.log(store, 7766)
+	    let reqData = Object.assign({}, store, {
+	    	doc_id: self.data.doc_id,
+	    	project_id: this.data.project_id
+	    })
+	    wx.request({
+            url: store.host + '/wxapi/comment',
+            data: reqData,
+            header: {
+                'content-type': 'application/json' // 默认值
+            },
+            method: 'get',
+            success: function(res) {
+            	console.log(res, 88777)
+                if (res.data.status == 1) {
+                    self.setData({
+                    	commentList: res.data.data.list
+                    })
+                } else {
+
+                }
+            }
+        })	
     },
 
 	// 评论输入框聚焦
@@ -126,16 +156,16 @@ Page({
 
 
     loadMore() {
-        let data = this.data.commentList
-        this.setData({
-          page: ++this.data.page
-        })
-        for(let i = 10 * (this.data.page - 1) + 1; i <= this.data.page * 10; i ++ ){
-          data.push({time: 35,minTime:0, secTime: 35,text: ''})
-        }
-        this.setData({
-            commentList: data,
-        })
+        // let data = this.data.commentList
+        // this.setData({
+        //   page: ++this.data.page
+        // })
+        // for(let i = 10 * (this.data.page - 1) + 1; i <= this.data.page * 10; i ++ ){
+        //   data.push({time: 35,minTime:0, secTime: 35,text: ''})
+        // }
+        // this.setData({
+        //     commentList: data,
+        // })
     },
 
     onShareAppMessage: function () {

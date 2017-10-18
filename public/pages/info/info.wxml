@@ -5,7 +5,7 @@
       <scroll-view class="video-title" scroll-y>
           <text>{{name}}</text>
       </scroll-view>
-      <text class="video-author">pzl · 6天前 · V2</text>
+      <text class="video-author">{{username}} · {{createTime}} · V2</text>
   </view>
   <scroll-view scroll-y="true" style="height: {{scrollHeight}}px" class="list-body" bindscrolltolower="loadMore">
     <view style="padding:0 10px;">
@@ -18,16 +18,16 @@
           </view>
           <view class="comment-master-text">
               <view class="comment-header clearfix">
-                  <text class="comment-name">pzlpzl</text>
+                  <text class="comment-name">{{item.realname}}</text>
                   <text class="comment-timer" bindtap="toVideoPosition" data-index="{{item.time}}">{{item.minTime}}:{{item.secTime}}</text>
               </view>
               <view class="comment-body1">
-                 <text>{{item.text}} </text>
+                 <text>{{item.content}} </text>
                  <view class="comment-do clearfix">
                    <text catchtap="toBackPage">回复</text>
                    <view class="comment-zan clearfix">
                         <!-- <image src="{{zanActive}}" class="comment-zan-img"></image> -->
-                        <text>1</text>
+                        <text>{{item.replies}}</text>
                    </view>
                  
                  </view>

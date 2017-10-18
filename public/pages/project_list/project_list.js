@@ -1,3 +1,4 @@
+var Util = require('../../utils/util.js')
 const app = getApp()
 
 Page({
@@ -13,6 +14,8 @@ Page({
 
 	onLoad(options) {
 		let self = this;
+
+        // console.log(Util.getCreateTime(1507867114))
         wx.getSystemInfo({
             success: function (res) {
                 self.setData({
@@ -30,7 +33,15 @@ Page({
                     },
                     method: 'get',
                     success: function(res) {
+                        console.log(res.data.data.list, 665544)
                         if (res.data.status == 1) {
+                            res.data.data.list.map(item => {
+                                item.created_at = Util.getCreateTime(item.created_at)
+                                item.project_file.time = `${parseInt(item.project_file.time / 60)}: ${item.project_file.time % 60}`
+                            })
+
+                            console.log(res.data.data.list, 88877)
+
                             self.setData({
                                 videoList: res.data.data.list
                             })
@@ -46,7 +57,9 @@ Page({
 
 	toInfo(e) {
        	wx.navigateTo({
-            url: '/pages/info/info?url=' + e.currentTarget.dataset.url + '&name=' + e.currentTarget.dataset.name + '&id=' +e.currentTarget.dataset.id
+            url: '/pages/info/info?url=' + e.currentTarget.dataset.url + '&name=' 
+            + e.currentTarget.dataset.name + '&id=' + e.currentTarget.dataset.id 
+            + '&username=' + e.currentTarget.dataset.username + '&createTime=' + e.currentTarget.dataset.createTime
     	})
 
         // wx.redirectTo({
