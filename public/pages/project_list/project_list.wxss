@@ -24,7 +24,7 @@
 	position: relative;
 	width:100%;
 	height:230rpx;
-	background: #e1e1e1;
+	background: #21212d;
 }
 .pl-show-count:before{
 	content: "";
@@ -107,6 +107,46 @@
 	line-height: 40rpx;
 	color:#6c6b7b;
 	font-size: 12px
+}
+
+.breadcrumb-nav{
+	overflow: hidden;
+	width: 100%;
+	margin-bottom: 10px;
+}
+
+.breadcrumb-nav-li{
+	display:inline-block;
+	position: relative;
+	/*width: 100px;*/
+	line-height: 30px;
+	color:#fff;
+}
+.breadcrumb-nav-li text{
+	display: inline-block;
+	position: relative;
+	/*overflow: hidden;*/
+	padding-left: 10px;
+	/*text-overflow: ellipsis;
+	white-space: nowrap;*/
+	z-index:1;
+	width: 100%;
+	background: #58617d;
+	color:#fff;
+	border-top-right-radius: 15px;
+	border-bottom-right-radius: 15px;
+	border:1px solid #000;
+	/*margin-left: 20px;*/
+}
+.jian-tou{
+	width:20px;
+	height: 20px;
+	position: absolute;
+	right: -12px;
+	top: 0;
+	transform: rotate(45deg);
+	border-top: 1px solid #000;
+  	border-right: 1px solid #000;
 }
 
 

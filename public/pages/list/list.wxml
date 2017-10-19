@@ -21,7 +21,7 @@
         </view>
         <!-- bindscrolltolower="loadMoreMyProjects" -->
         <scroll-view class="list-body" scroll-y="true"  style="height: {{scrollHeight}}px" bindscrolltoupper="refresh" hidden="{{hiddenMy}}" scroll-with-animation="true">
-              <view class="item clearfix" wx:for="{{myProjectList}}" wx:key="index" bindtap="toProject" data-id="{{item.id}}">
+              <view class="item clearfix" wx:for="{{myProjectList}}" wx:key="index" bindtap="toProject" data-id="{{item.id}}" data-name="{{item.name}}">
                <!--  <view class="item-left">
                   <image src="{{projectImg}}" mode="aspectFit" lazy-load="{{true}}"></image>
                 </view> -->
@@ -33,7 +33,7 @@
               </view>
         </scroll-view>
        <scroll-view class="list-body" scroll-y="true" bindscrolltolower="loadMoreJoinProjects" style="height: {{scrollHeight}}px" bindscrolltoupper="refresh" hidden="{{!hiddenMy}}" scroll-with-animation="true">
-              <view class="item clearfix" wx:for="{{joinProjectList}}" wx:key="index" bindtap="toProject">
+              <view class="item clearfix" wx:for="{{joinProjectList}}" wx:key="index" bindtap="toProject" data-name="{{item.name}}">
                 <!-- <view class="item-left">
                   <image src="{{projectImg}}" mode="aspectFit" lazy-load="{{true}}"></image>
                 </view> -->

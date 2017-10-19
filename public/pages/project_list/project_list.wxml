@@ -1,17 +1,33 @@
 <view class="pl-container">
+	<scroll-view  class="breadcrumb-nav" scroll-x wx:if="{{breadcrumbList.length != 0}}">
+		<view style="width: {{breadcrumbWidth}}px">
+			<view class="breadcrumb-nav-li" wx:for="{{breadcrumbList}}" wx:key="index" 
+			data-id="{{item.id}}" bindtap="selectFolder">
+					<text>{{item.name}}</text>
+			</view>
+		</view>
+		
+	</scroll-view>
+
 	<scroll-view class="pl-list" scroll-y style="height: {{scrollHeight}}px" bindscrolltolower="loadMore" lower-threshold="100">
 		<view class="pl-body">
-			<view class="pl-li" wx:for="{{videoList}}" wx:key="index" style="width:{{liWidth}}px;margin-right:{{(index + 1) % 2 == 0 ? 0 : '10px'}};" bindtap="toInfo" data-url="{{item.project_file.url}}" data-name="{{item.name}}" data-id="{{item.id}}" data-username="{{item.user_info.realname}}" data-create-time="{{item.created_time}}">
-				<view class="pl-img-body pl-show-count">
+			<view class="pl-li" wx:for="{{videoList}}" wx:key="index" style="width:{{liWidth}}px;margin-right:{{(index + 1) % 2 == 0 ? 0 : '10px'}};" bindtap="toInfo" data-url="{{item.project_file.url}}" data-name="{{item.name}}" data-id="{{item.id}}" data-username="{{item.user_info.realname}}" data-create-time="{{item.created_time}}" data-type="{{item.type}}">
+				<view class="pl-img-body">
+					<!-- pl-show-count -->
+					<block wx:if="{{item.type == 'folder'}}">
+ 						<image class="pl-img" src="{{dirImg}}" mode="aspectFit" lazy-load="{{true}}"></image>
+					</block>
+					<block wx:if="{{item.type == 'file'}}">
+						 <!-- <view class="pl-count">
+						 	<text>{{item.version_count}}</text>
+						 </view> -->
+						 <view class="pl-timer">
+						 	<text>{{item.project_file.time}}</text>
+						 </view>
+	 					 <image class="pl-img" src="{{item.cover_img[0]}}" mode="scaleToFill" lazy-load="{{true}}"></image>
 
-					 <view class="pl-count">
-					 	<text>{{item.version_count}}</text>
-					 </view>
-					 <view class="pl-timer">
-					 	<text>{{item.project_file.time}}</text>
-					 </view>
+					</block>
 
-					<image class="pl-img" src="{{item.cover_img[0]}}" mode="aspectFit" lazy-load="{{true}}"></image>
 				</view>
 				
 				<view class="pl-des-body">
