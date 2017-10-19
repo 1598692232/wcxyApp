@@ -18,7 +18,7 @@ App({
         token: '',
         login_id: '',
         sessionid: '',
-        host: 'http://10.255.1.76',
+        host: 'http://10.255.1.20',
         // host: 'https://www.uxinyue.com',
         code:'',
         codeSrc: ''

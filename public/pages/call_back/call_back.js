@@ -1,11 +1,13 @@
+var Util = require('../../utils/util.js')
+
 const app = getApp()
 
 Page({
 
     data: {
         scrollHeight: 0,
-        callList: [1,2,3,4,5,6,7],
-        page: 1,
+        callList: [],
+        // page: 1,
 
         commentIsFocus: false,
         hideSendComment: true,
@@ -14,18 +16,53 @@ Page({
         commentText: '',
         tx: app.data.staticImg.tx,
         zan: app.data.staticImg.zan,
-        zanActive: app.data.staticImg.zanActive
+        zanActive: app.data.staticImg.zanActive,
+
+        currentComment: ''
     },
 
-   onLoad() {
-        let that = this;
-
+   onLoad(options) {
+        let self = this;
         wx.getSystemInfo({
             success: function (res) {
-                that.setData({
-                    scrollHeight: res.windowHeight - 60
+                self.setData({
+                    scrollHeight: res.windowHeight - 60,
+                    commentId: parseInt(options.commentId),
+                    docId: parseInt(options.docId)
                 });
-                wx.setNavigationBarTitle({title: '10条回复'})
+
+                let store = wx.getStorageSync('app')
+                let reqData = Object.assign({}, store, {
+                    doc_id: self.data.docId,
+                    project_id: wx.getStorageSync('project_id')
+                })
+                wx.request({
+                    url: store.host + '/wxapi/comment',
+                    data: reqData,
+                    header: {
+                        'content-type': 'application/json' // 默认值
+                    },
+                    method: 'get',
+                    success: function(res) {
+                        if (res.data.status == 1) {
+                            let currentComment = res.data.data.list.filter(item => {
+                                return parseInt(item.id) == self.data.commentId
+                            })
+
+                            currentComment.comment_time = Util.timeToMinAndSec(currentComment.media_time)
+
+                            self.setData({
+                                callList: currentComment.replies,
+                                currentComment: currentComment[0]
+                            })
+                            wx.setNavigationBarTitle({title: `${currentComment[0].replies.length}条回复`})
+
+                        } else {
+
+                        }
+                    }
+                })
+
             }
         });
     },
@@ -38,7 +75,6 @@ Page({
         })
 
         this.animation1 = animation1
-
 
         let animation2 = wx.createAnimation({
             duration: 100,
@@ -79,20 +115,54 @@ Page({
             commentText: '',
             callList: comList
         })
+
+
+        let store = wx.getStorageSync('app')
+        let reqData = Object.assign({}, store, {
+            doc_id: self.data.commentId,
+            project_id: wx.getStorageSync('project_id')
+        })
+        wx.request({
+            url: store.host + '/wxapi/comment',
+            data: reqData,
+            header: {
+                'content-type': 'application/json' // 默认值
+            },
+            method: 'get',
+            success: function(res) {
+                if (res.data.status == 1) {
+                    let list = self.data.callList
+                    let newCall= {
+                        content: e.detail.value.commentText,
+                        comment_time: Util.timeToMinAndSec(self.data.videoTime),
+                        doc_id: self.data.docId,
+                        project_id: wx.getStorageSync('project_id'),
+                        id: res.data.data.id
+                    }
+                    list.unshift(newCall)
+                    self.setData({
+                        callList: list,
+                        commentText: ''
+                    })
+                } else {
+
+                }
+            }
+        })
      },
 
 
-    loadMore() {
-        let data = this.data.callList
-        this.setData({
-          page: ++this.data.page
-        })
-        for(let i = 10 * (this.data.page - 1) + 1; i <= this.data.page * 10; i ++ ){
-          data.push(i)
-        }
-        this.setData({
-            callList: data,
-        })
-    }
+    // loadMore() {
+    //     let data = this.data.callList
+    //     this.setData({
+    //       page: ++this.data.page
+    //     })
+    //     for(let i = 10 * (this.data.page - 1) + 1; i <= this.data.page * 10; i ++ ){
+    //       data.push(i)
+    //     }
+    //     this.setData({
+    //         callList: data,
+    //     })
+    // }
 
 })

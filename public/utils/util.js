@@ -18,9 +18,7 @@ console.log('util')
 const getCreateTime = time => {
   // console.log(new Date(parseInt(time) * 1000).toLocaleString().substr(0,17))
   let nowTime = Date.parse(new Date())
-console.log(nowTime, time)
   let changeTime = (nowTime - time * 1000) / 1000 
-  console.log(changeTime, 77)
   if (changeTime < 60) {
       return '刚刚'
   } else if(changeTime > 60 && changeTime <= 3600) {
@@ -32,7 +30,18 @@ console.log(nowTime, time)
   }
 }
 
+const timeToMinAndSec = time => {
+    if (time >= 0) {
+        let minute = parseInt(time / 60) < 10 ? `0${parseInt(time / 60)}` : parseInt(time / 60)
+        let seconds = time % 60 < 10 ? `0${time % 60}` : time % 60
+        return `${minute}:${seconds}`
+    } else {
+      return '00:00'
+    }
+}
+
 module.exports = {
   formatTime: formatTime,
-  getCreateTime: getCreateTime
+  getCreateTime: getCreateTime,
+  timeToMinAndSec: timeToMinAndSec
 }

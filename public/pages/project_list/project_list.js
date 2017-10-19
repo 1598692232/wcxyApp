@@ -33,14 +33,12 @@ Page({
                     },
                     method: 'get',
                     success: function(res) {
-                        console.log(res.data.data.list, 665544)
                         if (res.data.status == 1) {
                             res.data.data.list.map(item => {
-                                item.created_at = Util.getCreateTime(item.created_at)
-                                item.project_file.time = `${parseInt(item.project_file.time / 60)}: ${item.project_file.time % 60}`
+                                item.created_time = Util.getCreateTime(item.created_at)
+                                let sec = item.project_file.time % 60
+                                item.project_file.time = Util.timeToMinAndSec(item.project_file.time)
                             })
-
-                            console.log(res.data.data.list, 88877)
 
                             self.setData({
                                 videoList: res.data.data.list

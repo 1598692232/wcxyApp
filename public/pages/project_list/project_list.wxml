@@ -1,7 +1,7 @@
 <view class="pl-container">
 	<scroll-view class="pl-list" scroll-y style="height: {{scrollHeight}}px" bindscrolltolower="loadMore" lower-threshold="100">
 		<view class="pl-body">
-			<view class="pl-li" wx:for="{{videoList}}" wx:key="index" style="width:{{liWidth}}px;margin-right:{{(index + 1) % 2 == 0 ? 0 : '10px'}};" bindtap="toInfo" data-url="{{item.project_file.url}}" data-name="{{item.name}}" data-id="{{item.id}}" data-username="{{item.user_info.realname}}" data-create-time="{{item.created_at}}">
+			<view class="pl-li" wx:for="{{videoList}}" wx:key="index" style="width:{{liWidth}}px;margin-right:{{(index + 1) % 2 == 0 ? 0 : '10px'}};" bindtap="toInfo" data-url="{{item.project_file.url}}" data-name="{{item.name}}" data-id="{{item.id}}" data-username="{{item.user_info.realname}}" data-create-time="{{item.created_time}}">
 				<view class="pl-img-body pl-show-count">
 
 					 <view class="pl-count">
@@ -19,7 +19,7 @@
 					<view class="pl-user clearfix">
 						<image class="pl-user-tou" src="{{manager}}" mode="aspectFit" lazy-load="{{true}}"></image>
 						<image class="pl-video-icon" src="{{sx}}" mode="aspectFit" lazy-load="{{true}}"></image>
-						<text class="pl-create-timer">{{item.created_at}}</text>
+						<text class="pl-create-timer">{{item.created_time}}</text>
 					</view>
 				</view>
 			</view>

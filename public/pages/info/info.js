@@ -1,3 +1,4 @@
+var Util = require('../../utils/util.js')
 const app = getApp()
 
 Page({
@@ -47,12 +48,10 @@ Page({
                 	username: options.username,
                 	createTime: options.createTime
                 });
-
+                console.log(self.data.createTime, 4444)
             }
         });
     },
-
-    
 
     onShow() {
     	console.log(12312312)
@@ -69,7 +68,8 @@ Page({
   		console.log(store, 7766)
 	    let reqData = Object.assign({}, store, {
 	    	doc_id: self.data.doc_id,
-	    	project_id: this.data.project_id
+	    	project_id: this.data.project_id,
+	    	// sort: 0
 	    })
 	    wx.request({
             url: store.host + '/wxapi/comment',
@@ -81,6 +81,9 @@ Page({
             success: function(res) {
             	console.log(res, 88777)
                 if (res.data.status == 1) {
+                	res.data.data.list.map(item => {
+                		item.comment_time = Util.timeToMinAndSec(item.media_time)
+                	})
                     self.setData({
                     	commentList: res.data.data.list
                     })
@@ -88,7 +91,7 @@ Page({
 
                 }
             }
-        })	
+        })
     },
 
 	// 评论输入框聚焦
@@ -121,21 +124,68 @@ Page({
 
 	 // 发送评论
 	 sendComment(e) {
- 		let comList = this.data.commentList
- 		let time = this.data.focusTime
+	 	let self = this
+ 		let comList = self.data.commentList
+ 		let time = self.data.focusTime
+ 		let store = wx.getStorageSync('app')
 
- 		comList.unshift({time: time, minTime: parseInt(time / 60), secTime: parseInt(time) % 60, text: e.detail.value.commentText})
-		this.setData({
- 			commentText: '',
- 			commentList: comList,
+ 		let reqData = Object.assign({}, store, {
+	    	content: e.detail.value.commentText,
+ 			label: '',
+ 			media_time: self.data.videoTime,
+ 			doc_id: self.data.doc_id,
+ 			project_id: wx.getStorageSync('project_id')
+	    })
 
- 		})
+ 		wx.request({
+            url: store.host + '/wxapi/comment',
+            data: reqData,
+            header: {
+                'content-type': 'application/json' // 默认值
+            },
+            method: 'post',
+            success: function(res) {
+                if (res.data.status == 1) {
+                	let list = self.data.commentList
+                	let newComment = {
+                		content: e.detail.value.commentText,
+			 			comment_time: Util.timeToMinAndSec(self.data.videoTime),
+			 			doc_id: self.data.doc_id,
+			 			project_id: wx.getStorageSync('project_id'),
+			 			id: res.data.data.id
+                	}
+                	list.unshift(newComment)
+                    self.setData({
+                    	commentList: list,
+                    	commentText: ''
+                    })
+                } else {
+
+                }
+            }
+        })	
+
+
+
+ 		console.log(e)
+
+ 	// 	comList.unshift({
+ 	// 		time: time, 
+ 	// 		minTime: parseInt(time / 60), 
+ 	// 		secTime: parseInt(time) % 60, 
+ 	// 		text: e.detail.value.commentText
+ 	// 	})
+
+		// this.setData({
+ 	// 		commentText: '',
+ 	// 		commentList: comList,
+ 	// 	})
 	 },
 
 	 //跳到指定时间播放
 	 toVideoPosition(e) {
 	 	// 模拟时间点击
-	 	let time = e.currentTarget.dataset.index
+	 	let time = e.currentTarget.dataset.time
 
  		this.videoCtx.seek(time)
  		this.videoCtx.play()
@@ -144,18 +194,20 @@ Page({
 	 // 获取播放时间
 	 getVideoTime(e) {
  		this.setData({
- 			videoTime: e.detail.currentTime
+ 			videoTime: parseInt(e.detail.currentTime)
  		})
 	 },
 
-	 toBackPage() {
+	 toBackPage(e) {
+	 	// console.log(e.currentTarget.dataset, 666533)
+	 	// let commentCurrent = JSON.stringify(this.data.commentList[e.currentTarget.dataset.index])
 	 	wx.navigateTo({
-	      url: '/pages/call_back/call_back?id=1'
+	      url: `/pages/call_back/call_back?commentId=${e.currentTarget.dataset.index}&docId=${this.data.doc_id}`
 	    })
 	 },
 
 
-    loadMore() {
+    // loadMore() {
         // let data = this.data.commentList
         // this.setData({
         //   page: ++this.data.page
@@ -166,7 +218,7 @@ Page({
         // this.setData({
         //     commentList: data,
         // })
-    },
+    // },
 
     onShareAppMessage: function () {
 	    return {
