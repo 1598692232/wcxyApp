@@ -49,10 +49,10 @@ Page({
                                 return parseInt(item.id) == self.data.commentId
                             })
 
-                            currentComment.comment_time = Util.timeToMinAndSec(currentComment.media_time)
+                            currentComment[0].comment_time = Util.timeToMinAndSec(currentComment[0].media_time)
 
                             self.setData({
-                                callList: currentComment.replies,
+                                callList: currentComment[0].replies,
                                 currentComment: currentComment[0]
                             })
                             wx.setNavigationBarTitle({title: `${currentComment[0].replies.length}条回复`})
@@ -108,18 +108,14 @@ Page({
 
      // 发送评论
      sendComment(e) {
-        let comList = this.data.callList
-
-        comList.unshift(e.detail.value.commentText)
-        this.setData({
-            commentText: '',
-            callList: comList
-        })
-
+        let self = this
 
         let store = wx.getStorageSync('app')
         let reqData = Object.assign({}, store, {
-            doc_id: self.data.commentId,
+            content: e.detail.value.commentText,
+            label: '',
+            media_time: self.data.videoTime,
+            doc_id: self.data.docId,
             project_id: wx.getStorageSync('project_id')
         })
         wx.request({
@@ -128,10 +124,11 @@ Page({
             header: {
                 'content-type': 'application/json' // 默认值
             },
-            method: 'get',
+            method: 'post',
             success: function(res) {
                 if (res.data.status == 1) {
                     let list = self.data.callList
+
                     let newCall= {
                         content: e.detail.value.commentText,
                         comment_time: Util.timeToMinAndSec(self.data.videoTime),
@@ -139,11 +136,14 @@ Page({
                         project_id: wx.getStorageSync('project_id'),
                         id: res.data.data.id
                     }
+
                     list.unshift(newCall)
+
                     self.setData({
                         callList: list,
                         commentText: ''
                     })
+
                 } else {
 
                 }

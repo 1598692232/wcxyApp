@@ -28,7 +28,7 @@
 
 		        <!-- 回复区 -->
 		        <view class="comment-back">
-		            <view class="back-body" wx:for="{{currentComment.replies}}" wx:key="index">
+		            <view class="back-body" wx:for="{{callList}}" wx:key="index">
 		                <view class="back-tou">
 		                    <image src="{{tx}}"></image>
 		                </view>

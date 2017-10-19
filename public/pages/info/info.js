@@ -34,7 +34,6 @@ Page({
   	},
 
     onLoad(options) {
-    	console.log(options, 887766)
         let self = this;
         wx.getSystemInfo({
             success: function (res) {
@@ -47,14 +46,12 @@ Page({
                 	doc_id: options.id,
                 	username: options.username,
                 	createTime: options.createTime
-                });
-                console.log(self.data.createTime, 4444)
+                })
             }
         });
     },
 
     onShow() {
-    	console.log(12312312)
         // 评论输入框动画注册
     	let animation = wx.createAnimation({
 	      	duration: 0,
@@ -65,7 +62,6 @@ Page({
 	    var self = this
 
 	    let store = wx.getStorageSync('app')
-  		console.log(store, 7766)
 	    let reqData = Object.assign({}, store, {
 	    	doc_id: self.data.doc_id,
 	    	project_id: this.data.project_id,
@@ -79,7 +75,6 @@ Page({
             },
             method: 'get',
             success: function(res) {
-            	console.log(res, 88777)
                 if (res.data.status == 1) {
                 	res.data.data.list.map(item => {
                 		item.comment_time = Util.timeToMinAndSec(item.media_time)
@@ -165,21 +160,6 @@ Page({
             }
         })	
 
-
-
- 		console.log(e)
-
- 	// 	comList.unshift({
- 	// 		time: time, 
- 	// 		minTime: parseInt(time / 60), 
- 	// 		secTime: parseInt(time) % 60, 
- 	// 		text: e.detail.value.commentText
- 	// 	})
-
-		// this.setData({
- 	// 		commentText: '',
- 	// 		commentList: comList,
- 	// 	})
 	 },
 
 	 //跳到指定时间播放
