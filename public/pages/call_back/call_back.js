@@ -116,7 +116,8 @@ Page({
             label: '',
             media_time: self.data.videoTime,
             doc_id: self.data.docId,
-            project_id: wx.getStorageSync('project_id')
+            project_id: wx.getStorageSync('project_id'),
+            top_id: self.data.commentId
         })
         wx.request({
             url: store.host + '/wxapi/comment',

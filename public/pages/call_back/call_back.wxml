@@ -53,7 +53,7 @@
 	   <form bindsubmit="sendComment">
 	      <view class="push-comment-input clearfix">
 	          <textarea placeholder="回复评论..."  cursor-spacing="20"  bindblur="commentBlur" name="commentText"
-	          bindfocus="commentFocus" animation="{{animationData}}" value="{{commentText}}" style="#fff">
+	          bindfocus="commentFocus" animation="{{animationData}}" value="{{commentText}}" style="color:#fff">
 	          </textarea>
 	          <button class="send-commit" hidden="{{hideSendComment}}" form-type="submit">
 	              发送

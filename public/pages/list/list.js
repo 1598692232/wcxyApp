@@ -4,9 +4,12 @@ Page({
     data: {
         myProjectList: [],
         joinProjectList: [],
+        myProjectListTemp: [],
+        joinProjectListTemp: [],
+
         animationData: {},
         searchText: '',
-        searching: false,
+        // searching: false,
         searchImg: app.data.staticImg.search,
         clearImg: app.data.staticImg.clear,
         hideClear: true,
@@ -16,12 +19,13 @@ Page({
         tabOne: 'background: #4F3E4C;color: #fff;',
         tabTwo: '',
     },
+
     onLoad() {
-        let that = this;
+        let self = this;
         wx.getSystemInfo({
             success: function (res) {
                 // that.refresh()
-                that.setData({
+                self.setData({
                     scrollHeight: res.windowHeight - 40,
                     listInfoWidth: res.windowWidth - 110,
                 });
@@ -59,9 +63,6 @@ Page({
             }
           }
         });
-
-        
-
     },
 
 
@@ -177,8 +178,10 @@ Page({
             success: function(res) {
                 if (res.data.status == 1) {
                     self.setData({
-                        myProjectList: res.data.data.list
+                        myProjectList: res.data.data.list,
+                        myProjectListTemp: res.data.data.list
                     })
+                    self.setAllProjects()
                 } else {
 
                 }
@@ -197,13 +200,24 @@ Page({
             success: function(res) {
                 if (res.data.status == 1) {
                     self.setData({
-                        joinProjectList: res.data.data.list
+                        joinProjectList: res.data.data.list,
+                        joinProjectListTemp: res.data.data.list
                     })
+                    self.setAllProjects()
                 } else {
 
                 }
             }
         })
+    },
+
+    setAllProjects() {
+        let searchList = []
+        let searchFinalList = searchList.concat(this.data.myProjectList, this.data.joinProjectList)
+        this.setData({
+            searchList: searchFinalList
+        })
+        console.log(this.data.searchList, 8877777)
     },
 
     refresh(e) {
@@ -286,14 +300,6 @@ Page({
     },
 
     toProject(e) {
-        if (this.data.searching) {
-            // setTimeout(() => {
-            //     wx.navigateTo({
-            //         url: '/pages/project_list/project_list?project_id=' + e.currentTarget.dataset.id
-            //     })
-            // }, 300)
-            return;
-        }
         wx.setStorage({
             key: 'project_id',
             data: e.currentTarget.dataset.id
@@ -304,43 +310,72 @@ Page({
     },
 
     searchFocus(e) {
-        if (this.data.searchText != '') {
-            this.setData({
-                hideClear: false,
-            })
-        }
-        this.animation.width("100%").step()
-        this.setData({
-            animationData:this.animation.export()
-        })
         setTimeout(() => {
+            if (this.data.searchText != '') {
+                this.setData({
+                    hideClear: false,
+                })
+            }
+        }, 500)
+        
+        if (!this.data.searching) {
+            this.animation.width("100%").step()
             this.setData({
+                animationData:this.animation.export(),
                 searching: true
             })
-        }, 500)
+        }
     },
 
     searchBlur() {
+        console.log(2222)
         this.animation.width(80).step()
+        console.log(this.data.searchText, 888888)
+
         this.setData({
             animationData:this.animation.export(),
             searching: false,
-            commentText: '',
-            hideClear: true,
+            hideClear: true
         })
     },
 
     searchInput(e) {
+        if (e.detail.value == '') {
+            this.setData({
+                hideClear: true,
+                searchText: '',
+                myProjectList: this.data.myProjectListTemp,
+                joinProjectList: this.data.joinProjectListTemp,
+            })
+            return
+        }
         this.setData({
             searchText: e.detail.value,
             hideClear: false
         })
+        let exp = new RegExp(e.detail.value)
+      
+        let results1 = this.data.myProjectListTemp.filter(item => {
+            return exp.test(item.name)
+        })
+
+        let results2 = this.data.joinProjectListTemp.filter(item => {
+            return exp.test(item.name)
+        })
+      
+        this.setData({
+            myProjectList: results1,
+            joinProjectList: results2,
+        })
+
     },
 
     clearSearch() {
         this.setData({
             searchText: '',
             hideClear: true,
+            myProjectList: this.data.myProjectListTemp,
+            joinProjectList: this.data.joinProjectListTemp,
         })
     },
 
