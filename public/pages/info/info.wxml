@@ -15,7 +15,7 @@
         <!-- 评论区 -->
         <view class="comment-master">
           <view class="comment-tou">
-            <image src="{{tx}}"></image>
+            <image src="{{item.avatar}}"></image>
           </view>
           <view class="comment-master-text">
               <view class="comment-header clearfix">

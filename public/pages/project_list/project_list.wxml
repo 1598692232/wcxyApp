@@ -2,7 +2,7 @@
 	<scroll-view  class="breadcrumb-nav" scroll-x wx:if="{{breadcrumbList.length != 0}}">
 		<view style="width: {{breadcrumbWidth}}px">
 			<view class="breadcrumb-nav-li" wx:for="{{breadcrumbList}}" wx:key="index" 
-			data-id="{{item.id}}" bindtap="selectFolder">
+			data-id="{{item.id}}" bindtap="selectFolder" style="z-index:{{100 - index}}">
 					<text>{{item.name}}</text>
 			</view>
 		</view>
@@ -33,7 +33,7 @@
 				<view class="pl-des-body">
 					<text class="pl-name">{{item.name}}</text>
 					<view class="pl-user clearfix">
-						<image class="pl-user-tou" src="{{manager}}" mode="aspectFit" lazy-load="{{true}}"></image>
+						<image class="pl-user-tou" src="{{item.user_info.avatar}}" mode="aspectFit" lazy-load="{{true}}"></image>
 						<image class="pl-video-icon" src="{{sx}}" mode="aspectFit" lazy-load="{{true}}"></image>
 						<text class="pl-create-timer">{{item.created_time}}</text>
 					</view>

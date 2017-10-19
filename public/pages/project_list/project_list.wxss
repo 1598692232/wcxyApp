@@ -136,6 +136,8 @@
 	border-top-right-radius: 15px;
 	border-bottom-right-radius: 15px;
 	border:1px solid #000;
+	font-size:13px;
+	/*transform: translateX(5px);*/
 	/*margin-left: 20px;*/
 }
 .jian-tou{

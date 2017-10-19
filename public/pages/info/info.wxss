@@ -82,6 +82,7 @@
     height:30px;
     background: #ddd;
     border-radius: 50%;
+    overflow: hidden;
 }
 .comment-tou image{
     display: inline-block;
@@ -177,6 +178,7 @@
     height: 25px;
     border-radius: 50%;
     background:#ddd;
+    overflow: hidden;
 }
 .back-tou image {
     width: 100%;

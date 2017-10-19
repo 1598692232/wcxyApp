@@ -42,6 +42,8 @@ Page({
                                 item.created_time = Util.getCreateTime(item.created_at)
                                 let sec = item.project_file.time % 60
                                 item.project_file.time = Util.timeToMinAndSec(item.project_file.time)
+                                item.user_info.avatar = item.user_info.avatar == '' ? self.data.manager : item.user_info.avatar
+
                             })
 
                             self.setData({
@@ -79,6 +81,7 @@ Page({
                         item.created_time = Util.getCreateTime(item.created_at)
                         let sec = item.project_file.time % 60
                         item.project_file.time = Util.timeToMinAndSec(item.project_file.time)
+                        item.user_info.avatar = item.user_info.avatar == '' ? self.data.manager : item.user_info.avatar
                     })
 
                     self.setData({
