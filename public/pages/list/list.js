@@ -381,8 +381,8 @@ Page({
 
     onShareAppMessage: function () {
 	    return {
-	        title: '转发',
-	        path: '/pages/list/list?id=123',
+	        title: 'XINYUE新阅',
+	        path: '/pages/list/list',
             imageUrl: './xy.png'
 	    }
 	},

@@ -34,6 +34,7 @@ Page({
   	},
 
     onLoad(options) {
+        console.log(options, 887777777777)
         let self = this;
         wx.getSystemInfo({
             success: function (res) {
@@ -45,13 +46,18 @@ Page({
                 	project_id: wx.getStorageSync('project_id'),
                 	doc_id: options.id,
                 	username: options.username,
-                	createTime: options.createTime
+                	createTime: options.createTime,
+                    coverImg: options.coverImg
+            
                 })
+                // console.log(self.data.infoUrl, self.data.coverImg, 99999)
+                wx.setNavigationBarTitle({title: options.name})
             }
         });
     },
 
     onShow() {
+          console.log('info')
         // 评论输入框动画注册
     	let animation = wx.createAnimation({
 	      	duration: 0,
@@ -83,6 +89,7 @@ Page({
                     self.setData({
                     	commentList: res.data.data.list
                     })
+                    console.lof(self.data.commentList, 8888)
                 } else {
 
                 }
@@ -90,68 +97,106 @@ Page({
         })
     },
 
+    toLogin() {
+        let self = this
+        wx.login({
+            success: function(res) {
+                if (res.code) {
+
+                      let store = wx.getStorageSync('app')
+                      store.code = res.code
+                      wx.setStorage({
+                        key:"app",
+                        data: store,
+                        success(res) {
+                            //获取sessionid
+                                wx.request({
+                                    url: store.host + '/wxapi/init',
+                                    data: {
+                                      code: store.code
+                                    },
+                                    success(res) {
+                                        if (res.data.status == 1) {
+                                            //设置sessionid storage
+                                            let data = Object.assign({}, store, res.data.data)
+
+                                            if (res.data.data.token == '') {
+                                                //如果没有登录，设置storage，并且跳转到登录页
+                                               wx.setStorage({
+                                                    key:"app",
+                                                    data: data,
+                                                    success(res) {
+                                                        wx.getStorage({
+                                                            key:'app',
+                                                            success(res) {
+                                                                 wx.reLaunch({
+                                                                  url: '/pages/signin/signin?sessionid=' + res.data.sessionid
+                                                                })
+                                                            }
+                                                        })
+
+                                                    }
+                                                })
+
+                                                return
+                                            }
+                                        } else {
+                                             wx.showModal({
+                                              title: '提示',
+                                              content: '请求失败！',
+                                            })
+                                        }
+                                    }
+                                })
+                            }
+                        })
+
+                } else {
+                     wx.showModal({
+                      title: '提示',
+                      content: '获取用户登录态失败！'  + res.errMsg,
+                    })
+                }
+            }
+        });
+    },
+
 	// 评论输入框聚焦
 	commentFocus() {
+        let self = this
+        wx.getStorage({
+          key: 'app',
+          success: function(res) {
+            // res.data.token = ''
+            if (res.data.token == '') {
 
-        // wx.getStorage({
-        //   key: 'app',
-        //   success: function(res) {
-        //     // res.data.data.token = ''
-        //     if (res.data.data.token == '') {
-
-
-        //          wx.login({
-        //           success: function(res) {
-        //             console.log(res)
-        //             if (res.code) {
-
-        //               let store = wx.getStorageSync('app')
-        //               store.code = res.code
-        //               wx.setStorage({
-        //                   key:"app",
-        //                   data: store,
-        //                   success() {
-        //                     self.isLoginforHandle()
-        //                   }
-        //                 }) 
-        //             } else {
-        //               console.log('获取用户登录态失败！' + res.errMsg)
-        //             }
-        //           }
-        //         });
-        //           wx.showModal({
-        //               title: '提示',
-        //               content: '这是一个模态弹窗',
-        //               success: function(res) {
-        //                 if (res.confirm) {
-
-        //                     this.toLogin()
-        //                    wx.reLaunch({
-        //                       url: '/pages/signin/signin?sessionid=' + res.data.sessionid
-        //                     })
-        //                 } else if (res.cancel) {
-        //                   console.log('用户点击取消')
-        //                 }
-        //               }
-        //             })
-        //       } else {
-               
-        //       }
-        //   }
-
-        // })
-
-         this.setData({
-                    focusTime: this.data.videoTime
+                  wx.showModal({
+                      title: '提示',
+                      content: '评论／回复需登录',
+                      success: function(res) {
+                        if (res.confirm) {
+                            wx.reLaunch({
+                                      url: '/pages/list/list'
+                                    })
+                        }
+                      }
+                    })
+              } else {
+                self.setData({
+                    focusTime: self.data.videoTime
                 })
 
-                this.animation.width("75%").step()
-                    this.setData({
+                self.animation.width("75%").step()
+                    self.setData({
                 })
-                this.setData({
+                self.setData({
                     hideSendComment: false,
-                    animationData:this.animation.export(),
+                    animationData:self.animation.export(),
                 })
+              }
+          }
+
+        })
 	},
 
 	//评论失焦
@@ -195,6 +240,7 @@ Page({
                 	let newComment = {
                 		content: e.detail.value.commentText,
 			 			comment_time: Util.timeToMinAndSec(self.data.videoTime),
+                        media_time: self.data.videoTime,
 			 			doc_id: self.data.doc_id,
 			 			project_id: wx.getStorageSync('project_id'),
 			 			id: res.data.data.id
@@ -250,11 +296,15 @@ Page({
         // })
     // },
 
-    onShareAppMessage: function () {
+    onShareAppMessage () {
+         let url = '/pages/info/info?url=' + this.data.url + '&name=' 
+                + this.data.name + '&id=' + this.data.doc_id 
+                + '&username=' + this.data.username + '&createTime=' + this.data.createTime
+                + '&coverImg=' + this.data.coverImg 
 	    return {
-	        title: '转发',
-	        path: '/pages/info/info?id=123',
-	        imageUrl: 'test.jpg'
+	        title: this.data.name,
+	        path: url,
+	        imageUrl: this.data.coverImg
 	    }
 	}
 
