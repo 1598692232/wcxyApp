@@ -118,17 +118,18 @@
 .breadcrumb-nav-li{
 	display:inline-block;
 	position: relative;
-	/*width: 100px;*/
+	width: 100px;
 	line-height: 30px;
+	white-space: nowrap;
 	color:#fff;
 }
 .breadcrumb-nav-li text{
 	display: inline-block;
 	position: relative;
-	/*overflow: hidden;*/
+	overflow: hidden;
 	padding-left: 10px;
-	/*text-overflow: ellipsis;
-	white-space: nowrap;*/
+	text-overflow: ellipsis;
+	white-space: nowrap;
 	z-index:1;
 	width: 100%;
 	background: #58617d;

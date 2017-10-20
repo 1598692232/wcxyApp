@@ -1,12 +1,11 @@
 <view class="pl-container">
-	<scroll-view  class="breadcrumb-nav" scroll-x wx:if="{{breadcrumbList.length != 0}}">
-		<view style="width: {{breadcrumbWidth}}px">
+	<scroll-view  class="breadcrumb-nav" scroll-x wx:if="{{breadcrumbList.length != 0}}" style="height: 30px;" >
+		<view  style="width: {{breadcrumbWidth}}px">
 			<view class="breadcrumb-nav-li" wx:for="{{breadcrumbList}}" wx:key="index" 
 			data-id="{{item.id}}" bindtap="selectFolder" style="z-index:{{100 - index}}">
 					<text>{{item.name}}</text>
 			</view>
 		</view>
-		
 	</scroll-view>
 
 	<scroll-view class="pl-list" scroll-y style="height: {{scrollHeight}}px" bindscrolltolower="loadMore" lower-threshold="100">

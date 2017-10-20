@@ -12,7 +12,8 @@ Page({
 		liWidth: 0,
 		scrollHeight: 0,
 		page: 1,
-        breadcrumbWidth: 1000
+        breadcrumbWidth: '',
+        projectName: ''
 	},
 
 	onLoad(options) {
@@ -20,10 +21,10 @@ Page({
 
         // console.log(Util.getCreateTime(1507867114))
         wx.getSystemInfo({
-            success: function (res) {
+            success: function (result) {
                 self.setData({
-                	scrollHeight: res.windowHeight,
-                    liWidth: (res.windowWidth - 30) / 2
+                    liWidth: (result.windowWidth - 30) / 2,
+
                 })
                 wx.setNavigationBarTitle({title: options.projectName})
 
@@ -47,8 +48,13 @@ Page({
                             })
 
                             self.setData({
-                                videoList: res.data.data.list
+                                videoList: res.data.data.list,
+                                breadcrumbList: [{id: 0, name: options.projectName}],
+                                projectName: options.projectName,
+                                scrollHeight: result.windowHeight - 30,
+                                breadcrumbWidth: 100
                             })
+                            console.log(self.data.scrollHeight)
                         } else {
 
                         }
@@ -86,8 +92,8 @@ Page({
 
                     self.setData({
                         videoList: res.data.data.list,
-                        breadcrumbList: res.data.data.breadcrumb,
-                        scrollHeight: res.windowHeight - 30,
+                        breadcrumbList: [].concat([{id: 0, name: self.data.projectName}],res.data.data.breadcrumb),
+                        breadcrumbWidth: 100 + res.data.data.breadcrumb * 100
                     })
                 } else {
 

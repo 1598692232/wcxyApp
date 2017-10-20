@@ -5,7 +5,7 @@
       <scroll-view class="video-title" scroll-y>
           <text>{{name}}</text>
       </scroll-view>
-      <text class="video-author">{{username}} · {{createTime}} · V2</text>
+      <text class="video-author">{{username}} · {{createTime}}</text>
   </view>
   <!-- bindscrolltolower="loadMore" -->
   <scroll-view scroll-y="true" style="height: {{scrollHeight}}px" class="list-body">

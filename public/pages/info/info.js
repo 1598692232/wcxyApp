@@ -92,17 +92,66 @@ Page({
 
 	// 评论输入框聚焦
 	commentFocus() {
-		this.setData({
-			focusTime: this.data.videoTime
-		})
 
-		this.animation.width("75%").step()
-		 	this.setData({
-        })
-	  	this.setData({
-	  		hideSendComment: false,
-	  		animationData:this.animation.export(),
-	  	})
+        // wx.getStorage({
+        //   key: 'app',
+        //   success: function(res) {
+        //     // res.data.data.token = ''
+        //     if (res.data.data.token == '') {
+
+
+        //          wx.login({
+        //           success: function(res) {
+        //             console.log(res)
+        //             if (res.code) {
+
+        //               let store = wx.getStorageSync('app')
+        //               store.code = res.code
+        //               wx.setStorage({
+        //                   key:"app",
+        //                   data: store,
+        //                   success() {
+        //                     self.isLoginforHandle()
+        //                   }
+        //                 }) 
+        //             } else {
+        //               console.log('获取用户登录态失败！' + res.errMsg)
+        //             }
+        //           }
+        //         });
+        //           wx.showModal({
+        //               title: '提示',
+        //               content: '这是一个模态弹窗',
+        //               success: function(res) {
+        //                 if (res.confirm) {
+
+        //                     this.toLogin()
+        //                    wx.reLaunch({
+        //                       url: '/pages/signin/signin?sessionid=' + res.data.sessionid
+        //                     })
+        //                 } else if (res.cancel) {
+        //                   console.log('用户点击取消')
+        //                 }
+        //               }
+        //             })
+        //       } else {
+               
+        //       }
+        //   }
+
+        // })
+
+         this.setData({
+                    focusTime: this.data.videoTime
+                })
+
+                this.animation.width("75%").step()
+                    this.setData({
+                })
+                this.setData({
+                    hideSendComment: false,
+                    animationData:this.animation.export(),
+                })
 	},
 
 	//评论失焦
