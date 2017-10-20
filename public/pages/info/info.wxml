@@ -9,7 +9,7 @@
   </view>
   <!-- bindscrolltolower="loadMore" -->
   <scroll-view scroll-y="true" style="height: {{scrollHeight}}px" class="list-body">
-    <view style="padding:0 10px;">
+    <view style="padding:0 10px;" wx:if="{{commentList.length > 0}}">
     <!-- 评论 -->
     <view class="comment-body" wx:for="{{commentList}}" wx:key="index">
         <!-- 评论区 -->
@@ -56,7 +56,12 @@
         </view>
     </view>
     <!-- 评论 end -->
+      
     </view>
+
+    <view  wx:if="{{commentList.length == 0}}" class="sofa">
+        ～暂无评论，抢沙发！！～
+      </view>
 
 
   </scroll-view>

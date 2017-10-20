@@ -111,7 +111,10 @@ Page({
         if (e.currentTarget.dataset.type == 'folder') {
             self.selectFolder(e)
         } else {
-            let url = '/pages/info/info?url=' + e.currentTarget.dataset.url + '&name=' 
+            let video = self.data.videoList[e.currentTarget.dataset.index].project_file.resolution.reduce(function (item1,item2) {
+                return item1.resolution > item2.resolution ? item1.src : item2.src
+            })
+            let url = '/pages/info/info?url=' + video.src + '&name=' 
                 + e.currentTarget.dataset.name + '&id=' + e.currentTarget.dataset.id 
                 + '&username=' + e.currentTarget.dataset.username + '&createTime=' + e.currentTarget.dataset.createTime
                 + '&coverImg=' + e.currentTarget.dataset.coverImg 
@@ -121,17 +124,17 @@ Page({
         }
 	},
 
-	loadMore() {
-        let data = this.data.videoList
-        this.setData({
-          page: ++this.data.page
-        })
-        for(let i = 10 * (this.data.page - 1) + 1; i <= this.data.page * 10; i ++ ){
-          data.push(i)
-        }
-        this.setData({
-            videoList: data,
-        })
-    }
+	// loadMore() {
+ //        let data = this.data.videoList
+ //        this.setData({
+ //          page: ++this.data.page
+ //        })
+ //        for(let i = 10 * (this.data.page - 1) + 1; i <= this.data.page * 10; i ++ ){
+ //          data.push(i)
+ //        }
+ //        this.setData({
+ //            videoList: data,
+ //        })
+ //    }
 
 })

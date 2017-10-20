@@ -263,7 +263,12 @@
     color: #6b6b77;
     font-size:12px;
 }
-
+.sofa{
+    color:#6b6b77;
+    font-size: 18px;
+    text-align: center;
+    line-height:150px;
+}
 
 
 

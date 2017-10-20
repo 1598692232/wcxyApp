@@ -298,31 +298,31 @@ Page({
         })
     },
 
-    loadMoreMyProjects(){
-        let data = this.data.joinProjectList
-        this.setData({
-          page: ++this.data.page
-        })
-        for(let i = 10 * (this.data.page - 1) + 1; i <= this.data.page * 10; i ++ ){
-          data.push(i)
-        }
-        this.setData({
-            joinProjectList: data,
-        })
-    },
+    // loadMoreMyProjects(){
+    //     let data = this.data.joinProjectList
+    //     this.setData({
+    //       page: ++this.data.page
+    //     })
+    //     for(let i = 10 * (this.data.page - 1) + 1; i <= this.data.page * 10; i ++ ){
+    //       data.push(i)
+    //     }
+    //     this.setData({
+    //         joinProjectList: data,
+    //     })
+    // },
 
-    loadMoreJoinProjects(){
-        let data = this.data.contentlist
-        this.setData({
-          page: ++this.data.page
-        })
-        for(let i = 10 * (this.data.page - 1) + 1; i <= this.data.page * 10; i ++ ){
-          data.push(i)
-        }
-        this.setData({
-            contentlist: data,
-        })
-    },
+    // loadMoreJoinProjects(){
+    //     let data = this.data.contentlist
+    //     this.setData({
+    //       page: ++this.data.page
+    //     })
+    //     for(let i = 10 * (this.data.page - 1) + 1; i <= this.data.page * 10; i ++ ){
+    //       data.push(i)
+    //     }
+    //     this.setData({
+    //         contentlist: data,
+    //     })
+    // },
 
     toProject(e) {
         wx.setStorage({
