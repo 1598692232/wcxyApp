@@ -59,9 +59,9 @@
       
     </view>
 
-    <view  wx:if="{{commentList.length == 0}}" class="sofa">
+    <view wx:if="{{commentList.length == 0}}" class="sofa">
         ～暂无评论，抢沙发！！～
-      </view>
+    </view>
 
 
   </scroll-view>

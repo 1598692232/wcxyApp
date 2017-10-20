@@ -176,10 +176,11 @@ Page({
             success: function(res) {
                 if (res.data.status == 1) {
                 	let list = self.data.commentList
+                    console.log(self.data.videoTime)
                 	let newComment = {
                 		content: e.detail.value.commentText,
-			 			comment_time: Util.timeToMinAndSec(self.data.videoTime),
-                        media_time: self.data.videoTime,
+			 			comment_time: Util.timeToMinAndSec(self.data.focusTime),
+                        media_time: self.data.focusTime,
 			 			doc_id: self.data.doc_id,
 			 			project_id: wx.getStorageSync('project_id'),
 			 			id: res.data.data.id,
@@ -198,7 +199,7 @@ Page({
                     })
                 }
             }
-        })	
+        })
 
 	 },
 
@@ -208,7 +209,7 @@ Page({
 	 	let time = e.currentTarget.dataset.time
 
  		this.videoCtx.seek(time)
- 		this.videoCtx.play()
+ 		this.videoCtx.pause()
 	 },
 
 	 // 获取播放时间
