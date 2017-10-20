@@ -60,7 +60,7 @@
 .list-body{
     /*padding: 0 10px ;*/
     box-sizing: border-box;
-    background: #2a2e3b
+    /*background: #2a2e3b*/
 }
 .comment-body{
     width: 100%;

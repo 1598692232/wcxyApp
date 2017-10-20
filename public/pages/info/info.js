@@ -242,6 +242,15 @@ Page({
  		})
 	 },
 
+
+     getVideoTime2(e) {
+        this.setData({
+            videoTime: this.data.videoTime
+        })
+        console.log(this.data.videoTime, 888)
+     },
+
+
 	 toBackPage(e) {
 	 	// let commentCurrent = JSON.stringify(this.data.commentList[e.currentTarget.dataset.index])
 	 	wx.navigateTo({
