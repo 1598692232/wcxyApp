@@ -1,8 +1,8 @@
 .call-back{
-    /*padding:0 10px;*/
+    background: #2a2e3b;
 }
-.list-body {
-    padding: 0;
+.list-body{
+    box-sizing: border-box;
 }
 .comment-body{
     width: 100%;
@@ -107,7 +107,7 @@
     width: 100%;
     position: relative;
     padding : 10px 0 10px 30px;
-    border-bottom:1px solid #000;
+    border-bottom:1px solid rgba(0,0,0,.2);
 }
 .back-tou{
     position: absolute;
@@ -147,44 +147,9 @@
     color: #666;
     margin-left: 5px;
 }
-.back-zan  image{
+.back-zan image{
     margin-left: 0;
     margin-top: 6px
-}
-.push-comment{
-    position:fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background-color: #16171c;
-    box-sizing:border-box;
-    padding: 5px;
-    z-index:100;
-}
-.push-comment textarea{
-    float: left;
-    width: 100%;
-    height: 44px;
-    line-height: 1.5;
-    font-size: 13px;
-    padding:5px;
-    padding-top: 10px;
-    box-sizing: border-box;
-    background-color: #2c2b3b;
-    border-radius: 3px;
-    width: 78%;
-}
-.send-commit{
-    display: inline-block;
-    width: 20%;
-    float: right;
-    margin-left:5px;
-    line-height: 44px;
-    text-align: center;
-    font-size:13px;
-    border-radius: 3px;
-    color: #636689;
-    background-color: #2c2b3b;
 }
 
 

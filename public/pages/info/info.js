@@ -23,7 +23,6 @@ Page({
         page: 1,
         videoTime: 0,
         focusTime: 0,
-
         url: '',
         name: ''
     },
@@ -63,7 +62,13 @@ Page({
 	    // })
 
 	    // this.animation = animation
+
 	    var self = this
+
+        self.animation = wx.createAnimation({
+          duration: 500,
+          timingFunction: "cubic-bezier(0.4, 0, 0.2, 1)"
+        })
 
 	    let store = wx.getStorageSync('app')
 	    let reqData = Object.assign({}, store, {
@@ -168,6 +173,7 @@ Page({
  			doc_id: self.data.doc_id,
  			project_id: wx.getStorageSync('project_id')
 	    })
+        wx.showLoading()
 
  		wx.request({
             url: store.host + '/wxapi/comment',
@@ -177,9 +183,13 @@ Page({
             },
             method: 'post',
             success: function(res) {
+                wx.hideLoading()
                 if (res.data.status == 1) {
                 	let list = self.data.commentList
-
+                    // self.consoleTip('评论成功！！')
+                    wx.showToast({
+                        title: '评论成功！！'
+                    })
                 	let newComment = {
                 		content: e.detail.value.commentText,
 			 			comment_time: Util.timeToMinAndSec(self.data.focusTime),
@@ -200,6 +210,7 @@ Page({
                     wx.showModal({
                       title: '提示',
                       content: '发表评论失败！',
+                      showCancel: false,
                     })
                 }
             }
@@ -263,6 +274,5 @@ Page({
 	        imageUrl: this.data.coverImg
 	    }
 	}
-
 
 })

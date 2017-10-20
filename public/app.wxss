@@ -26,3 +26,67 @@ page {
     font-size:16px;
     color:#605f6f;
 }
+.login-error-modal{
+  display: flex;
+  flex: 1;
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  opacity: 0;
+}
+.login-error-body{
+  display: flex;
+  width: 200px;
+  background: rgba(0,0,0,0.4);
+  color:#fff;
+  line-height: 40px;
+  border-radius: 5px;
+}
+.login-error-body text{
+  display: block;
+  width:100%;
+  text-align: center;
+}
+
+.push-comment{
+    position:fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: #2a2e3b;
+    box-sizing:border-box;
+    padding: 5px;
+    z-index:100;
+}
+.push-comment textarea{
+    float: left;
+    width: 100%;
+    height: 44px;
+    line-height: 1.5;
+    font-size: 13px;
+    padding:5px;
+    padding-top: 10px;
+    box-sizing: border-box;
+    background-color: #535b73;
+    border-radius: 3px;
+    width: 78%;
+}
+.send-commit{
+    display: inline-block;
+    width: 20%;
+   /* width: 62px;
+    height: 44px;*/
+    float: right;
+    margin-left:5px;
+    line-height: 44px;
+    text-align: center;
+    font-size:13px;
+    border-radius: 3px;
+    color: #fff;
+    background-color: #535b73;
+}

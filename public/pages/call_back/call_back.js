@@ -27,7 +27,7 @@ Page({
         wx.getSystemInfo({
             success: function (res) {
                 self.setData({
-                    scrollHeight: res.windowHeight - 60,
+                    scrollHeight: res.windowHeight - 54,
                     commentId: parseInt(options.commentId),
                     docId: parseInt(options.docId)
                 });
@@ -142,7 +142,7 @@ Page({
      // 发送评论
      sendComment(e) {
         let self = this
-
+        wx.showLoading()
         let store = wx.getStorageSync('app')
         let reqData = Object.assign({}, store, {
             content: e.detail.value.commentText,
@@ -160,9 +160,12 @@ Page({
             },
             method: 'post',
             success: function(res) {
+                wx.hideLoading()
                 if (res.data.status == 1) {
                     let list = self.data.callList
-
+                    wx.showToast({
+                        title: '回复成功！！'
+                    })
                     let newCall= {
                         content: e.detail.value.commentText,
                         comment_time: Util.timeToMinAndSec(self.data.videoTime),
@@ -181,6 +184,11 @@ Page({
                     })
 
                 } else {
+                    wx.showModal({
+                      title: '提示',
+                      content: '发表评论失败！',
+                      showCancel: false,
+                    })
 
                 }
             }
