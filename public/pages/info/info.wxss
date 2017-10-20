@@ -161,12 +161,12 @@
     font-size: 13px;
     color: #666;
     line-height: 40px;
-    border-bottom:1px solid rgb(0,0,0,.2);
+    border-bottom:1px solid rgba(0,0,0,.2);
 }
 .back-body{
     width: 100%;
     position: relative;
-    padding : 10px 0 10px 30px;
+    padding: 10px 0 10px 30px;
     border-bottom:1px solid rgba(0,0,0,.2);
 }
 .back-tou{
