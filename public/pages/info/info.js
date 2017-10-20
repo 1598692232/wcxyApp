@@ -34,7 +34,6 @@ Page({
   	},
 
     onLoad(options) {
-        // console.log(options, 887777777777)
         let self = this;
         wx.getSystemInfo({
             success: function (res) {
@@ -48,9 +47,7 @@ Page({
                 	username: options.username,
                 	createTime: options.createTime,
                     coverImg: options.coverImg
-            
                 })
-                // console.log(self.data.infoUrl, self.data.coverImg, 99999)
                 wx.setNavigationBarTitle({title: options.name})
             }
         });
@@ -80,7 +77,6 @@ Page({
             },
             method: 'get',
             success: function(res) {
-                console.log(res, 'res')
                 if (res.data.status == 1) {
                 	res.data.data.list.map(item => {
                 		item.comment_time = Util.timeToMinAndSec(item.media_time)
@@ -94,70 +90,6 @@ Page({
                 }
             }
         })
-    },
-
-    toLogin() {
-        let self = this
-        wx.login({
-            success: function(res) {
-                if (res.code) {
-
-                      let store = wx.getStorageSync('app')
-                      store.code = res.code
-                      wx.setStorage({
-                        key:"app",
-                        data: store,
-                        success(res) {
-                            //获取sessionid
-                                wx.request({
-                                    url: store.host + '/wxapi/init',
-                                    data: {
-                                      code: store.code
-                                    },
-                                    success(res) {
-                                        if (res.data.status == 1) {
-                                            //设置sessionid storage
-                                            let data = Object.assign({}, store, res.data.data)
-
-                                            if (res.data.data.token == '') {
-                                                //如果没有登录，设置storage，并且跳转到登录页
-                                               wx.setStorage({
-                                                    key:"app",
-                                                    data: data,
-                                                    success(res) {
-                                                        wx.getStorage({
-                                                            key:'app',
-                                                            success(res) {
-                                                                 wx.reLaunch({
-                                                                  url: '/pages/signin/signin?sessionid=' + res.data.sessionid
-                                                                })
-                                                            }
-                                                        })
-
-                                                    }
-                                                })
-
-                                                return
-                                            }
-                                        } else {
-                                             wx.showModal({
-                                              title: '提示',
-                                              content: '请求失败！',
-                                            })
-                                        }
-                                    }
-                                })
-                            }
-                        })
-
-                } else {
-                     wx.showModal({
-                      title: '提示',
-                      content: '获取用户登录态失败！'  + res.errMsg,
-                    })
-                }
-            }
-        });
     },
 
 	// 评论输入框聚焦
@@ -274,7 +206,6 @@ Page({
 	 },
 
 	 toBackPage(e) {
-	 	// console.log(e.currentTarget.dataset, 666533)
 	 	// let commentCurrent = JSON.stringify(this.data.commentList[e.currentTarget.dataset.index])
 	 	wx.navigateTo({
 	      url: `/pages/call_back/call_back?commentId=${e.currentTarget.dataset.index}&docId=${this.data.doc_id}&projectId=${this.data.project_id}`
