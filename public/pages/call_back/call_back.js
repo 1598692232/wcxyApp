@@ -50,7 +50,7 @@ Page({
                             })
 
                             currentComment[0].comment_time = Util.timeToMinAndSec(currentComment[0].media_time)
-                            currentComment[0].media_time = parseInt(currentComment[0].media_time)
+                            // currentComment[0].media_time = parseInt(currentComment[0].media_time)
 
                             self.setData({
                                 callList: currentComment[0].replies,

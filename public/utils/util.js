@@ -31,7 +31,7 @@ const getCreateTime = time => {
 const timeToMinAndSec = time => {
     if (time >= 0) {
         let minute = parseInt(time / 60) < 10 ? `0${parseInt(time / 60)}` : parseInt(time / 60)
-        let seconds = time % 60 < 10 ? `0${time % 60}` : time % 60
+        let seconds = time % 60 < 10 ? `0${parseInt(time / 60)}` : parseInt(time % 60)
         return `${minute}:${seconds}`
     } else {
       return '00:00'
