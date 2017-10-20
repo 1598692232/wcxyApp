@@ -81,7 +81,7 @@ Page({
             },
             method: 'get',
             success: function(res) {
-                console.log(res, "pl999")
+
                 if (res.data.status == 1) {
 
                     res.data.data.list.map(item => {
