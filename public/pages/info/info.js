@@ -83,6 +83,7 @@ Page({
                 if (res.data.status == 1) {
                 	res.data.data.list.map(item => {
                 		item.comment_time = Util.timeToMinAndSec(item.media_time)
+                        item.media_time = parseInt(item.media_time)
                         item.avatar = item.avatar == '' ? self.data.tx : item.avatar
                 	})
                     self.setData({

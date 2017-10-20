@@ -19,8 +19,8 @@ App({
         login_id: '',
         sessionid: '',
         // host: 'http://10.255.1.20',
-        host: 'http://111.231.106.53',
-        // host: 'https://www.uxinyue.com',
+        // host: 'http://111.231.106.53',
+        host: 'https://www.uxinyue.com',
         code:'',
         codeSrc: ''
       }
