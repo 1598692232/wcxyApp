@@ -44,7 +44,7 @@ Page({
                     },
                     method: 'get',
                     success: function(res) {
-                        console.log(res, 999999)
+                    
                         if (res.data.status == 1) {
                             let currentComment = res.data.data.list.filter(item => {
                                 return parseInt(item.id) == self.data.commentId

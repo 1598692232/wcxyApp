@@ -46,7 +46,6 @@ Page({
 
         wx.login({
           success: function(res) {
-            console.log(res)
             if (res.code) {
 
               let store = wx.getStorageSync('app')
@@ -70,72 +69,91 @@ Page({
     isLoginforHandle() {
         let self = this
 
+         
         //获取存储的code
-        wx.getStorage({
-          key: 'app',
-          success: function(res) {
 
-                let store = res.data
+            let store = wx.getStorageSync('app')
 
-                //发起网络请求，判断当前微信账号是否已经登录
-                wx.request({
-                    url: store.host + '/wxapi/init',
-                    data: {
-                      code: store.code
-                    },
-                    success(res) {
-                        if (res.data.status == 1) {
 
-                            let data = Object.assign({}, store, res.data.data)
+            //发起网络请求，判断当前微信账号是否已经登录
+            wx.request({
+                url: store.host + '/wxapi/init',
+                data: {
+                  code: store.code
+                },
+                header: {
+                    'content-type': 'application/json' // 默认值
+                },
+                method: 'get',
+                success(res) {
+// wx.showModal({
+//                       title: '提示2',
+//                       content: JSON.stringify(res),
+                      
+//                     })
+            
+                    if (res.data.status == 1) {
 
-                            if (res.data.data.token == '') {
-                                //如果没有登录，设置storage，并且跳转到登录页
-                               wx.setStorage({
-                                    key:"app",
-                                    data: data,
-                                    success(res) {
-                                        
-                                        wx.getStorage({
-                                            key:'app',
-                                            success(res) {
-                                                 wx.reLaunch({
-                                                  url: '/pages/signin/signin?sessionid=' + res.data.sessionid
-                                                })
-                                            }
-                                        })
-                                       
-                                    }
-                                })
+                        let data = Object.assign({}, store, res.data.data)
 
-                                return
-                            } else {
-                                //如果已经登录，设置storage，初始化列表页
-                                wx.setStorage({
-                                    key:"app",
-                                    data: data,
-                                    success() {
-                                        wx.getStorage({
-                                            key:'app',
-                                            success(res) {
-                                               
-                                                self.initList()
-                                            }
-                                        })
-                                    }
-                                })
+                        if (res.data.data.token == '') {
+                            //如果没有登录，设置storage，并且跳转到登录页
+                           wx.setStorage({
+                                key:"app",
+                                data: data,
+                                success(res) {
+                                    
+                                    wx.getStorage({
+                                        key:'app',
+                                        success(res) {
+                                             wx.reLaunch({
+                                              url: '/pages/signin/signin?sessionid=' + res.data.sessionid
+                                            })
+                                        }
+                                    })
+                                   
+                                }
+                            })
 
-                            }
-
-                            
+                            return
                         } else {
-                            self.consoleLoginError('初始化小程序失败')
+                            //如果已经登录，设置storage，初始化列表页
+                            wx.setStorage({
+                                key:"app",
+                                data: data,
+                                success() {
+                                    wx.getStorage({
+                                        key:'app',
+                                        success(res) {
+                                           
+                                            self.initList()
+                                        }
+                                    })
+                                }
+                            })
+
                         }
 
+                        
+                    } else {
+                        self.consoleLoginError('初始化小程序失败')
                     }
-                })
 
-          } 
-        })
+                },
+                fail(res) {
+                    let rs = JSON.stringify(res)
+                   wx.showModal({
+                      title: '提示1',
+                      content: rs,
+                      
+                    })
+                }
+            })
+
+
+
+      
+
     },
 
     consoleLoginError(errText) {
@@ -217,7 +235,6 @@ Page({
         this.setData({
             searchList: searchFinalList
         })
-        console.log(this.data.searchList, 8877777)
     },
 
     refresh(e) {
@@ -328,9 +345,7 @@ Page({
     },
 
     searchBlur() {
-        console.log(2222)
         this.animation.width(80).step()
-        console.log(this.data.searchText, 888888)
 
         this.setData({
             animationData:this.animation.export(),
