@@ -34,7 +34,7 @@ Page({
                 let store = wx.getStorageSync('app')
                 let reqData = Object.assign({}, store, {
                     doc_id: self.data.docId,
-                    project_id: wx.getStorageSync('project_id')
+                    project_id: wx.getStorageSync('project_id') || options.projectId
                 })
                 wx.request({
                     url: store.host + '/wxapi/comment',
@@ -44,6 +44,7 @@ Page({
                     },
                     method: 'get',
                     success: function(res) {
+                        console.log(res, 999999)
                         if (res.data.status == 1) {
                             let currentComment = res.data.data.list.filter(item => {
                                 return parseInt(item.id) == self.data.commentId
@@ -86,10 +87,32 @@ Page({
 
     // 评论输入框聚焦
     commentFocus() {
-        this.animation1.width("75%").step()
-        this.setData({
-            hideSendComment: false,
-            animationData:this.animation1.export()
+        let self = this
+        wx.getStorage({
+          key: 'app',
+          success: function(res) {
+            // res.data.token = ''
+                if (res.data.token == '') {
+                      wx.showModal({
+                          title: '提示',
+                          content: '评论／回复需登录',
+                          success: function(res) {
+                            if (res.confirm) {
+                                wx.reLaunch({
+                                    url: '/pages/list/list'
+                                })
+                            }
+                          }
+                        })
+                  } else {
+
+                    self.animation1.width("75%").step()
+                    self.setData({
+                        hideSendComment: false,
+                        animationData:self.animation1.export()
+                    })
+                }
+            }
         })
     },
 

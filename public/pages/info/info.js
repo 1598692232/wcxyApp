@@ -34,7 +34,7 @@ Page({
   	},
 
     onLoad(options) {
-        console.log(options, 887777777777)
+        // console.log(options, 887777777777)
         let self = this;
         wx.getSystemInfo({
             success: function (res) {
@@ -43,7 +43,7 @@ Page({
                     scrollHeight: res.windowHeight - 345,
                 	url: options.url,
                 	name: options.name,
-                	project_id: wx.getStorageSync('project_id'),
+                	project_id: wx.getStorageSync('project_id') || options.projectId,
                 	doc_id: options.id,
                 	username: options.username,
                 	createTime: options.createTime,
@@ -57,7 +57,6 @@ Page({
     },
 
     onShow() {
-          console.log('info')
         // 评论输入框动画注册
     	let animation = wx.createAnimation({
 	      	duration: 0,
@@ -81,6 +80,7 @@ Page({
             },
             method: 'get',
             success: function(res) {
+                console.log(res, 'res')
                 if (res.data.status == 1) {
                 	res.data.data.list.map(item => {
                 		item.comment_time = Util.timeToMinAndSec(item.media_time)
@@ -89,7 +89,6 @@ Page({
                     self.setData({
                     	commentList: res.data.data.list
                     })
-                    console.lof(self.data.commentList, 8888)
                 } else {
 
                 }
@@ -278,7 +277,7 @@ Page({
 	 	// console.log(e.currentTarget.dataset, 666533)
 	 	// let commentCurrent = JSON.stringify(this.data.commentList[e.currentTarget.dataset.index])
 	 	wx.navigateTo({
-	      url: `/pages/call_back/call_back?commentId=${e.currentTarget.dataset.index}&docId=${this.data.doc_id}`
+	      url: `/pages/call_back/call_back?commentId=${e.currentTarget.dataset.index}&docId=${this.data.doc_id}&projectId=${this.data.project_id}`
 	    })
 	 },
 
@@ -300,7 +299,7 @@ Page({
          let url = '/pages/info/info?url=' + this.data.url + '&name=' 
                 + this.data.name + '&id=' + this.data.doc_id 
                 + '&username=' + this.data.username + '&createTime=' + this.data.createTime
-                + '&coverImg=' + this.data.coverImg 
+                + '&coverImg=' + this.data.coverImg + '&projectId=' + this.data.project_id
 	    return {
 	        title: this.data.name,
 	        path: url,
