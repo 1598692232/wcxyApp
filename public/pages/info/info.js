@@ -4,10 +4,9 @@ const app = getApp()
 Page({
 
     data: {
-
 	    scrollHeight: 0,
 	    commentIsFocus: false,
-	    hideSendComment: true,
+	    // hideSendComment: true,
 
 	    commentList:[
 	    // {time: 10, minTime:0, secTime: 10, text: 'text'},
@@ -15,7 +14,7 @@ Page({
 	    // {time: 30,minTime:0, secTime: 30, text: 'text'},
 	    // {time: 40,minTime:0, secTime: 40, text: 'text'}
 	    ],
-	    animationData: {},
+	    // animationData: {},
 	    commentText: '',
 
         tx: app.data.staticImg.tx,
@@ -34,7 +33,8 @@ Page({
   	},
 
     onLoad(options) {
-        let self = this;
+        let self = this
+        wx.showLoading()
         wx.getSystemInfo({
             success: function (res) {
                 self.setData({
@@ -57,12 +57,12 @@ Page({
 
     onShow() {
         // 评论输入框动画注册
-    	let animation = wx.createAnimation({
-	      	duration: 0,
-	        timingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)',
-	    })
+    	// let animation = wx.createAnimation({
+	    //   	duration: 0,
+	    //     timingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)',
+	    // })
 
-	    this.animation = animation
+	    // this.animation = animation
 	    var self = this
 
 	    let store = wx.getStorageSync('app')
@@ -89,6 +89,7 @@ Page({
                     self.setData({
                     	commentList: res.data.data.list
                     })
+                    wx.hideLoading()
                 } else {
                     wx.showModal({
                       title: '提示',
@@ -124,13 +125,13 @@ Page({
                     focusTime: self.data.videoTime
                 })
 
-                self.animation.width("75%").step()
-                    self.setData({
-                })
-                self.setData({
-                    hideSendComment: false,
-                    animationData:self.animation.export(),
-                })
+                // self.animation.width("75%").step()
+                //     self.setData({
+                // })
+                // self.setData({
+                //     hideSendComment: false,
+                //     animationData:self.animation.export(),
+                // })
               }
           }
 
@@ -139,15 +140,15 @@ Page({
 
 	//评论失焦
  	commentBlur() {
- 		this.setData({
-	  		hideSendComment: true
-	  	})
- 		setTimeout(() => {
- 			this.animation.width("100%").step({	duration: 300 })
-		    this.setData({
-		      animationData:this.animation.export()
-		    })
- 		}, 500)
+ 		// this.setData({
+	  // 		hideSendComment: true
+	  // 	})
+ 		// setTimeout(() => {
+ 		// 	this.animation.width("100%").step({	duration: 300 })
+		 //    this.setData({
+		 //      animationData:this.animation.export()
+		 //    })
+ 		// }, 500)
 	 },
 
 	 // 发送评论

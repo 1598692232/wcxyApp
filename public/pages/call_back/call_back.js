@@ -10,7 +10,7 @@ Page({
         // page: 1,
 
         commentIsFocus: false,
-        hideSendComment: true,
+        // hideSendComment: true,
 
         animationData: {},
         commentText: '',
@@ -22,7 +22,8 @@ Page({
     },
 
    onLoad(options) {
-        let self = this;
+        let self = this
+        wx.showLoading()
         wx.getSystemInfo({
             success: function (res) {
                 self.setData({
@@ -57,9 +58,12 @@ Page({
                                 currentComment: currentComment[0]
                             })
                             wx.setNavigationBarTitle({title: `${currentComment[0].replies.length}条回复`})
-
+                            wx.hideLoading()
                         } else {
-
+                            wx.showModal({
+                              title: '提示',
+                              content: '获取回复信息失败！',
+                            })
                         }
                     }
                 })
@@ -106,11 +110,11 @@ Page({
                         })
                   } else {
 
-                    self.animation1.width("75%").step()
-                    self.setData({
-                        hideSendComment: false,
-                        animationData:self.animation1.export()
-                    })
+                    // self.animation1.width("75%").step()
+                    // self.setData({
+                    //     hideSendComment: false,
+                    //     animationData:self.animation1.export()
+                    // })
                 }
             }
         })
@@ -118,15 +122,15 @@ Page({
 
     //评论失焦
     commentBlur() {
-        this.setData({
-            hideSendComment: true
-        })
-        setTimeout(() => {
-            this.animation2.width("100%").step()
-            this.setData({
-              animationData:this.animation2.export()
-            })
-        }, 500)
+        // this.setData({
+        //     hideSendComment: true
+        // })
+        // setTimeout(() => {
+        //     this.animation2.width("100%").step()
+        //     this.setData({
+        //       animationData:this.animation2.export()
+        //     })
+        // }, 500)
      },
 
      // 发送评论

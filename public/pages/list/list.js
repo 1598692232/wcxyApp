@@ -21,7 +21,8 @@ Page({
     },
 
     onLoad() {
-        let self = this;
+        let self = this
+        wx.showLoading()
         wx.getSystemInfo({
             success: function (res) {
                 // that.refresh()
@@ -129,8 +130,6 @@ Page({
                                                         key: 'user_info',
                                                         data: res.data.data
                                                     })
-
-                                                   
                                                 } else {
                                                     wx.showModal({
                                                       title: '提示',
@@ -208,8 +207,12 @@ Page({
                         myProjectListTemp: res.data.data.list
                     })
                     self.setAllProjects()
+                    wx.hideLoading()
                 } else {
-
+                    wx.showModal({
+                      title: '提示',
+                      content: '获取我的项目失败！',
+                    })
                 }
             }
         })
@@ -230,8 +233,12 @@ Page({
                         joinProjectListTemp: res.data.data.list
                     })
                     self.setAllProjects()
+                    wx.hideLoading()
                 } else {
-
+                    wx.showModal({
+                      title: '提示',
+                      content: '获取参与项目失败！',
+                    })
                 }
             }
         })

@@ -18,7 +18,7 @@ Page({
 
 	onLoad(options) {
 		let self = this;
-
+        wx.showLoading()
         wx.getSystemInfo({
             success: function (result) {
                 self.setData({
@@ -53,6 +53,7 @@ Page({
                                 scrollHeight: result.windowHeight - 30,
                                 breadcrumbWidth: 100
                             })
+                             wx.hideLoading()
                         } else {
                             wx.showModal({
                               title: '提示',
@@ -68,6 +69,7 @@ Page({
 
     selectFolder(e) {
         let self = this
+        wx.showLoading()
         let store = wx.getStorageSync('app')
         let reqData = Object.assign({}, store, {
             doc_id: e.currentTarget.dataset.id,
@@ -96,6 +98,7 @@ Page({
                         breadcrumbList: [].concat([{id: 0, name: self.data.projectName}],res.data.data.breadcrumb),
                         breadcrumbWidth: 100 + res.data.data.breadcrumb * 100
                     })
+                     wx.hideLoading()
                 } else {
                     wx.showModal({
                       title: '提示',
@@ -112,8 +115,9 @@ Page({
             self.selectFolder(e)
         } else {
             let video = self.data.videoList[e.currentTarget.dataset.index].project_file.resolution.reduce(function (item1,item2) {
-                return item1.resolution > item2.resolution ? item1.src : item2.src
+                return item1.resolution > item2.resolution ? item1 : item2
             })
+            
             let url = '/pages/info/info?url=' + video.src + '&name=' 
                 + e.currentTarget.dataset.name + '&id=' + e.currentTarget.dataset.id 
                 + '&username=' + e.currentTarget.dataset.username + '&createTime=' + e.currentTarget.dataset.createTime

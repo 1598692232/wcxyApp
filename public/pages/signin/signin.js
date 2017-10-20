@@ -26,7 +26,7 @@ Page({
 	},
 
 	onLoad(options) {
-        let self = this;
+        let self = this
         let store = wx.getStorageSync('app')
 
         wx.getSystemInfo({
