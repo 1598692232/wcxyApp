@@ -27,7 +27,8 @@
                   <image src="{{projectImg}}" mode="aspectFit" lazy-load="{{true}}"></image>
                 </view> -->
                  <!-- style="width: {{listInfoWidth}}px" -->
-                <view class="item-right">
+                <view class="item-right"
+                  style="border-bottom: {{myProjectList.length - 1 == index ? '0px' : '1px solid rgba(0,0,0,.2)'}}">
                   <text class="item-title">{{item.name}}</text>
                   <!-- <text class="item-des">{{item.name}}</text> -->
                 </view>
@@ -44,7 +45,8 @@
                 <!-- <view class="item-left">
                   <image src="{{projectImg}}" mode="aspectFit" lazy-load="{{true}}"></image>
                 </view> -->
-                <view class="item-right">
+                <view class="item-right"
+                  style="border-bottom: {{joinProjectList.length - 1 == index ? '0px' : '1px solid rgba(0,0,0,.2)'}}">
                   <text class="item-title">{{item.name}}</text>
                   <!-- <text class="item-des">{{item.name}}</text> -->
                 </view>

@@ -6,6 +6,7 @@
 	width: 100%;
 	padding: 10px;
 	box-sizing:border-box;
+	background: #454b5c;
 }
 .pl-body{
 	width:100%;
@@ -112,7 +113,7 @@
 .breadcrumb-nav{
 	overflow: hidden;
 	width: 100%;
-	margin-bottom: 10px;
+	background: #545d72;
 }
 
 .breadcrumb-nav-li{
@@ -121,22 +122,24 @@
 	width: 100px;
 	line-height: 30px;
 	white-space: nowrap;
+	border-right: 1px solid rgba(0,0,0,.5);
 	color:#fff;
 }
 .breadcrumb-nav-li text{
 	display: inline-block;
 	position: relative;
 	overflow: hidden;
-	padding-left: 10px;
+	padding-left: 13px;
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	z-index:1;
 	width: 100%;
-	background: #58617d;
+	background: #9199c2;
 	color:#fff;
+	box-shadow: 1px 0 3px rgba(0,0,0,.5);
 	border-top-right-radius: 15px;
 	border-bottom-right-radius: 15px;
-	border:1px solid #000;
+	/*border:1px solid #000;*/
 	font-size:13px;
 	/*transform: translateX(5px);*/
 	/*margin-left: 20px;*/
