@@ -108,12 +108,10 @@ Page({
             method: 'post',
             success: function(res) {
                 if (res.data.status == 1) {
-                   
                     let stores = wx.getStorageSync('app')
                     // stores.sessionId = res.data.data.sessionid
                     let newStorage = Object.assign({}, stores, res.data.data)
-                     newStorage.login_id = parseInt(newStorage.login_id)
-                console.log(newStorage, 8888)
+                    newStorage.login_id = parseInt(newStorage.login_id)
                     wx.setStorage({
                       key:"app",
                       data: newStorage

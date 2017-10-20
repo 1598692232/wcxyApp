@@ -104,7 +104,6 @@ Page({
 
 	toInfo(e) {
         let self = this
-        console.log(e.currentTarget,)
         if (e.currentTarget.dataset.type == 'folder') {
             self.selectFolder(e)
         } else {
@@ -112,15 +111,10 @@ Page({
                 + e.currentTarget.dataset.name + '&id=' + e.currentTarget.dataset.id 
                 + '&username=' + e.currentTarget.dataset.username + '&createTime=' + e.currentTarget.dataset.createTime
                 + '&coverImg=' + e.currentTarget.dataset.coverImg 
-            // console.log(finalUrl, 'url')
             wx.navigateTo({
                 url: url
             })
         }
-
-        // wx.redirectTo({
-        //   url: 'pages/project_list/project_list'
-        // })
 	},
 
 	loadMore() {

@@ -13,10 +13,8 @@ const formatNumber = n => {
   n = n.toString()
   return n[1] ? n : '0' + n
 }
-console.log('util')
 
 const getCreateTime = time => {
-  // console.log(new Date(parseInt(time) * 1000).toLocaleString().substr(0,17))
   let nowTime = Date.parse(new Date())
   let changeTime = (nowTime - time * 1000) / 1000 
   if (changeTime < 60) {

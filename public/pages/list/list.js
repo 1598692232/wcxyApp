@@ -86,11 +86,6 @@ Page({
                 },
                 method: 'get',
                 success(res) {
-// wx.showModal({
-//                       title: '提示2',
-//                       content: JSON.stringify(res),
-                      
-//                     })
             
                     if (res.data.status == 1) {
 
@@ -142,8 +137,8 @@ Page({
                 },
                 fail(res) {
                     let rs = JSON.stringify(res)
-                   wx.showModal({
-                      title: '提示1',
+                    wx.showModal({
+                      title: '提示',
                       content: rs,
                       
                     })
