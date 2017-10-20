@@ -82,7 +82,7 @@ Page({
     handleLogin(e) {
 
         let self = this
-
+       
         if (self.data.emailText.trim() == '' || !exp.test(self.data.emailText)) {
             self.consoleLoginError('邮箱格式不正确！！')
             return
@@ -98,6 +98,7 @@ Page({
         let store = wx.getStorageSync('app')
         let reqData = Object.assign({}, e.detail.value, {sessionid: store.sessionid})
         reqData.login_id = parseInt(reqData.login_id)
+        wx.showLoading()
         wx.request({
             url: store.host + '/wxapi/authentication', //仅为示例，并非真实的接口地址
             data: reqData,
@@ -106,6 +107,8 @@ Page({
             },
             method: 'post',
             success: function(res) {
+                
+                wx.hideLoading()
                 if (res.data.status == 1) {
                     let stores = wx.getStorageSync('app')
                     // stores.sessionId = res.data.data.sessionid
@@ -116,28 +119,28 @@ Page({
                       data: newStorage
                     })
 
-
                     wx.request({
                           url: store.host + '/wxapi/user/info',
                           data: res.data.data,
                           success(res) {
+                            wx.hideLoading()
                             if (res.data.status == 1) {
                                 wx.setStorage({
                                     key: 'user_info',
                                     data: res.data.data
                                 })
 
-                               
+                                wx.reLaunch({
+                                    url: '/pages/list/list?id=' + newStorage.login_id
+                                })
                             } else {
                                 wx.showModal({
-                                  title: '提示',
-                                  content: '未获取到当前用户信息',
+                                    title: '提示',
+                                    content: '未获取到当前用户信息',
+                                    showCancel: false
                                 })
                             }
                           }
-                    })
-                    wx.reLaunch({
-                        url: '/pages/list/list?id=' + newStorage.login_id
                     })
 
                 } else {
