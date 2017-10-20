@@ -1,7 +1,7 @@
 
 	<scroll-view class="login-form" scroll-y style="height: {{scrollHeight}}px">
 		<view class="logo">
-			<image src="{{logo}}" mode="aspectFit"></image>
+			<image src="./xy.png" mode="aspectFit"></image>
 		</view>
 		<form bindsubmit="handleLogin">
 			<view class="login-input-body">
