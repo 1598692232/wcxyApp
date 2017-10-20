@@ -161,7 +161,7 @@
     font-size: 13px;
     color: #666;
     line-height: 40px;
-    border-bottom:1px solid #000;
+    border-bottom:1px solid rgb(0,0,0,.2);
 }
 .back-body{
     width: 100%;
