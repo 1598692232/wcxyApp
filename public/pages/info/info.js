@@ -227,7 +227,7 @@ Page({
     // },
 
     onShareAppMessage () {
-         let url = '/pages/info/info?url=' + this.data.url + '&name=' 
+        let url = '/pages/info/info?url=' + this.data.url + '&name=' 
                 + this.data.name + '&id=' + this.data.doc_id 
                 + '&username=' + this.data.username + '&createTime=' + this.data.createTime
                 + '&coverImg=' + this.data.coverImg + '&projectId=' + this.data.project_id
