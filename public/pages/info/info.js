@@ -49,6 +49,8 @@ Page({
                     coverImg: options.coverImg
                 })
                 wx.setNavigationBarTitle({title: options.name})
+
+
             }
         });
     },
@@ -69,6 +71,7 @@ Page({
 	    	project_id: this.data.project_id,
 	    	// sort: 0
 	    })
+
 	    wx.request({
             url: store.host + '/wxapi/comment',
             data: reqData,
@@ -86,7 +89,10 @@ Page({
                     	commentList: res.data.data.list
                     })
                 } else {
-
+                    wx.showModal({
+                      title: '提示',
+                      content: '获取评论数据失败！',
+                    })
                 }
             }
         })
@@ -174,7 +180,9 @@ Page({
                         media_time: self.data.videoTime,
 			 			doc_id: self.data.doc_id,
 			 			project_id: wx.getStorageSync('project_id'),
-			 			id: res.data.data.id
+			 			id: res.data.data.id,
+                        realname: wx.getStorageSync('user_info').realname,
+                        avatar: wx.getStorageSync('user_info').avatar == '' ? self.data.tx : item.avatar
                 	}
                 	list.unshift(newComment)
                     self.setData({
@@ -182,7 +190,10 @@ Page({
                     	commentText: ''
                     })
                 } else {
-
+                    wx.showModal({
+                      title: '提示',
+                      content: '发表评论失败！',
+                    })
                 }
             }
         })	

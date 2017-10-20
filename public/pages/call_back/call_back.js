@@ -157,7 +157,9 @@ Page({
                         comment_time: Util.timeToMinAndSec(self.data.videoTime),
                         doc_id: self.data.docId,
                         project_id: wx.getStorageSync('project_id'),
-                        id: res.data.data.id
+                        id: res.data.data.id,
+                        realname:wx.getStorageSync('user_info').realname,
+                        avatar: wx.getStorageSync('user_info').avatar == '' ? self.data.tx : item.avatar
                     }
 
                     list.unshift(newCall)

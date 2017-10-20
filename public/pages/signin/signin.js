@@ -116,8 +116,29 @@ Page({
                       key:"app",
                       data: newStorage
                     })
-                     wx.reLaunch({
-                      url: '/pages/list/list?id=' + newStorage.login_id
+
+
+                    wx.request({
+                          url: store.host + '/wxapi/user/info',
+                          data: res.data.data,
+                          success(res) {
+                            if (res.data.status == 1) {
+                                wx.setStorage({
+                                    key: 'user_info',
+                                    data: res.data.data
+                                })
+
+                               
+                            } else {
+                                wx.showModal({
+                                  title: '提示',
+                                  content: '未获取到当前用户信息',
+                                })
+                            }
+                          }
+                    })
+                    wx.reLaunch({
+                        url: '/pages/list/list?id=' + newStorage.login_id
                     })
 
                 } else {

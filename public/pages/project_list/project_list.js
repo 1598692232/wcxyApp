@@ -19,7 +19,6 @@ Page({
 	onLoad(options) {
 		let self = this;
 
-        // console.log(Util.getCreateTime(1507867114))
         wx.getSystemInfo({
             success: function (result) {
                 self.setData({
@@ -54,9 +53,11 @@ Page({
                                 scrollHeight: result.windowHeight - 30,
                                 breadcrumbWidth: 100
                             })
-                            console.log(self.data.scrollHeight)
                         } else {
-
+                            wx.showModal({
+                              title: '提示',
+                              content: '文件获取失败！',
+                            })
                         }
                     }
                 })
@@ -96,7 +97,10 @@ Page({
                         breadcrumbWidth: 100 + res.data.data.breadcrumb * 100
                     })
                 } else {
-
+                    wx.showModal({
+                      title: '提示',
+                      content: '文件获取失败！',
+                    })
                 }
             }
         })

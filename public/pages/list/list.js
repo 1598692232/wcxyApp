@@ -120,6 +120,25 @@ Page({
                                     wx.getStorage({
                                         key:'app',
                                         success(res) {
+                                            wx.request({
+                                              url: store.host + '/wxapi/user/info',
+                                              data: res.data,
+                                              success(res) {
+                                                if (res.data.status == 1) {
+                                                    wx.setStorage({
+                                                        key: 'user_info',
+                                                        data: res.data.data
+                                                    })
+
+                                                   
+                                                } else {
+                                                    wx.showModal({
+                                                      title: '提示',
+                                                      content: '未获取到当前用户信息',
+                                                    })
+                                                }
+                                              }
+                                            })
                                            
                                             self.initList()
                                         }
@@ -140,15 +159,9 @@ Page({
                     wx.showModal({
                       title: '提示',
                       content: rs,
-                      
                     })
                 }
             })
-
-
-
-      
-
     },
 
     consoleLoginError(errText) {
