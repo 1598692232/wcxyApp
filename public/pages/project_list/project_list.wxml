@@ -9,7 +9,7 @@
 	</scroll-view>
 
 	<scroll-view class="pl-list" scroll-y style="height: {{scrollHeight}}px" bindscrolltolower="loadMore" lower-threshold="100">
-		<view class="pl-body">
+		<view class="pl-body" wx:if="{{videoList.length > 0}}">
 			<view class="pl-li" wx:for="{{videoList}}" wx:key="index" style="width:{{liWidth}}px;margin-right:{{(index + 1) % 2 == 0 ? 0 : '10px'}};" bindtap="toInfo" data-url="{{item.project_file.url}}" data-name="{{item.name}}" data-id="{{item.id}}" data-username="{{item.user_info.realname}}" data-create-time="{{item.created_time}}" data-type="{{item.type}}" data-cover-img="{{item.cover_img[0]}}" data-index="{{index}}">
 				<view class="pl-img-body">
 					<!-- pl-show-count -->
@@ -40,6 +40,9 @@
 			</view>
 			
 		</view>
+		<view class="empty-project" wx:else>
+			暂无媒体，请登录新阅官网进行更多操作
+        </view>
 		
 	</scroll-view>
 </view>

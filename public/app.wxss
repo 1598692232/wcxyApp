@@ -20,3 +20,9 @@ view{
 page {
   background-color: #16171c
 }
+.empty-project{
+    line-height: 200px;
+    text-align: center;
+    font-size:16px;
+    color:#605f6f;
+}

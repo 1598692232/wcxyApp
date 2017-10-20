@@ -21,12 +21,12 @@ App({
         // host: 'http://10.255.1.20',
         // host: 'http://111.231.106.53',
         host: 'https://www.uxinyue.com',
+        // host: 'http://111.231.109.140:81',
         code:'',
         codeSrc: ''
       }
     })
 
-   
      // wx.setStorage({
           //   key:"app",
           //   data:{

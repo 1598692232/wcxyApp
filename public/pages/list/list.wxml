@@ -21,6 +21,7 @@
         </view>
         <!-- bindscrolltolower="loadMoreMyProjects" bindscrolltoupper="refresh" -->
         <scroll-view class="list-body" scroll-y="true"  style="height: {{scrollHeight}}px" hidden="{{hiddenMy}}" scroll-with-animation="true">
+            <block wx:if="{{myProjectList.length > 0}}">
               <view class="item clearfix" wx:for="{{myProjectList}}" wx:key="index" bindtap="toProject" data-id="{{item.id}}" data-name="{{item.name}}">
                <!--  <view class="item-left">
                   <image src="{{projectImg}}" mode="aspectFit" lazy-load="{{true}}"></image>
@@ -31,10 +32,15 @@
                   <!-- <text class="item-des">{{item.name}}</text> -->
                 </view>
               </view>
+            </block>
+            <view class="empty-project" wx:else>
+                暂无项目，请登录新阅官网进行更多操作
+            </view>
         </scroll-view>
         <!--  bindscrolltolower="loadMoreJoinProjects" bindscrolltoupper="refresh"-->
        <scroll-view class="list-body" scroll-y="true"  style="height: {{scrollHeight}}px"  hidden="{{!hiddenMy}}" scroll-with-animation="true">
-              <view class="item clearfix" wx:for="{{joinProjectList}}" wx:key="index" bindtap="toProject" data-name="{{item.name}}">
+            <block wx:if="{{joinProjectList.length > 0}}">
+              <view class="item clearfix" wx:for="{{joinProjectList}}" wx:key="index" bindtap="toProject" data-name="{{item.name}}" wx:if="{{joinProjectList.length > 0}}">
                 <!-- <view class="item-left">
                   <image src="{{projectImg}}" mode="aspectFit" lazy-load="{{true}}"></image>
                 </view> -->
@@ -42,6 +48,10 @@
                   <text class="item-title">{{item.name}}</text>
                   <!-- <text class="item-des">{{item.name}}</text> -->
                 </view>
+              </view>
+            </block>
+              <view class="empty-project" wx:else>
+                  暂无项目，请登录新阅官网进行更多操作
               </view>
         </scroll-view>
     <!-- </block> -->

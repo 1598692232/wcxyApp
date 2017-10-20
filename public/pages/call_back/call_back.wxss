@@ -33,7 +33,7 @@
     /*width: 100%;*/
     margin-left: 10px;
     box-sizing: border-box;
-    border-bottom: 1px solid #000;
+    border-bottom: 1px solid rgba(0,0,0,.2);
     padding-bottom: 10px;
 }
 .comment-header{
@@ -54,7 +54,7 @@
     line-height: 20px;
     font-size:14px;
     font-weight: bold;
-    background: #2c203c;
+    background: #1125e5;
     border-radius: 3px;
     color: #fff;
 }

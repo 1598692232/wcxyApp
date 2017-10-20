@@ -16,7 +16,7 @@ Page({
         projectImg: app.data.staticImg.projectImg,
         listInfoWidth: 0,
         hiddenMy: false,
-        tabOne: 'background: #4F3E4C;color: #fff;',
+        tabOne: 'background: #5b53ff;color: #fff;',
         tabTwo: '',
     },
 
@@ -292,7 +292,7 @@ Page({
     showMyProjects() {
         this.setData({
             hiddenMy: false,
-            tabOne: 'background: #4F3E4C;color: #fff;',
+            tabOne: 'background: #5b53ff;color: #fff;',
             tabTwo: '',
         })
     },
@@ -300,7 +300,7 @@ Page({
     showJoinProjects() {
         this.setData({
             hiddenMy: true,
-            tabTwo: 'background: #4F3E4C;color: #fff;',
+            tabTwo: 'background: #5b53ff;color: #fff;',
             tabOne: '',
         })
     },

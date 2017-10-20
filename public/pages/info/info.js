@@ -84,7 +84,8 @@ Page({
                 	res.data.data.list.map(item => {
                 		item.comment_time = Util.timeToMinAndSec(item.media_time)
                         // item.media_time = parseInt(item.media_time)
-                        item.avatar = item.avatar == '' ? self.data.tx : item.avatar
+                        item.avatar = item.avatar == '' ? self.data.tx : item.avatar,
+                        item.background = ''
                 	})
                     self.setData({
                     	commentList: res.data.data.list
@@ -187,7 +188,8 @@ Page({
 			 			project_id: wx.getStorageSync('project_id'),
 			 			id: res.data.data.id,
                         realname: wx.getStorageSync('user_info').realname,
-                        avatar: wx.getStorageSync('user_info').avatar == '' ? self.data.tx : item.avatar
+                        avatar: wx.getStorageSync('user_info').avatar == '' ? self.data.tx : item.avatar,
+                        background: ''
                 	}
                 	list.unshift(newComment)
                     self.setData({
@@ -209,6 +211,14 @@ Page({
 	 toVideoPosition(e) {
 	 	// 模拟时间点击
 	 	let time = e.currentTarget.dataset.time
+
+        this.data.commentList.map(item => {
+            item.background = ''
+        })
+        this.data.commentList[e.currentTarget.dataset.index].background = '#21252e'
+        this.setData({
+            commentList: this.data.commentList
+        })
 
  		this.videoCtx.seek(time)
  		this.videoCtx.pause()

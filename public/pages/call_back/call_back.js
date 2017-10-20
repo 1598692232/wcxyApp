@@ -65,6 +65,12 @@ Page({
                               content: '获取回复信息失败！',
                             })
                         }
+                    },
+                    fail(res) {
+                        wx.showModal({
+                            title:'提示',
+                            content: JSON.stringify(res),
+                        })
                     }
                 })
 
