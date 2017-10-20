@@ -103,27 +103,11 @@ Page({
 	// 评论输入框聚焦
 	commentFocus() {
         let self = this
-        wx.getStorage({
-          key: 'app',
-          success: function(res) {
+        // wx.getStorage({
+        //   key: 'app',
+        //   success: function(res) {
             // res.data.token = ''
-            if (res.data.token == '') {
-
-                  wx.showModal({
-                      title: '提示',
-                      content: '评论／回复需登录',
-                      success: function(res) {
-                        if (res.confirm) {
-                            wx.reLaunch({
-                                      url: '/pages/list/list'
-                                    })
-                        }
-                      }
-                    })
-              } else {
-                self.setData({
-                    focusTime: self.data.videoTime
-                })
+            
 
                 // self.animation.width("75%").step()
                 //     self.setData({
@@ -132,10 +116,28 @@ Page({
                 //     hideSendComment: false,
                 //     animationData:self.animation.export(),
                 // })
-              }
-          }
+        //       }
+        //   }
 
-        })
+        // })
+
+        let res = wx.getStorageSync('app')
+
+        if (res.token == '') {
+          wx.showModal({
+              title: '提示',
+              content: '评论／回复需登录',
+              success: function(res) {
+                if (res.confirm) {
+                    wx.reLaunch({url: '/pages/list/list'})
+                }
+              }
+            })
+        } else {
+            self.setData({
+                focusTime: self.data.videoTime
+            })
+        }
 	},
 
 	//评论失焦
@@ -161,7 +163,7 @@ Page({
  		let reqData = Object.assign({}, store, {
 	    	content: e.detail.value.commentText,
  			label: '',
- 			media_time: self.data.videoTime,
+ 			media_time: self.data.focusTime,
  			doc_id: self.data.doc_id,
  			project_id: wx.getStorageSync('project_id')
 	    })
@@ -176,7 +178,7 @@ Page({
             success: function(res) {
                 if (res.data.status == 1) {
                 	let list = self.data.commentList
-                    console.log(self.data.videoTime)
+
                 	let newComment = {
                 		content: e.detail.value.commentText,
 			 			comment_time: Util.timeToMinAndSec(self.data.focusTime),
