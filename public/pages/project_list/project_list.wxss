@@ -113,36 +113,44 @@
 .breadcrumb-nav{
 	overflow: hidden;
 	width: 100%;
-	background: #545d72;
+	/*background: #545d72;*/
+	background: #00f;
 }
 
 .breadcrumb-nav-li{
 	display:inline-block;
 	position: relative;
-	width: 100px;
+	/*width: 100px;*/
+	background: #00f;
 	line-height: 30px;
 	white-space: nowrap;
-	border-right: 1px solid rgba(0,0,0,.5);
+	/*border-right: 1px solid rgba(0,0,0,.5);*/
 	color:#fff;
 }
-.breadcrumb-nav-li text{
+.breadcrumb-nav-li .text{
 	display: inline-block;
+	float: left;
 	position: relative;
 	overflow: hidden;
-	padding-left: 13px;
+	/*padding-left: 13px;*/
+	padding-left: 10px;
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	z-index:1;
 	width: 100%;
-	background: #00f;
+
 	color:#fff;
-	box-shadow: 1px 0 3px rgba(0,0,0,.5);
-	border-top-right-radius: 15px;
-	border-bottom-right-radius: 15px;
+	/*box-shadow: 1px 0 3px rgba(0,0,0,.5);*/
+/*	border-top-right-radius: 15px;
+	border-bottom-right-radius: 15px;*/
 	/*border:1px solid #000;*/
 	font-size:13px;
 	/*transform: translateX(5px);*/
 	/*margin-left: 20px;*/
+}
+.breadcrumb-nav-li line{
+	display: inline-block;
+	float: right;
 }
 .jian-tou{
 	width:20px;

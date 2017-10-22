@@ -117,23 +117,7 @@ Page({
 	// 评论输入框聚焦
 	commentFocus() {
         let self = this
-        // wx.getStorage({
-        //   key: 'app',
-        //   success: function(res) {
-            // res.data.token = ''
-            
-
-                // self.animation.width("75%").step()
-                //     self.setData({
-                // })
-                // self.setData({
-                //     hideSendComment: false,
-                //     animationData:self.animation.export(),
-                // })
-        //       }
-        //   }
-
-        // })
+        this.videoCtx.pause()
 
         let res = wx.getStorageSync('app')
 
@@ -194,12 +178,12 @@ Page({
                 wx.hideLoading()
                 if (res.data.status == 1) {
                 	let list = self.data.commentList
-                    
+
                     wx.showToast({
                         title: '评论成功！！'
                     })
 
-                    
+
                 	let newComment = {
                 		content: e.detail.value.commentText,
 			 			comment_time: Util.timeToMinAndSec(self.data.focusTime),
@@ -300,6 +284,7 @@ Page({
     delTouchStart(e) {
         let realname1 = this.data.commentList[e.currentTarget.dataset.index].realname
         let realname2 = wx.getStorageSync('user_info').realname
+
         if (realname1 != realname2) return
 
         this.data.commentList.map(item => {
@@ -316,7 +301,7 @@ Page({
         if (!this.data.delTouching) return
         let tmx = e.touches[0].clientX
         if (!this.data.showDel) { 
-           if (tmx - this.data.tsx > 0) return
+           if (tmx - this.data.tsx > -10) return
             let moveX = tmx - this.data.tsx
             if (moveX < -60) return
             this.data.commentList[e.currentTarget.dataset.index].translateX = moveX
@@ -326,7 +311,7 @@ Page({
             })
         } else {
             if (tmx - this.data.tsx < 0) return
-            let moveX = -50 + (tmx - this.data.tsx)
+            let moveX = -60 + (tmx - this.data.tsx)
             if (moveX > 10) {
                 return
             }

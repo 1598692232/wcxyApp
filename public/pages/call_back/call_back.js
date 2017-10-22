@@ -243,9 +243,9 @@ Page({
         if (!this.data.delTouching) return
         let tmx = e.touches[0].clientX
         if (!this.data.showDel) { 
-           if (tmx - this.data.tsx > 0) return
+           if (tmx - this.data.tsx > -10) return
             let moveX = tmx - this.data.tsx
-            if (moveX < -70) return
+            if (moveX < -60) return
             this.data.callList[e.currentTarget.dataset.index].translateX = moveX
             this.setData({
                 callList: this.data.callList,
@@ -253,7 +253,7 @@ Page({
             })
         } else {
             if (tmx - this.data.tsx < 0) return
-            let moveX = -50 + (tmx - this.data.tsx)
+            let moveX = -60 + (tmx - this.data.tsx)
             if (moveX > 10) {
                 return
             }
