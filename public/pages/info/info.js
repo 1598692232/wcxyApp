@@ -28,8 +28,6 @@ Page({
 
         tsx: '',
         tex: '',
-        // translateX: '',
-        // delTranstion: '',
         delTouching: false,
         showDel: false,
     },
@@ -105,6 +103,7 @@ Page({
                     	commentList: res.data.data.list
                     })
                     wx.hideLoading()
+                    
                 } else {
                     wx.showModal({
                       title: '提示',
@@ -195,10 +194,12 @@ Page({
                 wx.hideLoading()
                 if (res.data.status == 1) {
                 	let list = self.data.commentList
-                    // self.consoleTip('评论成功！！')
+                    
                     wx.showToast({
                         title: '评论成功！！'
                     })
+
+                    
                 	let newComment = {
                 		content: e.detail.value.commentText,
 			 			comment_time: Util.timeToMinAndSec(self.data.focusTime),
@@ -264,7 +265,8 @@ Page({
 	 toBackPage(e) {
 	 	// let commentCurrent = JSON.stringify(this.data.commentList[e.currentTarget.dataset.index])
 	 	wx.navigateTo({
-	      url: `/pages/call_back/call_back?commentId=${e.currentTarget.dataset.index}&docId=${this.data.doc_id}&projectId=${this.data.project_id}`
+	      url: `/pages/call_back/call_back?commentId=${e.currentTarget.dataset.index}
+          &docId=${this.data.doc_id}&projectId=${this.data.project_id}&avatar=${e.currentTarget.dataset.avatar}`
 	    })
 	 },
 
@@ -296,19 +298,27 @@ Page({
 
     // 删除评论 start
     delTouchStart(e) {
+        let realname1 = this.data.commentList[e.currentTarget.dataset.index].realname
+        let realname2 = wx.getStorageSync('user_info').realname
+        if (realname1 != realname2) return
+
+        this.data.commentList.map(item => {
+            item.translateX = '',
+            item.delTranstion = 'del-transtion'
+        })
         this.setData({
             tsx: e.touches[0].clientX,
             delTouching: true
         })
-        // console.log(this.data.tsx, 778899)
     },
+
     delTouchMove(e) {
         if (!this.data.delTouching) return
         let tmx = e.touches[0].clientX
         if (!this.data.showDel) { 
            if (tmx - this.data.tsx > 0) return
             let moveX = tmx - this.data.tsx
-            if (moveX < -70) return
+            if (moveX < -60) return
             this.data.commentList[e.currentTarget.dataset.index].translateX = moveX
             this.setData({
                 commentList: this.data.commentList,
@@ -362,17 +372,41 @@ Page({
     handleDelComment(e) {
         let store = wx.getStorageSync('app')
         let project_id = wx.getStorageSync('project_id')
+        let reqData = Object.assign({}, {
+            project_id: project_id,
+            comment_id: this.data.commentList[e.currentTarget.dataset.index].id,
+            doc_id: this.data.doc_id,
+            // _method: 'delete'
+        }, store)
         let self = this
+        wx.showLoading({
+            title: '正在删除...'
+        })
         wx.request({
-            url: store.host + '/comment',
-            data: {
-                project_id: project_id,
-                comment_id: this.data.commentList[e.currentTarget.dataset.index].id,
-                method: 'delete'
+            url: store.host + '/wxapi/comment',
+            data: reqData,
+            method: 'delete',
+            header: {
+                'content-type': 'application/json' // 默认
             },
-            type: 'post',
-            success(data) {
-                console.log(data)
+            success(res) {
+                // wx.hideLoading()
+                if (res.data.status == 1) {
+                    self.data.commentList.splice(e.currentTarget.dataset.index, 1)
+                    self.setData({
+                        commentList: self.data.commentList
+                    })
+                    wx.showToast({
+                        title: '删除成功！',
+                        icon: 'success'
+                    })
+                } else {
+                    wx.showModal({
+                      title: '提示',
+                      content: '删除评论失败！',
+                      showCancel: false,
+                    })
+                }
             }
         })
     }

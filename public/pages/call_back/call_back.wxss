@@ -23,6 +23,7 @@
     height:30px;
     background: #ddd;
     border-radius: 50%;
+    overflow: hidden;
 }
 .comment-tou image{
     display: inline-block;
@@ -151,7 +152,20 @@
     margin-left: 0;
     margin-top: 6px
 }
-
+.comment-del{
+    position: absolute;
+    right: -60px;
+    top:0;
+    line-height:67px;
+    width:50px;
+    background: #f00;
+    color:#fff;
+    font-size: 18px;
+    text-align: center;
+}
+.del-transtion{
+   transition: all 0.3s linear
+}
 
 
 

@@ -6,7 +6,7 @@
 		        <!-- 评论区 -->
 		        <view class="comment-master">
 		          <view class="comment-tou">
-		            <image src="{{tx}}"></image>
+		            <image src="{{avatar}}"></image>
 		          </view>
 		          <view class="comment-master-text">
 		              <view class="comment-header clearfix">
@@ -28,9 +28,9 @@
 
 		        <!-- 回复区 -->
 		        <view class="comment-back">
-		            <view class="back-body" wx:for="{{callList}}" wx:key="index">
+		            <view class="back-body {{item.delTranstion}}" wx:for="{{callList}}" wx:key="index"  bindtouchstart="delTouchStart" bindtouchmove="delTouchMove"  bindtouchend="delTouchEnd" style="transform: translateX({{item.translateX}}px);" data-index="{{index}}">
 		                <view class="back-tou">
-		                    <image src="{{tx}}"></image>
+		                    <image src="{{item.avatar}}"></image>
 		                </view>
 
 		                <view class="back-info">
@@ -41,6 +41,9 @@
 		                        <!-- <text>1</text> -->
 		                    <!-- </view> -->
 		                </view>
+		                 <view class='comment-del' bindtap="handleDelComment" data-index="{{index}}">
+			              删除
+			          	</view>
 		            </view>
 		        </view>
 		    </view>
@@ -52,9 +55,8 @@
 	  <view class="push-comment">
 	   <form bindsubmit="sendComment">
 	      <view class="push-comment-input clearfix">
-	          <textarea placeholder="回复评论..."  cursor-spacing="20"  bindblur="commentBlur" name="commentText"
-	          bindfocus="commentFocus" animation="{{animationData}}" value="{{commentText}}" style="color:#fff">
-	          </textarea>
+	          <input placeholder="回复评论..."  cursor-spacing="20"  bindblur="commentBlur" name="commentText"
+	          bindfocus="commentFocus" animation="{{animationData}}" value="{{commentText}}" style="color:#fff"/>
 	          <!-- hidden="{{hideSendComment}}" -->
 	          <button class="send-commit"  form-type="submit">
 	              发送

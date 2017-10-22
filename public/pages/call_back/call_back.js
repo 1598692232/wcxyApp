@@ -18,7 +18,12 @@ Page({
         zan: app.data.staticImg.zan,
         zanActive: app.data.staticImg.zanActive,
 
-        currentComment: ''
+        currentComment: '',
+
+        tsx: '',
+        tex: '',
+        delTouching: false,
+        showDel: false,
     },
 
    onLoad(options) {
@@ -29,7 +34,8 @@ Page({
                 self.setData({
                     scrollHeight: res.windowHeight - 54,
                     commentId: parseInt(options.commentId),
-                    docId: parseInt(options.docId)
+                    docId: parseInt(options.docId),
+                    avatar: options.avatar == '' ? tx : options.avatar 
                 });
 
                 let store = wx.getStorageSync('app')
@@ -51,8 +57,13 @@ Page({
                             })
 
                             currentComment[0].comment_time = Util.timeToMinAndSec(currentComment[0].media_time)
+                             
                             // currentComment[0].media_time = parseInt(currentComment[0].media_time)
-
+                            currentComment[0].replies.map(item => {
+                                item.translateX = '',
+                                item.delTranstion = ''
+                                item.avatar = item.avatar == '' ? self.data.tx : item.avatar
+                            })
                             self.setData({
                                 callList: currentComment[0].replies,
                                 currentComment: currentComment[0]
@@ -173,7 +184,9 @@ Page({
                         project_id: wx.getStorageSync('project_id'),
                         id: res.data.data.id,
                         realname:wx.getStorageSync('user_info').realname,
-                        avatar: wx.getStorageSync('user_info').avatar == '' ? self.data.tx : item.avatar
+                        avatar: wx.getStorageSync('user_info').avatar == '' ? self.data.tx : wx.getStorageSync('user_info').avatar,
+                        translateX: '',
+                        delTranstion: ''
                     }
 
                     list.unshift(newCall)
@@ -207,6 +220,122 @@ Page({
     //     this.setData({
     //         callList: data,
     //     })
-    // }
+    // },
+
+    // 删除评论 start
+    delTouchStart(e) {
+        let realname1 = this.data.callList[e.currentTarget.dataset.index].realname
+        let realname2 = wx.getStorageSync('user_info').realname
+        if (realname1 != realname2) return
+
+        this.data.callList.map(item => {
+            item.translateX = '',
+            item.delTranstion = 'del-transtion'
+        })
+
+        this.setData({
+            tsx: e.touches[0].clientX,
+            delTouching: true
+        })
+    },
+
+    delTouchMove(e) {
+        if (!this.data.delTouching) return
+        let tmx = e.touches[0].clientX
+        if (!this.data.showDel) { 
+           if (tmx - this.data.tsx > 0) return
+            let moveX = tmx - this.data.tsx
+            if (moveX < -70) return
+            this.data.callList[e.currentTarget.dataset.index].translateX = moveX
+            this.setData({
+                callList: this.data.callList,
+                tex: tmx
+            })
+        } else {
+            if (tmx - this.data.tsx < 0) return
+            let moveX = -50 + (tmx - this.data.tsx)
+            if (moveX > 10) {
+                return
+            }
+            this.data.callList[e.currentTarget.dataset.index].translateX = moveX
+            this.setData({
+                callList: this.data.callList,
+                tex: tmx
+            })
+        }
+
+     },
+
+    delTouchEnd(e) {
+        if (!this.data.delTouching) return
+        let distanceX= this.data.tex - this.data.tsx
+
+        this.setData({
+            delTouching: false
+        })
+
+        if (this.data.callList[e.currentTarget.dataset.index].translateX <-30) {
+            this.data.callList[e.currentTarget.dataset.index].translateX = -50
+            this.data.callList[e.currentTarget.dataset.index].delTranstion = 'del-transtion'
+            this.setData({
+                callList: this.data.callList,
+                showDel: true,
+            })
+        } else {
+            this.data.callList[e.currentTarget.dataset.index].translateX = 0
+            this.data.callList[e.currentTarget.dataset.index].delTranstion = 'del-transtion'
+            this.setData({
+                callList: this.data.callList,
+                showDel: false
+            })
+        }
+        setTimeout(() => {
+            this.setData({
+                delTranstion: ''
+            })
+        }, 300)
+    },
+
+    handleDelComment(e) {
+        let store = wx.getStorageSync('app')
+        let project_id = wx.getStorageSync('project_id')
+        let reqData = Object.assign({}, {
+            project_id: project_id,
+            comment_id: this.data.callList[e.currentTarget.dataset.index].id,
+            doc_id: this.data.doc_id,
+            // _method: 'delete'
+        }, store)
+        let self = this
+        wx.showLoading({
+            title: '正在删除...'
+        })
+        wx.request({
+            url: store.host + '/wxapi/comment',
+            data: reqData,
+            method: 'delete',
+            header: {
+                'content-type': 'application/json' // 默认
+            },
+            success(res) {
+                // wx.hideLoading()
+                if (res.data.status == 1) {
+                    self.data.callList.splice(e.currentTarget.dataset.index, 1)
+                    self.setData({
+                        callList: self.data.callList
+                    })
+                    wx.showToast({
+                        title: '删除成功！'
+                    })
+                } else {
+                    wx.showModal({
+                      title: '提示',
+                      content: '删除评论失败！',
+                      showCancel: false,
+                    })
+                }
+            }
+        })
+    }
+    // 删除评论 end
 
 })
