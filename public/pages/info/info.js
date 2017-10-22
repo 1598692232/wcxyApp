@@ -24,7 +24,14 @@ Page({
         videoTime: 0,
         focusTime: 0,
         url: '',
-        name: ''
+        name: '',
+
+        tsx: '',
+        tex: '',
+        // translateX: '',
+        // delTranstion: '',
+        delTouching: false,
+        showDel: false,
     },
 
     onReady: function (res) {
@@ -90,7 +97,9 @@ Page({
                 		item.comment_time = Util.timeToMinAndSec(item.media_time)
                         // item.media_time = parseInt(item.media_time)
                         item.avatar = item.avatar == '' ? self.data.tx : item.avatar,
-                        item.background = ''
+                        item.background = '',
+                        item.translateX = '',
+                        item.delTranstion = ''
                 	})
                     self.setData({
                     	commentList: res.data.data.list
@@ -198,8 +207,10 @@ Page({
 			 			project_id: wx.getStorageSync('project_id'),
 			 			id: res.data.data.id,
                         realname: wx.getStorageSync('user_info').realname,
-                        avatar: wx.getStorageSync('user_info').avatar == '' ? self.data.tx : item.avatar,
-                        background: ''
+                        avatar: wx.getStorageSync('user_info').avatar == '' ? self.data.tx : wx.getStorageSync('user_info').avatar,
+                        background: '',
+                        translateX: '',
+                        delTranstion: ''
                 	}
                 	list.unshift(newComment)
                     self.setData({
@@ -247,7 +258,6 @@ Page({
         this.setData({
             videoTime: this.data.videoTime
         })
-        console.log(this.data.videoTime, 888)
      },
 
 
@@ -282,6 +292,90 @@ Page({
 	        path: url,
 	        imageUrl: this.data.coverImg
 	    }
-	}
+	},
+
+    // 删除评论 start
+    delTouchStart(e) {
+        this.setData({
+            tsx: e.touches[0].clientX,
+            delTouching: true
+        })
+        // console.log(this.data.tsx, 778899)
+    },
+    delTouchMove(e) {
+        if (!this.data.delTouching) return
+        let tmx = e.touches[0].clientX
+        if (!this.data.showDel) { 
+           if (tmx - this.data.tsx > 0) return
+            let moveX = tmx - this.data.tsx
+            if (moveX < -70) return
+            this.data.commentList[e.currentTarget.dataset.index].translateX = moveX
+            this.setData({
+                commentList: this.data.commentList,
+                tex: tmx
+            })
+        } else {
+            if (tmx - this.data.tsx < 0) return
+            let moveX = -50 + (tmx - this.data.tsx)
+            if (moveX > 10) {
+                return
+            }
+            this.data.commentList[e.currentTarget.dataset.index].translateX = moveX
+            this.setData({
+                commentList: this.data.commentList,
+                tex: tmx
+            })
+        }
+
+     },
+
+    delTouchEnd(e) {
+        if (!this.data.delTouching) return
+        let distanceX= this.data.tex - this.data.tsx
+
+        this.setData({
+            delTouching: false
+        })
+
+        if (this.data.commentList[e.currentTarget.dataset.index].translateX <-30) {
+            this.data.commentList[e.currentTarget.dataset.index].translateX = -50
+            this.data.commentList[e.currentTarget.dataset.index].delTranstion = 'del-transtion'
+            this.setData({
+                commentList: this.data.commentList,
+                showDel: true,
+            })
+        } else {
+            this.data.commentList[e.currentTarget.dataset.index].translateX = 0
+            this.data.commentList[e.currentTarget.dataset.index].delTranstion = 'del-transtion'
+            this.setData({
+                commentList: this.data.commentList,
+                showDel: false
+            })
+        }
+        setTimeout(() => {
+            this.setData({
+                delTranstion: ''
+            })
+        }, 300)
+    },
+
+    handleDelComment(e) {
+        let store = wx.getStorageSync('app')
+        let project_id = wx.getStorageSync('project_id')
+        let self = this
+        wx.request({
+            url: store.host + '/comment',
+            data: {
+                project_id: project_id,
+                comment_id: this.data.commentList[e.currentTarget.dataset.index].id,
+                method: 'delete'
+            },
+            type: 'post',
+            success(data) {
+                console.log(data)
+            }
+        })
+    }
+    // 删除评论 end
 
 })

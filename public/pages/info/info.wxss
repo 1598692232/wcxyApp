@@ -29,7 +29,7 @@
     margin: 5px auto;
 }
 
-.info-video{
+.info-video{ 
     width:100%;
 }
 .do-block{
@@ -65,18 +65,19 @@
 .comment-body{
     width: 100%;
     box-sizing: border-box;
-    padding:10px 10px 0 10px;
+    padding:0 10px;
 }
 .comment-master{
     position: relative;
     width:100%;
     box-sizing: border-box;
-    padding-left: 30px ;
+    padding-left: 30px;
+    padding-top: 10px;
 }
 .comment-tou{
     position: absolute;
     left:0;
-    top: 0;
+    top: 10px;
     width:30px;
     height:30px;
     background: #ddd;
@@ -240,6 +241,21 @@
 }
 .active-background{
     background: #21252e
+}
+.comment-del{
+    position: absolute;
+    right: -60px;
+    top:0;
+    line-height:99px;
+    width:50px;
+    background: #f00;
+    color:#fff;
+    font-size: 18px;
+    text-align: center;
+}
+
+.del-transtion{
+   transition: all 0.3s linear
 }
 
 

@@ -11,13 +11,14 @@
   <scroll-view scroll-y="true" style="height: {{scrollHeight}}px" class="list-body">
     <view wx:if="{{commentList.length > 0}}">
     <!-- 评论 -->
-    <view class="comment-body" wx:for="{{commentList}}" wx:key="index" style="background-color:{{item.background}}">
+    <view class="comment-body" wx:for="{{commentList}}" wx:key="index" style="background-color:{{item.background}}" >
         <!-- 评论区 -->
-        <view class="comment-master">
+      <!--   <view class="comment-master {{item.delTranstion}}" bindtouchstart="delTouchStart" bindtouchmove="delTouchMove"  bindtouchend="delTouchEnd" style="transform: translateX({{item.translateX}}px);" data-index="{{index}}"> -->
+        <view  class="comment-master">
           <view class="comment-tou">
             <image src="{{item.avatar}}"></image>
           </view>
-          <view class="comment-master-text"  bindtap="toVideoPosition" data-time="{{item.media_time}}" data-index="{{index}}">
+          <view class="comment-master-text" bindtap="toVideoPosition" data-time="{{item.media_time}}" data-index="{{index}}">
               <view class="comment-header clearfix">
                   <text class="comment-name">{{item.realname}}</text>
                   <text class="comment-timer">{{item.comment_time}}</text>
@@ -34,6 +35,9 @@
                  </view>
               </view>
           </view>
+           <!-- <view class='comment-del' bindtap="handleDelComment" data-index="{{index}}">
+              删除
+          </view> -->
         </view>
 
         <!-- 回复区 -->
@@ -69,9 +73,8 @@
   <view class="push-comment">
    <form bindsubmit="sendComment">
       <view class="push-comment-input clearfix">
-          <textarea placeholder="发表评论..." cursor-spacing="20" bindblur="commentBlur" name="commentText" style="color:#fff"
-          bindfocus="commentFocus" animation="{{animationData}}" value="{{commentText}}" fixed="{{true}}"> 
-          </textarea>
+          <input placeholder="发表评论..." cursor-spacing="20" bindblur="commentBlur" name="commentText" style="color:#fff"
+          bindfocus="commentFocus" animation="{{animationData}}" value="{{commentText}}" fixed="{{true}}" /> 
           <!-- hidden="{{hideSendComment}}" -->
           <button class="send-commit" form-type="submit">
               发送
