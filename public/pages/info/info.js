@@ -56,7 +56,7 @@ Page({
 
     onShow() {
 
-	    var self = this
+	    let self = this
 
         self.animation = wx.createAnimation({
           duration: 500,
@@ -187,7 +187,6 @@ Page({
                         title: '评论成功！！'
                     })
 
-
                 	let newComment = {
                 		content: e.detail.value.commentText,
 			 			comment_time: Util.timeToMinAndSec(self.data.focusTime),
@@ -251,10 +250,40 @@ Page({
 
 
 	 toBackPage(e) {
-	 	wx.navigateTo({
-	      url: `/pages/call_back/call_back?commentId=${e.currentTarget.dataset.index}
-          &docId=${this.data.doc_id}&projectId=${this.data.project_id}&avatar=${e.currentTarget.dataset.avatar}`
-	    })
+	 	// let commentCurrent = JSON.stringify(this.data.commentList[e.currentTarget.dataset.index])
+        let res = wx.getStorageSync('app')
+        let self = this
+        if (res.token == '') {
+            let infoData = {
+                url: self.data.url,
+                name: self.data.name,
+                project_id: wx.getStorageSync('project_id') || self.data.project_id,
+                doc_id: self.data.doc_id,
+                username: self.data.username,
+                createTime: self.data.createTime,
+                coverImg: self.data.coverImg
+            }
+
+            wx.setStorageSync('info_data', infoData)
+
+            wx.showModal({
+              title: '提示',
+              content: '评论／回复需登录',
+              success: function(res) {
+                if (res.confirm) {
+                    wx.reLaunch({url: '/pages/signin/signin'})
+                }
+              }
+            })
+
+        } else { 
+            
+            wx.navigateTo({
+              url: `/pages/call_back/call_back?commentId=${e.currentTarget.dataset.index}
+              &docId=${this.data.doc_id}&projectId=${this.data.project_id}&avatar=${e.currentTarget.dataset.avatar}`
+            })
+        }
+	 	
 	 },
 
     onShareAppMessage () {

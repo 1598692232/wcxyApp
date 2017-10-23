@@ -100,7 +100,16 @@ Page({
 
                         let data = Object.assign({}, store, res.data.data)
 
-                        if (res.data.data.token != '') {
+
+                        if (res.data.data.token == '') {
+                            //如果没有登录，设置storage，并且跳转到登录页
+                           wx.setStorage({
+                                key:"app",
+                                data: data
+                            })
+
+                        } else {
+                            
                             let sessionid = res.data.data.sessionid
                             //如果已经登录，设置storage，初始化列表页
                             wx.setStorage({
@@ -204,6 +213,7 @@ Page({
         // ajax处理登录，成功后存储本地信息
         // 本地存储用户信息
         let store = wx.getStorageSync('app')
+        console.log(store, 88877)
         let reqData = Object.assign({}, e.detail.value, {sessionid: store.sessionid})
         reqData.login_id = parseInt(reqData.login_id)
         wx.showLoading()

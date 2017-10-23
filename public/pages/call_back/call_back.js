@@ -99,29 +99,6 @@ Page({
         this.animation2 = animation2
     },
 
-    // 评论输入框聚焦
-    commentFocus() {
-        let self = this
-        wx.getStorage({
-          key: 'app',
-          success: function(res) {
-                if (res.data.token == '') {
-                      wx.showModal({
-                          title: '提示',
-                          content: '评论／回复需登录',
-                          success: function(res) {
-                            if (res.confirm) {
-                                wx.reLaunch({
-                                    url: '/pages/list/list'
-                                })
-                            }
-                          }
-                        })
-                  }
-            }
-        })
-    },
-
      // 发送评论
      sendComment(e) {
         let self = this
