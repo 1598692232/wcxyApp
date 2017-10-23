@@ -13,7 +13,8 @@
     <!-- 评论 -->
     <view class="comment-body" wx:for="{{commentList}}" wx:key="index" style="background-color:{{item.background}}" >
         <!-- 评论区 -->
-        <view class="comment-master {{item.delTranstion}}" bindtouchstart="delTouchStart" bindtouchmove="delTouchMove"  bindtouchend="delTouchEnd" style="transform: translateX({{item.translateX}}px);" data-index="{{index}}">
+        <view class="comment-master {{item.delTranstion}}" bindtouchstart="delTouchStart" bindtouchmove="delTouchMove"  bindtouchend="delTouchEnd" style="transform: translateX({{item.translateX}}px);" 
+        data-index="{{index}}">
         <!-- <view  class="comment-master"> -->
           <view class="comment-tou">
             <image src="{{item.avatar}}"></image>

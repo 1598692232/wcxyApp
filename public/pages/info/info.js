@@ -347,6 +347,11 @@ Page({
         let realname1 = this.data.commentList[e.currentTarget.dataset.index].realname
         let realname2 = wx.getStorageSync('user_info').realname
 
+        this.data.commentList.map(item => {
+            item.translateX = ''
+            item.delTranstion = ''
+        })
+
         if (realname1 != realname2) return
 
         this.setData({
