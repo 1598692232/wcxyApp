@@ -373,7 +373,7 @@ Page({
         let tmx = e.touches[0].clientX
         let tmy = e.touches[0].clientY
         let moveX = tmx - this.data.tsx
-        if (!this.data.delTouching || Math.abs(tmy - this.data.tsy) > 15) return
+        if (!this.data.delTouching || Math.abs(tmy - this.data.tsy) > 5) return
 
         if (!this.data.showDel) {
 
@@ -416,7 +416,7 @@ Page({
             delTouching: false
         })
 
-        if (this.data.commentList[e.currentTarget.dataset.index].translateX <-30) {
+        if (this.data.commentList[e.currentTarget.dataset.index].translateX < -15) {
             this.data.commentList[e.currentTarget.dataset.index].translateX = -50
             this.data.commentList[e.currentTarget.dataset.index].delTranstion = 'del-transtion'
             this.setData({
