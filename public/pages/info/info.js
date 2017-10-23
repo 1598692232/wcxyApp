@@ -95,7 +95,6 @@ Page({
             },
             method: 'get',
             success: function(res) {
-                console.log(res, 666)
                 if (res.data.status == 1) {
                 	res.data.data.list.map(item => {
                 		item.comment_time = Util.timeToMinAndSec(item.media_time)
