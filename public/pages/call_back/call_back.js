@@ -22,6 +22,7 @@ Page({
 
         tsx: '',
         tex: '',
+        tsy: '',
         delTouching: false,
         showDel: false,
     },
@@ -236,21 +237,24 @@ Page({
 
         this.setData({
             tsx: e.touches[0].clientX,
+            tsy: e.touches[0].clientY,
             delTouching: true
         })
     },
 
     delTouchMove(e) {
-        if (!this.data.delTouching) return
         let tmx = e.touches[0].clientX
-         let moveX = tmx - this.data.tsx
+        let moveX = tmx - this.data.tsx
+        let tmy = e.touches[0].clientY
+        if (!this.data.delTouching || Math.abs(tmy - this.data.tsy) > 15) return
+        
         if (!this.data.showDel) { 
 
             if (moveX < -60) {
                 moveX = -(Math.pow(Math.abs(moveX + 60), 0.8) + 60)
             }
             if (moveX > 0) {
-                moveX = Math.pow(Math.abs(moveX + 60), 0.8)
+                moveX = Math.pow(Math.abs(moveX + 60), 0.5)
             }
 
             this.data.callList[e.currentTarget.dataset.index].translateX = moveX
@@ -261,7 +265,7 @@ Page({
         } else {
 
             if (moveX > 60) {
-                moveX = Math.pow(Math.abs(moveX - 60), 0.8)
+                moveX = Math.pow(Math.abs(moveX - 60), 0.5)
             } else if (moveX < 0) {
                 moveX = -(Math.pow(Math.abs(moveX), 0.8) + 60)
             } else {

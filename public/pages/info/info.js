@@ -27,6 +27,7 @@ Page({
         name: '',
 
         tsx: '',
+        tsy: '',
         tex: '',
         delTouching: false,
         showDel: false,
@@ -127,8 +128,8 @@ Page({
         let res = wx.getStorageSync('app')
         let pids = wx.getStorageSync('project_ids')
 
-        if (res.token == '' || pids.indexOf(self.data.project_id) < 0) {
-            let infoData = {
+        let returnTosignin = (text) => {
+             let infoData = {
                 url: self.data.url,
                 name: self.data.name,
                 project_id: wx.getStorageSync('project_id') || self.data.project_id,
@@ -142,16 +143,22 @@ Page({
 
             wx.showModal({
               title: '提示',
-              content: '评论／回复需登录',
+              content: text,
               success: function(res) {
                 if (res.confirm) {
                     wx.reLaunch({url: '/pages/signin/signin'})
                 }
               }
             })
+        }
 
+        if (res.token == '') {
+           returnTosignin('评论／回复需登录')
         } else { 
-
+            if (pids.indexOf(self.data.project_id) < 0) {
+                returnTosignin('只有参与该项目的人才能评论')
+                return
+            }
             // 延时处理拖动不能获取播放时间的问题
             self.videoCtx.play()
             self.setData({
@@ -357,21 +364,24 @@ Page({
 
         this.setData({
             tsx: e.touches[0].clientX,
+            tsy: e.touches[0].clientY,
             delTouching: true
         })
     },
 
     delTouchMove(e) {
-        if (!this.data.delTouching) return
         let tmx = e.touches[0].clientX
+        let tmy = e.touches[0].clientY
         let moveX = tmx - this.data.tsx
+        if (!this.data.delTouching || Math.abs(tmy - this.data.tsy) > 15) return
+
         if (!this.data.showDel) {
 
             if (moveX < -60) {
                 moveX = -(Math.pow(Math.abs(moveX + 60), 0.8) + 60)
             }
             if (moveX > 0) {
-                moveX = Math.pow(moveX, 0.8)
+                moveX = Math.pow(moveX, 0.5)
             }
 
             this.data.commentList[e.currentTarget.dataset.index].translateX = moveX
@@ -382,7 +392,7 @@ Page({
         } else {
 
             if (moveX > 60) {
-                moveX = Math.pow(Math.abs(moveX - 60), 0.8)
+                moveX = Math.pow(Math.abs(moveX - 60), 0.5)
             } else if (moveX < 0) {
                 moveX = -(Math.pow(Math.abs(moveX), 0.8) + 60)
             } else {
