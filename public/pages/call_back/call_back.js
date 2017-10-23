@@ -107,35 +107,35 @@ Page({
     },
 
     // 评论输入框聚焦
-    commentFocus() {
-        let self = this
-        wx.getStorage({
-          key: 'app',
-          success: function(res) {
-            // res.data.token = ''
-                if (res.data.token == '') {
-                      wx.showModal({
-                          title: '提示',
-                          content: '评论／回复需登录',
-                          success: function(res) {
-                            if (res.confirm) {
-                                wx.reLaunch({
-                                    url: '/pages/list/list'
-                                })
-                            }
-                          }
-                        })
-                  } else {
+    // commentFocus() {
+    //     let self = this
+    //     wx.getStorage({
+    //       key: 'app',
+    //       success: function(res) {
+    //         // res.data.token = ''
+    //             if (res.data.token == '') {
+    //                   wx.showModal({
+    //                       title: '提示',
+    //                       content: '评论／回复需登录',
+    //                       success: function(res) {
+    //                         if (res.confirm) {
+    //                             wx.reLaunch({
+    //                                 url: '/pages/list/list'
+    //                             })
+    //                         }
+    //                       }
+    //                     })
+    //               } else {
 
-                    // self.animation1.width("75%").step()
-                    // self.setData({
-                    //     hideSendComment: false,
-                    //     animationData:self.animation1.export()
-                    // })
-                }
-            }
-        })
-    },
+    //                 // self.animation1.width("75%").step()
+    //                 // self.setData({
+    //                 //     hideSendComment: false,
+    //                 //     animationData:self.animation1.export()
+    //                 // })
+    //             }
+    //         }
+    //     })
+    // },
 
     //评论失焦
     commentBlur() {
