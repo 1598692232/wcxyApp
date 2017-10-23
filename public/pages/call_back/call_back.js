@@ -228,10 +228,10 @@ Page({
         let realname2 = wx.getStorageSync('user_info').realname
         if (realname1 != realname2) return
 
-        this.data.callList.map(item => {
-            item.translateX = '',
-            item.delTranstion = 'del-transtion'
-        })
+        // this.data.callList.map(item => {
+        //     item.translateX = '',
+        //     item.delTranstion = 'del-transtion'
+        // })
 
         this.setData({
             tsx: e.touches[0].clientX,
@@ -261,9 +261,10 @@ Page({
 
             if (moveX > 60) {
                 moveX = Math.pow(Math.abs(moveX - 60), 0.8)
-            }
-            if (moveX < 0) {
-                moveX = -(Math.pow(Math.abs(moveX + 60), 0.8) + 60)
+            } else if (moveX < 0) {
+                moveX = -(Math.pow(Math.abs(moveX), 0.8) + 60)
+            } else {
+                moveX = moveX - 60
             }
 
             this.data.commentList[e.currentTarget.dataset.index].translateX = moveX
