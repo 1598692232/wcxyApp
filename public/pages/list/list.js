@@ -23,28 +23,23 @@ Page({
     onLoad() {
         let self = this
         wx.showLoading()
-        let infoData = wx.getStorageSync('info_data')
-        console.log(infoData, 888)
-
-        if (infoData != '') {
-            console.log(infoData, 9999)
-            let url = '/pages/info/info?url=' + infoData.url + '&name='
-                + infoData.name + '&id=' + infoData.doc_id
-                + '&username=' + infoData.username + '&createTime=' + infoData.createTime
-                + '&coverImg=' + infoData.coverImg 
-            wx.navigateTo({
-                url: url
-            })
-            return
-        }
 
         wx.getSystemInfo({
             success: function (res) {
-                // that.refresh()
                 self.setData({
                     scrollHeight: res.windowHeight - 40,
                     listInfoWidth: res.windowWidth - 110,
-                });
+                })
+
+                if (infoData != '') {
+                    let url = '/pages/info/info?url=' + infoData.url + '&name='
+                        + infoData.name + '&id=' + infoData.doc_id
+                        + '&username=' + infoData.username + '&createTime=' + infoData.createTime
+                        + '&coverImg=' + infoData.coverImg 
+                    wx.navigateTo({
+                        url: url
+                    })
+                }
             }
         });
     },
@@ -60,122 +55,7 @@ Page({
 
         self.animation = animation
 
-        wx.login({
-          success: function(res) {
-            if (res.code) {
-
-              let store = wx.getStorageSync('app')
-              store.code = res.code
-              wx.setStorage({
-                  key:"app",
-                  data: store,
-                  success() {
-                    self.isLoginforHandle()
-                  }
-                }) 
-            } else {
-              console.log('获取用户登录态失败！' + res.errMsg)
-            }
-          }
-        });
-    },
-
-
-
-    isLoginforHandle() {
-        let self = this
-
-         
-        //获取存储的code
-
-            let store = wx.getStorageSync('app')
-
-
-            //发起网络请求，判断当前微信账号是否已经登录
-            wx.request({
-                url: store.host + '/wxapi/init',
-                data: {
-                  code: store.code
-                },
-                header: {
-                    'content-type': 'application/json' // 默认值
-                },
-                method: 'get',
-                success(res) {
-            
-                    if (res.data.status == 1) {
-
-                        let data = Object.assign({}, store, res.data.data)
-
-                        if (res.data.data.token == '') {
-                            //如果没有登录，设置storage，并且跳转到登录页
-                           wx.setStorage({
-                                key:"app",
-                                data: data,
-                                success(res) {
-                                    
-                                    wx.getStorage({
-                                        key:'app',
-                                        success(res) {
-                                             wx.reLaunch({
-                                              url: '/pages/signin/signin?sessionid=' + res.data.sessionid
-                                            })
-                                        }
-                                    })
-                                   
-                                }
-                            })
-
-                            return
-                        } else {
-                            //如果已经登录，设置storage，初始化列表页
-                            wx.setStorage({
-                                key:"app",
-                                data: data,
-                                success() {
-                                    wx.getStorage({
-                                        key:'app',
-                                        success(res) {
-                                            wx.request({
-                                              url: store.host + '/wxapi/user/info',
-                                              data: res.data,
-                                              success(res) {
-                                                if (res.data.status == 1) {
-                                                    wx.setStorage({
-                                                        key: 'user_info',
-                                                        data: res.data.data
-                                                    })
-                                                } else {
-                                                    wx.showModal({
-                                                      title: '提示',
-                                                      content: '未获取到当前用户信息',
-                                                    })
-                                                }
-                                              }
-                                            })
-                                           
-                                            self.initList()
-                                        }
-                                    })
-                                }
-                            })
-
-                        }
-
-                        
-                    } else {
-                        self.consoleLoginError('初始化小程序失败')
-                    }
-
-                },
-                fail(res) {
-                    let rs = JSON.stringify(res)
-                    wx.showModal({
-                      title: '提示',
-                      content: rs,
-                    })
-                }
-            })
+        self.initList()
     },
 
     consoleLoginError(errText) {
@@ -200,7 +80,6 @@ Page({
             }, 1000)
         }, 2000)
     },
-
 
     //初始化列表页
     initList() {

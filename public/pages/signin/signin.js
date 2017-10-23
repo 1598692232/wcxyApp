@@ -27,17 +27,15 @@ Page({
 
 	onLoad(options) {
         let self = this
+        wx.showLoading()
         let store = wx.getStorageSync('app')
-
-        let stores = wx.getStorageSync('app')
         // stores.sessionId = res.data.data.sessionid
-        let newStorage = Object.assign({}, stores)
+        let newStorage = Object.assign({}, store)
         newStorage.token = ''
         wx.setStorage({
           key:"app",
           data: newStorage
         })
-
 
         wx.getSystemInfo({
             success: function (res) {
@@ -57,6 +55,124 @@ Page({
           duration: 500,
           timingFunction: "cubic-bezier(0.4, 0, 0.2, 1)"
         })
+
+        let self = this
+        wx.login({
+          success: function(res) {
+            if (res.code) {
+
+              let store = wx.getStorageSync('app')
+              store.code = res.code
+              wx.setStorage({
+                  key:"app",
+                  data: store,
+                  success() {
+                    self.isLoginforHandle()
+                  }
+                }) 
+            } else {
+              console.log('获取用户登录态失败！' + res.errMsg)
+            }
+          }
+        })
+    },
+
+    isLoginforHandle() {
+        let self = this
+
+        //获取存储的code
+
+            let store = wx.getStorageSync('app')
+
+            //发起网络请求，判断当前微信账号是否已经登录
+            wx.request({
+                url: store.host + '/wxapi/init',
+                data: {
+                  code: store.code
+                },
+                header: {
+                    'content-type': 'application/json' // 默认值
+                },
+                method: 'get',
+                success(res) {
+                    wx.hideLoading()
+                    if (res.data.status == 1) {
+
+                        let data = Object.assign({}, store, res.data.data)
+
+                        if (res.data.data.token != '') {
+                            //如果没有登录，设置storage，并且跳转到登录页
+                           // wx.setStorage({
+                           //      key:"app",
+                           //      data: data,
+                           //      success(res) {
+                           //          wx.getStorage({
+                           //              key:'app',
+                           //              success(res) {
+                           //                   wx.reLaunch({
+                           //                    url: '/pages/list/list?sessionid=' + res.data.data.sessionid
+                           //                  })
+                           //              }
+                           //          })
+                                   
+                           //      }
+                           //  })
+
+                        // } else {
+                            let sessionid = res.data.data.sessionid
+                            //如果已经登录，设置storage，初始化列表页
+                            wx.setStorage({
+                                key:"app",
+                                data: data,
+                                success() {
+                                    wx.getStorage({
+                                        key:'app',
+                                        success(res) {
+                                            wx.request({
+                                              url: store.host + '/wxapi/user/info',
+                                              data: res.data,
+                                              success(res) {
+                                                    
+                                                    if (res.data.status == 1) {
+                                                        wx.setStorage({
+                                                            key: 'user_info',
+                                                            data: res.data.data
+                                                        })
+                                                    } else {
+                                                        wx.showModal({
+                                                          title: '提示',
+                                                          content: '未获取到当前用户信息',
+                                                        })
+                                                    }
+
+                                                    wx.reLaunch({
+                                                        url: '/pages/list/list?sessionid=' + sessionid
+                                                    })
+
+                                              }
+                                            })
+                                            
+                                        }
+                                    })
+                                }
+                            })
+
+                        }
+
+                        
+                    } else {
+                        self.consoleLoginError('初始化小程序失败')
+                    }
+
+                },
+                fail(res) {
+                    let rs = JSON.stringify(res)
+                    wx.showModal({
+                      title: '提示',
+                      content: rs,
+                    })
+                }
+            })
     },
 
     consoleLoginError(errText) {
@@ -140,6 +256,8 @@ Page({
                                     data: res.data.data
                                 })
 
+                                let infoData = wx.getStorageSync('info_data')
+                                
                                 wx.reLaunch({
                                     url: '/pages/list/list?id=' + newStorage.login_id
                                 })
