@@ -31,6 +31,7 @@ Page({
                     listInfoWidth: res.windowWidth - 110,
                 })
 
+                let infoData = wx.getStorageSync('info_data')
                 if (infoData != '') {
                     let url = '/pages/info/info?url=' + infoData.url + '&name='
                         + infoData.name + '&id=' + infoData.doc_id

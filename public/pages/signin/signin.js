@@ -255,8 +255,6 @@ Page({
                                     key: 'user_info',
                                     data: res.data.data
                                 })
-
-                                let infoData = wx.getStorageSync('info_data')
                                 
                                 wx.reLaunch({
                                     url: '/pages/list/list?id=' + newStorage.login_id

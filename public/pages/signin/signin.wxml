@@ -15,11 +15,11 @@
 				<image class="login-input-clear" src="{{clear}}" catchtap="clearInput" data-name="password"
 				hidden="{{hiddenPasswordClear}}"></image>
 			</view>
-			<view class="login-input-body" style="width:{{codeWidth}}px;float: left;">
+			<!-- <view class="login-input-body" style="width:{{codeWidth}}px;float: left;">
 				<image class="login-input-icon" src="{{code}}"></image>
 				<input type="text" name="validate" class="login-input" placeholder="验证码" placeholder-style="font-size:13px;" value="{{codeText}}" data-code="" bindblur="handleBlur"/>
 			</view>
-			<image style="width:100px;height: 44px;" bindtap="getCode" src="{{codeSrc}}"></image>
+			<image style="width:100px;height: 44px;" bindtap="getCode" src="{{codeSrc}}"></image> -->
 			<button form-type="submit" class="login-btn" cursor-spacing="20">登录</button>
 		</form>
 	</scroll-view>
