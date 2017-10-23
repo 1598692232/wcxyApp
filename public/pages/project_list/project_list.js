@@ -19,6 +19,7 @@ Page({
 	onLoad(options) {
 		let self = this;
         wx.showLoading()
+
         wx.getSystemInfo({
             success: function (result) {
                 self.setData({

@@ -23,6 +23,21 @@ Page({
     onLoad() {
         let self = this
         wx.showLoading()
+        let infoData = wx.getStorageSync('info_data')
+        console.log(infoData, 888)
+
+        if (infoData != '') {
+            console.log(infoData, 9999)
+            let url = '/pages/info/info?url=' + infoData.url + '&name='
+                + infoData.name + '&id=' + infoData.doc_id
+                + '&username=' + infoData.username + '&createTime=' + infoData.createTime
+                + '&coverImg=' + infoData.coverImg 
+            wx.navigateTo({
+                url: url
+            })
+            return
+        }
+
         wx.getSystemInfo({
             success: function (res) {
                 // that.refresh()

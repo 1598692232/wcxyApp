@@ -29,6 +29,16 @@ Page({
         let self = this
         let store = wx.getStorageSync('app')
 
+        let stores = wx.getStorageSync('app')
+        // stores.sessionId = res.data.data.sessionid
+        let newStorage = Object.assign({}, stores)
+        newStorage.token = ''
+        wx.setStorage({
+          key:"app",
+          data: newStorage
+        })
+
+
         wx.getSystemInfo({
             success: function (res) {
             	self.setData({
@@ -130,22 +140,9 @@ Page({
                                     data: res.data.data
                                 })
 
-                                let infoData = wx.getStorageSync('info_data')
-
-                                if (infoData.data == '') {
-                                    wx.reLaunch({
-                                        url: '/pages/list/list?id=' + newStorage.login_id
-                                    })
-                                } else {
-
-                                    let url = '/pages/info/info?url=' + infoData.url + '&name='
-                                        + infoData.name + '&id=' + infoData.doc_id
-                                        + '&username=' + infoData.username + '&createTime=' + infoData.createTime
-                                        + '&coverImg=' + infoData.coverImg 
-                                    wx.navigateTo({
-                                        url: url
-                                    })
-                                }
+                                wx.reLaunch({
+                                    url: '/pages/list/list?id=' + newStorage.login_id
+                                })
 
                             } else {
                                 wx.showModal({

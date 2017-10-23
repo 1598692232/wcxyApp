@@ -126,7 +126,6 @@ Page({
         let res = wx.getStorageSync('app')
 
         if (res.token == '') {
-
             let infoData = {
                 url: self.data.url,
                 name: self.data.name,
@@ -137,17 +136,14 @@ Page({
                 coverImg: self.data.coverImg
             }
 
-            wx.setStorage({
-                key: 'info_data',
-                data: infoData
-            })
+            wx.setStorageSync('info_data', infoData)
 
             wx.showModal({
               title: '提示',
               content: '评论／回复需登录',
               success: function(res) {
                 if (res.confirm) {
-                    wx.reLaunch({url: '/pages/list/list'})
+                    wx.reLaunch({url: '/pages/signin/signin'})
                 }
               }
             })
