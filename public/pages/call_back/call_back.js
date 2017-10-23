@@ -228,11 +228,6 @@ Page({
         let realname2 = wx.getStorageSync('user_info').realname
         if (realname1 != realname2) return
 
-        // this.data.callList.map(item => {
-        //     item.translateX = '',
-        //     item.delTranstion = 'del-transtion'
-        // })
-
         this.setData({
             tsx: e.touches[0].clientX,
             delTouching: true
@@ -252,9 +247,9 @@ Page({
                 moveX = Math.pow(Math.abs(moveX + 60), 0.8)
             }
 
-            this.data.commentList[e.currentTarget.dataset.index].translateX = moveX
+            this.data.callList[e.currentTarget.dataset.index].translateX = moveX
             this.setData({
-                commentList: this.data.commentList,
+                callList: this.data.callList,
                 tex: tmx
             })
         } else {
@@ -267,9 +262,9 @@ Page({
                 moveX = moveX - 60
             }
 
-            this.data.commentList[e.currentTarget.dataset.index].translateX = moveX
+            this.data.callList[e.currentTarget.dataset.index].translateX = moveX
             this.setData({
-                commentList: this.data.commentList,
+                callList: this.data.callList,
                 tex: tmx
             })
         }
@@ -301,9 +296,11 @@ Page({
         }
 
         setTimeout(() => {
-            this.data.commentList[e.currentTarget.dataset.index].delTranstion = ''
+            if (this.data.callList.length == 0 ||
+                this.data.callList[e.currentTarget.dataset.index].delTranstion == undefined) return
+            this.data.callList[e.currentTarget.dataset.index].delTranstion = ''
             this.setData({
-                commentList: this.data.commentList,
+                callList: this.data.callList,
             })
         }, 300)
     },

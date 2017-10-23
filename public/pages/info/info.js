@@ -40,6 +40,10 @@ Page({
     onLoad(options) {
         let self = this
         wx.showLoading()
+        wx.setStorage({
+            key: 'info_data',
+            data: ''
+        })
         wx.getSystemInfo({
             success: function (res) {
                 self.setData({
@@ -118,13 +122,27 @@ Page({
 	// 评论输入框聚焦
 	commentFocus() {
         let self = this
-        
-        
 
         let res = wx.getStorageSync('app')
 
         if (res.token == '') {
-          wx.showModal({
+
+            let infoData = {
+                url: self.data.url,
+                name: self.data.name,
+                project_id: wx.getStorageSync('project_id') || self.data.project_id,
+                doc_id: self.data.doc_id,
+                username: self.data.username,
+                createTime: self.data.createTime,
+                coverImg: self.data.coverImg
+            }
+
+            wx.setStorage({
+                key: 'info_data',
+                data: infoData
+            })
+
+            wx.showModal({
               title: '提示',
               content: '评论／回复需登录',
               success: function(res) {
@@ -133,6 +151,7 @@ Page({
                 }
               }
             })
+
         } else { 
 
             // 延时处理拖动不能获取播放时间的问题
@@ -305,10 +324,6 @@ Page({
 
         if (realname1 != realname2) return
 
-        // this.data.commentList.map(item => {
-        //     item.translateX = '',
-        //     item.delTranstion = 'del-transtion'
-        // })
         this.setData({
             tsx: e.touches[0].clientX,
             delTouching: true
@@ -377,7 +392,9 @@ Page({
         }
 
         setTimeout(() => {
-            this.data.commentList[e.currentTarget.dataset.index].delTranstion = ''
+            if (this.data.commentList.length == 0 ||
+                this.data.commentList[e.currentTarget.dataset.index].delTranstion == undefined) return
+            this.data.commentList[e.currentTarget.dataset.index].delTranstion = 0
             this.setData({
                 commentList: this.data.commentList,
             })

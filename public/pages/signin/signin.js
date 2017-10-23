@@ -107,7 +107,7 @@ Page({
             },
             method: 'post',
             success: function(res) {
-                
+
                 wx.hideLoading()
                 if (res.data.status == 1) {
                     let stores = wx.getStorageSync('app')
@@ -130,9 +130,23 @@ Page({
                                     data: res.data.data
                                 })
 
-                                wx.reLaunch({
-                                    url: '/pages/list/list?id=' + newStorage.login_id
-                                })
+                                let infoData = wx.getStorageSync('info_data')
+
+                                if (infoData.data == '') {
+                                    wx.reLaunch({
+                                        url: '/pages/list/list?id=' + newStorage.login_id
+                                    })
+                                } else {
+
+                                    let url = '/pages/info/info?url=' + infoData.url + '&name='
+                                        + infoData.name + '&id=' + infoData.doc_id
+                                        + '&username=' + infoData.username + '&createTime=' + infoData.createTime
+                                        + '&coverImg=' + infoData.coverImg 
+                                    wx.navigateTo({
+                                        url: url
+                                    })
+                                }
+
                             } else {
                                 wx.showModal({
                                     title: '提示',
@@ -151,7 +165,6 @@ Page({
         })
 
         // wx.setStorageSync('app', data)
-
     },
 
     clearInput(e) {
@@ -213,9 +226,5 @@ Page({
 			})
     	}
     }
-
-
-
-
 
 })
