@@ -46,17 +46,30 @@ Page({
     },
 
     onShow() {
-        // 评论输入框动画注册
-        let animation = wx.createAnimation({
-            duration: 300,
-            timingFunction: 'ease',
-        })
 
-        let self = this
+        let store = wx.getStorageSync('app')
 
-        self.animation = animation
+        if (store.token == '') {
+            console.log(111)
+            wx.navigateTo({
+                url: '/pages/signin/signin'
+            })
+        } else {
+console.log(2222)
+            // 评论输入框动画注册
+            let animation = wx.createAnimation({
+                duration: 300,
+                timingFunction: 'ease',
+            })
 
-        self.initList()
+            let self = this
+
+            self.animation = animation
+
+            self.initList()
+        }
+        
+
     },
 
     consoleLoginError(errText) {
@@ -108,6 +121,7 @@ Page({
                     wx.showModal({
                       title: '提示',
                       content: '获取我的项目失败！',
+                      showCancel: false
                     })
                 }
             }
@@ -134,6 +148,7 @@ Page({
                     wx.showModal({
                       title: '提示',
                       content: '获取参与项目失败！',
+                      showCancel: false
                     })
                 }
             }
