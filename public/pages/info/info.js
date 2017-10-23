@@ -6,10 +6,8 @@ Page({
     data: {
 	    scrollHeight: 0,
 	    commentIsFocus: false,
-
 	    commentList:[],
 	    commentText: '',
-
         tx: app.data.staticImg.tx,
         zan: app.data.staticImg.zan,
         zanActive: app.data.staticImg.zanActive,
@@ -18,7 +16,6 @@ Page({
         focusTime: 0,
         url: '',
         name: '',
-
         tsx: '',
         tex: '',
         delTouching: false,
@@ -58,7 +55,8 @@ Page({
     },
 
     onShow() {
-	    let self = this
+
+	    var self = this
 
         self.animation = wx.createAnimation({
           duration: 500,
@@ -80,11 +78,10 @@ Page({
             },
             method: 'get',
             success: function(res) {
-                console.log(res, 666)
+
                 if (res.data.status == 1) {
                 	res.data.data.list.map(item => {
                 		item.comment_time = Util.timeToMinAndSec(item.media_time)
-                        // item.media_time = parseInt(item.media_time)
                         item.avatar = item.avatar == '' ? self.data.tx : item.avatar,
                         item.background = '',
                         item.translateX = '',
@@ -324,7 +321,6 @@ Page({
 
     delTouchEnd(e) {
         if (!this.data.delTouching) return
-        // let distanceX= this.data.tex - this.data.tsx
 
         this.setData({
             delTouching: false
@@ -363,7 +359,6 @@ Page({
             project_id: project_id,
             comment_id: this.data.commentList[e.currentTarget.dataset.index].id,
             doc_id: this.data.doc_id,
-            // _method: 'delete'
         }, store)
         let self = this
         wx.showLoading({

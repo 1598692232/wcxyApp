@@ -106,18 +106,18 @@ Page({
           key: 'app',
           success: function(res) {
                 if (res.data.token == '') {
-                    wx.showModal({
-                      title: '提示',
-                      content: '评论／回复需登录',
-                      success: function(res) {
-                        if (res.confirm) {
-                            wx.reLaunch({
-                                url: '/pages/sigin/signin'
-                            })
-                        }
-                      }
-                    })
-                }
+                      wx.showModal({
+                          title: '提示',
+                          content: '评论／回复需登录',
+                          success: function(res) {
+                            if (res.confirm) {
+                                wx.reLaunch({
+                                    url: '/pages/list/list'
+                                })
+                            }
+                          }
+                        })
+                  }
             }
         })
     },
@@ -180,6 +180,20 @@ Page({
         })
      },
 
+
+    // loadMore() {
+    //     let data = this.data.callList
+    //     this.setData({
+    //       page: ++this.data.page
+    //     })
+    //     for(let i = 10 * (this.data.page - 1) + 1; i <= this.data.page * 10; i ++ ){
+    //       data.push(i)
+    //     }
+    //     this.setData({
+    //         callList: data,
+    //     })
+    // },
+
     // 删除评论 start
     delTouchStart(e) {
         let realname1 = this.data.callList[e.currentTarget.dataset.index].realname
@@ -231,6 +245,7 @@ Page({
 
     delTouchEnd(e) {
         if (!this.data.delTouching) return
+        // let distanceX= this.data.tex - this.data.tsx
 
         this.setData({
             delTouching: false
@@ -268,7 +283,7 @@ Page({
         let reqData = Object.assign({}, {
             project_id: project_id,
             comment_id: this.data.callList[e.currentTarget.dataset.index].id,
-            doc_id: this.data.doc_id
+            doc_id: this.data.doc_id,
         }, store)
         let self = this
         wx.showLoading({
