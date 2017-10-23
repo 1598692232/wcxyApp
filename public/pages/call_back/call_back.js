@@ -7,19 +7,13 @@ Page({
     data: {
         scrollHeight: 0,
         callList: [],
-        // page: 1,
-
         commentIsFocus: false,
-        // hideSendComment: true,
-
         animationData: {},
         commentText: '',
         tx: app.data.staticImg.tx,
         zan: app.data.staticImg.zan,
         zanActive: app.data.staticImg.zanActive,
-
         currentComment: '',
-
         tsx: '',
         tex: '',
         delTouching: false,
@@ -57,8 +51,7 @@ Page({
                             })
 
                             currentComment[0].comment_time = Util.timeToMinAndSec(currentComment[0].media_time)
-                             
-                            // currentComment[0].media_time = parseInt(currentComment[0].media_time)
+
                             currentComment[0].replies.map(item => {
                                 item.translateX = '',
                                 item.delTranstion = ''
@@ -112,43 +105,22 @@ Page({
         wx.getStorage({
           key: 'app',
           success: function(res) {
-            // res.data.token = ''
                 if (res.data.token == '') {
-                      wx.showModal({
-                          title: '提示',
-                          content: '评论／回复需登录',
-                          success: function(res) {
-                            if (res.confirm) {
-                                wx.reLaunch({
-                                    url: '/pages/list/list'
-                                })
-                            }
-                          }
-                        })
-                  } else {
-
-                    // self.animation1.width("75%").step()
-                    // self.setData({
-                    //     hideSendComment: false,
-                    //     animationData:self.animation1.export()
-                    // })
+                    wx.showModal({
+                      title: '提示',
+                      content: '评论／回复需登录',
+                      success: function(res) {
+                        if (res.confirm) {
+                            wx.reLaunch({
+                                url: '/pages/sigin/signin'
+                            })
+                        }
+                      }
+                    })
                 }
             }
         })
     },
-
-    //评论失焦
-    commentBlur() {
-        // this.setData({
-        //     hideSendComment: true
-        // })
-        // setTimeout(() => {
-        //     this.animation2.width("100%").step()
-        //     this.setData({
-        //       animationData:this.animation2.export()
-        //     })
-        // }, 500)
-     },
 
      // 发送评论
      sendComment(e) {
@@ -208,20 +180,6 @@ Page({
         })
      },
 
-
-    // loadMore() {
-    //     let data = this.data.callList
-    //     this.setData({
-    //       page: ++this.data.page
-    //     })
-    //     for(let i = 10 * (this.data.page - 1) + 1; i <= this.data.page * 10; i ++ ){
-    //       data.push(i)
-    //     }
-    //     this.setData({
-    //         callList: data,
-    //     })
-    // },
-
     // 删除评论 start
     delTouchStart(e) {
         let realname1 = this.data.callList[e.currentTarget.dataset.index].realname
@@ -273,7 +231,6 @@ Page({
 
     delTouchEnd(e) {
         if (!this.data.delTouching) return
-        // let distanceX= this.data.tex - this.data.tsx
 
         this.setData({
             delTouching: false
@@ -311,8 +268,7 @@ Page({
         let reqData = Object.assign({}, {
             project_id: project_id,
             comment_id: this.data.callList[e.currentTarget.dataset.index].id,
-            doc_id: this.data.doc_id,
-            // _method: 'delete'
+            doc_id: this.data.doc_id
         }, store)
         let self = this
         wx.showLoading({
@@ -326,7 +282,6 @@ Page({
                 'content-type': 'application/json' // 默认
             },
             success(res) {
-                // wx.hideLoading()
                 if (res.data.status == 1) {
                     self.data.callList.splice(e.currentTarget.dataset.index, 1)
                     self.setData({

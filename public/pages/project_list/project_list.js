@@ -127,19 +127,6 @@ Page({
                 url: url
             })
         }
-	},
-
-	// loadMore() {
- //        let data = this.data.videoList
- //        this.setData({
- //          page: ++this.data.page
- //        })
- //        for(let i = 10 * (this.data.page - 1) + 1; i <= this.data.page * 10; i ++ ){
- //          data.push(i)
- //        }
- //        this.setData({
- //            videoList: data,
- //        })
- //    }
+	}
 
 })

@@ -6,15 +6,8 @@ Page({
     data: {
 	    scrollHeight: 0,
 	    commentIsFocus: false,
-	    // hideSendComment: true,
 
-	    commentList:[
-	    // {time: 10, minTime:0, secTime: 10, text: 'text'},
-	    // {time: 20,minTime:0, secTime: 20, text: 'text'},
-	    // {time: 30,minTime:0, secTime: 30, text: 'text'},
-	    // {time: 40,minTime:0, secTime: 40, text: 'text'}
-	    ],
-	    // animationData: {},
+	    commentList:[],
 	    commentText: '',
 
         tx: app.data.staticImg.tx,
@@ -65,15 +58,7 @@ Page({
     },
 
     onShow() {
-        // 评论输入框动画注册
-    	// let animation = wx.createAnimation({
-	    //   	duration: 0,
-	    //     timingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)',
-	    // })
-
-	    // this.animation = animation
-
-	    var self = this
+	    let self = this
 
         self.animation = wx.createAnimation({
           duration: 500,
@@ -173,19 +158,6 @@ Page({
         }
 	},
 
-	//评论失焦
- 	commentBlur() {
- 		// this.setData({
-	  // 		hideSendComment: true
-	  // 	})
- 		// setTimeout(() => {
- 		// 	this.animation.width("100%").step({	duration: 300 })
-		 //    this.setData({
-		 //      animationData:this.animation.export()
-		 //    })
- 		// }, 500)
-	 },
-
 	 // 发送评论
 	 sendComment(e) {
 	 	let self = this
@@ -282,26 +254,11 @@ Page({
 
 
 	 toBackPage(e) {
-	 	// let commentCurrent = JSON.stringify(this.data.commentList[e.currentTarget.dataset.index])
 	 	wx.navigateTo({
 	      url: `/pages/call_back/call_back?commentId=${e.currentTarget.dataset.index}
           &docId=${this.data.doc_id}&projectId=${this.data.project_id}&avatar=${e.currentTarget.dataset.avatar}`
 	    })
 	 },
-
-
-    // loadMore() {
-        // let data = this.data.commentList
-        // this.setData({
-        //   page: ++this.data.page
-        // })
-        // for(let i = 10 * (this.data.page - 1) + 1; i <= this.data.page * 10; i ++ ){
-        //   data.push({time: 35,minTime:0, secTime: 35,text: ''})
-        // }
-        // this.setData({
-        //     commentList: data,
-        // })
-    // },
 
     onShareAppMessage () {
         let url = '/pages/info/info?url=' + this.data.url + '&name=' 
@@ -420,7 +377,6 @@ Page({
                 'content-type': 'application/json' // 默认
             },
             success(res) {
-                // wx.hideLoading()
                 if (res.data.status == 1) {
                     self.data.commentList.splice(e.currentTarget.dataset.index, 1)
                     self.setData({

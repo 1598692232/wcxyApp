@@ -15,13 +15,6 @@
 		              </view>
 		              <view class="comment-body1">
 		                 <text>{{currentComment.content}}</text>
-		                 <view class="comment-do clearfix">
-		                   <!-- <text catchtap="toBackPage">回复</text> -->
-		                   <!-- <view class="comment-zan clearfix"> -->
-		                        <!-- <image src="{{zan}}" class="comment-zan-img"></image> -->
-		                        <!-- <text>1</text> -->
-		                   <!-- </view> -->
-		                 </view>
 		              </view>
 		          </view>
 		        </view>
@@ -36,10 +29,6 @@
 		                <view class="back-info">
 		                    <text class="back-name">{{item.realname}}</text>
 		                    <text class="back-text">{{item.content}}</text>
-		                    <!-- <view class="back-zan"> -->
-		                        <!-- <image src="{{zan}}" class="comment-zan-img"></image> -->
-		                        <!-- <text>1</text> -->
-		                    <!-- </view> -->
 		                </view>
 		                 <view class='comment-del' bindtap="handleDelComment" data-index="{{index}}">
 			              删除
@@ -57,7 +46,6 @@
 	      <view class="push-comment-input clearfix">
 	          <input placeholder="回复评论..."  cursor-spacing="20"  bindblur="commentBlur" name="commentText"
 	          bindfocus="commentFocus" animation="{{animationData}}" value="{{commentText}}" style="color:#fff"/>
-	          <!-- hidden="{{hideSendComment}}" -->
 	          <button class="send-commit"  form-type="submit">
 	              发送
 	          </button>

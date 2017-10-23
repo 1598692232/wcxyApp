@@ -10,7 +10,6 @@
       </view>
      
     </view>
-    <!-- <block wx:if="{{!searching}}"> -->
         <view class="list-tabs">
           <view class="list-tab" style="{{tabOne}}" bindtap="showMyProjects">
             <text>我的项目</text>
@@ -19,18 +18,13 @@
             <text>我参与的</text>
           </view>
         </view>
-        <!-- bindscrolltolower="loadMoreMyProjects" bindscrolltoupper="refresh" -->
         <scroll-view class="list-body" scroll-y="true"  style="height: {{scrollHeight}}px" hidden="{{hiddenMy}}" scroll-with-animation="true">
             <block wx:if="{{myProjectList.length > 0}}">
               <view class="item clearfix" wx:for="{{myProjectList}}" wx:key="index" bindtap="toProject" data-id="{{item.id}}" data-name="{{item.name}}">
-               <!--  <view class="item-left">
-                  <image src="{{projectImg}}" mode="aspectFit" lazy-load="{{true}}"></image>
-                </view> -->
-                 <!-- style="width: {{listInfoWidth}}px" -->
+               
                 <view class="item-right"
                   style="border-bottom: {{myProjectList.length - 1 == index ? '0px' : '1px solid rgba(0,0,0,.2)'}}">
                   <text class="item-title">{{item.name}}</text>
-                  <!-- <text class="item-des">{{item.name}}</text> -->
                 </view>
               </view>
             </block>
@@ -38,13 +32,9 @@
                 暂无项目，请登录新阅官网进行更多操作
             </view>
         </scroll-view>
-        <!--  bindscrolltolower="loadMoreJoinProjects" bindscrolltoupper="refresh"-->
        <scroll-view class="list-body" scroll-y="true"  style="height: {{scrollHeight}}px"  hidden="{{!hiddenMy}}" scroll-with-animation="true">
             <block wx:if="{{joinProjectList.length > 0}}">
               <view class="item clearfix" wx:for="{{joinProjectList}}" wx:key="index" bindtap="toProject" data-name="{{item.name}}" wx:if="{{joinProjectList.length > 0}}">
-                <!-- <view class="item-left">
-                  <image src="{{projectImg}}" mode="aspectFit" lazy-load="{{true}}"></image>
-                </view> -->
                 <view class="item-right"
                   style="border-bottom: {{joinProjectList.length - 1 == index ? '0px' : '1px solid rgba(0,0,0,.2)'}}">
                   <text class="item-title">{{item.name}}</text>
@@ -56,22 +46,11 @@
                   暂无项目，请登录新阅官网进行更多操作
               </view>
         </scroll-view>
-    <!-- </block> -->
 
- <!--    <block wx:if="{{searching}}">
-          <scroll-view class="list-body" scroll-y="true"  style="height: {{scrollHeight}}px" bindscrolltoupper="refresh" scroll-with-animation="true">
-              <view class="item clearfix" wx:for="{{searchResults}}" wx:key="index" bindtap="toProject">
-                <view class="item-right">
-                  <text class="item-title">{{item.name}}</text>
-                </view>
-              </view>
-        </scroll-view>
-    </block> -->
-
-  <view class="bottom" hidden="{{hideBottom}}">
-    <view>{{loadMoreData}}</view>
-    <view>{{refreshTime}}</view>
-  </view>
+    <view class="bottom" hidden="{{hideBottom}}">
+      <view>{{loadMoreData}}</view>
+      <view>{{refreshTime}}</view>
+    </view>
 </view>
 
 

@@ -101,24 +101,6 @@ Page({
                         let data = Object.assign({}, store, res.data.data)
 
                         if (res.data.data.token != '') {
-                            //如果没有登录，设置storage，并且跳转到登录页
-                           // wx.setStorage({
-                           //      key:"app",
-                           //      data: data,
-                           //      success(res) {
-                           //          wx.getStorage({
-                           //              key:'app',
-                           //              success(res) {
-                           //                   wx.reLaunch({
-                           //                    url: '/pages/list/list?sessionid=' + res.data.data.sessionid
-                           //                  })
-                           //              }
-                           //          })
-                                   
-                           //      }
-                           //  })
-
-                        // } else {
                             let sessionid = res.data.data.sessionid
                             //如果已经登录，设置storage，初始化列表页
                             wx.setStorage({

@@ -6,10 +6,8 @@ Page({
         joinProjectList: [],
         myProjectListTemp: [],
         joinProjectListTemp: [],
-
         animationData: {},
         searchText: '',
-        // searching: false,
         searchImg: app.data.staticImg.search,
         clearImg: app.data.staticImg.clear,
         hideClear: true,
@@ -147,43 +145,6 @@ Page({
         })
     },
 
-    refresh(e) {
-        var self = this;
-
-        // wx.startPullDownRefresh()
-        // setTimeout(() => {
-        //     let data = []
-        //     self.setData({
-        //       page: 1
-        //     })
-        //     for(let i = 1; i <= 10; i ++ ){
-        //       data.push(i)
-        //     }
-        //     self.setData({
-        //         contentlist: data,
-        //     })
-        //     // wx.stopPullDownRefresh()
-        // }, 1000)
-    },
-
-
-    onPullDownRefresh() {
-        console.log("下拉")
-    },
-
-    // onReachBottom: function() {
-    //    let data = this.data.contentlist
-    //     this.setData({
-    //       page: ++this.data.page
-    //     })
-    //     for(let i = 10 * (this.data.page - 1) + 1; i <= this.data.page * 10; i ++ ){
-    //       data.push(i)
-    //     }
-    //     this.setData({
-    //         contentlist: data,
-    //     })
-    // },
-
     showMyProjects() {
         this.setData({
             hiddenMy: false,
@@ -199,32 +160,6 @@ Page({
             tabOne: '',
         })
     },
-
-    // loadMoreMyProjects(){
-    //     let data = this.data.joinProjectList
-    //     this.setData({
-    //       page: ++this.data.page
-    //     })
-    //     for(let i = 10 * (this.data.page - 1) + 1; i <= this.data.page * 10; i ++ ){
-    //       data.push(i)
-    //     }
-    //     this.setData({
-    //         joinProjectList: data,
-    //     })
-    // },
-
-    // loadMoreJoinProjects(){
-    //     let data = this.data.contentlist
-    //     this.setData({
-    //       page: ++this.data.page
-    //     })
-    //     for(let i = 10 * (this.data.page - 1) + 1; i <= this.data.page * 10; i ++ ){
-    //       data.push(i)
-    //     }
-    //     this.setData({
-    //         contentlist: data,
-    //     })
-    // },
 
     toProject(e) {
         wx.setStorage({
@@ -244,7 +179,7 @@ Page({
                 })
             }
         }, 500)
-        
+
         if (!this.data.searching) {
             this.animation.width("100%").step()
             this.setData({
