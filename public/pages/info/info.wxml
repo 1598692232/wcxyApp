@@ -1,6 +1,6 @@
 
 <view class="section tc" style="height: {{scrollHeightAll}}px">
-  <video id="myVideo" class="info-video" src="{{url}}" enable-danmu controls objectFit="cover" autoplay bindtimeupdate="getVideoTime" bindpause="getVideoTime2"></video>
+  <video id="myVideo" class="info-video" src="{{url}}" enable-danmu controls objectFit="cover" autoplay bindtimeupdate="getVideoTime" bindpause="getVideoTime2" muted="{{muted}}"></video>
   <view class="video-info">
       <scroll-view class="video-title" scroll-y>
           <text>{{name}}</text>

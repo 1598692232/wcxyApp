@@ -242,24 +242,33 @@ Page({
     delTouchMove(e) {
         if (!this.data.delTouching) return
         let tmx = e.touches[0].clientX
+         let moveX = tmx - this.data.tsx
         if (!this.data.showDel) { 
-           if (tmx - this.data.tsx > -10) return
-            let moveX = tmx - this.data.tsx
-            if (moveX < -60) return
-            this.data.callList[e.currentTarget.dataset.index].translateX = moveX
+
+            if (moveX < -60) {
+                moveX = -(Math.pow(Math.abs(moveX + 60), 0.8) + 60)
+            }
+            if (moveX > 0) {
+                moveX = Math.pow(Math.abs(moveX + 60), 0.8)
+            }
+
+            this.data.commentList[e.currentTarget.dataset.index].translateX = moveX
             this.setData({
-                callList: this.data.callList,
+                commentList: this.data.commentList,
                 tex: tmx
             })
         } else {
-            if (tmx - this.data.tsx < 0) return
-            let moveX = -60 + (tmx - this.data.tsx)
-            if (moveX > 10) {
-                return
+
+            if (moveX > 60) {
+                moveX = Math.pow(Math.abs(moveX - 60), 0.8)
             }
-            this.data.callList[e.currentTarget.dataset.index].translateX = moveX
+            if (moveX < 0) {
+                moveX = -(Math.pow(Math.abs(moveX + 60), 0.8) + 60)
+            }
+
+            this.data.commentList[e.currentTarget.dataset.index].translateX = moveX
             this.setData({
-                callList: this.data.callList,
+                commentList: this.data.commentList,
                 tex: tmx
             })
         }
@@ -268,7 +277,7 @@ Page({
 
     delTouchEnd(e) {
         if (!this.data.delTouching) return
-        let distanceX= this.data.tex - this.data.tsx
+        // let distanceX= this.data.tex - this.data.tsx
 
         this.setData({
             delTouching: false
@@ -289,9 +298,11 @@ Page({
                 showDel: false
             })
         }
+
         setTimeout(() => {
+            this.data.commentList[e.currentTarget.dataset.index].delTranstion = ''
             this.setData({
-                delTranstion: ''
+                commentList: this.data.commentList,
             })
         }, 300)
     },

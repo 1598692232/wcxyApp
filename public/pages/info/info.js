@@ -30,6 +30,7 @@ Page({
         tex: '',
         delTouching: false,
         showDel: false,
+        muted: false
     },
 
     onReady: function (res) {
@@ -117,7 +118,8 @@ Page({
 	// 评论输入框聚焦
 	commentFocus() {
         let self = this
-        this.videoCtx.pause()
+        
+        
 
         let res = wx.getStorageSync('app')
 
@@ -131,10 +133,26 @@ Page({
                 }
               }
             })
-        } else {
+        } else { 
+
+            // 延时处理拖动不能获取播放时间的问题
+            self.videoCtx.play()
             self.setData({
-                focusTime: self.data.videoTime
+                muted: true
             })
+            setTimeout(() => {
+                self.videoCtx.pause()
+                let videoTime = self.data.videoTime
+                self.setData({
+                    videoTime: videoTime - 0.5,
+                    muted: false
+                })
+                self.videoCtx.seek(videoTime - 0.5)
+                self.setData({
+                    focusTime: parseInt(self.data.videoTime)
+                })
+            }, 500)
+            
         }
 	},
 
@@ -234,7 +252,7 @@ Page({
 	 // 获取播放时间
 	 getVideoTime(e) {
  		this.setData({
- 			videoTime: parseInt(e.detail.currentTime)
+ 			videoTime: e.detail.currentTime
  		})
 	 },
 
@@ -287,10 +305,10 @@ Page({
 
         if (realname1 != realname2) return
 
-        this.data.commentList.map(item => {
-            item.translateX = '',
-            item.delTranstion = 'del-transtion'
-        })
+        // this.data.commentList.map(item => {
+        //     item.translateX = '',
+        //     item.delTranstion = 'del-transtion'
+        // })
         this.setData({
             tsx: e.touches[0].clientX,
             delTouching: true
@@ -300,21 +318,30 @@ Page({
     delTouchMove(e) {
         if (!this.data.delTouching) return
         let tmx = e.touches[0].clientX
+        let moveX = tmx - this.data.tsx
         if (!this.data.showDel) { 
-           if (tmx - this.data.tsx > -10) return
-            let moveX = tmx - this.data.tsx
-            if (moveX < -60) return
+
+            if (moveX < -60) {
+                moveX = -(Math.pow(Math.abs(moveX + 60), 0.8) + 60)
+            }
+            if (moveX > 0) {
+                moveX = Math.pow(Math.abs(moveX + 60), 0.8)
+            }
+
             this.data.commentList[e.currentTarget.dataset.index].translateX = moveX
             this.setData({
                 commentList: this.data.commentList,
                 tex: tmx
             })
         } else {
-            if (tmx - this.data.tsx < 0) return
-            let moveX = -60 + (tmx - this.data.tsx)
-            if (moveX > 10) {
-                return
+
+            if (moveX > 60) {
+                moveX = Math.pow(Math.abs(moveX - 60), 0.8)
             }
+            if (moveX < 0) {
+                moveX = -(Math.pow(Math.abs(moveX + 60), 0.8) + 60)
+            }
+
             this.data.commentList[e.currentTarget.dataset.index].translateX = moveX
             this.setData({
                 commentList: this.data.commentList,
@@ -326,7 +353,7 @@ Page({
 
     delTouchEnd(e) {
         if (!this.data.delTouching) return
-        let distanceX= this.data.tex - this.data.tsx
+        // let distanceX= this.data.tex - this.data.tsx
 
         this.setData({
             delTouching: false
@@ -347,9 +374,11 @@ Page({
                 showDel: false
             })
         }
+
         setTimeout(() => {
+            this.data.commentList[e.currentTarget.dataset.index].delTranstion = ''
             this.setData({
-                delTranstion: ''
+                commentList: this.data.commentList,
             })
         }, 300)
     },
