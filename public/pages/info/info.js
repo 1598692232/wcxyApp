@@ -51,7 +51,7 @@ Page({
                     scrollHeight: res.windowHeight - 345,
                 	url: options.url,
                 	name: options.name,
-                	project_id: wx.getStorageSync('project_id') || options.projectId,
+                	project_id: options.projectId,
                 	doc_id: options.id,
                 	username: options.username,
                 	createTime: options.createTime,
@@ -125,8 +125,9 @@ Page({
         let self = this
 
         let res = wx.getStorageSync('app')
+        let pids = wx.getStorageSync('project_ids')
 
-        if (res.token == '') {
+        if (res.token == '' || pids.indexOf(self.data.project_id) < 0) {
             let infoData = {
                 url: self.data.url,
                 name: self.data.name,

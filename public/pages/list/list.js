@@ -102,6 +102,7 @@ Page({
                         myProjectListTemp: res.data.data.list
                     })
                     self.setAllProjects()
+
                     wx.hideLoading()
                 } else {
                     wx.showModal({
@@ -141,7 +142,15 @@ Page({
 
     setAllProjects() {
         let searchList = []
+        let projectIds = []
         let searchFinalList = searchList.concat(this.data.myProjectList, this.data.joinProjectList)
+        searchFinalList.forEach(v => {
+            projectIds.push(v.id)
+        })
+        wx.setStorage({
+            key: 'project_ids',
+            data: projectIds
+        })
         this.setData({
             searchList: searchFinalList
         })
