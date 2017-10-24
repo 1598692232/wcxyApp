@@ -213,7 +213,7 @@ Page({
         // ajax处理登录，成功后存储本地信息
         // 本地存储用户信息
         let store = wx.getStorageSync('app')
-        console.log(store, 88877)
+
         let reqData = Object.assign({}, e.detail.value, {sessionid: store.sessionid})
         reqData.login_id = parseInt(reqData.login_id)
         wx.showLoading()
