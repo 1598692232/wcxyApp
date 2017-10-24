@@ -146,7 +146,7 @@ Page({
               content: text,
               success: function(res) {
                 if (res.confirm) {
-                    wx.reLaunch({url: '/pages/signin/signin'})
+                    wx.navigateTo({url: '/pages/signin/signin'})
                 }
               }
             })

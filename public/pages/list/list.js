@@ -50,12 +50,10 @@ Page({
         let store = wx.getStorageSync('app')
 
         if (store.token == '') {
-            console.log(111)
             wx.navigateTo({
                 url: '/pages/signin/signin'
             })
         } else {
-console.log(2222)
             // 评论输入框动画注册
             let animation = wx.createAnimation({
                 duration: 300,
