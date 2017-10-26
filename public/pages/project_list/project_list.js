@@ -116,7 +116,6 @@ console.log(this.data.tx)
                         content: '获取成员头像失败！',
                     })
                 }
-                console.log(res,88888)
             }
         })
     },
