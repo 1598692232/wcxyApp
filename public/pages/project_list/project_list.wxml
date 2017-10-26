@@ -12,9 +12,9 @@
 	<scroll-view class="pl-list" scroll-y style="height: {{scrollHeight}}px" bindscrolltolower="loadMore" lower-threshold="100">
 		<scroll-view class="join-member" scroll-x wx:if="{{!showBreadcrumb}}"> 
 			<view class="join-member-list" id="join-member">
-				<view class="join-member-li">
-					<image src="{{sx}}" class="join-member-tx" mode="aspectFit"></image>
-					<view class="join-member-name">asdasds asdasd</view>
+				<view class="join-member-li" wx:for="{{txList}}" wx:key="index" >
+					<image src="{{item.avatar}}" class="join-member-tx" mode="aspectFit"></image>
+					<view class="join-member-name">{{item.realname}}</view>
 				</view>
 			</view>
 		</scroll-view>

@@ -6,22 +6,23 @@ Page({
 		videoImg: app.data.staticImg.videoImg,
         dirImg: app.data.staticImg.dir,
 		sx: app.data.staticImg.sx,
-		manager: app.data.staticImg.manager,
+        tx: app.data.staticImg.manager,
 		videoList: [],
         breadcrumbList: [],
+        txList: [],
 		liWidth: 0,
 		scrollHeight: 0,
 		page: 1,
         breadcrumbWidth: '',
         projectName: '',
         query: '',
-        showBreadcrumb: false
+        showBreadcrumb: false,
 	},
 
 	onLoad(options) {
 		let self = this;
         wx.showLoading()
-
+console.log(this.data.tx)
         wx.getSystemInfo({
             success: function (result) {
                 self.setData({
@@ -47,7 +48,7 @@ Page({
                                 item.created_time = Util.getCreateTime(item.created_at)
                                 let sec = item.project_file.time % 60
                                 item.project_file.time = Util.timeToMinAndSec(item.project_file.time)
-                                item.user_info.avatar = item.user_info.avatar == '' ? self.data.manager : item.user_info.avatar
+                                item.user_info.avatar = item.user_info.avatar == '' ? self.data.tx : item.user_info.avatar
                                 item.size_text = (item.size / Math.pow(1024, 2)).toFixed(2)
                             })
 
@@ -83,7 +84,45 @@ Page({
 
             }
         });
-	},
+    },
+    
+
+    onShow() {
+        let self = this
+        // 获取参与成员头像姓名
+        let store = wx.getStorageSync('app')
+        let reqData = Object.assign({}, store, {
+            project_id: wx.getStorageSync('project_id')
+        })
+        wx.request({
+            url: store.host + '/wxapi/member/project',
+            data: reqData,
+            header: {
+                'content-type': 'application/json' // 默认值
+            },
+            method: 'get',
+            success: function(res) {
+                if (res.data.status == 1) {
+                    res.data.data.list.forEach(item => {
+                        item.avatar = item.avatar == '' ? self.data.tx : item.avatar
+                    })
+
+                    self.setData({
+                        txList: res.data.data.list
+                    })
+                } else {
+                    wx.showModal({
+                        title: '提示',
+                        content: '获取成员头像失败！',
+                    })
+                }
+                console.log(res,88888)
+            }
+        })
+    },
+
+
+
 
     selectFolder(e) {
         let self = this
@@ -108,7 +147,7 @@ Page({
                         item.created_time = Util.getCreateTime(item.created_at)
                         let sec = item.project_file.time % 60
                         item.project_file.time = Util.timeToMinAndSec(item.project_file.time)
-                        item.user_info.avatar = item.user_info.avatar == '' ? self.data.manager : item.user_info.avatar
+                        item.user_info.avatar = item.user_info.avatar == '' ? self.data.tx : item.user_info.avatar
                     })
 
                     self.setData({
