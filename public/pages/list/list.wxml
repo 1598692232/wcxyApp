@@ -15,7 +15,7 @@
        <!--  <view class="list-tabs">
         </view> -->
 
-      <view style="min-height:{{scrollHeight}}px;background:#252432">
+      <scroll-view style="height:{{scrollHeight}}px;background:#252432" scroll-y>
         <!-- 我的项目 -->
         <view class="list-tab" bindtap="showMyProjects">
           <text>我的项目</text>
@@ -23,15 +23,15 @@
         <!-- bindscrolltolower="loadMoreMyProjects" bindscrolltoupper="refresh" -->
         <view class="list-body">          
             <block wx:if="{{myProjectList.length > 0}}">
-              <view class="item clearfix" wx:for="{{myProjectList}}" wx:key="index" bindtap="toProject" data-id="{{item.id}}" data-name="{{item.name}}">
-               <!--  <view class="item-left">
-                  <image src="{{projectImg}}" mode="aspectFit" lazy-load="{{true}}"></image>
-                </view> -->
+              <view class="item clearfix" wx:for="{{myProjectList}}" wx:key="index" bindtap="toProject" data-id="{{item.id}}" data-name="{{item.name}}"
+              style="border-bottom: {{myProjectList.length - 1 == index ? '0px' : '5px solid #252432)'}};">
+                <view class="item-left">
+                  <image src="./pro.png" mode="aspectFit" lazy-load="{{true}}"></image>
+                </view>
                  <!-- style="width: {{listInfoWidth}}px" -->
-                <view class="item-right"
-                  style="border-bottom: {{myProjectList.length - 1 == index ? '0px' : '1px solid rgba(0,0,0,.2)'}}">
+                <view class="item-right" style="width: {{liWidth}}px">
                   <text class="item-title">{{item.name}}</text>
-                  <!-- <text class="item-des">{{item.name}}</text> -->
+                  <text class="item-des">包含8项，共992.43M</text>
                 </view>
               </view>
             </block>
@@ -48,14 +48,14 @@
         </view>
         <view class="list-body"s>
             <block wx:if="{{joinProjectList.length > 0}}">
-              <view class="item clearfix" wx:for="{{joinProjectList}}" wx:key="index" bindtap="toProject" data-name="{{item.name}}" wx:if="{{joinProjectList.length > 0}}">
-                <!-- <view class="item-left">
-                  <image src="{{projectImg}}" mode="aspectFit" lazy-load="{{true}}"></image>
-                </view> -->
-                <view class="item-right"
-                  style="border-bottom: {{joinProjectList.length - 1 == index ? '0px' : '1px solid rgba(0,0,0,.2)'}}">
+              <view class="item clearfix" wx:for="{{joinProjectList}}" wx:key="index" bindtap="toProject" data-name="{{item.name}}" data-id="{{item.project_number}}" wx:if="{{joinProjectList.length > 0}}"
+                  style="border-bottom: {{joinProjectList.length - 1 == index ? '0px' : '5px solid #252432'}}">
+                <view class="item-left">
+                  <image src="./pro.png" mode="aspectFit" lazy-load="{{true}}"></image>
+                </view>
+                <view class="item-right" style="width: {{liWidth}}px">
                   <text class="item-title">{{item.name}}</text>
-                  <!-- <text class="item-des">{{item.name}}</text> -->
+                  <text class="item-des">包含8项，共992.43M</text>
                 </view>
               </view>
             </block>
@@ -64,7 +64,7 @@
               </view>
         </view>
 
-      </view>
+      </scroll-view>
 
           <!-- <scroll-view class="list-body" scroll-y="true"  style="height: {{scrollHeight}}px" bindscrolltoupper="refresh" scroll-with-animation="true">
               <view class="item clearfix" wx:for="{{searchResults}}" wx:key="index" bindtap="toProject">

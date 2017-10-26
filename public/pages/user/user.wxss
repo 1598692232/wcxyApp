@@ -10,6 +10,7 @@
   height: 128rpx;
   margin: 20rpx;
   border-radius: 50%;
+  background: #000;
 }
 
 .userinfo-nickname {
@@ -18,4 +19,17 @@
 
 .usermotto {
   margin-top: 200px;
+}
+.user-control{
+  margin-top: 20px; 
+  padding: 20px;
+  width: 100%;
+}
+.login-out{
+  background: #003de4;
+  color: #fff;
+  /* line-height: 40px; */
+  border-radius: 0; 
+  width: 100%;
+  font-size:18px;
 }

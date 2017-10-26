@@ -13,7 +13,9 @@ Page({
 		scrollHeight: 0,
 		page: 1,
         breadcrumbWidth: '',
-        projectName: ''
+        projectName: '',
+        query: '',
+        showBreadcrumb: false
 	},
 
 	onLoad(options) {
@@ -23,11 +25,12 @@ Page({
         wx.getSystemInfo({
             success: function (result) {
                 self.setData({
-                    liWidth: (result.windowWidth - 30) / 2,
-
+                    liWidth: result.windowWidth - 160,
+                    query: wx.createSelectorQuery(),
+                    scrollHeight: result.windowHeight - 30
                 })
                 wx.setNavigationBarTitle({title: options.projectName})
-
+                let wh = result.windowHeight
                 let store = wx.getStorageSync('app')
                 let reqData = Object.assign({}, store, options)
                 wx.request({
@@ -39,12 +42,13 @@ Page({
                     method: 'get',
                     success: function(res) {
                         if (res.data.status == 1) {
+                           
                             res.data.data.list.map(item => {
                                 item.created_time = Util.getCreateTime(item.created_at)
                                 let sec = item.project_file.time % 60
                                 item.project_file.time = Util.timeToMinAndSec(item.project_file.time)
                                 item.user_info.avatar = item.user_info.avatar == '' ? self.data.manager : item.user_info.avatar
-
+                                item.size_text = (item.size / Math.pow(1024, 2)).toFixed(2)
                             })
 
                             self.setData({
@@ -55,6 +59,19 @@ Page({
                                 breadcrumbWidth: 100
                             })
                              wx.hideLoading()
+
+                            //  setTimeout(() => {
+                            //     wx.createSelectorQuery().select('#join-member').fields({
+                            //         dataset: true,
+                            //         size: true,
+                            //         scrollOffset: true,
+                            //         properties: ['scrollX', 'scrollY']
+                            //       }, function(res){
+                            //           self.setData({
+                            //             scrollHeight: wh - res.height
+                            //           })
+                            //       }).exec()
+                            //  })
                         } else {
                             wx.showModal({
                               title: '提示',
@@ -99,6 +116,15 @@ Page({
                         breadcrumbList: [].concat([{id: 0, name: self.data.projectName}],res.data.data.breadcrumb),
                         breadcrumbWidth: 100 + res.data.data.breadcrumb * 100
                     })
+                    if (e.currentTarget.dataset.id == 0) {
+                        self.setData({
+                            showBreadcrumb: false
+                        })
+                    } else {
+                        self.setData({
+                            showBreadcrumb: true
+                        })
+                    }                    
                      wx.hideLoading()
                 } else {
                     wx.showModal({

@@ -29,6 +29,7 @@ Page({
                 self.setData({
                     scrollHeight: res.windowHeight - 40,
                     listInfoWidth: res.windowWidth - 110,
+                    liWidth: res.windowWidth - 110
                 })
 
                 let infoData = wx.getStorageSync('info_data')
@@ -46,7 +47,6 @@ Page({
     },
 
     onShow() {
-
         let store = wx.getStorageSync('app')
 
         if (store.token == '') {
