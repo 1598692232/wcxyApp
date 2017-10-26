@@ -8,12 +8,7 @@ Page({
 	    commentIsFocus: false,
 	    // hideSendComment: true,
 
-	    commentList:[
-	    // {time: 10, minTime:0, secTime: 10, text: 'text'},
-	    // {time: 20,minTime:0, secTime: 20, text: 'text'},
-	    // {time: 30,minTime:0, secTime: 30, text: 'text'},
-	    // {time: 40,minTime:0, secTime: 40, text: 'text'}
-	    ],
+	    commentList:[],
 	    // animationData: {},
 	    commentText: '',
 

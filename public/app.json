@@ -6,7 +6,9 @@
     "pages/index/index",
     "pages/logs/logs",
     "pages/call_back/call_back",
-    "pages/project_list/project_list"
+    "pages/project_list/project_list",
+    "pages/forget/forget",
+    "pages/forget_next/forget_next"
   ],
   "window":{
     "backgroundTextStyle":"light",

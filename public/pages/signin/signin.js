@@ -13,7 +13,6 @@ Page({
 		passwordText: '',
 		emailFocus: false,
 		passwordFocus: false,
-		scrollHeight: 0,
 		hiddenEmailClear: true,
 		hiddenPasswordClear: true,
         errMsg: '',
