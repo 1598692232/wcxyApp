@@ -26,7 +26,23 @@ Page({
         tex: '',
         delTouching: false,
         showDel: false,
-        muted: false
+        muted: false,
+
+        username:'',
+        createTime: '',
+        versionSelect: false,
+        PSelect: false,
+        selectY: '',
+        selectWidth: '',
+        arrowX: '',
+        info: '',
+        initVideoTime: 0,
+        versionNo: 1,
+        pNo: '',
+        versions: '',
+        ps: '',
+        versionActive:0,
+        Pactive: 0
     },
 
     onReady: function (res) {
@@ -45,19 +61,116 @@ Page({
                 self.setData({
                 	scrollHeightAll: res.windowHeight,
                     scrollHeight: res.windowHeight - 345,
-                	url: options.url,
-                	name: options.name,
+                    selectWidth: res.windowWidth - 20,
+                	// url: options.url,
+                	// name: options.name,
                 	project_id: options.projectId,
-                	doc_id: options.id,
-                	username: options.username,
-                	createTime: options.createTime,
-                    coverImg: options.coverImg
+                    doc_id: options.id,
+                    versionActive: options.id,
+                	// username: options.username,
+                	// createTime: options.createTime,
+                    // coverImg: options.coverImg
                 })
                 wx.setNavigationBarTitle({title: options.name})
 
 
             }
         });
+    },
+
+    getVideoInfo(host, reqData, fn) {
+        let self = this
+        wx.showLoading()
+        wx.request({
+            url: host + '/wxapi/file/info',
+            data: reqData,
+            header: {
+                'content-type': 'application/json' // 默认值
+            },
+            method: 'get',
+            success: function(res) {
+                wx.hideLoading()
+                if (res.data.status == 1) {
+                    // res.data.data.versions.map(item => {
+                    //     if (self.data.versionActive == item.) {
+
+                    //     }
+                    // })
+                    self.setData({
+                        info: res.data.data,
+                    })
+                    if (fn != undefined) {
+                        fn(res.data.data)
+                    }
+                } else {
+                    wx.showModal({
+                        title: '提示',
+                        content: '获取视频数据失败！',
+                    })
+                }
+            }
+        })
+    },
+
+    changeVersion(e) {
+        let self = this
+        let store = wx.getStorageSync('app')
+	    let reqData = Object.assign({}, store, {
+	    	doc_id: e.currentTarget.dataset.id,
+	    	project_id: this.data.project_id,
+        })
+
+        self.getVideoInfo(store.host, reqData, (data) => {
+            data.versions.forEach(item => {
+                if (item.doc_id == e.currentTarget.dataset.id) {
+                    item.activeVersion = true
+                } else {
+                    item.activeVersion = false
+                }
+            })
+
+            data.resolution.forEach((item, k) => {
+                if (item.resolution == self.data.pNo) {
+                    item.activeP = true
+                    self.setData({
+                        url: item.src,
+                    })
+                } else {
+                    item.activeP = false
+                }
+            })
+
+            self.setData({
+                versions: data.versions,
+                ps: data.resolution,
+                initVideoTime: self.data.videoTime,
+                versionNo: e.currentTarget.dataset.index,
+                username: data.realname,
+                createTime: Util.getCreateTime(data.created_at)
+            })
+
+            self.videoCtx.play()
+        })
+    },
+    
+    changeP(e) {
+        let self = this
+        self.data.ps.forEach(item => {
+            if (item.resolution == e.currentTarget.dataset.resolution) {
+                item.activeP = true
+                self.setData({
+                    url: item.src,
+                    pNo: item.resolution,
+                })
+            } else {
+                item.activeP = false
+            }             
+        })
+
+        self.setData({
+            ps: self.data.ps,
+        })
+
     },
 
     onShow() {
@@ -82,11 +195,35 @@ Page({
 	    	project_id: this.data.project_id,
 	    	// sort: 0
         })
-        
-        // wx.request({
-        //     url: store.host + '/wxapi/file/info'
-        // })
 
+        self.getVideoInfo(store.host, reqData, (data) => {
+            data.versions.forEach((item, index)=> {
+                if (index == 0) {
+                    item.activeVersion = true
+                } else {
+                    item.activeVersion = false
+                }
+            })
+
+            data.resolution.forEach((item, k) => {
+                if (k == 0) {
+                    item.activeP = true
+                } else {
+                    item.activeP = false
+                }
+            })
+
+            self.setData({
+                versions: data.versions,
+                ps: data.resolution,
+                versionNo: 1,
+                pNo: data.resolution[0].resolution,
+                url:  data.resolution[0].src,
+                username: data.realname,
+                createTime: Util.getCreateTime(data.created_at)
+            })
+        })
+        
 	    wx.request({
             url: store.host + '/wxapi/comment',
             data: reqData,
@@ -95,6 +232,7 @@ Page({
             },
             method: 'get',
             success: function(res) {
+                wx.hideLoading()
                 if (res.data.status == 1) {
                 	res.data.data.list.map(item => {
                 		item.comment_time = Util.timeToMinAndSec(item.media_time)
@@ -107,9 +245,6 @@ Page({
                     self.setData({
                     	commentList: res.data.data.list
                     })
-
-                    wx.hideLoading()
-                    
                 } else {
                     wx.showModal({
                       title: '提示',
@@ -481,7 +616,51 @@ Page({
                 }
             }
         })
-    }
+    },
     // 删除评论 end
+
+    selectVersionAndP(e) {
+        let self = this
+        if (e.currentTarget.dataset.id == 'version-select') {
+            self.setData({
+                versionSelect: true
+            })
+        } else {
+            this.setData({
+                PSelect: true
+            })    
+        }
+        
+        let $ = wx.createSelectorQuery()
+
+        $.select(`#${e.currentTarget.dataset.id}`).boundingClientRect()
+        $.selectViewport().scrollOffset()
+        $.exec(function(res){
+            self.setData({
+                arrowX:e.currentTarget.dataset.id == 'version-select' ? 10 : res[0].left + 10,
+                selectY: res[0].top + 50,
+            })     
+        })
+
+        // wx.createSelectorQuery().select('#version-select').fields({
+        // dataset: true,
+        // size: true,
+        // scrollOffset: true,
+        // properties: ['scrollX', 'scrollY']
+        // }, function(res){
+        //     console.log(res)
+        //     self.setData({
+        //         selectX:0,
+        //         selectY: 0,
+        //     })
+        // }).exec()
+    },
+
+    hideSelect() {
+        this.setData({
+            PSelect: false,
+            versionSelect: false,
+        })
+    }
 
 })

@@ -1,4 +1,4 @@
-var Util = require('../../utils/util.js')
+let Util = require('../../utils/util.js')
 const app = getApp()
 
 Page({
