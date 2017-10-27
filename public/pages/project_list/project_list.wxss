@@ -198,16 +198,17 @@
 	display: flex;
 	position: relative;
 	flex-wrap: nowrap;
-	padding: 10px 0;
+	padding-left: 80px;
 	height: 81px;
-	justify-content: center;
+	/* justify-content: center; */
+	align-items: center;
 }
 .join-member-intro{
 	position: absolute;
-	height: 30px;
+	height: 40px;
 	top: 50%;
 	left: 0;
-	margin-top: -15px;
+	margin-top: -20px;
 	width: 80px;
 }
 .join-member-intro image{
@@ -222,26 +223,29 @@
 	width: 100%;
 	position: relative;
 	z-index:1;
-	line-height: 30px;
+	line-height: 40px;
 	color:#fff;
 	text-align: center;
 	font-size: 12px;
 }
 .join-member-li{
 	display: flex;
-	width: 80px;
-	padding:0 10px;
-	/* height: 100px; */
-	align-items: center;
-	flex-direction: column
-}
-.join-member-tx{
-	border: 2px solid #fff;
 	width: 40px;
 	height: 40px;
+	/* padding:0 10px; */
+	/* height: 100px; */
+	align-items: center;
+	justify-content: center;
+	/* flex-direction: column */
+}
+.join-member-tx{
+	/* border: 2px solid #fff; */
+	width: 30px;
+	height: 30px;
 	border-radius: 50%;
 	overflow: hidden;
 }
+
 .join-member-name{
 	text-align: center;
 	color:#fff;

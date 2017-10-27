@@ -14,7 +14,7 @@
 			<view class="join-member-list" id="join-member">
 				<view class="join-member-li" wx:for="{{txList}}" wx:key="index" >
 					<image src="{{item.avatar}}" class="join-member-tx" mode="scaleToFill"></image>
-					<view class="join-member-name">{{item.realname}}</view>
+					<!-- <view class="join-member-name">{{item.realname}}</view> -->
 				</view>
 				<view class="join-member-intro">
 					<image src="./bg1.png" mode="scaleToFill"></image>	

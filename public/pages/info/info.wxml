@@ -1,6 +1,21 @@
 
 <view class="section tc" style="height: {{scrollHeightAll}}px">
-  <video id="myVideo" class="info-video" initial-time="{{initVideoTime}}" src="{{url}}" enable-danmu controls objectFit="cover" autoplay bindtimeupdate="getVideoTime" bindpause="getVideoTime2" muted="{{muted}}"></video>
+  <video id="myVideo" class="info-video" initial-time="{{initVideoTime}}" src="{{url}}" enable-danmu controls objectFit="cover" 
+  autoplay bindtimeupdate="getVideoTime" bindpause="getVideoTime2" muted="{{muted}}" bindfullscreenchange="handleFullScreen">
+      <block wx:if="{{fullScreen}}">
+        <cover-view class="video-select-btn-p" bindtap="showPSelect">
+            {{pNo}}P
+        </cover-view>
+        <cover-view class="video-select-p-list">
+          <cover-view>
+            <cover-view wx:for="{{ps}}" wx:key="index" bindtap="changeP" style="color:{{item.activeP ? '#1144d5': ''}}"
+            data-resolution="{{item.resolution}}" class="video-select-p-li" bindtap="hidePSelect">
+                {{item.resolution}}
+            </cover-view>
+          </cover-view>
+        </cover-view>
+      </block>
+  </video>
   <view class="video-info">
       <view class="video-title">
           <!-- <text>{{name}}</text> -->

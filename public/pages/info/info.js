@@ -42,7 +42,9 @@ Page({
         versions: '',
         ps: '',
         versionActive:0,
-        Pactive: 0
+        Pactive: 0,
+        fullScreen: false,
+        fullScreenPSelect: false
     },
 
     onReady: function (res) {
@@ -660,6 +662,24 @@ Page({
         this.setData({
             PSelect: false,
             versionSelect: false,
+        })
+    },
+
+    handleFullScreen(e) {
+        this.setData({
+            fullScreen: e.detail.fullScreen ? true : false
+        })
+    },
+
+    showPSelect() {
+        this.setData({
+            fullScreenPSelect: true
+        })
+    },
+
+    hidePSelect() {
+        this.setData({
+            fullScreenPSelect: false
         })
     }
 
