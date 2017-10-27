@@ -4,7 +4,9 @@ Page({
 	data: {
         code: app.data.staticImg.code,
 		codeText: '',
-        scrollHeight: 0
+        scrollHeight: 0,
+        canSendCode: false,
+        sec: 60,
 	},
 
 	onLoad(options) {
@@ -20,5 +22,112 @@ Page({
         })
 
     },
+    
+    onShow() {
+        this.handleSendCodeTime()
+    },
+
+    handleSendCodeTime() {
+        let self = this
+        self.setData({
+            canSendCode: false,
+            sec: 60
+        })
+        let t = setInterval(() => {
+            if (self.data.sec <= 0) {
+                self.setData({
+                    canSendCode: true,
+                    sec: 0
+                })
+                clearInterval(t)
+                return
+            }
+            self.setData({
+                sec: --self.data.sec
+            })
+        }, 1000)
+    },
+
+    sendCode() {
+        this.handleSendCodeTime()
+
+        wx.request({
+			url: store.host + '/wxapi/sendvalidate',
+			data: {
+				sessionid: store.sessionid,
+				email: wx.getStorageSync('forget_email')
+			},
+			method: 'post',
+			header: {
+                'content-type': 'application/json' // 默认
+			},
+            success(res) {
+
+            }
+        })
+    },
+
+    handleLogin(e) {
+        let store = wx.getStorageSync('app')
+
+        wx.request({
+			url: store.host + '/wxapi/validatelogin',
+			data: {
+                sessionid: store.sessionid,
+                code: e.detail.value.code
+			},
+			method: 'post',
+			header: {
+                'content-type': 'application/json' // 默认
+			},
+			success(res) {
+                if (res.data.status == 1) {
+                    let data = Object.assign({}, store, res.data.data)
+                    wx.setStorage({
+                        key:"app",
+                        data: data,
+                        success() {
+                            wx.request({
+                                url: store.host + '/wxapi/user/info',
+                                data: data,
+                                success(res) {
+                                    if (res.data.status == 1) {
+                                        wx.setStorage({
+                                            key: 'user_info',
+                                            data: res.data.data
+                                        })
+                                        wx.reLaunch({
+                                            url: '/pages/list/list?sessionid=' + data.sessionid
+                                        })
+                                    } else {
+                                        wx.showModal({
+                                        title: '提示',
+                                        content: '未获取到当前用户信息',
+                                        showCancel: false
+                                        })
+                                    }
+                                }
+                              })
+                        }
+                    })
+
+                } else {
+
+                    wx.showModal({
+						title: '提示',
+						content: res.data.msg,
+						showCancel: false
+					})
+                }
+            },
+            fail() {
+				wx.showModal({
+					title: '提示',
+					content: '登录失败！',
+					showCancel: false
+				})
+			}
+        })
+    }
 
 })

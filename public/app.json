@@ -1,5 +1,6 @@
 {
   "pages":[
+    "pages/forget_next/forget_next",
     "pages/signin/signin",
     "pages/home/home",
     "pages/list/list",
@@ -8,8 +9,8 @@
     "pages/logs/logs",
     "pages/call_back/call_back",
     "pages/project_list/project_list",
-    "pages/forget/forget",
-    "pages/forget_next/forget_next"
+    "pages/forget/forget"
+
   ],
   "window":{
     "backgroundTextStyle":"dark",

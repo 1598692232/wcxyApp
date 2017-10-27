@@ -4,17 +4,17 @@
 			<image src="./xy.png" mode="aspectFit"></image>
 		</view>
 		<form bindsubmit="handleLogin">
-			<view class="login-input-body">
-				<image class="login-input-icon" src="{{code}}"></image>
-				<input type="text" name="code" class="login-input" placeholder="请输入邮箱收到的验证码" placeholder-style="font-size:13px;" value="{{codeText}}" />
+			<view>
+				<view class="login-input-body">
+					<image class="login-input-icon" src="{{code}}"></image>
+					<input type="text" name="code" class="login-input" placeholder="请输入邮箱收到的验证码" placeholder-style="font-size:13px;" value="{{codeText}}" />
+				</view>
+				
+				<view class="send-code" style="color: {{canSendCode ? '#fff' : '#'}}">
+					重新发送 <text wx:if="{{sec > 0}}">({{sec}})</text>
+				</view>
 			</view>
 			<button form-type="submit" class="login-btn" cursor-spacing="20">登录</button>
 		</form>
-	</view>
-
-	<view class="login-error-modal" hidden="{{hiddenErr}}" animation="{{animationData}}">
-		<view class="login-error-body">
-			<text>{{errMsg}}</text>
-		</view>
 	</view>
 
