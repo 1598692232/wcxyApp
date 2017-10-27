@@ -46,19 +46,17 @@ Page({
             duration: 500,
             timingFunction: "cubic-bezier(0.4, 0, 0.2, 1)"
         })
-        // 如果是登录退出操作，则返回
-        if (this.data.loginOut == 1) return
 
         wx.showLoading()
 
-        let store = wx.getStorageSync('app')
+        // let store = wx.getStorageSync('app')
         // stores.sessionId = res.data.data.sessionid
-        let newStorage = Object.assign({}, store)
-        newStorage.token = ''
-        wx.setStorage({
-          key:"app",
-          data: newStorage
-        })
+        // let newStorage = Object.assign({}, store)
+        // newStorage.token = ''
+        // wx.setStorage({
+        //   key:"app",
+        //   data: newStorage
+        // })
         
         let self = this
         wx.login({
@@ -112,6 +110,9 @@ Page({
                             })
 
                         } else {
+                            // 如果是登录退出操作，则返回
+                            if (self.data.loginOut == 1) return
+
                             let sessionid = res.data.data.sessionid
                             //如果已经登录，设置storage，初始化列表页
                             wx.setStorage({
@@ -125,11 +126,14 @@ Page({
                                               url: store.host + '/wxapi/user/info',
                                               data: res.data,
                                               success(res) {
-                                                    
+                                                  
                                                     if (res.data.status == 1) {
                                                         wx.setStorage({
                                                             key: 'user_info',
                                                             data: res.data.data
+                                                        })
+                                                        wx.reLaunch({
+                                                            url: '/pages/list/list?sessionid=' + sessionid
                                                         })
                                                     } else {
                                                         wx.showModal({
@@ -137,12 +141,6 @@ Page({
                                                           content: '未获取到当前用户信息',
                                                         })
                                                     }
-
-                                                    wx.reLaunch({
-                                                        url: '/pages/list/list?sessionid=' + sessionid
-                                                    })
-                                            
-
                                               }
                                             })
                                             

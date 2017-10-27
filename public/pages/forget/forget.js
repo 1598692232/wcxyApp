@@ -61,7 +61,6 @@ Page({
     },
 
     handleBlur(e) {
-
 		this.setData({
 			hiddenEmailClear: true,
 		})

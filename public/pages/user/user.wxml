@@ -1,8 +1,8 @@
 
 <view class="container" style="min-height: {{scrollHeight}}px">
   <view class="userinfo">
-      <image class="userinfo-avatar" src="{{manager}}" background-size="cover"></image>
-      <text class="userinfo-nickname">pzlpzl</text>
+      <image class="userinfo-avatar" src="{{avatar}}" background-size="cover"></image>
+      <text class="userinfo-nickname">{{realName}}</text>
   </view>
   <view class="user-control">
     <button class="login-out" bindtap="loginOut">退出登录</button>

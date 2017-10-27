@@ -120,9 +120,6 @@ console.log(this.data.tx)
         })
     },
 
-
-
-
     selectFolder(e) {
         let self = this
         wx.showLoading()

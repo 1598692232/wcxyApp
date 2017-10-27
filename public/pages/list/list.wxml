@@ -31,7 +31,7 @@
                  <!-- style="width: {{listInfoWidth}}px" -->
                 <view class="item-right" style="width: {{liWidth}}px">
                   <text class="item-title">{{item.name}}</text>
-                  <text class="item-des">包含8项，共992.43M</text>
+                  <text class="item-des">包含{{item.file_count}}项，共{{item.storage_size}}M</text>
                 </view>
               </view>
             </block>
@@ -55,7 +55,7 @@
                 </view>
                 <view class="item-right" style="width: {{liWidth}}px">
                   <text class="item-title">{{item.name}}</text>
-                  <text class="item-des">包含8项，共992.43M</text>
+                  <text class="item-des">包含{{item.file_count}}项，共{{item.storage_size}}M</text>
                 </view>
               </view>
             </block>

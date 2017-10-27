@@ -48,7 +48,7 @@ Page({
 
     onShow() {
         let store = wx.getStorageSync('app')
-
+        console.log(store, 8888)
         if (store.token == '') {
             wx.navigateTo({
                 url: '/pages/signin/signin'
@@ -108,6 +108,9 @@ Page({
             method: 'get',
             success: function(res) {
                 if (res.data.status == 1) {
+                    res.data.data.list.forEach(item => {
+                        item.storage_size = (item.storage_count / Math.pow(1024, 2)).toFixed(2)
+                    })
                     self.setData({
                         myProjectList: res.data.data.list,
                         myProjectListTemp: res.data.data.list
@@ -136,6 +139,9 @@ Page({
             method: 'get',
             success: function(res) {
                 if (res.data.status == 1) {
+                    res.data.data.list.forEach(item => {
+                        item.storage_size = (item.storage_count / Math.pow(1024, 2)).toFixed(2)
+                    })
                     self.setData({
                         joinProjectList: res.data.data.list,
                         joinProjectListTemp: res.data.data.list
