@@ -159,6 +159,7 @@ Page({
                 },
                 fail(res) {
                     let rs = JSON.stringify(res)
+                    wx.hideLoading()
                     wx.showModal({
                       title: '提示',
                       content: rs,

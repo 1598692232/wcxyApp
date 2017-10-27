@@ -196,8 +196,36 @@
 }
 .join-member-list{
 	display: flex;
+	position: relative;
 	flex-wrap: nowrap;
-	padding: 10px 0 
+	padding: 10px 0;
+	height: 81px;
+	justify-content: center;
+}
+.join-member-intro{
+	position: absolute;
+	height: 30px;
+	top: 50%;
+	left: 0;
+	margin-top: -15px;
+	width: 80px;
+}
+.join-member-intro image{
+	position: absolute;
+	left: 0;
+	top: 0;
+	z-index:0;
+	width:100%;
+	height:100%;	
+}
+.join-member-intro-text{
+	width: 100%;
+	position: relative;
+	z-index:1;
+	line-height: 30px;
+	color:#fff;
+	text-align: center;
+	font-size: 12px;
 }
 .join-member-li{
 	display: flex;

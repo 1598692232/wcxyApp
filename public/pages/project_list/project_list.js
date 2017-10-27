@@ -42,6 +42,7 @@ console.log(this.data.tx)
                     },
                     method: 'get',
                     success: function(res) {
+                        wx.hideLoading()
                         if (res.data.status == 1) {
                            
                             res.data.data.list.map(item => {
@@ -59,8 +60,6 @@ console.log(this.data.tx)
                                 scrollHeight: result.windowHeight - 30,
                                 breadcrumbWidth: 100
                             })
-                             wx.hideLoading()
-
                             //  setTimeout(() => {
                             //     wx.createSelectorQuery().select('#join-member').fields({
                             //         dataset: true,
@@ -94,6 +93,7 @@ console.log(this.data.tx)
         let reqData = Object.assign({}, store, {
             project_id: wx.getStorageSync('project_id')
         })
+        wx.showLoading()
         wx.request({
             url: store.host + '/wxapi/member/project',
             data: reqData,
@@ -102,6 +102,7 @@ console.log(this.data.tx)
             },
             method: 'get',
             success: function(res) {
+                wx.hideLoading()
                 if (res.data.status == 1) {
                     res.data.data.list.forEach(item => {
                         item.avatar = item.avatar == '' ? self.data.tx : item.avatar
@@ -122,12 +123,12 @@ console.log(this.data.tx)
 
     selectFolder(e) {
         let self = this
-        wx.showLoading()
         let store = wx.getStorageSync('app')
         let reqData = Object.assign({}, store, {
             doc_id: e.currentTarget.dataset.id,
             project_id: wx.getStorageSync('project_id')
         })
+         wx.showLoading()
          wx.request({
             url: store.host + '/wxapi/project/file',
             data: reqData,
@@ -136,7 +137,7 @@ console.log(this.data.tx)
             },
             method: 'get',
             success: function(res) {
-
+                wx.hideLoading()
                 if (res.data.status == 1) {
 
                     res.data.data.list.map(item => {
@@ -160,7 +161,7 @@ console.log(this.data.tx)
                             showBreadcrumb: true
                         })
                     }                    
-                     wx.hideLoading()
+               
                 } else {
                     wx.showModal({
                       title: '提示',
@@ -184,6 +185,8 @@ console.log(this.data.tx)
                 + e.currentTarget.dataset.name + '&id=' + e.currentTarget.dataset.id 
                 + '&username=' + e.currentTarget.dataset.username + '&createTime=' + e.currentTarget.dataset.createTime
                 + '&coverImg=' + e.currentTarget.dataset.coverImg + '&projectId=' + wx.getStorageSync('project_id')
+
+            // let url = '/pages/info/info?doc_id=' + e.currentTarget.dataset.id  + '&project_id' + wx.getStorageSync('project_id')
             wx.navigateTo({
                 url: url
             })

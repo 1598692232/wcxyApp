@@ -81,7 +81,11 @@ Page({
 	    	doc_id: self.data.doc_id,
 	    	project_id: this.data.project_id,
 	    	// sort: 0
-	    })
+        })
+        
+        // wx.request({
+        //     url: store.host + '/wxapi/file/info'
+        // })
 
 	    wx.request({
             url: store.host + '/wxapi/comment',

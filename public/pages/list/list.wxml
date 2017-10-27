@@ -25,11 +25,11 @@
             <block wx:if="{{myProjectList.length > 0}}">
               <view class="item clearfix" wx:for="{{myProjectList}}" wx:key="index" bindtap="toProject" data-id="{{item.id}}" data-name="{{item.name}}"
               style="border-bottom: {{myProjectList.length - 1 == index ? '0px' : '5px solid #252432)'}};">
-                <view class="item-left">
+                <!-- <view class="item-left">
                   <image src="./pro.png" mode="aspectFit" lazy-load="{{true}}"></image>
-                </view>
-                 <!-- style="width: {{listInfoWidth}}px" -->
-                <view class="item-right" style="width: {{liWidth}}px">
+                </view> -->
+                 <!-- style="width: {{liWidth}}px" -->
+                <view class="item-right">
                   <text class="item-title">{{item.name}}</text>
                   <text class="item-des">包含{{item.file_count}}项，共{{item.storage_size}}M</text>
                 </view>
@@ -50,10 +50,11 @@
             <block wx:if="{{joinProjectList.length > 0}}">
               <view class="item clearfix" wx:for="{{joinProjectList}}" wx:key="index" bindtap="toProject" data-name="{{item.name}}" data-id="{{item.project_number}}" wx:if="{{joinProjectList.length > 0}}"
                   style="border-bottom: {{joinProjectList.length - 1 == index ? '0px' : '5px solid #252432'}}">
-                <view class="item-left">
+                <!-- <view class="item-left">
                   <image src="./pro.png" mode="aspectFit" lazy-load="{{true}}"></image>
-                </view>
-                <view class="item-right" style="width: {{liWidth}}px">
+                </view> -->
+                 <!-- style="width: {{liWidth}}px" -->
+                <view class="item-right">
                   <text class="item-title">{{item.name}}</text>
                   <text class="item-des">包含{{item.file_count}}项，共{{item.storage_size}}M</text>
                 </view>
