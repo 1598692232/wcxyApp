@@ -10,7 +10,7 @@
 					<input type="text" name="code" class="login-input" placeholder="请输入邮箱收到的验证码" placeholder-style="font-size:13px;" value="{{codeText}}" />
 				</view>
 				
-				<view class="send-code" style="color: {{canSendCode ? '#fff' : '#'}}">
+				<view class="send-code" style="color: {{canSendCode ? '#fff' : 'rgba(255,255,255,0.2)'}}" bindtap="sendCode">
 					重新发送 <text wx:if="{{sec > 0}}">({{sec}})</text>
 				</view>
 			</view>

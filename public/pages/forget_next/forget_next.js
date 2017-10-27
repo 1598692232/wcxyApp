@@ -31,9 +31,12 @@ Page({
         let self = this
         self.setData({
             canSendCode: false,
-            sec: 60
+            sec: 9
         })
         let t = setInterval(() => {
+            self.setData({
+                sec: --self.data.sec
+            })
             if (self.data.sec <= 0) {
                 self.setData({
                     canSendCode: true,
@@ -42,15 +45,14 @@ Page({
                 clearInterval(t)
                 return
             }
-            self.setData({
-                sec: --self.data.sec
-            })
+           
         }, 1000)
     },
 
     sendCode() {
+        if (!this.data.canSendCode) return
         this.handleSendCodeTime()
-
+        let store = wx.getStorageSync('app')
         wx.request({
 			url: store.host + '/wxapi/sendvalidate',
 			data: {
