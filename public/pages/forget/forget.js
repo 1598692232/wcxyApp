@@ -26,11 +26,11 @@ Page({
 	
 	handleNext(e) {
 
-		wx.navigateTo({
-			url: '/pages/forget_next/forget_next'
-		})
+		// wx.navigateTo({
+		// 	url: '/pages/forget_next/forget_next'
+		// })
 
-		return
+		// return
 		if (e.detail.value.email.trim() == ''){
 			wx.showModal({
 				title: '提示',

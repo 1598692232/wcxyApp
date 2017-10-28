@@ -1,20 +1,24 @@
 
 <view class="section tc" style="height: {{scrollHeightAll}}px">
-  <video id="myVideo" class="info-video" initial-time="{{initVideoTime}}" src="{{url}}" enable-danmu controls objectFit="cover" 
+  <video id="myVideo" class="info-video" src="{{url}}" enable-danmu controls objectFit="cover" 
   autoplay bindtimeupdate="getVideoTime" bindpause="getVideoTime2" muted="{{muted}}" bindfullscreenchange="handleFullScreen">
-      <block wx:if="{{fullScreen}}">
-        <cover-view class="video-select-btn-p" bindtap="showPSelect">
-            {{pNo}}P
-        </cover-view>
+    <cover-view class="video-select-btn-p" catchtap="showPSelect" wx:if="{{fullScreen && !videoClicked}}">
+        {{pNo}}P
+    </cover-view>
+    <cover-view bindtap="hidePselect" class="video-cover" wx:if="{{fullScreen && videoClicked}}">
         <cover-view class="video-select-p-list">
-          <cover-view>
-            <cover-view wx:for="{{ps}}" wx:key="index" bindtap="changeP" style="color:{{item.activeP ? '#1144d5': ''}}"
-            data-resolution="{{item.resolution}}" class="video-select-p-li" bindtap="hidePSelect">
-                {{item.resolution}}
-            </cover-view>
-          </cover-view>
+            <!-- <cover-view style="display:table;width:100%;height:100%"> -->
+                <cover-view class="video-select-table" style="height:{{ps.length * 44}}px;margin-top: -{{ps.length * 44 / 2}}px">
+                    <cover-view wx:for="{{ps}}" wx:key="index" catchtap="changeP" style="color:{{item.activeP ? '#1144d5': ''}}"
+                    data-resolution="{{item.resolution}}" class="video-select-p-li" data-type="video">
+                        {{item.resolution}}
+                    </cover-view>
+                </cover-view>
+            <!-- </cover-view> -->
         </cover-view>
-      </block>
+
+    </cover-view>
+       
   </video>
   <view class="video-info">
       <view class="video-title">
@@ -30,6 +34,18 @@
       </view>
       <view class="video-author">{{username}} · {{createTime}}</view>
   </view>
+  <view class="push-comment">
+        <form bindsubmit="sendComment">
+           <view class="push-comment-input clearfix">
+               <input placeholder="发表评论..." cursor-spacing="20" bindblur="commentBlur" name="commentText" style="color:#fff"
+               bindfocus="commentFocus" animation="{{animationData}}" value="{{commentText}}" fixed="{{true}}" /> 
+               <!-- hidden="{{hideSendComment}}" -->
+               <button class="send-commit" form-type="submit">
+                   发送
+               </button>
+           </view>
+         </form>
+       </view>
   <!-- bindscrolltolower="loadMore" -->
   <scroll-view scroll-y="true" style="height: {{scrollHeight}}px" class="list-body">
     <view wx:if="{{commentList.length > 0}}">
@@ -59,7 +75,7 @@
                  </view>
               </view>
           </view>
-           <view class='comment-del' bindtap="handleDelComment" data-index="{{index}}">
+           <view class='comment-del' bindtap="handleDelComment" data-index="{{index}}" style="background: {{item.delColor}}" data-userid="{{item.user_id}}">
               删除
           </view>
         </view>
@@ -94,18 +110,7 @@
 
   </scroll-view>
 
-  <view class="push-comment">
-   <form bindsubmit="sendComment">
-      <view class="push-comment-input clearfix">
-          <input placeholder="发表评论..." cursor-spacing="20" bindblur="commentBlur" name="commentText" style="color:#fff"
-          bindfocus="commentFocus" animation="{{animationData}}" value="{{commentText}}" fixed="{{true}}" /> 
-          <!-- hidden="{{hideSendComment}}" -->
-          <button class="send-commit" form-type="submit">
-              发送
-          </button>
-      </view>
-    </form>
-  </view>
+
 
 </view>
 

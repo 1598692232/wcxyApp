@@ -31,7 +31,7 @@ Page({
         let self = this
         self.setData({
             canSendCode: false,
-            sec: 9
+            sec: 59
         })
         let t = setInterval(() => {
             self.setData({
@@ -65,6 +65,54 @@ Page({
 			},
             success(res) {
 
+                if (res.data.status == 1) {
+                    let store = wx.getStorageSync('app')
+                    let data = Object.assign({}, store, res.data.data)
+                     //如果已经登录，设置storage，初始化列表页
+                     wx.setStorage({
+                        key:"app",
+                        data: data,
+                        success() {
+                            wx.request({
+                                url: store.host + '/wxapi/user/info',
+                                data: res.data,
+                                success(res) {
+                                      if (res.data.status == 1) {
+                                          wx.setStorage({
+                                              key: 'user_info',
+                                              data: res.data.data
+                                          })
+                                          wx.reLaunch({
+                                              url: '/pages/list/list?sessionid=' + sessionid
+                                          })
+                                      } else {
+                                          wx.showModal({
+                                            title: '提示',
+                                            content: '未获取到当前用户信息',
+                                            showCancel: false
+                                          })
+                                      }
+                                }
+                            })
+                        }
+                    })
+                } else {
+                    wx.showModal({
+                        title: '提示',
+                        content: res.data.msg,
+                        showCancel: false
+                    })
+                }
+
+            },
+
+
+            fail() {
+                wx.showModal({
+                    title: '提示',
+                    content: '登录失败！',
+                    showCancel: false
+                })
             }
         })
     },

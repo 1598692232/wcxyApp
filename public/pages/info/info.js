@@ -36,7 +36,6 @@ Page({
         selectWidth: '',
         arrowX: '',
         info: '',
-        initVideoTime: 0,
         versionNo: 1,
         pNo: '',
         versions: '',
@@ -44,7 +43,8 @@ Page({
         versionActive:0,
         Pactive: 0,
         fullScreen: false,
-        fullScreenPSelect: false
+        fullScreenPSelect: false,
+        videoClicked: false
     },
 
     onReady: function (res) {
@@ -145,13 +145,14 @@ Page({
             self.setData({
                 versions: data.versions,
                 ps: data.resolution,
-                initVideoTime: self.data.videoTime,
                 versionNo: e.currentTarget.dataset.index,
                 username: data.realname,
                 createTime: Util.getCreateTime(data.created_at)
             })
-
-            self.videoCtx.play()
+            setTimeout(() => {
+                self.videoCtx.seek(self.data.videoTime)
+                self.videoCtx.play()
+            }, 300)
         })
     },
     
@@ -172,7 +173,16 @@ Page({
         self.setData({
             ps: self.data.ps,
         })
-
+        setTimeout(() => {
+            self.videoCtx.seek(self.data.videoTime)
+            self.videoCtx.play()
+        }, 300)
+        
+        if (e.currentTarget.dataset.type != undefined && e.currentTarget.dataset.type == 'video') {
+            self.setData({
+                videoClicked: false
+            })
+        }  
     },
 
     onShow() {
@@ -236,13 +246,20 @@ Page({
             success: function(res) {
                 wx.hideLoading()
                 if (res.data.status == 1) {
+                    let appStore = wx.getStorageSync('app')
                 	res.data.data.list.map(item => {
                 		item.comment_time = Util.timeToMinAndSec(item.media_time)
                         // item.media_time = parseInt(item.media_time)
-                        item.avatar = item.avatar == '' ? self.data.tx : item.avatar,
-                        item.background = '',
-                        item.translateX = '',
+                        item.avatar = item.avatar == '' ? self.data.tx : item.avatar
+                        item.background = ''
+                        item.translateX = ''
                         item.delTranstion = ''
+                        if(appStore.login_id == item.user_id) {
+                            item.delColor = '#f00'
+                        } else {
+                            item.delColor = '#ddd'
+                        }
+                        
                 	})
                     self.setData({
                     	commentList: res.data.data.list
@@ -496,7 +513,7 @@ Page({
             item.delTranstion = ''
         })
 
-        if (realname1 != realname2) return
+        // if (realname1 != realname2) return
 
         this.setData({
             tsx: e.touches[0].clientX,
@@ -512,13 +529,15 @@ Page({
         if (!this.data.delTouching || Math.abs(tmy - this.data.tsy) > 5) return
 
         if (!this.data.showDel) {
-
-            if (moveX < -60) {
-                moveX = -(Math.pow(Math.abs(moveX + 60), 0.8) + 60)
+            if (moveX > 0) return
+            if (moveX < -100) {
+                
+               moveX = -100
+                // moveX = -(Math.pow(Math.abs(moveX + 60), 0.8) + 60)
             }
-            if (moveX > 0) {
-                moveX = Math.pow(moveX, 0.5)
-            }
+            // if (moveX > 0) {
+            //     moveX = Math.pow(moveX, 0.5)
+            // }
 
             this.data.commentList[e.currentTarget.dataset.index].translateX = moveX
             this.setData({
@@ -526,14 +545,19 @@ Page({
                 tex: tmx
             })
         } else {
+            if (moveX < 0) return
 
-            if (moveX > 60) {
-                moveX = Math.pow(Math.abs(moveX - 60), 0.5)
-            } else if (moveX < 0) {
-                moveX = -(Math.pow(Math.abs(moveX), 0.8) + 60)
-            } else {
-                moveX = moveX - 60
-            }
+            if (moveX > 100) {
+                moveX = 0
+                // moveX = Math.pow(Math.abs(moveX - 60), 0.5)
+            } 
+            // if (moveX < 0) {
+                
+                // moveX = -(Math.pow(Math.abs(moveX), 0.8) + 60)
+            // } 
+            // else {
+            //     moveX = moveX - 60
+            // }
 
             this.data.commentList[e.currentTarget.dataset.index].translateX = moveX
             this.setData({
@@ -553,7 +577,7 @@ Page({
         })
 
         if (this.data.commentList[e.currentTarget.dataset.index].translateX < -15) {
-            this.data.commentList[e.currentTarget.dataset.index].translateX = -50
+            this.data.commentList[e.currentTarget.dataset.index].translateX = -90
             this.data.commentList[e.currentTarget.dataset.index].delTranstion = 'del-transtion'
             this.setData({
                 commentList: this.data.commentList,
@@ -580,6 +604,16 @@ Page({
 
     handleDelComment(e) {
         let store = wx.getStorageSync('app')
+
+        if (e.currentTarget.dataset.userid !== store.login_id) {
+            wx.showModal({
+                title: '提示',
+                content: '你不是评论发布者，不能删除！',
+                showCancel: false
+            })
+            return
+        }
+
         let project_id = wx.getStorageSync('project_id')
         let reqData = Object.assign({}, {
             project_id: project_id,
@@ -650,7 +684,6 @@ Page({
         // scrollOffset: true,
         // properties: ['scrollX', 'scrollY']
         // }, function(res){
-        //     console.log(res)
         //     self.setData({
         //         selectX:0,
         //         selectY: 0,
@@ -673,13 +706,12 @@ Page({
 
     showPSelect() {
         this.setData({
-            fullScreenPSelect: true
+            videoClicked: true
         })
     },
-
-    hidePSelect() {
+    hidePselect(){
         this.setData({
-            fullScreenPSelect: false
+            videoClicked: false
         })
     }
 
