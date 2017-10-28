@@ -39,6 +39,9 @@
 						 <!-- <view class="pl-count">
 						 	<text>{{item.version_count}}</text>
 						 </view> -->
+						 <view class="play-img">
+							<image src="./play.png" mode="aspectFit" lazy-load="{{true}}"></image> 								
+						 </view>
 						 <view class="pl-timer">
 						 	<text>{{item.project_file.time}}</text>
 						 </view>
@@ -51,9 +54,9 @@
 				<view class="pl-des-body" style="width:{{liWidth}}px">
 					<text class="pl-name">{{item.name}}</text>
 					<view class="pl-text clearfix">
-						<image class="pl-video-icon" src="{{sx}}" mode="aspectFit" lazy-load="{{true}}"></image> 
+						<image class="pl-video-icon" src="./storage.png" mode="aspectFit" lazy-load="{{true}}"></image> 
 						<view class="pl-text-p"><text>{{item.size_text}}M</text></view>
-						<image class="pl-video-icon" src="{{sx}}" mode="aspectFit" lazy-load="{{true}}"></image> 
+						<image class="pl-video-icon" src="./comment.png" mode="aspectFit" lazy-load="{{true}}"></image> 
 						<view class="pl-text-p"><text>{{item.comment_count}}</text></view>
 					</view>
 					<view class="pl-user clearfix">

@@ -48,7 +48,7 @@ Page({
 
     onShow() {
         let store = wx.getStorageSync('app')
-        console.log(store, 8888)
+
         if (store.token == '') {
             wx.navigateTo({
                 url: '/pages/signin/signin'
@@ -67,7 +67,6 @@ Page({
             self.initList()
         }
         
-
     },
 
     consoleLoginError(errText) {

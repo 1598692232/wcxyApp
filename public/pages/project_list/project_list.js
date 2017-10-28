@@ -22,7 +22,7 @@ Page({
 	onLoad(options) {
 		let self = this;
         wx.showLoading()
-console.log(this.data.tx)
+
         wx.getSystemInfo({
             success: function (result) {
                 self.setData({
