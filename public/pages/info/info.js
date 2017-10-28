@@ -259,7 +259,6 @@ Page({
                         } else {
                             item.delColor = '#ddd'
                         }
-                        
                 	})
                     self.setData({
                     	commentList: res.data.data.list
@@ -389,7 +388,9 @@ Page({
                         avatar: wx.getStorageSync('user_info').avatar == '' ? self.data.tx : wx.getStorageSync('user_info').avatar,
                         background: '',
                         translateX: '',
-                        delTranstion: ''
+                        delTranstion: '',
+                        delColor: '#f00',
+                        user_id: wx.getStorageSync('app').login_id
                 	}
                 	list.unshift(newComment)
                     self.setData({
@@ -505,8 +506,8 @@ Page({
 
     // 删除评论 start
     delTouchStart(e) {
-        let realname1 = this.data.commentList[e.currentTarget.dataset.index].realname
-        let realname2 = wx.getStorageSync('user_info').realname
+        // let realname1 = this.data.commentList[e.currentTarget.dataset.index].realname
+        // let realname2 = wx.getStorageSync('user_info').realname
 
         this.data.commentList.map(item => {
             item.translateX = ''

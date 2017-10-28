@@ -53,6 +53,7 @@ Page({
                     method: 'get',
                     success: function(res) {
                         if (res.data.status == 1) {
+                            let appStore = wx.getStorageSync('app')
                             let currentComment = res.data.data.list.filter(item => {
                                 return parseInt(item.id) == self.data.commentId
                             })
@@ -64,6 +65,11 @@ Page({
                                 item.translateX = '',
                                 item.delTranstion = ''
                                 item.avatar = item.avatar == '' ? self.data.tx : item.avatar
+                                if(appStore.login_id == item.user_id) {
+                                    item.delColor = '#f00'
+                                } else {
+                                    item.delColor = '#ddd'
+                                }
                             })
                             self.setData({
                                 callList: currentComment[0].replies,
@@ -187,7 +193,9 @@ Page({
                         realname:wx.getStorageSync('user_info').realname,
                         avatar: wx.getStorageSync('user_info').avatar == '' ? self.data.tx : wx.getStorageSync('user_info').avatar,
                         translateX: '',
-                        delTranstion: ''
+                        delTranstion: '',
+                        delColor: '#f00',
+                        user_id: wx.getStorageSync('app').login_id
                     }
 
                     list.unshift(newCall)
@@ -225,15 +233,15 @@ Page({
 
     // 删除评论 start
     delTouchStart(e) {
-        let realname1 = this.data.callList[e.currentTarget.dataset.index].realname
-        let realname2 = wx.getStorageSync('user_info').realname
+        // let realname1 = this.data.callList[e.currentTarget.dataset.index].realname
+        // let realname2 = wx.getStorageSync('user_info').realname
 
         this.data.callList.map(item => {
             item.translateX = '',
             item.delTranstion = ''
         })
 
-        if (realname1 != realname2) return
+        // if (realname1 != realname2) return
 
         this.setData({
             tsx: e.touches[0].clientX,
@@ -250,12 +258,17 @@ Page({
         
         if (!this.data.showDel) { 
 
-            if (moveX < -60) {
-                moveX = -(Math.pow(Math.abs(moveX + 60), 0.8) + 60)
+            if (moveX > 0) return
+            if (moveX < -100) {
+               moveX = -100
             }
-            if (moveX > 0) {
-                moveX = Math.pow(Math.abs(moveX + 60), 0.5)
-            }
+
+            // if (moveX < -60) {
+            //     moveX = -(Math.pow(Math.abs(moveX + 60), 0.8) + 60)
+            // }
+            // if (moveX > 0) {
+            //     moveX = Math.pow(Math.abs(moveX + 60), 0.5)
+            // }
 
             this.data.callList[e.currentTarget.dataset.index].translateX = moveX
             this.setData({
@@ -263,14 +276,19 @@ Page({
                 tex: tmx
             })
         } else {
+            if (moveX < 0) return
+            
+            if (moveX > 100) {
+                moveX = 0
+            } 
 
-            if (moveX > 60) {
-                moveX = Math.pow(Math.abs(moveX - 60), 0.5)
-            } else if (moveX < 0) {
-                moveX = -(Math.pow(Math.abs(moveX), 0.8) + 60)
-            } else {
-                moveX = moveX - 60
-            }
+            // if (moveX > 60) {
+            //     moveX = Math.pow(Math.abs(moveX - 60), 0.5)
+            // } else if (moveX < 0) {
+            //     moveX = -(Math.pow(Math.abs(moveX), 0.8) + 60)
+            // } else {
+            //     moveX = moveX - 60
+            // }
 
             this.data.callList[e.currentTarget.dataset.index].translateX = moveX
             this.setData({
@@ -290,7 +308,7 @@ Page({
         })
 
         if (this.data.callList[e.currentTarget.dataset.index].translateX < -15) {
-            this.data.callList[e.currentTarget.dataset.index].translateX = -50
+            this.data.callList[e.currentTarget.dataset.index].translateX = -90
             this.data.callList[e.currentTarget.dataset.index].delTranstion = 'del-transtion'
             this.setData({
                 callList: this.data.callList,
@@ -317,6 +335,16 @@ Page({
 
     handleDelComment(e) {
         let store = wx.getStorageSync('app')
+
+        if (e.currentTarget.dataset.userid !== store.login_id) {
+            wx.showModal({
+                title: '提示',
+                content: '你不是回复评论发布者，不能删除！',
+                showCancel: false
+            })
+            return
+        }
+
         let project_id = wx.getStorageSync('project_id')
         let reqData = Object.assign({}, {
             project_id: project_id,

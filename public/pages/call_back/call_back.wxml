@@ -41,7 +41,8 @@
 		                        <!-- <text>1</text> -->
 		                    <!-- </view> -->
 		                </view>
-		                 <view class='comment-del' bindtap="handleDelComment" data-index="{{index}}">
+						 <view class='comment-del' bindtap="handleDelComment" data-index="{{index}}"
+						  data-userid="{{item.user_id}}" style="background: {{item.delColor}}">
 			              删除
 			          	</view>
 		            </view>
