@@ -108,7 +108,7 @@ Page({
             success: function(res) {
                 if (res.data.status == 1) {
                     res.data.data.list.forEach(item => {
-                        item.storage_size = (item.storage_count / Math.pow(1024, 2)).toFixed(2)
+                        item.storage_size = item.storage_count != undefined ? (item.storage_count / Math.pow(1024, 2)).toFixed(2) : 0
                     })
                     self.setData({
                         myProjectList: res.data.data.list,
@@ -139,7 +139,7 @@ Page({
             success: function(res) {
                 if (res.data.status == 1) {
                     res.data.data.list.forEach(item => {
-                        item.storage_size = (item.storage_count / Math.pow(1024, 2)).toFixed(2)
+                        item.storage_size = item.storage_count != undefined ? (item.storage_count / Math.pow(1024, 2)).toFixed(2) : 0
                     })
                     self.setData({
                         joinProjectList: res.data.data.list,
