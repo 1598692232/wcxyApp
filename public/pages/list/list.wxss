@@ -126,5 +126,7 @@
     height: 20px;
     z-index: 100;
 }
-
+.empty-project{
+    background:252432;
+}
 

@@ -316,18 +316,18 @@ Page({
             self.setData({
                 muted: true
             })
-            setTimeout(() => {
+            // setTimeout(() => {
                 self.videoCtx.pause()
                 let videoTime = self.data.videoTime
                 self.setData({
-                    videoTime: videoTime - 0.5,
+                    videoTime: videoTime,
                     muted: false
                 })
-                self.videoCtx.seek(videoTime - 0.5)
+                self.videoCtx.seek(videoTime)
                 self.setData({
                     focusTime: parseInt(self.data.videoTime)
                 })
-            }, 500)
+            // }, 500)
             
         }
 	},

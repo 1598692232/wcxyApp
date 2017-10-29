@@ -145,6 +145,7 @@ Page({
                         let sec = item.project_file.time % 60
                         item.project_file.time = Util.timeToMinAndSec(item.project_file.time)
                         item.user_info.avatar = item.user_info.avatar == '' ? self.data.tx : item.user_info.avatar
+                        item.size_text = (item.size / Math.pow(1024, 2)).toFixed(2)                        
                     })
 
                     self.setData({

@@ -317,10 +317,10 @@
     animation: selectAni 0.3s cubic-bezier(0.23, 1, 0.32, 1) 0ms forwards;
 }
 .select-ani-one {
-    transform-origin: 5% 0
+    transform-origin: 2% -5%;
 }
 .select-ani-two {
-    transform-origin: 35% 0
+    transform-origin: 30% -5%;
 }
 @keyframes selectAni{
     0% {
@@ -333,12 +333,12 @@
 }
 .info-arrow{
     position: absolute;
-    left: 10px;
+    /* left: 10px; */
     top: -11px;
     width: 30px;
     height: 30px;
     background: #f5f5f5;
-    border-radius: 5px;
+    border-radius: 3px;
     transform: rotate(45deg)
 }
 .version-p-li{

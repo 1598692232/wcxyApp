@@ -4,10 +4,11 @@ Page({
 	data: {
 		email: app.data.staticImg.email,
 		logo: app.data.staticImg.logo,
+		clear: app.data.staticImg.clear,
 		emailText: '',
 		emailFocus: false,
 		hiddenEmailClear: true,
-        scrollHeight: 0,
+		scrollHeight: 0,
 	},
 
 	onLoad(options) {
@@ -91,24 +92,25 @@ Page({
 	setShowClear(inputTextData, clearData) {
     	let o = {}
 
-			if (this.data[inputTextData] != '') {
-				o[clearData] = false
-			} else {
-				o[clearData] = true
-			}
+		if (this.data[inputTextData] != '') {
+			o[clearData] = false
+		} else {
+			o[clearData] = true
+		}
 
-			this.setData(o)
+		this.setData(o)
+		console.log(this.data.emailText, this.data.hiddenEmailClear, 99)
 	},
 
 	handleInput(e) {
-			this.setData({
-				emailText: e.detail.value,
-			})
-			this.setShowClear('emailText', 'hiddenEmailClear')
+		this.setData({
+			emailText: e.detail.value,
+		})
+		this.setShowClear('emailText', 'hiddenEmailClear')
 	},
 
 	handleFocus(e) {
-			this.setShowClear('emailText', 'hiddenEmailClear')
+		this.setShowClear('emailText', 'hiddenEmailClear')
 	},
 
 	handleBlur(e) {

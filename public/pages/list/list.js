@@ -335,7 +335,7 @@ Page({
 	    return {
 	        title: 'XINYUE新阅',
 	        path: '/pages/list/list',
-            imageUrl: './xy.png'
+            imageUrl: './xy2.jpg'
 	    }
 	},
 
