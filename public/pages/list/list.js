@@ -107,12 +107,19 @@ Page({
             method: 'get',
             success: function(res) {
                 if (res.data.status == 1) {
+                    let pros = []
                     res.data.data.list.forEach(item => {
-                        item.storage_size = item.storage_count != undefined ? (item.storage_count / Math.pow(1024, 2)).toFixed(2) : 0
+                        if (item.type == 'admin') {
+                            item.storage_size = item.storage_count != undefined ? (item.storage_count / Math.pow(1024, 2)).toFixed(2) : 0                            
+                            //演示项目处理
+                            item.storage_size = parseInt(item.storage_size) == 0 ? 166.29 : item.storage_size
+                            item.file_count = parseInt(item.file_count) == 0 ? '2' : item.file_count
+                            pros.push(item)
+                        }
                     })
                     self.setData({
-                        myProjectList: res.data.data.list,
-                        myProjectListTemp: res.data.data.list
+                        myProjectList: pros,
+                        myProjectListTemp: pros
                     })
                     self.setAllProjects()
 

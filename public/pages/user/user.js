@@ -5,8 +5,8 @@ const app = getApp()
 Page({
   data: {
     manager: app.data.staticImg.manager,
-    realName: wx.getStorageSync('app').realname,
-    avatar: wx.getStorageSync('app').avatar == '' ? app.data.staticImg.manager : wx.getStorageSync('app').avatar,
+    realName: wx.getStorageSync('user_info').realname,
+    avatar: wx.getStorageSync('user_info').avatar == '' ? app.data.staticImg.manager : wx.getStorageSync('user_info').avatar,
     scrollHeight: ''
   },
  
