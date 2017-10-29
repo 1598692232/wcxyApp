@@ -9,6 +9,7 @@ Page({
 		emailFocus: false,
 		hiddenEmailClear: true,
 		scrollHeight: 0,
+		sendEmail: false
 	},
 
 	onLoad(options) {
@@ -47,6 +48,12 @@ Page({
 			data: e.detail.value.email
 		})
 
+		if(this.data.sendEmail) return
+		this.setData({
+			sendEmail: true
+		})
+		let self = this
+
 		wx.request({
 			url: store.host + '/wxapi/sendvalidate',
 			data: {
@@ -58,6 +65,9 @@ Page({
 					'content-type': 'application/json' // 默认
 			},
 			success(res) {
+				self.setData({
+					sendEmail: false
+				})
 				if (res.data.status == 1) {
 					wx.navigateTo({
 						url: '/pages/forget_next/forget_next'
@@ -71,6 +81,9 @@ Page({
 				}
 			},
 			fail() {
+				self.setData({
+					sendEmail: false
+				})
 				wx.showModal({
 					title: '提示',
 					content: '邮箱验证码发送失败！',
@@ -99,7 +112,6 @@ Page({
 		}
 
 		this.setData(o)
-		console.log(this.data.emailText, this.data.hiddenEmailClear, 99)
 	},
 
 	handleInput(e) {
