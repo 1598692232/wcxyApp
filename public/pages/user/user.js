@@ -5,17 +5,20 @@ const app = getApp()
 Page({
   data: {
     manager: app.data.staticImg.manager,
-    realName: wx.getStorageSync('user_info').realname,
-    avatar: wx.getStorageSync('user_info').avatar == '' ? app.data.staticImg.manager : wx.getStorageSync('user_info').avatar,
+    realName: '',
+    avatar: '',
     scrollHeight: ''
   },
  
   onLoad() {
     let self = this
+        
     wx.getSystemInfo({
       success(res) {
           self.setData({
-              scrollHeight: res.windowHeight 
+              scrollHeight: res.windowHeight ,
+              realName: wx.getStorageSync('user_info').realname,
+              avatar:  wx.getStorageSync('user_info').avatar == '' ? app.data.staticImg.manager : wx.getStorageSync('user_info').avatar,
           })
       }
     });
