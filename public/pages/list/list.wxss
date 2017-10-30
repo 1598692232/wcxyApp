@@ -10,7 +10,7 @@
 .list-tab {
     display: flex;
     flex: 1;
-    justify-content: center;
+    /* justify-content: center; */
     background: #252525;
     color: #605f6f;
     font-size: 14px;
