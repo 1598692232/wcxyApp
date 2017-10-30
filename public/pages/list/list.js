@@ -1,3 +1,4 @@
+var Util = require('../../utils/util.js')
 const app = getApp()
 
 Page({
@@ -95,71 +96,48 @@ Page({
         let store = wx.getStorageSync('app')
         let self = this
 
-        wx.request({
-            // url: store.host + '/wxapi/project', //仅为示例，并非真实的接口地址
-            url: store.host + '/wxapi/project',
-            data: store,
-            header: {
-                'content-type': 'application/json' // 默认值
-            },
-            method: 'get',
-            success: function(res) {
-                if (res.data.status == 1) {
-                    let pros = []
-                    res.data.data.list.forEach(item => {
-                        if (item.type == 'admin') {
-                            item.storage_size = item.storage_count != undefined ? (item.storage_count / Math.pow(1024, 2)).toFixed(2) : 0                            
-                            //演示项目处理
-                            item.storage_size = parseInt(item.storage_size) == 0 ? 166.29 : item.storage_size
-                            item.file_count = parseInt(item.file_count) == 0 ? '2' : item.file_count
-                            pros.push(item)
-                        }
-                    })
-                    self.setData({
-                        myProjectList: pros,
-                        myProjectListTemp: pros
-                    })
-                    self.setAllProjects()
-
-                    wx.hideLoading()
-                } else {
-                    wx.showModal({
-                      title: '提示',
-                      content: '获取我的项目失败！',
-                      showCancel: false
-                    })
+        Util.ajax('project', 'get', store).then(data => {
+            let pros = []
+            data.list.forEach(item => {
+                if (item.type == 'admin') {
+                    item.storage_size = item.storage_count != undefined ? (item.storage_count / Math.pow(1024, 2)).toFixed(2) : 0                            
+                    //演示项目处理
+                    item.storage_size = parseInt(item.storage_size) == 0 ? 166.29 : item.storage_size
+                    item.file_count = parseInt(item.file_count) == 0 ? '2' : item.file_count
+                    pros.push(item)
                 }
-            }
+            })
+            self.setData({
+                myProjectList: pros,
+                myProjectListTemp: pros
+            })
+            self.setAllProjects()
+
+            wx.hideLoading()
+        }, res => {
+            wx.showModal({
+                title: '提示',
+                content: '获取我的项目失败！',
+                showCancel: false
+            })
         })
 
-
-        wx.request({
-            // url: store.host + '/wxapi/project', //仅为示例，并非真实的接口地址
-            url: store.host + '/wxapi/project/join',
-            data: store,
-            header: {
-                'content-type': 'application/json' // 默认值
-            },
-            method: 'get',
-            success: function(res) {
-                if (res.data.status == 1) {
-                    res.data.data.list.forEach(item => {
-                        item.storage_size = item.storage_count != undefined ? (item.storage_count / Math.pow(1024, 2)).toFixed(2) : 0
-                    })
-                    self.setData({
-                        joinProjectList: res.data.data.list,
-                        joinProjectListTemp: res.data.data.list
-                    })
-                    self.setAllProjects()
-                    wx.hideLoading()
-                } else {
-                    wx.showModal({
-                      title: '提示',
-                      content: '获取参与项目失败！',
-                      showCancel: false
-                    })
-                }
-            }
+        Util.ajax('project/join', 'get', store).then(data => {
+            data.list.forEach(item => {
+                item.storage_size = item.storage_count != undefined ? (item.storage_count / Math.pow(1024, 2)).toFixed(2) : 0
+            })
+            self.setData({
+                joinProjectList: data.list,
+                joinProjectListTemp: data.list
+            })
+            self.setAllProjects()
+            wx.hideLoading()
+        }, () => {
+            wx.showModal({
+                title: '提示',
+                content: '获取参与项目失败！',
+                showCancel: false
+            })
         })
     },
 

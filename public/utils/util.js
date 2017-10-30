@@ -38,8 +38,37 @@ const timeToMinAndSec = time => {
     }
 }
 
+const ajax = (url, type, data) => {
+    let host = wx.getStorageSync('app').host 
+    return new Promise((resolve, reject) => {
+        wx.request({
+            url: host + '/wxapi/' + url,
+            data: data,
+            header: {
+                'content-type': 'application/json' // 默认值
+            },
+            method: type,
+            success(res){
+                if (res.data.status == 1) {
+                    resolve(res.data.data)
+                } else {
+                    reject(res)
+                }
+            },
+            fail() {
+                wx.showModal({
+                    title: '提示',
+                    content: '获取数据失败',
+                    cancelShow: false
+                })
+            }
+        })
+    })
+}
+
 module.exports = {
   formatTime: formatTime,
   getCreateTime: getCreateTime,
-  timeToMinAndSec: timeToMinAndSec
+  timeToMinAndSec: timeToMinAndSec,
+  ajax: ajax
 }
