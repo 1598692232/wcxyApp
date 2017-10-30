@@ -119,6 +119,14 @@ Page({
 
     handleLogin(e) {
         let store = wx.getStorageSync('app')
+        if ( e.detail.value.code.trim() == '') {
+            wx.showModal({
+                title: '提示',
+                content: '验证码不能为空！',
+                showCancel: false
+            })
+            return 
+        }
 
         wx.request({
 			url: store.host + '/wxapi/validatelogin',
