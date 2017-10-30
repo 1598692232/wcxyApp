@@ -5,6 +5,6 @@
       <text class="userinfo-nickname">{{realName}}</text>
   </view>
   <view class="user-control">
-    <button class="login-out" bindtap="loginOut">退出登录</button>
+    <button class="login-out" bindtap="loginOut">切换账号</button>
   </view>
 </view>

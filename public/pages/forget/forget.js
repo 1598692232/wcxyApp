@@ -1,4 +1,5 @@
 const app = getApp()
+const exp = new RegExp('^[A-Za-z0-9_-\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$'); //邮箱正则
 
 Page({
 	data: {
@@ -33,7 +34,7 @@ Page({
 		// })
 
 		// return
-		if (e.detail.value.email.trim() == ''){
+		if (e.detail.value.email.trim() == '' || !exp.test(e.detail.value.email)){
 			wx.showModal({
 				title: '提示',
 				content: '邮箱不能为空',
