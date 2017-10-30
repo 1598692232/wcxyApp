@@ -189,7 +189,13 @@ Page({
 
             // let url = '/pages/info/info?doc_id=' + e.currentTarget.dataset.id  + '&project_id' + wx.getStorageSync('project_id')
             wx.navigateTo({
-                url: url
+                url: url,
+                // success(a,b,c) {
+                //     console.log(a,b,c, 8888)
+                // },
+                // fail(a,b,c) {
+                //     console.log(a,b,c, 999)
+                // }
             })
         }
 	}
