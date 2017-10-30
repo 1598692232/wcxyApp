@@ -7,6 +7,7 @@ Page({
         scrollHeight: 0,
         canSendCode: false,
         sec: 60,
+        logined: false
 	},
 
 	onLoad(options) {
@@ -118,6 +119,11 @@ Page({
     },
 
     handleLogin(e) {
+        let self = this
+        if (self.data.logined) return
+        self.setData({
+            logined: true
+        })
         let store = wx.getStorageSync('app')
         if ( e.detail.value.code.trim() == '') {
             wx.showModal({
@@ -139,6 +145,12 @@ Page({
                 'content-type': 'application/json' // 默认
 			},
 			success(res) {
+                setTimeout(() =>{
+                    self.setData({
+                        logined: false
+                    })
+                }, 1000)
+               
                 if (res.data.status == 1) {
                     let data = Object.assign({}, store, res.data.data)
                     wx.setStorage({
@@ -179,6 +191,11 @@ Page({
                 }
             },
             fail() {
+                setTimeout(() =>{
+                    self.setData({
+                        logined: false
+                    })
+                }, 1000)
 				wx.showModal({
 					title: '提示',
 					content: '登录失败！',
