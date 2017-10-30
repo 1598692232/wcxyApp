@@ -6,14 +6,10 @@ Page({
     data: {
 	    scrollHeight: 0,
 	    commentIsFocus: false,
-<<<<<<< HEAD
-	    commentList:[],
-=======
 	    // hideSendComment: true,
 
 	    commentList:[],
 	    // animationData: {},
->>>>>>> hotfix_20171026
 	    commentText: '',
         tx: app.data.staticImg.tx,
         zan: app.data.staticImg.zan,
@@ -239,25 +235,15 @@ Page({
             },
             method: 'get',
             success: function(res) {
-<<<<<<< HEAD
-
-=======
                 wx.hideLoading()
->>>>>>> hotfix_20171026
                 if (res.data.status == 1) {
                     let appStore = wx.getStorageSync('app')
                 	res.data.data.list.map(item => {
                 		item.comment_time = Util.timeToMinAndSec(item.media_time)
-<<<<<<< HEAD
-                        item.avatar = item.avatar == '' ? self.data.tx : item.avatar,
-                        item.background = '',
-                        item.translateX = '',
-=======
                         // item.media_time = parseInt(item.media_time)
                         item.avatar = item.avatar == '' ? self.data.tx : item.avatar
                         item.background = ''
                         item.translateX = ''
->>>>>>> hotfix_20171026
                         item.delTranstion = ''
                         if(appStore.login_id == item.user_id) {
                             item.delColor = '#f00'

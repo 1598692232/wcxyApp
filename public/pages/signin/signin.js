@@ -111,13 +111,9 @@ Page({
                             })
 
                         } else {
-<<<<<<< HEAD
-                            
-=======
                             // 如果是登录退出操作，则返回
                             if (self.data.loginOut == 1) return
 
->>>>>>> hotfix_20171026
                             let sessionid = res.data.data.sessionid
                             //如果已经登录，设置storage，初始化列表页
                             wx.setStorage({

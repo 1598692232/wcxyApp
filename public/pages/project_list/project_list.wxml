@@ -38,15 +38,14 @@
 						</view>
 					</block>
 					<block wx:if="{{item.type == 'file'}}">
-<<<<<<< HEAD
-=======
+						
 						 <!-- <view class="pl-count">
 						 	<text>{{item.version_count}}</text>
 						 </view> -->
 						 <view class="play-img">
 							<image src="./play.png" mode="aspectFit" lazy-load="{{true}}"></image> 								
 						 </view>
->>>>>>> hotfix_20171026
+
 						 <view class="pl-timer">
 						 	<text>{{item.project_file.time}}</text>
 						 </view>

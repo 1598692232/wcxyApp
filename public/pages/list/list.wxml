@@ -10,23 +10,6 @@
       </view>
      
     </view>
-<<<<<<< HEAD
-        <view class="list-tabs">
-          <view class="list-tab" style="{{tabOne}}" bindtap="showMyProjects">
-            <text>我的项目</text>
-          </view>
-          <view class="list-tab" style="{{tabTwo}}" bindtap="showJoinProjects">
-            <text>我参与的</text>
-          </view>
-        </view>
-        <scroll-view class="list-body" scroll-y="true"  style="height: {{scrollHeight}}px" hidden="{{hiddenMy}}" scroll-with-animation="true">
-            <block wx:if="{{myProjectList.length > 0}}">
-              <view class="item clearfix" wx:for="{{myProjectList}}" wx:key="index" bindtap="toProject" data-id="{{item.id}}" data-name="{{item.name}}">
-               
-                <view class="item-right"
-                  style="border-bottom: {{myProjectList.length - 1 == index ? '0px' : '1px solid rgba(0,0,0,.2)'}}">
-                  <text class="item-title">{{item.name}}</text>
-=======
 
 
        <!--  <view class="list-tabs">
@@ -49,21 +32,12 @@
                 <view class="item-right">
                   <text class="item-title">{{item.name}}</text>
                   <text class="item-des">包含{{item.file_count}}项，共{{item.storage_size}}M</text>
->>>>>>> hotfix_20171026
                 </view>
               </view>
             </block>
             <view class="empty-project" wx:else>
                 暂无项目，请登录新阅官网进行更多操作
             </view>
-<<<<<<< HEAD
-        </scroll-view>
-       <scroll-view class="list-body" scroll-y="true"  style="height: {{scrollHeight}}px"  hidden="{{!hiddenMy}}" scroll-with-animation="true">
-            <block wx:if="{{joinProjectList.length > 0}}">
-              <view class="item clearfix" wx:for="{{joinProjectList}}" wx:key="index" bindtap="toProject" data-name="{{item.name}}" wx:if="{{joinProjectList.length > 0}}">
-                <view class="item-right"
-                  style="border-bottom: {{joinProjectList.length - 1 == index ? '0px' : '1px solid rgba(0,0,0,.2)'}}">
-=======
         </view>
         <!--  bindscrolltolower="loadMoreJoinProjects" bindscrolltoupper="refresh"-->
 
@@ -81,7 +55,6 @@
                 </view> -->
                  <!-- style="width: {{liWidth}}px" -->
                 <view class="item-right">
->>>>>>> hotfix_20171026
                   <text class="item-title">{{item.name}}</text>
                   <text class="item-des">包含{{item.file_count}}项，共{{item.storage_size}}M</text>
                 </view>
@@ -90,14 +63,6 @@
               <view class="empty-project" wx:else>
                   暂无项目，请登录新阅官网进行更多操作
               </view>
-<<<<<<< HEAD
-        </scroll-view>
-
-    <view class="bottom" hidden="{{hideBottom}}">
-      <view>{{loadMoreData}}</view>
-      <view>{{refreshTime}}</view>
-    </view>
-=======
         </view>
 
       </scroll-view>
@@ -114,7 +79,6 @@
     <view>{{loadMoreData}}</view>
     <view>{{refreshTime}}</view>
   </view> -->
->>>>>>> hotfix_20171026
 </view>
 
 
