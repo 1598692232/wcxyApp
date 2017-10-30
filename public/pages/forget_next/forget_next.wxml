@@ -7,7 +7,7 @@
 			<view>
 				<view class="login-input-body">
 					<image class="login-input-icon" src="{{code}}"></image>
-					<input type="text" name="code" class="login-input" placeholder="请输入邮箱收到的验证码" placeholder-style="font-size:13px;" value="{{codeText}}" />
+					<input type="text" name="code" class="login-input" placeholder="邮箱验证码" placeholder-style="font-size:13px;" value="{{codeText}}" />
 				</view>
 				
 				<view class="send-code" style="color: {{canSendCode ? '#fff' : 'rgba(255,255,255,0.2)'}}" bindtap="sendCode">
