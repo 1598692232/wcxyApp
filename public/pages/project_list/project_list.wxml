@@ -1,35 +1,72 @@
 <view class="pl-container">
-	<scroll-view  class="breadcrumb-nav" scroll-x wx:if="{{breadcrumbList.length != 0}}" style="height: 30px;" >
-		<view  style="width: {{breadcrumbWidth}}px">
+	<scroll-view  class="breadcrumb-nav" scroll-x wx:if="{{showBreadcrumb}}" style="height: 30px;" scroll-x>
+		<view  style="width: {{breadcrumbWidth}}px" class="clearfix">
 			<view class="breadcrumb-nav-li" wx:for="{{breadcrumbList}}" wx:key="index" 
-			data-id="{{item.id}}" bindtap="selectFolder" style="z-index:{{100 - index}}">
-					<text class="text">{{item.name}} /</text>
-			</view>
+			data-id="{{item.id}}" bindtap="selectFolder" 
+			style="z-index:{{100 - index}};opacity:{{breadcrumbList.length - 1 == index ? 1: 0.5}}" >
+				<image src="{{index == 0 ? './bg1.png' : './bg2.png'}}" mode="scaleToFill"></image>
+				<view class="text">{{item.name}}</view>
+			</view>			
 		</view>
 	</scroll-view>
 
 	<scroll-view class="pl-list" scroll-y style="height: {{scrollHeight}}px" bindscrolltolower="loadMore" lower-threshold="100">
+		<scroll-view class="join-member" scroll-x wx:if="{{!showBreadcrumb}}"> 
+			<view class="join-member-list" id="join-member">
+				<view class="join-member-li" wx:for="{{txList}}" wx:key="index" >
+					<image src="{{item.avatar}}" class="join-member-tx" mode="scaleToFill"></image>
+					<!-- <view class="join-member-name">{{item.realname}}</view> -->
+				</view>
+				<view class="join-member-intro">
+					<image src="./bg1.png" mode="scaleToFill"></image>	
+					<view class="join-member-intro-text">项目成员</view>					
+				</view>
+			</view>
+		</scroll-view>
+
+
 		<view class="pl-body" wx:if="{{videoList.length > 0}}">
-			<view class="pl-li" wx:for="{{videoList}}" wx:key="index" style="width:{{liWidth}}px;margin-right:{{(index + 1) % 2 == 0 ? 0 : '10px'}};" bindtap="toInfo" data-url="{{item.project_file.url}}" data-name="{{item.name}}" data-id="{{item.id}}" data-username="{{item.user_info.realname}}" data-create-time="{{item.created_time}}" data-type="{{item.type}}" data-cover-img="{{item.cover_img[0]}}" data-index="{{index}}">
+			<view class="pl-li clearfix" wx:for="{{videoList}}" wx:key="index" bindtap="toInfo" 
+			data-url="{{item.project_file.url}}" data-name="{{item.name}}" 
+			data-id="{{item.id}}" data-username="{{item.user_info.realname}}" 
+			data-create-time="{{item.created_time}}" data-type="{{item.type}}" data-cover-img="{{item.cover_img[0]}}" 
+			data-index="{{index}}" style="border-bottom: {{videoList.length - 1 == index ? '0' : '5px solid #343545'}}">
 				<view class="pl-img-body">
 					<block wx:if="{{item.type == 'folder'}}">
- 						<image class="pl-img" src="{{dirImg}}" mode="aspectFit" lazy-load="{{true}}"></image>
+						<view class="pl-img pl-floder">
+							<image  src="./floder.png" mode="aspectFit" lazy-load="{{true}}" ></image>								
+						</view>
 					</block>
 					<block wx:if="{{item.type == 'file'}}">
+<<<<<<< HEAD
+=======
+						 <!-- <view class="pl-count">
+						 	<text>{{item.version_count}}</text>
+						 </view> -->
+						 <view class="play-img">
+							<image src="./play.png" mode="aspectFit" lazy-load="{{true}}"></image> 								
+						 </view>
+>>>>>>> hotfix_20171026
 						 <view class="pl-timer">
 						 	<text>{{item.project_file.time}}</text>
 						 </view>
-	 					 <image class="pl-img" src="{{item.cover_img[0]}}" mode="scaleToFill" lazy-load="{{true}}"></image>
+	 					 <image class="pl-img" src="{{item.cover_img[0]}}" mode="aspectFit" lazy-load="{{true}}"></image>
 
 					</block>
 
 				</view>
 				
-				<view class="pl-des-body">
+				<view class="pl-des-body" style="width:{{liWidth}}px">
 					<text class="pl-name">{{item.name}}</text>
+					<view class="pl-text clearfix">
+						<image class="pl-video-icon" src="./storage.png" mode="aspectFit" lazy-load="{{true}}"></image> 
+						<view class="pl-text-p"><text>{{item.size_text}}M</text></view>
+						<image class="pl-video-icon" src="./comment.png" mode="aspectFit" lazy-load="{{true}}"></image> 
+						<view class="pl-text-p"><text>{{item.comment_count}}</text></view>
+					</view>
 					<view class="pl-user clearfix">
 						<image class="pl-user-tou" src="{{item.user_info.avatar}}" mode="aspectFit" lazy-load="{{true}}"></image>
-						<image class="pl-video-icon" src="{{sx}}" mode="aspectFit" lazy-load="{{true}}"></image>
+						
 						<text class="pl-create-timer">{{item.created_time}}</text>
 					</view>
 				</view>

@@ -13,7 +13,6 @@ Page({
 		passwordText: '',
 		emailFocus: false,
 		passwordFocus: false,
-		scrollHeight: 0,
 		hiddenEmailClear: true,
 		hiddenPasswordClear: true,
         errMsg: '',
@@ -22,40 +21,43 @@ Page({
         scrollHeight: 0,
         codeSrc: '',
         codeWidth: '',
-        sessionid: ''
+        sessionid: '',
+        loginOut: ''
 	},
 
 	onLoad(options) {
         let self = this
-        wx.showLoading()
         let store = wx.getStorageSync('app')
-        // stores.sessionId = res.data.data.sessionid
-        let newStorage = Object.assign({}, store)
-        newStorage.token = ''
-        wx.setStorage({
-          key:"app",
-          data: newStorage
-        })
-
         wx.getSystemInfo({
             success: function (res) {
             	self.setData({
                     scrollHeight: res.windowHeight,
                     codeWidth: res.windowWidth - 100,
-                    codeSrc: store.host + '/wxapi/vercode?t=' + new Date().getTime() + '&sessionid=' + options.sessionid
+                    codeSrc: store.host + '/wxapi/vercode?t=' + new Date().getTime() + '&sessionid=' + options.sessionid,
+                    loginOut: options.login_out
                 })
                 wx.setNavigationBarTitle({title: '登录'})
             }
         })
-
     },
 
     onShow() {
         this.animation = wx.createAnimation({
-          duration: 500,
-          timingFunction: "cubic-bezier(0.4, 0, 0.2, 1)"
+            duration: 500,
+            timingFunction: "cubic-bezier(0.4, 0, 0.2, 1)"
         })
 
+        wx.showLoading()
+
+        // let store = wx.getStorageSync('app')
+        // stores.sessionId = res.data.data.sessionid
+        // let newStorage = Object.assign({}, store)
+        // newStorage.token = ''
+        // wx.setStorage({
+        //   key:"app",
+        //   data: newStorage
+        // })
+        
         let self = this
         wx.login({
           success: function(res) {
@@ -109,7 +111,13 @@ Page({
                             })
 
                         } else {
+<<<<<<< HEAD
                             
+=======
+                            // 如果是登录退出操作，则返回
+                            if (self.data.loginOut == 1) return
+
+>>>>>>> hotfix_20171026
                             let sessionid = res.data.data.sessionid
                             //如果已经登录，设置storage，初始化列表页
                             wx.setStorage({
@@ -123,11 +131,14 @@ Page({
                                               url: store.host + '/wxapi/user/info',
                                               data: res.data,
                                               success(res) {
-                                                    
+                                                  
                                                     if (res.data.status == 1) {
                                                         wx.setStorage({
                                                             key: 'user_info',
                                                             data: res.data.data
+                                                        })
+                                                        wx.reLaunch({
+                                                            url: '/pages/list/list?sessionid=' + sessionid
                                                         })
                                                     } else {
                                                         wx.showModal({
@@ -135,11 +146,6 @@ Page({
                                                           content: '未获取到当前用户信息',
                                                         })
                                                     }
-
-                                                    wx.reLaunch({
-                                                        url: '/pages/list/list?sessionid=' + sessionid
-                                                    })
-
                                               }
                                             })
                                             
@@ -158,6 +164,7 @@ Page({
                 },
                 fail(res) {
                     let rs = JSON.stringify(res)
+                    wx.hideLoading()
                     wx.showModal({
                       title: '提示',
                       content: rs,
@@ -228,6 +235,9 @@ Page({
 
                 wx.hideLoading()
                 if (res.data.status == 1) {
+                    self.setData({
+                        loginOut: ''
+                    })
                     let stores = wx.getStorageSync('app')
                     // stores.sessionId = res.data.data.sessionid
                     let newStorage = Object.assign({}, stores, res.data.data)
@@ -330,6 +340,12 @@ Page({
 				hiddenPasswordClear: true
 			})
     	}
+    },
+
+    toForget() {
+        wx.navigateTo({
+            url: '/pages/forget/forget'
+        })
     }
 
 })

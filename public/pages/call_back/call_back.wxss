@@ -154,10 +154,10 @@
 }
 .comment-del{
     position: absolute;
-    right: -60px;
+    right: -100px;
     top:0;
     line-height:67px;
-    width:50px;
+    width:90px;
     background: #f00;
     color:#fff;
     font-size: 18px;

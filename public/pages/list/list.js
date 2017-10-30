@@ -27,6 +27,7 @@ Page({
                 self.setData({
                     scrollHeight: res.windowHeight - 40,
                     listInfoWidth: res.windowWidth - 110,
+                    liWidth: res.windowWidth - 110
                 })
 
                 let infoData = wx.getStorageSync('info_data')
@@ -44,16 +45,13 @@ Page({
     },
 
     onShow() {
-
         let store = wx.getStorageSync('app')
 
         if (store.token == '') {
-            console.log(111)
             wx.navigateTo({
                 url: '/pages/signin/signin'
             })
         } else {
-console.log(2222)
             // 评论输入框动画注册
             let animation = wx.createAnimation({
                 duration: 300,
@@ -67,7 +65,6 @@ console.log(2222)
             self.initList()
         }
         
-
     },
 
     consoleLoginError(errText) {
@@ -108,9 +105,19 @@ console.log(2222)
             method: 'get',
             success: function(res) {
                 if (res.data.status == 1) {
+                    let pros = []
+                    res.data.data.list.forEach(item => {
+                        if (item.type == 'admin') {
+                            item.storage_size = item.storage_count != undefined ? (item.storage_count / Math.pow(1024, 2)).toFixed(2) : 0                            
+                            //演示项目处理
+                            item.storage_size = parseInt(item.storage_size) == 0 ? 166.29 : item.storage_size
+                            item.file_count = parseInt(item.file_count) == 0 ? '2' : item.file_count
+                            pros.push(item)
+                        }
+                    })
                     self.setData({
-                        myProjectList: res.data.data.list,
-                        myProjectListTemp: res.data.data.list
+                        myProjectList: pros,
+                        myProjectListTemp: pros
                     })
                     self.setAllProjects()
 
@@ -136,6 +143,9 @@ console.log(2222)
             method: 'get',
             success: function(res) {
                 if (res.data.status == 1) {
+                    res.data.data.list.forEach(item => {
+                        item.storage_size = item.storage_count != undefined ? (item.storage_count / Math.pow(1024, 2)).toFixed(2) : 0
+                    })
                     self.setData({
                         joinProjectList: res.data.data.list,
                         joinProjectListTemp: res.data.data.list
@@ -265,9 +275,9 @@ console.log(2222)
 
     onShareAppMessage: function () {
 	    return {
-	        title: 'XINYUE新阅',
+	        title: '影音制作链接者',
 	        path: '/pages/list/list',
-            imageUrl: './xy.png'
+            imageUrl: './xy2.jpg'
 	    }
 	},
 

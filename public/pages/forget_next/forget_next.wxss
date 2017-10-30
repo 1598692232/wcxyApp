@@ -37,8 +37,9 @@
 	padding: 30px
 }
 .login-input-body{
+	float: left;
 	height: 44px;
-	width: 100%;
+	width: 60%;
 	padding:0 30px;
 	position: relative;
 	background-color:#21212d;
@@ -58,13 +59,11 @@
 	width: 20px;
 	height: 20px;
 }
-
-.forget-text{
-	width: 100px;
+.send-code{
 	float: right;
-	text-align: right;
-	color:#538ac0;
-	margin-top: 10px;
-	font-size:13px;
-	line-height: 30px;
+	width:40%;
+	line-height: 44px;
+	text-align: center;
+	font-size: 13px;
+	color:#fff;
 }

@@ -58,13 +58,3 @@
 	width: 20px;
 	height: 20px;
 }
-
-.forget-text{
-	width: 100px;
-	float: right;
-	text-align: right;
-	color:#538ac0;
-	margin-top: 10px;
-	font-size:13px;
-	line-height: 30px;
-}

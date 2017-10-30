@@ -30,7 +30,8 @@
 		                    <text class="back-name">{{item.realname}}</text>
 		                    <text class="back-text">{{item.content}}</text>
 		                </view>
-		                 <view class='comment-del' bindtap="handleDelComment" data-index="{{index}}">
+						 <view class='comment-del' bindtap="handleDelComment" data-index="{{index}}"
+						  data-userid="{{item.user_id}}" style="background: {{item.delColor}}">
 			              删除
 			          	</view>
 		            </view>
