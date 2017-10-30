@@ -60,7 +60,8 @@
 .list-body{
     /*padding: 0 10px ;*/
     box-sizing: border-box;
-    background: #2a2e3b
+    /* background: #2a2e3b */
+    background: #252525;
 }
 .comment-body{
     width: 100%;
@@ -220,7 +221,8 @@
     height: 60px;
     padding: 10px 10px 10px 0;
     border-bottom: 1px solid #2c2b3b;
-    background: #21252d
+    /* background: #21252d */
+    background: #252525;
 }
 .video-title {
     display: flex;

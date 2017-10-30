@@ -15,7 +15,7 @@
        <!--  <view class="list-tabs">
         </view> -->
 
-      <scroll-view style="height:{{scrollHeight}}px;background:#252432" scroll-y>
+      <scroll-view style="height:{{scrollHeight}}px;background:#252525" scroll-y>
         <!-- 我的项目 -->
         <view class="list-tab" bindtap="showMyProjects">
           <text>我的项目</text>
@@ -24,7 +24,7 @@
         <view class="list-body">          
             <block wx:if="{{myProjectList.length > 0}}">
               <view class="item clearfix" wx:for="{{myProjectList}}" wx:key="index" bindtap="toProject" data-id="{{item.id}}" data-name="{{item.name}}"
-              style="border-bottom: {{myProjectList.length - 1 == index ? '0px' : '5px solid #252432)'}};">
+              style="border-bottom: {{myProjectList.length - 1 == index ? '0px' : '5px solid #252525)'}};">
                 <!-- <view class="item-left">
                   <image src="./pro.png" mode="aspectFit" lazy-load="{{true}}"></image>
                 </view> -->
@@ -49,7 +49,7 @@
         <view class="list-body"s>
             <block wx:if="{{joinProjectList.length > 0}}">
               <view class="item clearfix" wx:for="{{joinProjectList}}" wx:key="index" bindtap="toProject" data-name="{{item.name}}" data-id="{{item.project_number}}" wx:if="{{joinProjectList.length > 0}}"
-                  style="border-bottom: {{joinProjectList.length - 1 == index ? '0px' : '5px solid #252432'}}">
+                  style="border-bottom: {{joinProjectList.length - 1 == index ? '0px' : '5px solid #252525'}}">
                 <!-- <view class="item-left">
                   <image src="./pro.png" mode="aspectFit" lazy-load="{{true}}"></image>
                 </view> -->

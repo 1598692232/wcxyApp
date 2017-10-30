@@ -7,7 +7,8 @@
   /* justify-content: space-between; */
   padding: 200rpx 0;
   box-sizing: border-box;
-  background: #353446;
+  /* background: #353446; */
+  background: #252525;
 } 
 .clearfix:after{
 	content: '';
@@ -59,7 +60,8 @@ page {
     bottom: 0;
     left: 0; */
     width: 100%;
-    background: #2a2e3b;
+    /* background: #2a2e3b; */
+    background: #252525;
     box-sizing:border-box;
     padding: 5px;
     z-index:100;
@@ -73,7 +75,8 @@ page {
     padding:5px;
     /*padding-top: 10px;*/
     box-sizing: border-box;
-    background-color: #535b73;
+    /* background-color: #535b73; */
+    background: #535353;
     border-radius: 3px;
     width: 78%;
 }
@@ -89,7 +92,8 @@ page {
     font-size:13px;
     border-radius: 3px;
     color: #fff;
-    background-color: #535b73;
+    /* background-color: #535b73; */
+    background: #535353;
 }
 
 

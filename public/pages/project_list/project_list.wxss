@@ -26,7 +26,8 @@
 	float: left;
 	width:130px;
 	height:100px;
-	background: #21212d;
+	/* background: #21212d; */
+	background: #252525;
 }
 .pl-show-count:before{
 	content: "";

@@ -42,7 +42,7 @@ Page({
         Pactive: 0,
         fullScreen: false,
         fullScreenPSelect: false,
-        videoClicked: false
+        videoClicked: false,
     },
 
     onReady: function (res) {
@@ -69,8 +69,9 @@ Page({
                     versionActive: options.id,
                 	// username: options.username,
                 	// createTime: options.createTime,
-                    // coverImg: options.coverImg
+                    // coverImg: options.coverImg   
                 })
+
                 wx.setNavigationBarTitle({title: options.name})
 
 
@@ -192,11 +193,24 @@ Page({
           timingFunction: "cubic-bezier(0.4, 0, 0.2, 1)"
         })
 
-	    let store = wx.getStorageSync('app')
-	    let reqData = Object.assign({}, store, {
-	    	doc_id: self.data.doc_id,
-	    	project_id: this.data.project_id,
-	    	// sort: 0
+        let store = wx.getStorageSync('app')
+        // let user = wx.getStorageSync('user_info')
+
+        // let reqData = ''
+        // if (user.token == undefined || user.token == '' || user == null) {
+        //     reqData = {
+        //         login_id: this.data.login_id,
+        //         token: this.data.token,
+        //         doc_id: self.data.doc_id,
+        //         project_id: this.data.project_id,
+        //     }
+        // } else {
+           
+        // }
+        let reqData = Object.assign({}, store, {
+            doc_id: self.data.doc_id,
+            project_id: this.data.project_id,
+            // sort: 0
         })
 
         self.getVideoInfo(store.host, reqData, (data) => {
@@ -269,10 +283,37 @@ Page({
         let self = this
 
         let res = wx.getStorageSync('app')
-        let pids = wx.getStorageSync('project_ids')
+        
+        // 延时处理拖动不能获取播放时间的问题
+        self.videoCtx.play()
+        self.setData({
+            muted: true
+        })
+        // setTimeout(() => {
+            self.videoCtx.pause()
+            let videoTime = self.data.videoTime
+            self.setData({
+                videoTime: videoTime,
+                muted: false
+            })
+            self.videoCtx.seek(videoTime)
+            self.setData({
+                focusTime: parseInt(self.data.videoTime)
+            })
+        // }, 500)
+            
+        
+	},
 
-        let returnTosignin = (text) => {
-             let infoData = {
+	 // 发送评论
+	 sendComment(e) {
+        let self = this
+        let res = wx.getStorageSync('app')
+
+        let pids = wx.getStorageSync('project_ids')
+        
+        let returnTosignin = (text, isLogin) => {
+            let infoData = {
                 url: self.data.url,
                 name: self.data.name,
                 project_id: wx.getStorageSync('project_id') || self.data.project_id,
@@ -283,49 +324,41 @@ Page({
             }
 
             wx.setStorageSync('info_data', infoData)
-
-            wx.showModal({
-              title: '提示',
-              content: text,
-              success: function(res) {
-                if (res.confirm) {
-                    wx.navigateTo({url: '/pages/signin/signin'})
-                }
-              }
-            })
+            if (isLogin) {
+                wx.showModal({
+                    title: '提示',
+                    content: text,
+                    success: function(res) {
+                        if (res.confirm) {
+                            wx.navigateTo({url: '/pages/signin/signin'})
+                        }
+                    },
+                    showCancel: false
+                })
+            } else {
+                wx.showModal({
+                    title: '提示',
+                    content: text,
+                    success: function(res) {
+                        if (res.confirm) {
+                            wx.navigateTo({url: '/pages/signin/signin'})
+                        }
+                    }
+                })
+            }
+           
         }
 
         if (res.token == '') {
-           returnTosignin('评论／回复需登录')
-        } else { 
-            if (pids.indexOf(self.data.project_id) < 0) {
-                returnTosignin('只有参与该项目的人才能评论')
-                return
-            }
-            // 延时处理拖动不能获取播放时间的问题
-            self.videoCtx.play()
-            self.setData({
-                muted: true
-            })
-            // setTimeout(() => {
-                self.videoCtx.pause()
-                let videoTime = self.data.videoTime
-                self.setData({
-                    videoTime: videoTime,
-                    muted: false
-                })
-                self.videoCtx.seek(videoTime)
-                self.setData({
-                    focusTime: parseInt(self.data.videoTime)
-                })
-            // }, 500)
-            
+           returnTosignin('评论／回复需登录', false)
+           return
+        } 
+        if (pids.indexOf(self.data.project_id) < 0) {
+            returnTosignin('只有参与该项目的人才能评论', true)
+            return
         }
-	},
 
-	 // 发送评论
-	 sendComment(e) {
-	 	let self = this
+	 
  		let comList = self.data.commentList
  		let time = self.data.focusTime
  		let store = wx.getStorageSync('app')
@@ -457,14 +490,11 @@ Page({
 	 },
 
     onShareAppMessage () {
-        let url = '/pages/info/info?url=' + this.data.url + '&name=' 
-                + this.data.name + '&id=' + this.data.doc_id 
-                + '&username=' + this.data.username + '&createTime=' + this.data.createTime
-                + '&coverImg=' + this.data.coverImg + '&projectId=' + this.data.project_id
+        let url = '/pages/info/info?id=' + this.data.doc_id + '&projectId=' + this.data.project_id
 	    return {
-	        title: this.data.name,
+	        title: this.data.info.name,
 	        path: url,
-	        imageUrl: this.data.coverImg
+	        imageUrl: this.data.info.cover_img[0]
 	    }
 	},
 

@@ -48,15 +48,22 @@ Page({
         })
 
         wx.showLoading()
+        if (this.data.loginOut == '') {
+            wx.setStorage({
+                key: 'user_info',
+                data: ''
+            })
 
-        // let store = wx.getStorageSync('app')
-        // stores.sessionId = res.data.data.sessionid
-        // let newStorage = Object.assign({}, store)
-        // newStorage.token = ''
-        // wx.setStorage({
-        //   key:"app",
-        //   data: newStorage
-        // })
+            // let store = wx.getStorageSync('app')
+            // stores.sessionId = res.data.data.sessionid
+            // let newStorage = Object.assign({}, store)
+            // newStorage.token = ''
+            // wx.setStorage({
+            //     key:"app",
+            //     data: newStorage
+            // })
+        }
+    
         
         let self = this
         wx.login({
