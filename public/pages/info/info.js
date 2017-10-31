@@ -6,10 +6,7 @@ Page({
     data: {
 	    scrollHeight: 0,
 	    commentIsFocus: false,
-	    // hideSendComment: true,
-
 	    commentList:[],
-	    // animationData: {},
 	    commentText: '',
         tx: app.data.staticImg.tx,
         zan: app.data.staticImg.zan,
@@ -25,7 +22,6 @@ Page({
         delTouching: false,
         showDel: false,
         muted: false,
-
         username:'',
         createTime: '',
         versionSelect: false,
@@ -159,7 +155,7 @@ Page({
 
     onShow() {
         let self = this
-        
+
         Util.getSystemInfo().then(res => {
             self.setData({
                 scrollHeightAll: res.windowHeight,
