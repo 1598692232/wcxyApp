@@ -198,7 +198,7 @@ Page({
             })
             let stores = wx.getStorageSync('app')
             // stores.sessionId = res.data.data.sessionid
-            let newStorage = Object.assign({}, stores, res.data.data)
+            let newStorage = Object.assign({}, stores, json)
             newStorage.login_id = parseInt(newStorage.login_id)
             Util.setStorage('app', newStorage)
 

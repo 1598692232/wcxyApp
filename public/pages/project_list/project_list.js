@@ -22,67 +22,42 @@ Page({
 	onLoad(options) {
 		let self = this;
         wx.showLoading()
+        Util.getSystemInfo().then(result => {
+            self.setData({
+                liWidth: result.windowWidth - 160,
+                query: wx.createSelectorQuery(),
+                scrollHeight: result.windowHeight - 30
+            })
+            wx.setNavigationBarTitle({title: options.projectName})
 
-        wx.getSystemInfo({
-            success: function (result) {
+            let wh = result.windowHeight
+            let store = wx.getStorageSync('app')
+            let reqData = Object.assign({}, store, options)
+
+            Util.ajax('project/file', 'get', reqData).then(json => {
+                json.list.map(item => {
+                    item.created_time = Util.getCreateTime(item.created_at)
+                    let sec = item.project_file.time % 60
+                    item.project_file.time = Util.timeToMinAndSec(item.project_file.time)
+                    item.user_info.avatar = item.user_info.avatar == '' ? self.data.tx : item.user_info.avatar
+                    item.size_text = (item.size / Math.pow(1024, 2)).toFixed(2)
+                })
+
                 self.setData({
-                    liWidth: result.windowWidth - 160,
-                    query: wx.createSelectorQuery(),
-                    scrollHeight: result.windowHeight - 30
+                    videoList: json.list,
+                    breadcrumbList: [{id: 0, name: options.projectName}],
+                    projectName: options.projectName,
+                    scrollHeight: result.windowHeight - 30,
+                    breadcrumbWidth: 100
                 })
-                wx.setNavigationBarTitle({title: options.projectName})
-                let wh = result.windowHeight
-                let store = wx.getStorageSync('app')
-                let reqData = Object.assign({}, store, options)
-                wx.request({
-                    url: store.host + '/wxapi/project/file',
-                    data: reqData,
-                    header: {
-                        'content-type': 'application/json' // 默认值
-                    },
-                    method: 'get',
-                    success: function(res) {
-                        wx.hideLoading()
-                        if (res.data.status == 1) {
-                           
-                            res.data.data.list.map(item => {
-                                item.created_time = Util.getCreateTime(item.created_at)
-                                let sec = item.project_file.time % 60
-                                item.project_file.time = Util.timeToMinAndSec(item.project_file.time)
-                                item.user_info.avatar = item.user_info.avatar == '' ? self.data.tx : item.user_info.avatar
-                                item.size_text = (item.size / Math.pow(1024, 2)).toFixed(2)
-                            })
-
-                            self.setData({
-                                videoList: res.data.data.list,
-                                breadcrumbList: [{id: 0, name: options.projectName}],
-                                projectName: options.projectName,
-                                scrollHeight: result.windowHeight - 30,
-                                breadcrumbWidth: 100
-                            })
-                            //  setTimeout(() => {
-                            //     wx.createSelectorQuery().select('#join-member').fields({
-                            //         dataset: true,
-                            //         size: true,
-                            //         scrollOffset: true,
-                            //         properties: ['scrollX', 'scrollY']
-                            //       }, function(res){
-                            //           self.setData({
-                            //             scrollHeight: wh - res.height
-                            //           })
-                            //       }).exec()
-                            //  })
-                        } else {
-                            wx.showModal({
-                              title: '提示',
-                              content: '文件获取失败！',
-                            })
-                        }
-                    }
+            }, res => {
+                wx.showModal({
+                    title: '提示',
+                    content: '文件获取失败！',
                 })
-
-            }
-        });
+            })
+           
+        })
     },
     
 
@@ -94,30 +69,20 @@ Page({
             project_id: wx.getStorageSync('project_id')
         })
         wx.showLoading()
-        wx.request({
-            url: store.host + '/wxapi/member/project',
-            data: reqData,
-            header: {
-                'content-type': 'application/json' // 默认值
-            },
-            method: 'get',
-            success: function(res) {
-                wx.hideLoading()
-                if (res.data.status == 1) {
-                    res.data.data.list.forEach(item => {
-                        item.avatar = item.avatar == '' ? self.data.tx : item.avatar
-                    })
+        Util.ajax('member/project', 'get', reqData).then(json => {
+            json.list.forEach(item => {
+                item.avatar = item.avatar == '' ? self.data.tx : item.avatar
+            })
 
-                    self.setData({
-                        txList: res.data.data.list
-                    })
-                } else {
-                    wx.showModal({
-                        title: '提示',
-                        content: '获取成员头像失败！',
-                    })
-                }
-            }
+            self.setData({
+                txList: json.list
+            })
+        }, res => {
+            wx.showModal({
+                title: '提示',
+                content: '获取成员头像失败！',
+                showCancel: false
+            })
         })
     },
 
@@ -129,48 +94,36 @@ Page({
             project_id: wx.getStorageSync('project_id')
         })
          wx.showLoading()
-         wx.request({
-            url: store.host + '/wxapi/project/file',
-            data: reqData,
-            header: {
-                'content-type': 'application/json' // 默认值
-            },
-            method: 'get',
-            success: function(res) {
-                wx.hideLoading()
-                if (res.data.status == 1) {
+         Util.ajax('project/file', 'get', reqData).then(json => {
+            json.list.map(item => {
+                item.created_time = Util.getCreateTime(item.created_at)
+                let sec = item.project_file.time % 60
+                item.project_file.time = Util.timeToMinAndSec(item.project_file.time)
+                item.user_info.avatar = item.user_info.avatar == '' ? self.data.tx : item.user_info.avatar
+                item.size_text = (item.size / Math.pow(1024, 2)).toFixed(2)                        
+            })
 
-                    res.data.data.list.map(item => {
-                        item.created_time = Util.getCreateTime(item.created_at)
-                        let sec = item.project_file.time % 60
-                        item.project_file.time = Util.timeToMinAndSec(item.project_file.time)
-                        item.user_info.avatar = item.user_info.avatar == '' ? self.data.tx : item.user_info.avatar
-                        item.size_text = (item.size / Math.pow(1024, 2)).toFixed(2)                        
-                    })
-
-                    self.setData({
-                        videoList: res.data.data.list,
-                        breadcrumbList: [].concat([{id: 0, name: self.data.projectName}],res.data.data.breadcrumb),
-                        breadcrumbWidth: 100 + res.data.data.breadcrumb * 100
-                    })
-                    if (e.currentTarget.dataset.id == 0) {
-                        self.setData({
-                            showBreadcrumb: false
-                        })
-                    } else {
-                        self.setData({
-                            showBreadcrumb: true
-                        })
-                    }                    
-               
-                } else {
-                    wx.showModal({
-                      title: '提示',
-                      content: '文件获取失败！',
-                    })
-                }
-            }
-        })
+            self.setData({
+                videoList: json.list,
+                breadcrumbList: [].concat([{id: 0, name: self.data.projectName}],json.breadcrumb),
+                breadcrumbWidth: 100 + json.breadcrumb * 100
+            })
+            if (e.currentTarget.dataset.id == 0) {
+                self.setData({
+                    showBreadcrumb: false
+                })
+            } else {
+                self.setData({
+                    showBreadcrumb: true
+                })
+            }            
+         }, res => {
+            wx.showModal({
+                title: '提示',
+                content: '文件获取失败！',
+                showCancel: false
+              })
+         })
     },
 
 	toInfo(e) {
@@ -187,15 +140,8 @@ Page({
                 + '&username=' + e.currentTarget.dataset.username + '&createTime=' + e.currentTarget.dataset.createTime
                 + '&coverImg=' + e.currentTarget.dataset.coverImg + '&projectId=' + wx.getStorageSync('project_id')
 
-            // let url = '/pages/info/info?doc_id=' + e.currentTarget.dataset.id  + '&project_id' + wx.getStorageSync('project_id')
             wx.navigateTo({
                 url: url,
-                // success(a,b,c) {
-                //     console.log(a,b,c, 8888)
-                // },
-                // fail(a,b,c) {
-                //     console.log(a,b,c, 999)
-                // }
             })
         }
 	}
