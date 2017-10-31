@@ -1,3 +1,4 @@
+let Util = require('../../utils/util.js')
 const app = getApp()
 const exp = new RegExp('^[\.A-Za-z0-9_-\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$'); //邮箱正则
 
@@ -28,12 +29,7 @@ Page({
 	},
 	
 	handleNext(e) {
-
-		// wx.navigateTo({
-		// 	url: '/pages/forget_next/forget_next'
-		// })
-
-		// return
+		
 		if (e.detail.value.email.trim() == '' || !exp.test(e.detail.value.email)){
 			wx.showModal({
 				title: '提示',
@@ -44,56 +40,30 @@ Page({
 		}
 		let store = wx.getStorageSync('app')
 
-		wx.setStorage({
-			key: 'forget_email',
-			data: e.detail.value.email
-		})
-
 		if(this.data.sendEmail) return
-		this.setData({
-			sendEmail: true
-		})
+		this.data.sendEmail = true
 		let self = this
 
-		wx.request({
-			url: store.host + '/wxapi/sendvalidate',
-			data: {
-				sessionid: store.sessionid,
-				email: e.detail.value.email
-			},
-			method: 'post',
-			header: {
-					'content-type': 'application/json' // 默认
-			},
-			success(res) {
-				self.setData({
-					sendEmail: false
-				})
-				if (res.data.status == 1) {
-					wx.navigateTo({
-						url: '/pages/forget_next/forget_next'
-					})
-				} else {
-					wx.showModal({
-						title: '提示',
-						content: res.data.msg,
-						showCancel: false
-					})
-				}
-			},
-			fail() {
-				self.setData({
-					sendEmail: false
-				})
-				wx.showModal({
-					title: '提示',
-					content: '邮箱验证码发送失败！',
-					showCancel: false
-				})
-			}
-
+		Util.ajax('sendvalidate', 'post', {
+			sessionid: store.sessionid,
+			email: e.detail.value.email
+		}).then(json => {
+			wx.setStorage({
+				key: 'forget_email',
+				data: e.detail.value.email
+			})
+			wx.navigateTo({
+				url: '/pages/forget_next/forget_next'
+			})
+		}, res => {
+			wx.showModal({
+				title: '提示',
+				content: '邮箱验证码发送失败！',
+				showCancel: false
+			})
+		}).then(() => {
+			self.data.sendEmail = false
 		})
-
 	},
 
 	clearInput(e) {
@@ -127,9 +97,9 @@ Page({
 	},
 
 	handleBlur(e) {
-			this.setData({
-				hiddenEmailClear: true,
-			})
+		this.setData({
+			hiddenEmailClear: true,
+		})
 	}
 
 })

@@ -1,3 +1,4 @@
+let Util = require('../../utils/util.js')
 const app = getApp()
 
 Page({
@@ -46,7 +47,6 @@ Page({
                 clearInterval(t)
                 return
             }
-           
         }, 1000)
     },
 
@@ -54,76 +54,21 @@ Page({
         if (!this.data.canSendCode) return
         this.handleSendCodeTime()
         let store = wx.getStorageSync('app')
-        wx.request({
-			url: store.host + '/wxapi/sendvalidate',
-			data: {
-				sessionid: store.sessionid,
-				email: wx.getStorageSync('forget_email')
-			},
-			method: 'post',
-			header: {
-                'content-type': 'application/json' // 默认
-			},
-            success(res) {
-
-                if (res.data.status == 1) {
-                    let store = wx.getStorageSync('app')
-                    let data = Object.assign({}, store, res.data.data)
-                     //如果已经登录，设置storage，初始化列表页
-                     wx.setStorage({
-                        key:"app",
-                        data: data,
-                        success() {
-                            wx.request({
-                                url: store.host + '/wxapi/user/info',
-                                data: res.data,
-                                success(res) {
-                                      if (res.data.status == 1) {
-                                          wx.setStorage({
-                                              key: 'user_info',
-                                              data: res.data.data
-                                          })
-                                          wx.reLaunch({
-                                              url: '/pages/list/list?sessionid=' + sessionid
-                                          })
-                                      } else {
-                                          wx.showModal({
-                                            title: '提示',
-                                            content: '未获取到当前用户信息',
-                                            showCancel: false
-                                          })
-                                      }
-                                }
-                            })
-                        }
-                    })
-                } else {
-                    wx.showModal({
-                        title: '提示',
-                        content: res.data.msg,
-                        showCancel: false
-                    })
-                }
-
-            },
-
-
-            fail() {
-                wx.showModal({
-                    title: '提示',
-                    content: '登录失败！',
-                    showCancel: false
-                })
-            }
+        Util.ajax('sendvalidate', 'post', {
+            sessionid: store.sessionid,
+            email: wx.getStorageSync('forget_email')
+        }).then(json => {}, () => {
+            wx.showModal({
+                title: '提示',
+                content: '验证码发送失败!',
+                showCancel: false
+            })
         })
     },
 
     handleLogin(e) {
         let self = this
-        if (self.data.logined) return
-        self.setData({
-            logined: true
-        })
+      
         let store = wx.getStorageSync('app')
         if ( e.detail.value.code.trim() == '') {
             wx.showModal({
@@ -134,75 +79,54 @@ Page({
             return 
         }
 
-        wx.request({
-			url: store.host + '/wxapi/validatelogin',
-			data: {
-                sessionid: store.sessionid,
-                code: e.detail.value.code
-			},
-			method: 'post',
-			header: {
-                'content-type': 'application/json' // 默认
-			},
-			success(res) {
-                setTimeout(() =>{
-                    self.setData({
-                        logined: false
-                    })
-                }, 1000)
-               
-                if (res.data.status == 1) {
-                    let data = Object.assign({}, store, res.data.data)
+        if (self.data.logined) return
+        self.data.logined = true
+        wx.showLoading()
+
+        Util.ajax('validatelogin', 'post',  {
+            sessionid: store.sessionid,
+            code: e.detail.value.code
+        }).then(json => {
+            let data = Object.assign({}, store, json)
+            Util.setStorage('app', data).then(() => {
+                Util.ajax('user/info', 'get', data).then(json => {
                     wx.setStorage({
-                        key:"app",
-                        data: data,
-                        success() {
-                            wx.request({
-                                url: store.host + '/wxapi/user/info',
-                                data: data,
-                                success(res) {
-                                    if (res.data.status == 1) {
-                                        wx.setStorage({
-                                            key: 'user_info',
-                                            data: res.data.data
-                                        })
-                                        wx.reLaunch({
-                                            url: '/pages/list/list?sessionid=' + data.sessionid
-                                        })
-                                    } else {
-                                        wx.showModal({
-                                        title: '提示',
-                                        content: '未获取到当前用户信息',
-                                        showCancel: false
-                                        })
-                                    }
-                                }
-                              })
-                        }
+                        key: 'user_info',
+                        data: json
                     })
-
-                } else {
-
+                    wx.reLaunch({
+                        url: '/pages/list/list'
+                    })
+                }, res => {
                     wx.showModal({
-						title: '提示',
-						content: res.data.msg,
-						showCancel: false
-					})
-                }
-            },
-            fail() {
-                setTimeout(() =>{
-                    self.setData({
-                        logined: false
+                        title: '提示',
+                        content: '未获取到当前用户信息',
+                        showCancel: false
                     })
-                }, 1000)
-				wx.showModal({
-					title: '提示',
-					content: '登录失败！',
-					showCancel: false
-				})
-			}
+                })
+            })
+
+        }, res => {
+            wx.showModal({
+                title: '提示',
+                content: res.data.msg,
+                showCancel: false
+            })
+        }).then(() => {
+            self.data.logined = false
         })
     }
 
 })
+
+
+
+
+
+
+
+
+
+
+
+
