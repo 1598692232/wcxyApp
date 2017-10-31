@@ -226,11 +226,11 @@ Page({
         let exp = new RegExp(e.detail.value)
       
         let results1 = this.data.myProjectListTemp.filter(item => {
-            return exp.test(item.name)
+            return exp.test(item.name.toLowerCase())
         })
 
         let results2 = this.data.joinProjectListTemp.filter(item => {
-            return exp.test(item.name)
+            return exp.test(item.name.toLowerCase())
         })
       
         this.setData({
