@@ -253,7 +253,7 @@ Page({
 	    return {
 	        title: '影音制作链接者',
 	        path: '/pages/list/list',
-            imageUrl: './xy2.jpg'
+            imageUrl: './img/xy2.jpg'
 	    }
 	}
 })

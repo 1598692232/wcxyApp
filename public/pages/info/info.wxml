@@ -24,11 +24,11 @@
       <view class="video-title">
           <!-- <text>{{name}}</text> -->
           <view class="select-version-p" bindtap="selectVersionAndP" id="version-select" data-id="version-select">
-              <image src="./bg1.png" mode="scaleToFill"></image>
+              <image src="./img/bg1.png" mode="scaleToFill"></image>
               <text>v{{versionNo}}版本</text>
           </view>
           <view class="select-version-p" bindtap="selectVersionAndP" id="p-select" data-id="p-select">
-              <image src="./bg2.png" mode="scaleToFill"></image>
+              <image src="./img/bg2.png" mode="scaleToFill"></image>
               <text>{{pNo}}P</text>
           </view>
       </view>

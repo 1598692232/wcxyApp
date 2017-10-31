@@ -26,7 +26,7 @@
               <view class="item clearfix" wx:for="{{myProjectList}}" wx:key="index" bindtap="toProject" data-id="{{item.id}}" data-name="{{item.name}}"
               style="border-bottom: {{myProjectList.length - 1 == index ? '0px' : '5px solid #252525)'}};">
                 <!-- <view class="item-left">
-                  <image src="./pro.png" mode="aspectFit" lazy-load="{{true}}"></image>
+                  <image src="./img/pro.png" mode="aspectFit" lazy-load="{{true}}"></image>
                 </view> -->
                  <!-- style="width: {{liWidth}}px" -->
                 <view class="item-right">
@@ -51,7 +51,7 @@
               <view class="item clearfix" wx:for="{{joinProjectList}}" wx:key="index" bindtap="toProject" data-name="{{item.name}}" data-id="{{item.project_number}}" wx:if="{{joinProjectList.length > 0}}"
                   style="border-bottom: {{joinProjectList.length - 1 == index ? '0px' : '5px solid #252525'}}">
                 <!-- <view class="item-left">
-                  <image src="./pro.png" mode="aspectFit" lazy-load="{{true}}"></image>
+                  <image src="./img/pro.png" mode="aspectFit" lazy-load="{{true}}"></image>
                 </view> -->
                  <!-- style="width: {{liWidth}}px" -->
                 <view class="item-right">

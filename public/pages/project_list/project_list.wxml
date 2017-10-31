@@ -4,7 +4,7 @@
 			<view class="breadcrumb-nav-li" wx:for="{{breadcrumbList}}" wx:key="index" 
 			data-id="{{item.id}}" bindtap="selectFolder" 
 			style="z-index:{{100 - index}};opacity:{{breadcrumbList.length - 1 == index ? 1: 0.5}}" >
-				<image src="{{index == 0 ? './bg1.png' : './bg2.png'}}" mode="scaleToFill"></image>
+				<image src="{{index == 0 ? './img/bg1.png' : './img/bg2.png'}}" mode="scaleToFill"></image>
 				<view class="text">{{item.name}}</view>
 			</view>			
 		</view>
@@ -18,7 +18,7 @@
 					<!-- <view class="join-member-name">{{item.realname}}</view> -->
 				</view>
 				<view class="join-member-intro">
-					<image src="./bg1.png" mode="scaleToFill"></image>	
+					<image src="./img/bg1.png" mode="scaleToFill"></image>	
 					<view class="join-member-intro-text">项目成员</view>					
 				</view>
 			</view>
@@ -34,7 +34,7 @@
 				<view class="pl-img-body">
 					<block wx:if="{{item.type == 'folder'}}">
 						<view class="pl-img pl-floder">
-							<image  src="./floder.png" mode="aspectFit" lazy-load="{{true}}" ></image>								
+							<image  src="./img/floder.png" mode="aspectFit" lazy-load="{{true}}" ></image>								
 						</view>
 					</block>
 					<block wx:if="{{item.type == 'file'}}">
@@ -43,7 +43,7 @@
 						 	<text>{{item.version_count}}</text>
 						 </view> -->
 						 <view class="play-img">
-							<image src="./play.png" mode="aspectFit" lazy-load="{{true}}"></image> 								
+							<image src="./img/play.png" mode="aspectFit" lazy-load="{{true}}"></image> 								
 						 </view>
 
 						 <view class="pl-timer">
@@ -58,9 +58,9 @@
 				<view class="pl-des-body" style="width:{{liWidth}}px">
 					<text class="pl-name">{{item.name}}</text>
 					<view class="pl-text clearfix">
-						<image class="pl-video-icon" src="./storage.png" mode="aspectFit" lazy-load="{{true}}"></image> 
+						<image class="pl-video-icon" src="./img/storage.png" mode="aspectFit" lazy-load="{{true}}"></image> 
 						<view class="pl-text-p"><text>{{item.size_text}}M</text></view>
-						<image class="pl-video-icon" src="./comment.png" mode="aspectFit" lazy-load="{{true}}"></image> 
+						<image class="pl-video-icon" src="./img/comment.png" mode="aspectFit" lazy-load="{{true}}"></image> 
 						<view class="pl-text-p"><text>{{item.comment_count}}</text></view>
 					</view>
 					<view class="pl-user clearfix">
