@@ -31,5 +31,9 @@
     "backgroundColor": "#21212d",
     "selectedColor": "#0046db",
     "color:": "#9b9b9b"
+  },
+  "networkTimeout": {
+    "request": 20000,
+    "downloadFile": 20000
   }
 }
