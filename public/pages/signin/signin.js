@@ -116,6 +116,7 @@ Page({
                             wx.showModal({
                                 title: '提示',
                                 content: '未获取到当前用户信息',
+                                showCancel: false
                             })
                         })
                     })
