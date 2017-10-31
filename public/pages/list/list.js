@@ -23,26 +23,24 @@ Page({
         let self = this
         wx.showLoading()
 
-        wx.getSystemInfo({
-            success: function (res) {
-                self.setData({
-                    scrollHeight: res.windowHeight - 40,
-                    listInfoWidth: res.windowWidth - 110,
-                    liWidth: res.windowWidth - 110
-                })
+        Util.getSystemInfo().then(res => {
+            self.setData({
+                scrollHeight: res.windowHeight - 40,
+                listInfoWidth: res.windowWidth - 110,
+                liWidth: res.windowWidth - 110
+            })
 
-                let infoData = wx.getStorageSync('info_data')
-                if (infoData != '') {
-                    let url = '/pages/info/info?url=' + infoData.url + '&name='
-                        + infoData.name + '&id=' + infoData.doc_id
-                        + '&username=' + infoData.username + '&createTime=' + infoData.createTime
-                        + '&coverImg=' + infoData.coverImg 
-                    wx.navigateTo({
-                        url: url
-                    })
-                }
+            let infoData = wx.getStorageSync('info_data')
+            if (infoData != '') {
+                let url = '/pages/info/info?url=' + infoData.url + '&name='
+                    + infoData.name + '&id=' + infoData.doc_id
+                    + '&username=' + infoData.username + '&createTime=' + infoData.createTime
+                    + '&coverImg=' + infoData.coverImg 
+                wx.navigateTo({
+                    url: url
+                })
             }
-        });
+        })
     },
 
     onShow() {
@@ -257,7 +255,5 @@ Page({
 	        path: '/pages/list/list',
             imageUrl: './xy2.jpg'
 	    }
-	},
-
-
+	}
 })
