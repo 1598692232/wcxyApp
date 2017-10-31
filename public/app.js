@@ -1,4 +1,5 @@
 //app.js
+let Util = require('./utils/util.js')
 let img = require('./img/index.js')
 
 App({
@@ -6,21 +7,19 @@ App({
     staticImg: img
   },
   onLaunch: function () {
-    // 展示本地存储能力
-    wx.setStorage({
-      key:"app",
-      data: {
-        email: '',
-        token: '',
-        login_id: '',
-        sessionid: '',
-        // host: 'http://10.255.1.20',
-        // host: 'http://111.231.106.53',
-        host: 'https://www.uxinyue.com',
-        // host: 'http://111.231.109.140:81',
-        code:'',
-        codeSrc: ''
-      }
+    
+    Util.setStorage('app', {
+      email: '',
+      token: '',
+      login_id: '',
+      sessionid: '',
+      // host: 'http://10.255.1.20',
+      // host: 'http://111.231.106.53',
+      host: 'https://www.uxinyue.com',
+      // host: 'http://111.231.109.140:81',
+      code:'',
+      codeSrc: ''
     })
+
   },
 })

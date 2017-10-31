@@ -1,3 +1,4 @@
+let Util = require('../../utils/util.js')
 const app = getApp()
 
 const exp = new RegExp('^[\.A-Za-z0-9_-\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$'); //邮箱正则
@@ -28,16 +29,15 @@ Page({
 	onLoad(options) {
         let self = this
         let store = wx.getStorageSync('app')
-        wx.getSystemInfo({
-            success: function (res) {
-            	self.setData({
-                    scrollHeight: res.windowHeight,
-                    codeWidth: res.windowWidth - 100,
-                    codeSrc: store.host + '/wxapi/vercode?t=' + new Date().getTime() + '&sessionid=' + options.sessionid,
-                    loginOut: options.login_out
-                })
-                wx.setNavigationBarTitle({title: '登录'})
-            }
+
+        Util.getSystemInfo().then(res => {
+            self.setData({
+                scrollHeight: res.windowHeight,
+                codeWidth: res.windowWidth - 100,
+                codeSrc: store.host + '/wxapi/vercode?t=' + new Date().getTime() + '&sessionid=' + options.sessionid,
+                loginOut: options.login_out
+            })
+            wx.setNavigationBarTitle({title: '登录'})
         })
     },
 
@@ -53,15 +53,6 @@ Page({
                 key: 'user_info',
                 data: ''
             })
-
-            // let store = wx.getStorageSync('app')
-            // stores.sessionId = res.data.data.sessionid
-            // let newStorage = Object.assign({}, store)
-            // newStorage.token = ''
-            // wx.setStorage({
-            //     key:"app",
-            //     data: newStorage
-            // })
         }
     
         
@@ -90,90 +81,56 @@ Page({
         let self = this
 
         //获取存储的code
+        let store = wx.getStorageSync('app')
 
-            let store = wx.getStorageSync('app')
+        Util.ajax('init', 'get', {code: store.code}).then((json) => {
 
-            //发起网络请求，判断当前微信账号是否已经登录
-            wx.request({
-                url: store.host + '/wxapi/init',
-                data: {
-                  code: store.code
-                },
-                header: {
-                    'content-type': 'application/json' // 默认值
-                },
-                method: 'get',
-                success(res) {
-                    wx.hideLoading()
-                    if (res.data.status == 1) {
+            let data = Object.assign({}, store, json)
+            
+            if (data.token == '') {
+                //如果没有登录，设置storage
+                // Util.setStorage({
+                //     key:"app",
+                //     data: data
+                // })
+                Util.setStorage('app', data)
 
-                        let data = Object.assign({}, store, res.data.data)
+            } else {
+                // 如果是登录退出操作，则返回
+                if (self.data.loginOut == 1) return
 
+                let sessionid = data.sessionid
 
-                        if (res.data.data.token == '') {
-                            //如果没有登录，设置storage，并且跳转到登录页
-                           wx.setStorage({
-                                key:"app",
+                Util.setStorage('app', data).then(() => {
+                    Util.getStorage('app').then((res) => {
+                        Util.ajax('user/info', 'get', res.data).then((data) => {
+                            wx.setStorage({
+                                key: 'user_info',
                                 data: data
                             })
-
-                        } else {
-                            // 如果是登录退出操作，则返回
-                            if (self.data.loginOut == 1) return
-
-                            let sessionid = res.data.data.sessionid
-                            //如果已经登录，设置storage，初始化列表页
-                            wx.setStorage({
-                                key:"app",
-                                data: data,
-                                success() {
-                                    wx.getStorage({
-                                        key:'app',
-                                        success(res) {
-                                            wx.request({
-                                              url: store.host + '/wxapi/user/info',
-                                              data: res.data,
-                                              success(res) {
-                                                  
-                                                    if (res.data.status == 1) {
-                                                        wx.setStorage({
-                                                            key: 'user_info',
-                                                            data: res.data.data
-                                                        })
-                                                        wx.reLaunch({
-                                                            url: '/pages/list/list?sessionid=' + sessionid
-                                                        })
-                                                    } else {
-                                                        wx.showModal({
-                                                          title: '提示',
-                                                          content: '未获取到当前用户信息',
-                                                        })
-                                                    }
-                                              }
-                                            })
-                                            
-                                        }
-                                    })
-                                }
+                            wx.reLaunch({
+                                // url: '/pages/list/list?sessionid=' + sessionid
+                                url: '/pages/list/list'
                             })
-
-                        }
-
-                        
-                    } else {
-                        self.consoleLoginError('初始化小程序失败')
-                    }
-
-                },
-                fail(res) {
-                    let rs = JSON.stringify(res)
-                    wx.hideLoading()
-                    wx.showModal({
-                      title: '提示',
-                      content: rs,
+                        }, () => {
+                            wx.showModal({
+                                title: '提示',
+                                content: '未获取到当前用户信息',
+                            })
+                        })
                     })
-                }
+                })
+
+            }
+
+        }, () => {
+            wx.showModal({
+                title: '提示',
+                content: '小程序初始化失败！',
+                cancelShow: false
             })
+        })
+
     },
 
     consoleLoginError(errText) {
@@ -235,66 +192,37 @@ Page({
         let reqData = Object.assign({}, e.detail.value, {sessionid: store.sessionid})
         reqData.login_id = parseInt(reqData.login_id)
         wx.showLoading()
-        wx.request({
-            url: store.host + '/wxapi/authentication', //仅为示例，并非真实的接口地址
-            data: reqData,
-            header: {
-                'content-type': 'application/json' // 默认值
-            },
-            method: 'post',
-            success: function(res) {
+        Util.ajax('authentication', 'post', reqData).then(json => {
+            self.setData({
+                loginOut: ''
+            })
+            let stores = wx.getStorageSync('app')
+            // stores.sessionId = res.data.data.sessionid
+            let newStorage = Object.assign({}, stores, res.data.data)
+            newStorage.login_id = parseInt(newStorage.login_id)
+            Util.setStorage('app', newStorage)
 
-                wx.hideLoading()
-                if (res.data.status == 1) {
-                    self.setData({
-                        loginOut: ''
-                    })
-                    let stores = wx.getStorageSync('app')
-                    // stores.sessionId = res.data.data.sessionid
-                    let newStorage = Object.assign({}, stores, res.data.data)
-                    newStorage.login_id = parseInt(newStorage.login_id)
-                    wx.setStorage({
-                      key:"app",
-                      data: newStorage
-                    })
-
-                    wx.request({
-                          url: store.host + '/wxapi/user/info',
-                          data: res.data.data,
-                          success(res) {
-                            wx.hideLoading()
-                            if (res.data.status == 1) {
-                                wx.setStorage({
-                                    key: 'user_info',
-                                    data: res.data.data
-                                })
-                                
-                                wx.reLaunch({
-                                    url: '/pages/list/list?id=' + newStorage.login_id
-                                })
-
-                            } else {
-                                wx.showModal({
-                                    title: '提示',
-                                    content: '未获取到当前用户信息',
-                                    showCancel: false
-                                })
-                            }
-                          }
-                    })
-
-                } else {
-                    wx.showModal({
-                        title: '提示',
-                        content: res.data.msg,
-                        showCancel: false
-                    })
-                    self.getCode()
-                }
-            }
+            Util.ajax('user/info', 'get', json).then(json => {
+                Util.setStorage('user_info', json)
+                wx.reLaunch({
+                    // url: '/pages/list/list?id=' + newStorage.login_id
+                    url: '/pages/list/list'
+                })
+            }, res => {
+                wx.showModal({
+                    title: '提示',
+                    content: '未获取到当前用户信息!',
+                    showCancel: false
+                })
+            })
+        }, res => {
+            wx.showModal({
+                title: '提示',
+                content: res.data.msg,
+                showCancel: false
+            })
         })
-
-        // wx.setStorageSync('app', data)
+        
     },
 
     clearInput(e) {

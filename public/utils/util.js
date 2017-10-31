@@ -49,18 +49,72 @@ const ajax = (url, type, data) => {
             },
             method: type,
             success(res){
+                wx.hideLoading()
                 if (res.data.status == 1) {
                     resolve(res.data.data)
                 } else {
                     reject(res)
                 }
             },
-            fail() {
+            fail(res) {
+                let rs = JSON.stringify(res)
+                wx.hideLoading()
                 wx.showModal({
                     title: '提示',
-                    content: '获取数据失败',
+                    content: rs,
                     cancelShow: false
                 })
+            }
+        })
+    })
+}
+
+const setStorage = (key, data, completeCallback) => {
+    return new Promise((resolve, reject) => {
+        wx.setStorage({
+            key: key,
+            data: data,
+            success(res) {
+                resolve(res)
+            },
+            fail() {
+                reject(res)
+            },
+            complete(res) {
+                if (completeCallback) completeCallback(res)
+            }
+        })
+    })
+}
+
+const getStorage = (key, data, completeCallback) => {
+    return new Promise((resolve, reject) => {
+        wx.getStorage({
+            key: key,
+            success(res) {
+                resolve(res)
+            },
+            fail() {
+                reject(res)
+            },
+            complete(res) {
+                if (completeCallback) completeCallback(res)
+            }
+        })
+    })
+}
+
+const getSystemInfo = (completeCallback) => {
+    return new Promise((resolve, reject) => {
+        wx.getSystemInfo({
+            success(res) {
+                resolve(res)
+            },
+            fail() {
+                reject(res)
+            },
+            complete(res) {
+                if (completeCallback) completeCallback(res)
             }
         })
     })
@@ -70,5 +124,8 @@ module.exports = {
   formatTime: formatTime,
   getCreateTime: getCreateTime,
   timeToMinAndSec: timeToMinAndSec,
-  ajax: ajax
+  ajax: ajax,
+  setStorage: setStorage,
+  getStorage: getStorage,
+  getSystemInfo: getSystemInfo
 }
