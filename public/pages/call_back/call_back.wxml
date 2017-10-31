@@ -45,7 +45,7 @@
 	  <view class="push-comment">
 	   <form bindsubmit="sendComment">
 	      <view class="push-comment-input clearfix">
-	          <input placeholder="回复评论..."  cursor-spacing="20"  bindblur="commentBlur" name="commentText"
+	          <input placeholder="回复评论..."  cursor-spacing="20" name="commentText"
 	          bindfocus="commentFocus" animation="{{animationData}}" value="{{commentText}}" style="color:#fff"/>
 	          <button class="send-commit"  form-type="submit">
 	              发送
