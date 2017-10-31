@@ -8,7 +8,6 @@ Page({
         scrollHeight: 0,
         callList: [],
         commentIsFocus: false,
-        animationData: {},
         commentText: '',
         tx: app.data.staticImg.tx,
         zan: app.data.staticImg.zan,
