@@ -43,6 +43,8 @@ Page({
         fullScreen: false,
         fullScreenPSelect: false,
         videoClicked: false,
+        sendComment: false,
+        delComment: false 
     },
 
     onReady: function (res) {
@@ -56,60 +58,31 @@ Page({
             key: 'info_data',
             data: ''
         })
-        wx.getSystemInfo({
-            success: function (res) {
-                self.setData({
-                	scrollHeightAll: res.windowHeight,
-                    scrollHeight: res.windowHeight - 345,
-                    selectWidth: res.windowWidth - 20,
-                	// url: options.url,
-                	// name: options.name,
-                	project_id: options.projectId,
-                    doc_id: options.id,
-                    versionActive: options.id,
-                	// username: options.username,
-                	// createTime: options.createTime,
-                    // coverImg: options.coverImg   
-                })
 
-                wx.setNavigationBarTitle({title: options.name})
-
-
-            }
-        });
+        self.setData({
+            project_id: options.projectId,
+            doc_id: options.id,
+            versionActive: options.id
+        })
+        wx.setNavigationBarTitle({title: options.name})        
     },
 
     getVideoInfo(host, reqData, fn) {
         let self = this
         wx.showLoading()
-        wx.request({
-            url: host + '/wxapi/file/info',
-            data: reqData,
-            header: {
-                'content-type': 'application/json' // 默认值
-            },
-            method: 'get',
-            success: function(res) {
-                wx.hideLoading()
-                if (res.data.status == 1) {
-                    // res.data.data.versions.map(item => {
-                    //     if (self.data.versionActive == item.) {
-
-                    //     }
-                    // })
-                    self.setData({
-                        info: res.data.data,
-                    })
-                    if (fn != undefined) {
-                        fn(res.data.data)
-                    }
-                } else {
-                    wx.showModal({
-                        title: '提示',
-                        content: '获取视频数据失败！',
-                    })
-                }
+        Util.ajax('file/info', 'get', reqData).then(json => {
+            self.setData({
+                info: json,
+            })
+            if (fn != undefined) {
+                fn(json)
             }
+        }, res => {
+            wx.showModal({
+                title: '提示',
+                content: '获取视频数据失败！',
+                showCancel: ''
+            })
         })
     },
 
@@ -185,96 +158,80 @@ Page({
     },
 
     onShow() {
-
-	    let self = this
-
+        let self = this
         self.animation = wx.createAnimation({
-          duration: 500,
-          timingFunction: "cubic-bezier(0.4, 0, 0.2, 1)"
+            duration: 500,
+            timingFunction: "cubic-bezier(0.4, 0, 0.2, 1)"
         })
 
-        let store = wx.getStorageSync('app')
-        // let user = wx.getStorageSync('user_info')
-
-        // let reqData = ''
-        // if (user.token == undefined || user.token == '' || user == null) {
-        //     reqData = {
-        //         login_id: this.data.login_id,
-        //         token: this.data.token,
-        //         doc_id: self.data.doc_id,
-        //         project_id: this.data.project_id,
-        //     }
-        // } else {
-           
-        // }
-        let reqData = Object.assign({}, store, {
-            doc_id: self.data.doc_id,
-            project_id: this.data.project_id,
-            // sort: 0
-        })
-
-        self.getVideoInfo(store.host, reqData, (data) => {
-            data.versions.forEach((item, index)=> {
-                if (index == 0) {
-                    item.activeVersion = true
-                } else {
-                    item.activeVersion = false
-                }
-            })
-
-            data.resolution.forEach((item, k) => {
-                if (k == 0) {
-                    item.activeP = true
-                } else {
-                    item.activeP = false
-                }
-            })
-
+        Util.getSystemInfo().then(res => {
             self.setData({
-                versions: data.versions,
-                ps: data.resolution,
-                versionNo: 1,
-                pNo: data.resolution[0].resolution,
-                url:  data.resolution[0].src,
-                username: data.realname,
-                createTime: Util.getCreateTime(data.created_at)
+                scrollHeightAll: res.windowHeight,
+                scrollHeight: res.windowHeight - 345,
+                selectWidth: res.windowWidth - 20
             })
-        })
+
+            let store = wx.getStorageSync('app')
         
-	    wx.request({
-            url: store.host + '/wxapi/comment',
-            data: reqData,
-            header: {
-                'content-type': 'application/json' // 默认值
-            },
-            method: 'get',
-            success: function(res) {
-                wx.hideLoading()
-                if (res.data.status == 1) {
-                    let appStore = wx.getStorageSync('app')
-                	res.data.data.list.map(item => {
-                		item.comment_time = Util.timeToMinAndSec(item.media_time)
-                        // item.media_time = parseInt(item.media_time)
-                        item.avatar = item.avatar == '' ? self.data.tx : item.avatar
-                        item.background = ''
-                        item.translateX = ''
-                        item.delTranstion = ''
-                        if(appStore.login_id == item.user_id) {
-                            item.delColor = '#f00'
-                        } else {
-                            item.delColor = '#ddd'
-                        }
-                	})
-                    self.setData({
-                    	commentList: res.data.data.list
-                    })
-                } else {
-                    wx.showModal({
-                      title: '提示',
-                      content: '获取评论数据失败！',
-                    })
-                }
-            }
+            let reqData = Object.assign({}, store, {
+                doc_id: self.data.doc_id,
+                project_id: this.data.project_id,
+            })
+
+            self.getVideoInfo(store.host, reqData, (data) => {
+                data.versions.forEach((item, index)=> {
+                    if (index == 0) {
+                        item.activeVersion = true
+                    } else {
+                        item.activeVersion = false
+                    }
+                })
+
+                data.resolution.forEach((item, k) => {
+                    if (k == 0) {
+                        item.activeP = true
+                    } else {
+                        item.activeP = false
+                    }
+                })
+
+                self.setData({
+                    versions: data.versions,
+                    ps: data.resolution,
+                    versionNo: 1,
+                    pNo: data.resolution[0].resolution,
+                    url:  data.resolution[0].src,
+                    username: data.realname,
+                    createTime: Util.getCreateTime(data.created_at)
+                })
+            })
+
+            Util.ajax('comment', 'get', reqData).then(json => {
+                let appStore = wx.getStorageSync('app')
+                json.list.map(item => {
+                    item.comment_time = Util.timeToMinAndSec(item.media_time)
+                    // item.media_time = parseInt(item.media_time)
+                    item.avatar = item.avatar == '' ? self.data.tx : item.avatar
+                    item.background = ''
+                    item.translateX = ''
+                    item.delTranstion = ''
+                    if(appStore.login_id == item.user_id) {
+                        item.delColor = '#f00'
+                    } else {
+                        item.delColor = '#ddd'
+                    }
+                })
+                self.setData({
+                    commentList: json.list
+                })
+            }, res => [
+                wx.showModal({
+                    title: '提示',
+                    content: '获取评论数据失败！',
+                    showCancel: false
+                })
+            ])
+
         })
     },
 
@@ -308,8 +265,8 @@ Page({
 	 // 发送评论
 	 sendComment(e) {
         let self = this
-        let res = wx.getStorageSync('app')
 
+        let res = wx.getStorageSync('app')
         let pids = wx.getStorageSync('project_ids')
         
         let returnTosignin = (text, isLogin) => {
@@ -372,50 +329,45 @@ Page({
 	    })
         wx.showLoading()
 
- 		wx.request({
-            url: store.host + '/wxapi/comment',
-            data: reqData,
-            header: {
-                'content-type': 'application/json' // 默认值
-            },
-            method: 'post',
-            success: function(res) {
-                wx.hideLoading()
-                if (res.data.status == 1) {
-                	let list = self.data.commentList
+        if (self.data.sendComment) return
+        self.data.sendComment = true
 
-                    wx.showToast({
-                        title: '评论成功！！'
-                    })
+        Util.ajax('comment', 'post', reqData).then(json => {
+            let list = self.data.commentList
+            
+            wx.showToast({
+                title: '评论成功！！'
+            })
 
-                	let newComment = {
-                		content: e.detail.value.commentText,
-			 			comment_time: Util.timeToMinAndSec(self.data.focusTime),
-                        media_time: self.data.focusTime,
-			 			doc_id: self.data.doc_id,
-			 			project_id: wx.getStorageSync('project_id'),
-			 			id: res.data.data.id,
-                        realname: wx.getStorageSync('user_info').realname,
-                        avatar: wx.getStorageSync('user_info').avatar == '' ? self.data.tx : wx.getStorageSync('user_info').avatar,
-                        background: '',
-                        translateX: '',
-                        delTranstion: '',
-                        delColor: '#f00',
-                        user_id: wx.getStorageSync('app').login_id
-                	}
-                	list.unshift(newComment)
-                    self.setData({
-                    	commentList: list,
-                    	commentText: ''
-                    })
-                } else {
-                    wx.showModal({
-                      title: '提示',
-                      content: '发表评论失败！',
-                      showCancel: false,
-                    })
-                }
+            let newComment = {
+                content: e.detail.value.commentText,
+                comment_time: Util.timeToMinAndSec(self.data.focusTime),
+                media_time: self.data.focusTime,
+                doc_id: self.data.doc_id,
+                project_id: wx.getStorageSync('project_id'),
+                id: json.id,
+                realname: wx.getStorageSync('user_info').realname,
+                avatar: wx.getStorageSync('user_info').avatar == '' ? self.data.tx : wx.getStorageSync('user_info').avatar,
+                background: '',
+                translateX: '',
+                delTranstion: '',
+                delColor: '#f00',
+                user_id: wx.getStorageSync('app').login_id
             }
+            list.unshift(newComment)
+            self.setData({
+                commentList: list,
+                commentText: ''
+            })
+
+        }, res => {
+            wx.showModal({
+                title: '提示',
+                content: '发表评论失败！',
+                showCancel: false,
+            })
+        }).then((res) => {
+            self.data.sendComment = false
         })
 
 	 },
@@ -500,15 +452,11 @@ Page({
 
     // 删除评论 start
     delTouchStart(e) {
-        // let realname1 = this.data.commentList[e.currentTarget.dataset.index].realname
-        // let realname2 = wx.getStorageSync('user_info').realname
 
         this.data.commentList.map(item => {
             item.translateX = ''
             item.delTranstion = ''
         })
-
-        // if (realname1 != realname2) return
 
         this.setData({
             tsx: e.touches[0].clientX,
@@ -618,31 +566,26 @@ Page({
         wx.showLoading({
             title: '正在删除...'
         })
-        wx.request({
-            url: store.host + '/wxapi/comment',
-            data: reqData,
-            method: 'delete',
-            header: {
-                'content-type': 'application/json' // 默认
-            },
-            success(res) {
-                if (res.data.status == 1) {
-                    self.data.commentList.splice(e.currentTarget.dataset.index, 1)
-                    self.setData({
-                        commentList: self.data.commentList
-                    })
-                    wx.showToast({
-                        title: '删除成功！',
-                        icon: 'success'
-                    })
-                } else {
-                    wx.showModal({
-                      title: '提示',
-                      content: '删除评论失败！',
-                      showCancel: false,
-                    })
-                }
-            }
+
+        if (self.data.delComment) return
+        self.data.delComment = true
+        Util.ajax('comment', 'delete', reqData).then(json => {
+            self.data.commentList.splice(e.currentTarget.dataset.index, 1)
+            self.setData({
+                commentList: self.data.commentList
+            })
+            wx.showToast({
+                title: '删除成功！',
+                icon: 'success'
+            })
+        }, res => {
+            wx.showModal({
+                title: '提示',
+                content: '删除评论失败！',
+                showCancel: false,
+            })
+        }).then(() => {
+            self.data.delComment = false
         })
     },
     // 删除评论 end
@@ -670,17 +613,6 @@ Page({
             })     
         })
 
-        // wx.createSelectorQuery().select('#version-select').fields({
-        // dataset: true,
-        // size: true,
-        // scrollOffset: true,
-        // properties: ['scrollX', 'scrollY']
-        // }, function(res){
-        //     self.setData({
-        //         selectX:0,
-        //         selectY: 0,
-        //     })
-        // }).exec()
     },
 
     hideSelect() {
