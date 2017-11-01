@@ -119,6 +119,7 @@
     height: 25px;
     border-radius: 50%;
     background:#ddd;
+    overflow: hidden;
 }
 .back-tou image {
     width: 100%;

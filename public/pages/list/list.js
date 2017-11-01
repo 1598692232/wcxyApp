@@ -100,8 +100,8 @@ Page({
                 if (item.type == 'admin') {
                     item.storage_size = item.storage_count != undefined ? (item.storage_count / Math.pow(1024, 2)).toFixed(2) : 0                            
                     //演示项目处理
-                    item.storage_size = parseInt(item.storage_size) == 0 ? 166.29 : item.storage_size
-                    item.file_count = parseInt(item.file_count) == 0 ? '2' : item.file_count
+                    item.storage_size = item.name == '演示项目' ? 166.29 : item.storage_size
+                    item.file_count = item.name == '演示项目' ? '2' : item.file_count
                     pros.push(item)
                 }
             })
