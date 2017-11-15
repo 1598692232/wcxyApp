@@ -40,7 +40,8 @@ Page({
         fullScreenPSelect: false,
         videoClicked: false,
         sendComment: false,
-        delComment: false 
+        delComment: false,
+        isFocus: false
     },
 
     onReady: function (res) {
@@ -82,15 +83,50 @@ Page({
         })
     },
 
+    getCommentList(reqData){
+        let self = this
+        Util.ajax('comment', 'get', reqData).then(json => {
+            let appStore = wx.getStorageSync('app')
+            json.list.map(item => {
+                item.comment_time = Util.timeToMinAndSec(item.media_time)
+                // item.media_time = parseInt(item.media_time)
+                item.avatar = item.avatar == '' ? self.data.tx : item.avatar
+                item.background = ''
+                item.translateX = ''
+                item.delTranstion = ''
+                if(appStore.login_id == item.user_id) {
+                    item.delColor = '#f00'
+                } else {
+                    item.delColor = '#ddd'
+                }
+            })
+            self.setData({
+                commentList: json.list
+            })
+        }, res => [
+            wx.showModal({
+                title: '提示',
+                content: '获取评论数据失败！',
+                showCancel: false
+            })
+        ])
+    },
+
     changeVersion(e) {
         let self = this
         let store = wx.getStorageSync('app')
 	    let reqData = Object.assign({}, store, {
 	    	doc_id: e.currentTarget.dataset.id,
-	    	project_id: this.data.project_id,
+            project_id: this.data.project_id,
+            show_completed: 1
         })
 
+       
         self.getVideoInfo(store.host, reqData, (data) => {
+            self.setData({
+                doc_id:  e.currentTarget.dataset.id
+            })
+
             data.versions.forEach(item => {
                 if (item.doc_id == e.currentTarget.dataset.id) {
                     item.activeVersion = true
@@ -122,6 +158,8 @@ Page({
                 self.videoCtx.play()
             }, 300)
         })
+
+        self.getCommentList(reqData)
     },
     
     changeP(e) {
@@ -168,6 +206,7 @@ Page({
             let reqData = Object.assign({}, store, {
                 doc_id: self.data.doc_id,
                 project_id: this.data.project_id,
+                show_completed: 1
             })
 
             self.getVideoInfo(store.host, reqData, (data) => {
@@ -198,32 +237,7 @@ Page({
                 })
             })
 
-            Util.ajax('comment', 'get', reqData).then(json => {
-                let appStore = wx.getStorageSync('app')
-                json.list.map(item => {
-                    item.comment_time = Util.timeToMinAndSec(item.media_time)
-                    // item.media_time = parseInt(item.media_time)
-                    item.avatar = item.avatar == '' ? self.data.tx : item.avatar
-                    item.background = ''
-                    item.translateX = ''
-                    item.delTranstion = ''
-                    if(appStore.login_id == item.user_id) {
-                        item.delColor = '#f00'
-                    } else {
-                        item.delColor = '#ddd'
-                    }
-                })
-                self.setData({
-                    commentList: json.list
-                })
-            }, res => [
-                wx.showModal({
-                    title: '提示',
-                    content: '获取评论数据失败！',
-                    showCancel: false
-                })
-            ])
-
+            self.getCommentList(reqData)
         })
     },
 
@@ -236,7 +250,8 @@ Page({
         // 延时处理拖动不能获取播放时间的问题
         self.videoCtx.play()
         self.setData({
-            muted: true
+            muted: true,
+            isFocus: true
         })
         // setTimeout(() => {
             self.videoCtx.pause()
@@ -250,9 +265,17 @@ Page({
                 focusTime: parseInt(self.data.videoTime)
             })
         // }, 500)
-            
-        
-	},
+    },
+    
+    commentBlur() {
+        this.videoCtx.play()
+        setTimeout(() => {
+            this.setData({
+                isFocus: false
+            })
+        }, 500)
+
+    },
 
 	 // 发送评论
 	 sendComment(e) {
@@ -359,6 +382,7 @@ Page({
                 showCancel: false,
             })
         }).then((res) => {
+            self.videoCtx.play()
             self.data.sendComment = false
         })
 
@@ -366,6 +390,8 @@ Page({
 
 	 //跳到指定时间播放
 	 toVideoPosition(e) {
+        if (this.data.isFocus) return
+
 	 	// 模拟时间点击
 	 	let time = e.currentTarget.dataset.time
 
