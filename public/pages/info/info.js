@@ -325,11 +325,11 @@ Page({
            returnTosignin('评论／回复需登录', false)
            return
         } 
+console.log(pids,self.data.project_id, 'pids')
         if (pids.indexOf(self.data.project_id) < 0) {
             returnTosignin('只有参与该项目的人才能评论', true)
             return
         }
-
 	 
  		let comList = self.data.commentList
  		let time = self.data.focusTime

@@ -144,7 +144,11 @@ Page({
         let projectIds = []
         let searchFinalList = searchList.concat(this.data.myProjectList, this.data.joinProjectList)
         searchFinalList.forEach(v => {
-            projectIds.push(v.id)
+            if (!v.project_number) {
+                projectIds.push(v.id)
+            } else {
+                projectIds.push(v.project_number)                
+            }
         })
         wx.setStorage({
             key: 'project_ids',
