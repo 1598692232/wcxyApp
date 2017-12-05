@@ -1,6 +1,6 @@
 var Util = require('../../utils/util.js')
 const app = getApp()
-
+//4f5875 b7bbd5
 Page({
 
     data: {
@@ -41,8 +41,22 @@ Page({
         videoClicked: false,
         sendComment: false,
         delComment: false,
-        isFocus: false
+        isFocus: false,
+        colorActiveIndex: 0,
+        colors: ['rgb(231, 74, 60)', 'rgb(230, 116, 34)', 'rgb(26, 188, 161)', 'rgb(52, 163, 219)'],
+        colorShow: false,
+        labelBodyRightWidth: 0,
+        colorBlockAnimation: {},
+        drawType:  [{name: 'rect', img: './img/kuang.png', activeImg: './img/kuang-active.png'}, 
+                    {name: 'arrow', img: './img/jiantou.png', activeImg: './img/jiantou-active.png'},
+                    {name: 'line', img: './img/line.png', activeImg: './img/line-active.png'},
+                    {name: 'pen', img: './img/huabi.png', activeImg: './img/huabi-active.png'}],
+        drawTypeActive: 'rect'
     },
+
+    // rgb(230, 116, 34)
+    // rgb(26, 188, 161)
+    // rgb(52, 163, 219)
 
     onReady: function (res) {
 	    this.videoCtx = wx.createVideoContext('myVideo')
@@ -62,6 +76,37 @@ Page({
             versionActive: options.id
         })
         wx.setNavigationBarTitle({title: options.name})        
+    },
+
+    toggleColorBlock() {
+       let animation = wx.createAnimation({
+            duration: 450,
+            timingFunction: 'cubic-bezier(0.23, 1, 0.32, 1)',
+        })
+        
+        this.setData({
+            colorShow: !this.data.colorShow
+        })
+
+        if (this.data.colorShow) {
+            animation.translate('-100%').step()
+        }
+
+        this.setData({
+            colorBlockAnimation:animation.export()
+        }) 
+    },
+
+    selectColor(e) {
+        this.setData({
+            colorActiveIndex: e.currentTarget.dataset.key
+        })
+    },
+
+    selectDrawType(e) {
+        this.setData({
+            drawTypeActive: this.data.drawType[e.currentTarget.dataset.key].name
+        }) 
     },
 
     getVideoInfo(host, reqData, fn) {
@@ -193,6 +238,7 @@ Page({
 
     onShow() {
         let self = this
+        
 
         Util.getSystemInfo().then(res => {
             self.setData({
@@ -239,6 +285,48 @@ Page({
 
             self.getCommentList(reqData)
         })
+
+
+        var context = wx.createCanvasContext('secondCanvas')
+        
+            context.setStrokeStyle("#00ff00")
+            context.setLineWidth(5)
+            context.rect(0, 0, 200, 200)
+            context.stroke()
+            context.setStrokeStyle("#ff0000")
+            context.setLineWidth(2)
+            context.moveTo(160, 100)
+            context.arc(100, 100, 60, 0, 2 * Math.PI, true)
+            context.moveTo(140, 100)
+            context.arc(100, 100, 40, 0, Math.PI, false)
+            context.moveTo(85, 80)
+            context.arc(80, 80, 5, 0, 2 * Math.PI, true)
+            context.moveTo(125, 80)
+            context.arc(120, 80, 5, 0, 2 * Math.PI, true)
+            context.stroke()
+            context.draw()
+
+
+            wx.createSelectorQuery().select('#label-body-right').fields({
+                dataset: true,
+                size: true,
+                scrollOffset: true,
+                properties: ['scrollX', 'scrollY']
+              }, function(res){
+                  console.log(res)
+                self.setData({
+                    labelBodyRightWidth: res.width
+                })
+                res.dataset    // 节点的dataset
+                res.width      // 节点的宽度
+                res.height     // 节点的高度
+                res.scrollLeft // 节点的水平滚动位置
+                res.scrollTop  // 节点的竖直滚动位置
+                res.scrollX    // 节点 scroll-x 属性的当前值
+                res.scrollY    // 节点 scroll-x 属性的当前值
+              }).exec()
+
+
     },
 
 	// 评论输入框聚焦
@@ -253,27 +341,27 @@ Page({
             muted: true,
             isFocus: true
         })
-        // setTimeout(() => {
+        setTimeout(() => {
             self.videoCtx.pause()
             let videoTime = self.data.videoTime
             self.setData({
-                videoTime: videoTime,
+                videoTime: videoTime - 0.5,
                 muted: false
             })
-            self.videoCtx.seek(videoTime)
+            self.videoCtx.seek(videoTime - 0.5)
             self.setData({
                 focusTime: parseInt(self.data.videoTime)
             })
-        // }, 500)
+        }, 500)
     },
     
     commentBlur() {
         this.videoCtx.play()
-        setTimeout(() => {
+        // setTimeout(() => {
             this.setData({
                 isFocus: false
             })
-        }, 500)
+        // }, 500)
 
     },
 
