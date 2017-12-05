@@ -39,9 +39,9 @@
       <view class="label-control">
         <view class="label-body">
             <view class="label-body-left">
-                <view class="label-img" wx:for="{{drawType}}" wx:key="index">
+                <view class="label-img" wx:for="{{drawType}}" wx:key="index" bindtap="selectDrawType">
                     <image src="{{item.activeImg}}" mode="aspectFit" wx:if="{{drawTypeActive == item.name}}"></image>  
-                    <image src="{{item.img}}" mode="aspectFit" wx:else bindtap="selectDrawType" data-key="{{index}}"></image>         
+                    <image src="{{item.img}}" mode="aspectFit" wx:else data-key="{{index}}"></image>         
                 </view>  
                 
                 <view class="label-color-block" wx:if="{{colorShow}}" animation="{{colorBlockAnimation}}">
