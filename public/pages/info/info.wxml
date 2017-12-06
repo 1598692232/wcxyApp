@@ -22,8 +22,31 @@
     <cover-view class="cover-focus" wx:if="{{isFocus}}" bindtap="commentBlur"></cover-view>  
   </video>
 
-  <canvas style="width: 100%; height: 225px; position: fixed; top: 0;left: 0;" canvas-id="secondCanvas"></canvas>
-  
+  <canvas style="width: 100%; height: 225px; position: fixed; top: 0;left: 0;"
+   canvas-id="firstCanvas" id="firstCanvas"  wx:if="{{isFocus || cavansShow}}"></canvas>
+
+  <canvas style="width: 100%; height: 225px; position: fixed; top: 0;left: 0;" 
+            id="secondCanvas"
+            canvas-id="secondCanvas"
+            bindtouchstart="drawStart"
+            bindtouchmove="drawMove"
+            bindtouchend="drawend"
+            disable-scroll="true"
+            wx:if="{{isFocus}}"
+            ></canvas>
+
+    <canvas style="width: 100%; height: 70px; position: fixed; top: 225px;left: 0; z-index: 1000"
+            canvas-id="thirdCanvas" id="thirdCanvas" bindtap="catap"
+            bindtouchstart="thirdDrawStart"
+            bindtouchmove="thirdDrawMove"
+            bindtouchend="thirdDrawend"
+            disable-scroll="true"
+            
+    ></canvas>
+            <!--  wx:if="{{isFocus}}" -->
+
+   
+
   <view class="video-info">
       <view class="video-title">
           <!-- <text>{{name}}</text> -->
@@ -36,39 +59,40 @@
               <text>{{pNo}}P</text>
           </view>
       </view>
+      <!-- wx:if="{{isFocus}}" -->
       <view class="label-control">
-        <view class="label-body">
+        <view class="label-body">  
             <view class="label-body-left">
-                <view class="label-img" wx:for="{{drawType}}" wx:key="index" bindtap="selectDrawType">
+                <view class="label-img" wx:for="{{drawType}}" wx:key="index" bindtap="selectDrawType" data-key="{{index}}" id="draw-control{{index}}" >
                     <image src="{{item.activeImg}}" mode="aspectFit" wx:if="{{drawTypeActive == item.name}}"></image>  
-                    <image src="{{item.img}}" mode="aspectFit" wx:else data-key="{{index}}"></image>         
+                    <image src="{{item.img}}" mode="aspectFit" wx:else></image>         
                 </view>  
                 
-                <view class="label-color-block" wx:if="{{colorShow}}" animation="{{colorBlockAnimation}}">
-                        <view class="label-color-block-select" wx:for="{{colors}}" wx:key="index" data-key="{{index}}"  
-                              catchtap="selectColor" wx:if="{{colorActiveIndex != index}}">
-                            <view class="label-color-select" 
-                                  style="background-color:{{item}}; box-shadow: 0 0 3px {{item}};">
-                            </view>
+                <view class="label-color-block" animation="{{colorBlockAnimation}}">
+                    <view class="label-color-block-select" wx:for="{{noSelectColors}}" wx:key="index" data-key="{{index}}"  
+                            catchtap="selectColor" id="draw-control{{index + 6}}">
+                        <view class="label-color-select" 
+                                style="background-color:{{item}}; box-shadow: 0 0 3px {{item}};">
                         </view>
                     </view>
+                </view>
             </view>
             <!-- style="border-top-left-radius: {{labelBodyRightWidth}}px; border-top-right-radius: {{labelBodyRightWidth}}px;" -->
-            <view class="label-body-right" id="label-body-right" style="background: {{colorShow ? '#535353' : ''}}">
+            <view class="label-body-right" id="draw-control4" style="background: {{colorShow ? '#535353' : ''}}">
                 <view class="label-color-active" bindtap="toggleColorBlock" 
-                style="background-color: {{colors[colorActiveIndex]}}; box-shadow: 0 0 3px {{colors[colorActiveIndex]}};">
+                style="background-color: {{colorActive}}; box-shadow: 0 0 3px {{colorActive}};">
                 </view>    
             </view>
         </view>
-        <view class="label-body-last">取消</view>
+        <view class="label-body-last" bindtap="commentBlur" id="draw-control5">取消</view>
       </view>
       <view class="video-author">{{username}} · {{createTime}}</view>
   </view>
   <view class="push-comment">
         <form bindsubmit="sendComment">
            <view class="push-comment-input clearfix">
-               <input placeholder="发表评论..." cursor-spacing="5" name="commentText" style="color:#fff" focus="{{isFocus}}"
-               bindfocus="commentFocus" bindblur="commentBlur" value="{{commentText}}" fixed="{{true}}" /> 
+               <input placeholder="发表评论..." cursor-spacing="10" name="commentText" style="color:#fff"
+               bindfocus="commentFocus" bindblur="commentBlur" value="{{commentText}}" fixed="{{true}}"  focus="{{isFocus}}"/> 
                <!-- hidden="{{hideSendComment}}" -->
                <button class="send-commit" form-type="submit">
                    发送
