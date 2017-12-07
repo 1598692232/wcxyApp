@@ -84,6 +84,15 @@ Page({
         }
     },
 
+
+    firstCanvasTouchstart() {
+        if (this.data.cavansShow && !this.data.isFocus) {
+            this.setData({
+                cavansShow: false
+            })
+        }
+    },
+
     // rgb(230, 116, 34)
     // rgb(26, 188, 161)
     // rgb(52, 163, 219)
@@ -929,13 +938,13 @@ Page({
 	 	let time = e.currentTarget.dataset.time
 
         this.data.commentList.map(item => {
-            item.background = ''
+            // item.background = ''
             item.timeBackground = '#535353'
-            item.nameColor = ''
+            // item.nameColor = ''
         })
-        this.data.commentList[e.currentTarget.dataset.index].background = '#535353'
+        // this.data.commentList[e.currentTarget.dataset.index].background = '#535353'
         this.data.commentList[e.currentTarget.dataset.index].timeBackground = '#1125e5'
-        this.data.commentList[e.currentTarget.dataset.index].nameColor = '#c6c6d0'
+        // this.data.commentList[e.currentTarget.dataset.index].nameColor = '#c6c6d0'
         this.setData({
             commentList: this.data.commentList
         })

@@ -23,7 +23,7 @@
 
   <!--  wx:if="{{isFocus || cavansShow}}" -->
   <canvas style="width: 100%; height: 225px; position: fixed; top: 0;left: 0;"
-   canvas-id="firstCanvas" id="firstCanvas" wx:if="{{isFocus || cavansShow}}"></canvas>
+   canvas-id="firstCanvas" id="firstCanvas" wx:if="{{isFocus || cavansShow}}" bindtouchstart="firstCanvasTouchstart"></canvas>
 <!--  wx:if="{{isFocus}}" -->
   <canvas style="width: 100%; height: 225px; position: fixed; top: 0;left: 0;" 
             id="secondCanvas"
@@ -48,9 +48,9 @@
    
 
   <view class="video-info">
-        <view class="cancel-canvas" bindtap="cancelCanvas" wx:if="{{cavansShow && !isFocus}}">
+        <!-- <view class="cancel-canvas" bindtap="cancelCanvas" wx:if="{{cavansShow && !isFocus}}">
                 取消画板
-             </view>
+             </view> -->
       <view class="video-title">
           <!-- <text>{{name}}</text> -->
           <view class="select-version-p" bindtap="selectVersionAndP" id="version-select" data-id="version-select">
@@ -116,10 +116,12 @@
           <view class="comment-tou">
             <image src="{{item.avatar}}"></image>
           </view>
-          <view class="comment-master-text" bindtap="toVideoPosition" data-time="{{item.media_time}}" data-index="{{index}}">
+          <view class="comment-master-text" data-time="{{item.media_time}}" data-index="{{index}}">
               <view class="comment-header clearfix">
                   <text class="comment-name" style="color: {{item.nameColor ? item.nameColor : ''}}">{{item.realname}}</text>
-                  <text class="comment-timer" style="background: {{item.timeBackground ? item.timeBackground : ''}}">{{item.comment_time}}</text>
+                  <text class="comment-timer" style="background: {{item.timeBackground ? item.timeBackground : ''}}"  
+                  data-time="{{item.media_time}}" data-index="{{index}}"
+                  bindtap="toVideoPosition">{{item.comment_time}}</text>
               </view>
               <view class="comment-body1">
                  <text>{{item.content}} </text>
