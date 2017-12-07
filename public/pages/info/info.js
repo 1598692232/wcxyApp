@@ -44,6 +44,7 @@ Page({
         sendComment: false,
         delComment: false,
         isFocus: false,
+
         colorActive: '#E74A3C',
         colors: ['#E74A3C', '#E67422', '#1ABCA1', '#34A3DB'],
         noSelectColors: ['#E67422', '#1ABCA1', '#34A3DB'],
@@ -58,20 +59,29 @@ Page({
         cxtShowBlock: '',
         originPoint:{},
         drawing: false,
-
         rect: {tool: 'rect', color: '', x: '', y:'', w: '', h: '', size: 3},
         arrow: {tool: 'arrow', color: '', x1: '', y1:'', x2: '', y2: '', size: 3}, 
         line: {tool: 'line', color: '', x1: '', y1:'', x2: '', y2: '', size: 3}, 
         pen: {tool: 'pen', color: '', xs: '', ys:'', size: 3},
-
         commentDraw: [],
         firstCanvasWidth: '',
         firstCanvasHeight: '',
         cavansShow: false,
-
         drawControl: [],
+        thirdTap:{x: '', y: '', x2:'', y2:'', startTime: 0, endTime: 0},
+        sendCommentBtnStyle: '#1125e5'
+    },
 
-        thirdTap:{x: '', y: '', x2:'', y2:'', startTime: 0, endTime: 0} 
+    changeBtn(e) {
+        if (e.detail.value != '') {
+            this.setData({
+                sendCommentBtnStyle: '#1125e5'
+            })
+        } else {
+            this.setData({
+                sendCommentBtnStyle: ''
+            })
+        }
     },
 
     // rgb(230, 116, 34)
@@ -316,12 +326,12 @@ Page({
         // self.initDrawControlPosiotion()
 
         // setTimeout(() => {
-
-        
+            
             if(self.data.colorShow) {
                 if (x > 0 && x < self.data.drawControl[6].width) {
                     return 6
                 }
+                // 这里的处理可能存在的bug：画板控制器闪屏或者js报错
                 drawControl.forEach((item, key) => {
                     if (key <= 3) return
                     let offX = 0;
@@ -551,7 +561,7 @@ Page({
                 break;
         }
         this.data.commentDraw.push(drawObj)
-       console.log(this.data.commentDraw, 'this.data.commentDraw222')
+
         this.data.commentDraw.forEach((item, key) => {             
             this.drawAll(item, false)    
         })
@@ -599,31 +609,27 @@ Page({
                 //line
                 this.data.cxtShowBlock.setStrokeStyle(item.color)  
                 isColor && item.label != '' ?
-                drawArrow(this.data.cxtShowBlock, getPositionXW(item.x1), getPositionYH(item.y1),  getPositionXW(item.x2) , getPositionYH(item.y2)) :                
+                drawLine(this.data.cxtShowBlock, getPositionXW(item.x1), getPositionYH(item.y1),  getPositionXW(item.x2) , getPositionYH(item.y2)) :                
                 drawLine(this.data.cxtShowBlock, item.x1, item.y1,  item.x2 , item.y2 )
-                // this.data.cxt.draw(true)
                 break
             case 'pen':
                 //pen
                 this.data.cxtShowBlock.setStrokeStyle(item.color)  
                 for (let i = 0; i < item.xs.length - 1; i++) {
-                    if (isColor && item.label != '') {
-                       
-                        if (item.xs[i] > 1 || item.ys[i] > 1) return;
-                        console.log(item.ys[i], item.xs[i] , 888)
-                        drawLine(this.data.cxtShowBlock, getPositionXW(item.xs[i]), getPositionYH(item.ys[i]), getPositionXW(item.xs[i + 1]), getPositionYH(item.ys[i + 1]))                    
-                    } else {
-                        drawLine(this.data.cxtShowBlock, item.xs[i], item.ys[i], item.xs[i + 1], item.ys[i + 1] )                        
-                    }
-                
+                    isColor && item.label != '' ? 
+                    drawLine(this.data.cxtShowBlock, getPositionXW(item.xs[i]), getPositionYH(item.ys[i]), getPositionXW(item.xs[i + 1]), getPositionYH(item.ys[i + 1])) :
+                    drawLine(this.data.cxtShowBlock, item.xs[i], item.ys[i], item.xs[i + 1], item.ys[i + 1] )                        
                 }
-           
-                // this.data.cxtShowBlock.draw(true)
-              
                 break
         }
         this.data.cxtShowBlock.closePath()
-        
+    },
+
+    cancelCanvas() {
+        this.data.cxtShowBlock.clearRect(0,0, this.data.firstCanvasWidth, this.data.firstCanvasHeight)        
+        this.setData({
+            cavansShow: false
+        })
     },
 
     initDrawControlPosiotion() {
@@ -658,7 +664,8 @@ Page({
         self.videoCtx.play()
         self.setData({
             muted: true,
-            isFocus: true
+            isFocus: true,
+            cavansShow: false
         })
 
         setTimeout(() => {
@@ -683,10 +690,9 @@ Page({
                         firstCanvasWidth: res.width,
                         firstCanvasHeight: res.height
                     })
+                    self.initDrawControlPosiotion()
                 }).exec()
 
-            self.initDrawControlPosiotion()
-           
             self.videoCtx.pause()
             let videoTime = self.data.videoTime
             self.setData({
@@ -781,15 +787,6 @@ Page({
 
         if (self.data.sendComment) return
         self.data.sendComment = true
-
-        //处理莫名其妙的一个pen的点，大于1的坐标
-        // self.data.commentDraw.forEach(item => {
-        //     if (item.tool == 'pen') {
-        //         item.xs = item.xs.filter(item => item < 1)
-        //         item.ys = item.ys.filter(item => item < 1)
-        //     }
-        // })
-        console.log(JSON.stringify(self.data.commentDraw), 'self.data.commentDraw')
 
         self.data.commentDraw.forEach((item, key) => {
             switch(item.tool) {
@@ -914,10 +911,7 @@ Page({
                     this.data.cxtShowBlock.draw()
                     
                     if (this.data.commentList[e.currentTarget.dataset.index].label != "") {
-                        console.log(this.data.commentList[e.currentTarget.dataset.index], 'this.data.commentList[e.currentTarget.dataset.index]')
                         let draw = JSON.parse(this.data.commentList[e.currentTarget.dataset.index].label)
-                        // this.data.cxtShowBlock.setLineWidth(3)
-                        console.log(draw, 'draw');
                         draw.forEach((item, key) => {             
                             this.drawAll(item, true)    
                         })
@@ -929,15 +923,19 @@ Page({
 
   
         
-        if (this.data.isFocus) return
+        // if (this.data.isFocus) return
 
 	 	// 模拟时间点击
 	 	let time = e.currentTarget.dataset.time
 
         this.data.commentList.map(item => {
             item.background = ''
+            item.timeBackground = '#535353'
+            item.nameColor = ''
         })
-        this.data.commentList[e.currentTarget.dataset.index].background = '#21252e'
+        this.data.commentList[e.currentTarget.dataset.index].background = '#535353'
+        this.data.commentList[e.currentTarget.dataset.index].timeBackground = '#1125e5'
+        this.data.commentList[e.currentTarget.dataset.index].nameColor = '#c6c6d0'
         this.setData({
             commentList: this.data.commentList
         })
