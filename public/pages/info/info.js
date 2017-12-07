@@ -328,7 +328,6 @@ Page({
                     if (key > 5) {
                         for(let i = 6; i < key; i++){
                             if (self.data.drawControl[i]) {
-                                console.log(i, 'iiii')
                                 offX += self.data.drawControl[i].width
                             }
                         }
@@ -478,7 +477,9 @@ Page({
     // pen: {tool: 'pen', color: '', xs: '', ys:''}
 
     drawMove(e) {
-        if (!this.data.drawing || !this.data.isFocus) return
+        if (!this.data.drawing || !this.data.isFocus
+             || e.touches[0].x > this.data.firstCanvasWidth ||  
+             e.touches[0].x < 0 || e.touches[0].y > this.data.firstCanvasHeight ||  e.touches[0].y < 0) return
 
         if (this.data.drawTypeActive == 'arrow') {
             this.data.cxt.setFillStyle(this.data.colorActive)
@@ -550,7 +551,7 @@ Page({
                 break;
         }
         this.data.commentDraw.push(drawObj)
-       
+       console.log(this.data.commentDraw, 'this.data.commentDraw222')
         this.data.commentDraw.forEach((item, key) => {             
             this.drawAll(item, false)    
         })
@@ -606,14 +607,23 @@ Page({
                 //pen
                 this.data.cxtShowBlock.setStrokeStyle(item.color)  
                 for (let i = 0; i < item.xs.length - 1; i++) {
-                    isColor && item.label != '' ?
-                    drawLine(this.data.cxtShowBlock, getPositionXW(item.xs[i]), getPositionYH(item.ys[i]), getPositionXW(item.xs[i + 1]), getPositionYH(item.ys[i + 1])) :                     
-                    drawLine(this.data.cxtShowBlock, item.xs[i], item.ys[i], item.xs[i + 1], item.ys[i + 1] )
+                    if (isColor && item.label != '') {
+                       
+                        if (item.xs[i] > 1 || item.ys[i] > 1) return;
+                        console.log(item.ys[i], item.xs[i] , 888)
+                        drawLine(this.data.cxtShowBlock, getPositionXW(item.xs[i]), getPositionYH(item.ys[i]), getPositionXW(item.xs[i + 1]), getPositionYH(item.ys[i + 1]))                    
+                    } else {
+                        drawLine(this.data.cxtShowBlock, item.xs[i], item.ys[i], item.xs[i + 1], item.ys[i + 1] )                        
+                    }
+                
                 }
+           
                 // this.data.cxtShowBlock.draw(true)
+              
                 break
         }
         this.data.cxtShowBlock.closePath()
+        
     },
 
     initDrawControlPosiotion() {
@@ -766,6 +776,21 @@ Page({
             return value / self.data.firstCanvasHeight            
         }
 
+ 	
+        wx.showLoading()
+
+        if (self.data.sendComment) return
+        self.data.sendComment = true
+
+        //处理莫名其妙的一个pen的点，大于1的坐标
+        // self.data.commentDraw.forEach(item => {
+        //     if (item.tool == 'pen') {
+        //         item.xs = item.xs.filter(item => item < 1)
+        //         item.ys = item.ys.filter(item => item < 1)
+        //     }
+        // })
+        console.log(JSON.stringify(self.data.commentDraw), 'self.data.commentDraw')
+
         self.data.commentDraw.forEach((item, key) => {
             switch(item.tool) {
                 case 'rect':
@@ -792,30 +817,28 @@ Page({
                     break
                 case 'pen':
                     //pen
-                    for (let i = 0; i < item.xs.length - 1; i++) {
+                    for (let i = 0; i < item.xs.length ; i++) {
                         item.xs[i] = getPerValueXW(item.xs[i])
                         item.ys[i] = getPerValueYH(item.ys[i])
                     }
                     break
             }
         })
-
- 		let reqData = Object.assign({}, store, {
+   
+        let reqData = Object.assign({}, store, {
 	    	content: e.detail.value.commentText,
  			label: '',
  			media_time: self.data.focusTime,
  			doc_id: self.data.doc_id,
             project_id: wx.getStorageSync('project_id'),
             label: JSON.stringify(self.data.commentDraw)
-	    })
-        wx.showLoading()
-
-        if (self.data.sendComment) return
-        self.data.sendComment = true
+        })
 
         Util.ajax('comment', 'post', reqData).then(json => {
             let list = self.data.commentList
-            
+
+            self.data.cxtShowBlock.clearRect(0, 0, self.data.firstCanvasWidth, self.data.firstCanvasHeight)
+
             wx.showToast({
                 title: '评论成功！！'
             })
@@ -833,13 +856,16 @@ Page({
                 translateX: '',
                 delTranstion: '',
                 delColor: '#f00',
-                user_id: wx.getStorageSync('app').login_id
+                user_id: wx.getStorageSync('app').login_id,
+                label: JSON.stringify(self.data.commentDraw)
             }
             list.unshift(newComment)
             self.setData({
                 commentList: list,
                 commentText: ''
             })
+
+            self.data.commentDraw = []
 
         }, res => {
             wx.showModal({
@@ -888,8 +914,10 @@ Page({
                     this.data.cxtShowBlock.draw()
                     
                     if (this.data.commentList[e.currentTarget.dataset.index].label != "") {
+                        console.log(this.data.commentList[e.currentTarget.dataset.index], 'this.data.commentList[e.currentTarget.dataset.index]')
                         let draw = JSON.parse(this.data.commentList[e.currentTarget.dataset.index].label)
-                        this.data.cxtShowBlock.setLineWidth(3)
+                        // this.data.cxtShowBlock.setLineWidth(3)
+                        console.log(draw, 'draw');
                         draw.forEach((item, key) => {             
                             this.drawAll(item, true)    
                         })
