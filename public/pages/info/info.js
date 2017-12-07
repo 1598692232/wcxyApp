@@ -69,7 +69,7 @@ Page({
         cavansShow: false,
         drawControl: [],
         thirdTap:{x: '', y: '', x2:'', y2:'', startTime: 0, endTime: 0},
-        sendCommentBtnStyle: '#1125e5'
+        sendCommentBtnStyle: ''
     },
 
     changeBtn(e) {
@@ -326,7 +326,7 @@ Page({
         // self.initDrawControlPosiotion()
 
         // setTimeout(() => {
-            
+
             if(self.data.colorShow) {
                 if (x > 0 && x < self.data.drawControl[6].width) {
                     return 6
