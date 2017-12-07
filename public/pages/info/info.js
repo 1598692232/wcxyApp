@@ -69,7 +69,9 @@ Page({
         firstCanvasHeight: '',
         cavansShow: false,
 
-        drawControl: []
+        drawControl: [],
+
+        thirdTap:{x: '', y: '', x2:'', y2:'', startTime: 0, endTime: 0} 
     },
 
     // rgb(230, 116, 34)
@@ -97,7 +99,6 @@ Page({
     },
 
     toggleColorBlock() {
-        console.log('toggleColorBlock')
        let animation = wx.createAnimation({
             duration: 450,
             timingFunction: 'cubic-bezier(0.23, 1, 0.32, 1)',
@@ -308,20 +309,16 @@ Page({
     },
 
     //canvas遮罩，获取画图工具dom，返回Number
-    getDrawControlPosition(e) {
-        let x = e.detail.x
-        
+    getDrawControlPosition(x) {
         let drawControl = this.data.drawControl
         let self = this
         let tapIndex = ''
         // self.initDrawControlPosiotion()
 
-        console.log(self.data.drawControl, '')
         // setTimeout(() => {
 
         
             if(self.data.colorShow) {
-                console.log(self.data.drawControl[6])
                 if (x > 0 && x < self.data.drawControl[6].width) {
                     return 6
                 }
@@ -344,7 +341,6 @@ Page({
                       
                     }
                    
-                    console.log(offX, 'offX')
                     if (item && x > offX && x < offX + item.width) {
                         tapIndex = key
                     } 
@@ -378,73 +374,90 @@ Page({
 
         // }, 100)
         
-            
         return tapIndex;
     },
 
-    catap(e){
-        let key = this.getDrawControlPosition(e)
-        console.log(key, 'key')
-
-        if (key <= 3) {
-            this.setData({
-                drawTypeActive: this.data.drawType[key].name
-            }) 
-            return 
-        }
-        
-        // let colors = this.data.colors.filter((item, key) => {return key != this.data.colorActiveIndex})
-        let colors = ''
-        switch(key) {
-            case 4: 
-                this.toggleColorBlock()
-                break;
-            case 5:
-
-                break;
-            case 6:
-                this.setData({
-                    colorActive: this.data.noSelectColors[0]
-                })
-                colors = this.data.colors.filter(item => item != this.data.colorActive)
-                this.setData({
-                    noSelectColors: colors
-                })
-                break;
-            case 7:
-                this.setData({
-                    colorActive: this.data.noSelectColors[1]
-                })
-                colors = this.data.colors.filter(item => item != this.data.colorActive)
-                this.setData({
-                    noSelectColors: colors
-                })
-                break;
-            case 8:
-                this.setData({
-                    colorActive: this.data.noSelectColors[2]
-                })
-                colors = this.data.colors.filter(item => item != this.data.colorActive)
-                this.setData({
-                    noSelectColors: colors
-                })
-                break;
-        }
-
-    },
-
-    thirdDrawStart() {
-        return;
+    //画画空间加个canvas，防止键盘失效，tap手机不起作用，使用touchstart触发
+    thirdDrawStart(e) {
+        this.data.thirdTap.x = e.touches[0].x
+        this.data.thirdTap.y = e.touches[0].y
+        this.data.thirdTap.x2 = e.touches[0].x
+        this.data.thirdTap.y2 = e.touches[0].y
+        this.data.thirdTap.startTime = new Date().getTime()
+        this.data.thirdTap.endTime = new Date().getTime()
     },
     
-    thirdDrawMove() {
-        return;
+    thirdDrawMove(e) {
+        this.data.thirdTap.x2 = e.touches[0].x
+        this.data.thirdTap.y2 = e.touches[0].y
+        this.data.thirdTap.endTime = new Date().getTime()
     },
 
-    thirdDrawend() {
-        return;
-    },
+    thirdDrawend(e) {
+        if (Math.abs(this.data.thirdTap.x - this.data.thirdTap.x2) <= 20 
+            && Math.abs(this.data.thirdTap.y - this.data.thirdTap.y2) <= 20
+        && this.data.thirdTap.endTime - this.data.thirdTap.startTime <= 500) {
+                
+            let key = this.getDrawControlPosition(this.data.thirdTap.x)
+    
+            if (key <= 3) {
+                this.setData({
+                    drawTypeActive: this.data.drawType[key].name
+                }) 
+                return 
+            }
+            
+            let colors = ''
+            switch(key) {
+                case 4: 
+                    this.toggleColorBlock()
+                    break;
+                case 5:
+                    this.data.cxtShowBlock.clearRect(0,0, this.data.firstCanvasWidth, this.data.firstCanvasHeight)
+                    this.data.commentDraw = []
+                    this.videoCtx.play()
+                    this.setData({
+                        isFocus: false
+                    })
+                    break;
+                case 6:
+                    this.setData({
+                        colorActive: this.data.noSelectColors[0]
+                    })
+                    colors = this.data.colors.filter(item => item != this.data.colorActive)
+                    this.setData({
+                        noSelectColors: colors
+                    })
 
+                    this.toggleColorBlock()
+                    break;
+                case 7:
+                    this.setData({
+                        colorActive: this.data.noSelectColors[1]
+                    })
+                    colors = this.data.colors.filter(item => item != this.data.colorActive)
+                    this.setData({
+                        noSelectColors: colors
+                    })
+                    this.toggleColorBlock()
+                    break;
+                case 8:
+                    this.setData({
+                        colorActive: this.data.noSelectColors[2]
+                    })
+                    colors = this.data.colors.filter(item => item != this.data.colorActive)
+                    this.setData({
+                        noSelectColors: colors
+                    })
+                    this.toggleColorBlock()
+                    break;
+            }
+
+        }
+    },
+    // 画板空间事件触发结束
+
+    //画画开始
     drawStart(e) {     
         if (!this.data.isFocus) return
         this.data.cxt.setLineWidth(1)
@@ -466,9 +479,13 @@ Page({
 
     drawMove(e) {
         if (!this.data.drawing || !this.data.isFocus) return
-        this.data.cxt.setStrokeStyle(this.data.colorActive)
-        this.data.cxt.setFillStyle(this.data.colorActive)
-        this.data.cxt.setLineWidth(3)
+
+        if (this.data.drawTypeActive == 'arrow') {
+            this.data.cxt.setFillStyle(this.data.colorActive)
+        } else {
+            this.data.cxt.setStrokeStyle(this.data.colorActive)
+            this.data.cxt.setLineWidth(3)
+        }
 
         switch(this.data.drawTypeActive) {
             case 'rect':
@@ -533,18 +550,21 @@ Page({
                 break;
         }
         this.data.commentDraw.push(drawObj)
-        this.data.cxtShowBlock.setLineWidth(3)
+       
         this.data.commentDraw.forEach((item, key) => {             
             this.drawAll(item, false)    
         })
         this.data.cxtShowBlock.draw()
     },
+    // 画画结束
 
+    // 画所有标记
     drawAll(item, isColor) {
-        if (!isColor) {
-            this.data.cxtShowBlock.setStrokeStyle(this.data.colorActive)                    
+
+        if (item.tool == 'arrow') {
+            this.data.cxtShowBlock.setLineWidth(0)
         } else {
-            this.data.cxtShowBlock.setStrokeStyle(item.color)                    
+            this.data.cxtShowBlock.setLineWidth(3)
         }
 
         let getPositionXW = (value) => {
@@ -554,45 +574,46 @@ Page({
         let getPositionYH = (value) => {
             return value * this.data.firstCanvasHeight
         }
+
+        this.data.cxtShowBlock.beginPath()
         
         switch(item.tool) {
             case 'rect':
                 //rect
+                this.data.cxtShowBlock.setStrokeStyle(item.color)  
                 isColor && item.label != '' ? 
-                drawRect(this.data.cxtShowBlock, getPositionXW(item.x), getPositionYH(item.y), getPositionXW(item.w), getPositionYH(item.h)) : 
-                drawRect(this.data.cxtShowBlock, item.x, item.y, item.w, item.h)
-                break;
+                drawRect(this.data.cxtShowBlock, getPositionXW(item.x), getPositionYH(item.y), getPositionXW(item.w), getPositionYH(item.h)) :
+                drawRect(this.data.cxtShowBlock, item.x, item.y, item.w, item.h)      
+                // this.data.cxt.draw(true)              
+                break
             case 'arrow':
                 //arrow
                 this.data.cxtShowBlock.setFillStyle(item.color)   
                 isColor && item.label != '' ?  
                 drawArrow(this.data.cxtShowBlock, getPositionXW(item.x1), getPositionYH(item.y1),  getPositionXW(item.x2) , getPositionYH(item.y2)) :
                 drawArrow(this.data.cxtShowBlock, item.x1, item.y1,  item.x2 , item.y2)   
-                // this.data.cxt.draw()
+                // this.data.cxt.draw(true)
                 break
             case 'line':
                 //line
+                this.data.cxtShowBlock.setStrokeStyle(item.color)  
                 isColor && item.label != '' ?
                 drawArrow(this.data.cxtShowBlock, getPositionXW(item.x1), getPositionYH(item.y1),  getPositionXW(item.x2) , getPositionYH(item.y2)) :                
                 drawLine(this.data.cxtShowBlock, item.x1, item.y1,  item.x2 , item.y2 )
-                // this.data.cxt.draw()
+                // this.data.cxt.draw(true)
                 break
             case 'pen':
                 //pen
+                this.data.cxtShowBlock.setStrokeStyle(item.color)  
                 for (let i = 0; i < item.xs.length - 1; i++) {
                     isColor && item.label != '' ?
                     drawLine(this.data.cxtShowBlock, getPositionXW(item.xs[i]), getPositionYH(item.ys[i]), getPositionXW(item.xs[i + 1]), getPositionYH(item.ys[i + 1])) :                     
                     drawLine(this.data.cxtShowBlock, item.xs[i], item.ys[i], item.xs[i + 1], item.ys[i + 1] )
                 }
-                this.data.cxt.draw(true)
+                // this.data.cxtShowBlock.draw(true)
                 break
         }
-    },
-
-    setFocus() {
-        // this.setData({
-        //     isFocus: true
-        // })
+        this.data.cxtShowBlock.closePath()
     },
 
     initDrawControlPosiotion() {
@@ -615,7 +636,6 @@ Page({
                     self.data.drawControl.push(res)
                 }).exec()
         })
-    
     },
 
  	// 评论输入框聚焦

@@ -16,15 +16,15 @@
                 </cover-view>
             <!-- </cover-view> -->
         </cover-view>
-
     </cover-view>
 
     <cover-view class="cover-focus" wx:if="{{isFocus}}" bindtap="commentBlur"></cover-view>  
   </video>
 
+  <!--  wx:if="{{isFocus || cavansShow}}" -->
   <canvas style="width: 100%; height: 225px; position: fixed; top: 0;left: 0;"
-   canvas-id="firstCanvas" id="firstCanvas"  wx:if="{{isFocus || cavansShow}}"></canvas>
-
+   canvas-id="firstCanvas" id="firstCanvas" wx:if="{{isFocus || cavansShow}}"></canvas>
+<!--  wx:if="{{isFocus}}" -->
   <canvas style="width: 100%; height: 225px; position: fixed; top: 0;left: 0;" 
             id="secondCanvas"
             canvas-id="secondCanvas"
@@ -34,14 +34,14 @@
             disable-scroll="true"
             wx:if="{{isFocus}}"
             ></canvas>
-
-    <canvas style="width: 100%; height: 70px; position: fixed; top: 225px;left: 0; z-index: 1000"
-            canvas-id="thirdCanvas" id="thirdCanvas" bindtap="catap"
+          <!-- catchtap="catap" -->
+    <canvas style="width: 100%; height: 70px; position: fixed; top: 225px;left: 0; z-index: 1000;"
+            canvas-id="thirdCanvas" id="thirdCanvas" 
+            disable-scroll="true"
             bindtouchstart="thirdDrawStart"
             bindtouchmove="thirdDrawMove"
             bindtouchend="thirdDrawend"
-            disable-scroll="true"
-            
+            wx:if="{{isFocus}}" 
     ></canvas>
             <!--  wx:if="{{isFocus}}" -->
 
@@ -60,7 +60,7 @@
           </view>
       </view>
       <!-- wx:if="{{isFocus}}" -->
-      <view class="label-control">
+      <view class="label-control" wx:if="{{isFocus}}">
         <view class="label-body">  
             <view class="label-body-left">
                 <view class="label-img" wx:for="{{drawType}}" wx:key="index" bindtap="selectDrawType" data-key="{{index}}" id="draw-control{{index}}" >
