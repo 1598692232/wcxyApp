@@ -69,11 +69,14 @@ Page({
         cavansShow: false,
         drawControl: [],
         thirdTap:{x: '', y: '', x2:'', y2:'', startTime: 0, endTime: 0},
-        sendCommentBtnStyle: ''
+        sendCommentBtnStyle: '',
+        prevCommentList: [],
+        commentNotice: false,
+        commentActiveIndex: 0
     },
 
     changeBtn(e) {
-        if (e.detail.value != '') {
+        if (e.detail.value != '' || this.data.commentDraw.length != 0) {
             this.setData({
                 sendCommentBtnStyle: '#1125e5'
             })
@@ -84,12 +87,12 @@ Page({
         }
     },
 
-
     firstCanvasTouchstart() {
         if (this.data.cavansShow && !this.data.isFocus) {
             this.setData({
                 cavansShow: false
             })
+            this.videoCtx.play()
         }
     },
 
@@ -171,31 +174,73 @@ Page({
 
     getCommentList(reqData){
         let self = this
-        Util.ajax('comment', 'get', reqData).then(json => {
-            let appStore = wx.getStorageSync('app')
-            json.list.map(item => {
-                item.comment_time = Util.timeToMinAndSec(item.media_time)
-                // item.media_time = parseInt(item.media_time)
-                item.avatar = item.avatar == '' ? self.data.tx : item.avatar
-                item.background = ''
-                item.translateX = ''
-                item.delTranstion = ''
-                if(appStore.login_id == item.user_id) {
-                    item.delColor = '#f00'
-                } else {
-                    item.delColor = '#ddd'
+
+        let getTimer = null
+
+        // 监听请求是否成功
+        let listenerSuccess = () => {
+            setInterval(() => {
+                if (!self.data.commentNotice) {
+                    clearInterval(getTimer)
+                    intervalGetCommentList()
                 }
+            }, 5000)
+        }
+
+        let intervalGetCommentList = () => {
+            getTimer = setInterval(() => {
+                getList()
+            }, 5000)
+        }
+
+        let getList = () => {
+            // listenerSuccess()
+            self.data.commentNotice = false
+            return Util.ajax('comment', 'get', reqData).then(json => {
+                self.data.commentNotice = true
+                if (self.data.prevCommentList != json.list) {
+                    self.data.prevCommentList = json.list
+                } else {
+                    return;
+                }  
+
+                let appStore = wx.getStorageSync('app')
+                json.list.map(item => {
+                    item.comment_time = Util.timeToMinAndSec(item.media_time)
+                    // item.media_time = parseInt(item.media_time)
+                    item.avatar = item.avatar == '' ? self.data.tx : item.avatar
+                    item.background = ''
+                    item.translateX = ''
+                    item.delTranstion = ''
+                    if (self.data.commentActiveIndex == item.id) {
+                        item.timeBackground = '#1125e5'
+                    } else {
+                        item.timeBackground = ''
+                    }
+                    if(appStore.login_id == item.user_id) {
+                        item.delColor = '#f00'
+                    } else {
+                        item.delColor = '#ddd'
+                    }
+                })
+                
+                self.setData({
+                    commentList: json.list,
+                })
+            }, res => {
+                self.data.commentNotice = true
+                wx.showModal({
+                    title: '提示',
+                    content: '获取评论数据失败！',
+                    showCancel: false
+                })
             })
-            self.setData({
-                commentList: json.list
-            })
-        }, res => [
-            wx.showModal({
-                title: '提示',
-                content: '获取评论数据失败！',
-                showCancel: false
-            })
-        ])
+        }
+
+        getList()
+        setTimeout(() => {
+            intervalGetCommentList()
+        }, 5000)
     },
 
     changeVersion(e) {
@@ -435,7 +480,8 @@ Page({
                     this.data.commentDraw = []
                     this.videoCtx.play()
                     this.setData({
-                        isFocus: false
+                        isFocus: false,
+                        sendCommentBtnStyle: ''
                     })
                     break;
                 case 6:
@@ -570,11 +616,17 @@ Page({
                 break;
         }
         this.data.commentDraw.push(drawObj)
-
         this.data.commentDraw.forEach((item, key) => {             
             this.drawAll(item, false)    
         })
+
         this.data.cxtShowBlock.draw()
+
+        if (this.data.commentDraw.length != 0) {
+            this.setData({
+                sendCommentBtnStyle: '#1125e5'
+            })
+        }
     },
     // 画画结束
 
@@ -890,7 +942,8 @@ Page({
 	 toVideoPosition(e) {
         let self = this
         this.setData({
-            cavansShow: true
+            cavansShow: true,
+            commentActiveIndex: e.currentTarget.dataset.id
         })
         setTimeout(() => {
 
