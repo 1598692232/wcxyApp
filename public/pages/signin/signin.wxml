@@ -1,0 +1,30 @@
+
+	<scroll-view class="login-form" scroll-y style="height: {{scrollHeight}}px">
+		<view class="logo">
+			<image src="./img/xy.png" mode="aspectFit"></image>
+		</view>
+		<form bindsubmit="handleLogin">
+			<view class="login-input-body">
+				<image class="login-input-icon" src="{{email}}"></image>
+				<input type="text" name="email" class="login-input" placeholder="邮箱" placeholder-style="font-size:13px;" value="{{emailText}}" focus="{{emailFocus}}" bindinput="handleInput" bindfocus="handleFocus" data-name="email" bindblur="handleBlur"/>
+				<image class="login-input-clear" src="{{clear}}" catchtap="clearInput" hidden="{{hiddenEmailClear}}" data-name="email"></image>
+			</view>
+			<view class="login-input-body">
+				<image class="login-input-icon" src="{{password}}"></image>
+				<input type="password" name="password" class="login-input" placeholder="密码" placeholder-style="font-size:13px;" value="{{passwordText}}" focus="{{passwordFocus}}" bindinput="handleInput" bindfocus="handleFocus"  data-name="password" bindblur="handleBlur"/>
+				<image class="login-input-clear" src="{{clear}}" catchtap="clearInput" data-name="password"
+				hidden="{{hiddenPasswordClear}}"></image>
+			</view>
+			<button form-type="submit" class="login-btn" cursor-spacing="20">登录</button>
+			<view class="forget-text" bindtap="toForget">
+				忘记密码？
+			</view>
+		</form>
+	</scroll-view>
+
+	<view class="login-error-modal" hidden="{{hiddenErr}}" animation="{{animationData}}">
+		<view class="login-error-body">
+			<text>{{errMsg}}</text>
+		</view>
+	</view>
+

@@ -1,0 +1,183 @@
+.call-back{
+    /* background: #2a2e3b; */
+    background: #252525;
+}
+.list-body{
+    box-sizing: border-box;
+}
+.comment-body{
+    width: 100%;
+    box-sizing: border-box;
+    padding-top:10px;
+}
+.comment-master{
+    position: relative;
+    width:100%;
+    box-sizing: border-box;
+    padding-left: 30px ;
+}
+.comment-tou{
+    position: absolute;
+    left:0;
+    top: 0;
+    width:30px;
+    height:30px;
+    background: #ddd;
+    border-radius: 50%;
+    overflow: hidden;
+}
+.comment-tou image{
+    display: inline-block;
+    width:100%;
+    height: 100%;
+}
+.comment-master-text{
+    /*width: 100%;*/
+    margin-left: 10px;
+    box-sizing: border-box;
+    border-bottom: 1px solid rgba(0,0,0,.2);
+    padding-bottom: 10px;
+}
+.comment-header{
+    width: 100%;
+}
+.comment-header text{
+    display: inline-block;
+    line-height: 30px;
+    font-size:14px;
+}
+.comment-name{
+    float: left;
+    color: #6b6b77;
+}
+.comment-timer {
+    float: right;
+    padding:0 7px;
+    line-height: 20px;
+    font-size:14px;
+    font-weight: bold;
+    background: #1125e5;
+    border-radius: 3px;
+    color: #fff;
+}
+.comment-body1{
+    font-size: 13px;
+    line-height: 1.5;
+    color: #666;
+    word-wrap: break-word;
+}
+.comment-do{
+    width: 100%;
+    margin-top: 10px;
+}
+.comment-do > text{
+    display: inline-block;
+    float: left;
+    font-size:13px;
+    color: #686872;
+    line-height: 1.5;
+}
+.comment-zan{
+    width: 60%;
+    float: left;
+}
+.comment-zan-img{
+    float: left;
+    width: 15px;
+    height: 15px;
+    margin-left: 10px;
+    margin-top: 1px;
+}
+.comment-zan text{
+    display: inline-block;
+    float: left;
+    margin-left: 5px;
+}
+.comment-back{
+    width: 100%;
+    box-sizing: border-box;
+    padding-left: 40px;
+}
+.comment-look-back{
+    display:block;
+    font-size: 13px;
+    color: #666;
+    line-height: 40px;
+    border-bottom:1px solid #f2f2f2;
+}
+.back-body{
+    width: 100%;
+    position: relative;
+    padding : 10px 0 10px 30px;
+    border-bottom:1px solid rgba(0,0,0,.2);
+}
+.back-tou{
+    position: absolute;
+    left: 0; 
+    top: 10px;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background:#ddd;
+    overflow: hidden;
+}
+.back-tou image {
+    width: 100%;
+    height: 100%;
+}
+.back-info{
+    width: 100%;
+    box-sizing: border-box;
+    padding-left: 5px;
+}
+.back-name{
+    display: block;
+    width: 100%;
+    font-size: 13px;
+    color: #6b6b77;
+    line-height: 20px;
+}
+.back-text{
+    display: inline-block;
+    width: 100%;
+    font-size: 13px;
+    color: #666;
+    line-height: 20px;
+}
+.back-zan text{
+    font-size:12px;
+    line-height: 1.5;
+    color: #666;
+    margin-left: 5px;
+}
+.back-zan image{
+    margin-left: 0;
+    margin-top: 6px
+}
+.comment-del{
+    position: absolute;
+    right: -100px;
+    top:0;
+    line-height:67px;
+    width:90px;
+    background: #f00;
+    color:#fff;
+    font-size: 18px;
+    text-align: center;
+}
+.del-transtion{
+   transition: all 0.3s linear
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

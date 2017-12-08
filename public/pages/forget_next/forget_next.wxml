@@ -1,0 +1,20 @@
+
+	<view class="login-form" scroll-y style="height: {{scrollHeight}}px">
+		<view class="logo">
+			<image src="./img/xy.png" mode="aspectFit"></image>
+		</view>
+		<form bindsubmit="handleLogin">
+			<view>
+				<view class="login-input-body">
+					<image class="login-input-icon" src="{{code}}"></image>
+					<input type="text" name="code" class="login-input" placeholder="邮箱验证码" placeholder-style="font-size:13px;" value="{{codeText}}" />
+				</view>
+				
+				<view class="send-code" style="color: {{canSendCode ? '#fff' : 'rgba(255,255,255,0.2)'}}" bindtap="sendCode">
+					重新发送 <text wx:if="{{sec > 0}}">({{sec}})</text>
+				</view>
+			</view>
+			<button form-type="submit" class="login-btn" cursor-spacing="20">登录</button>
+		</form>
+	</view>
+

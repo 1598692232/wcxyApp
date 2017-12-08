@@ -1,0 +1,87 @@
+<view style="height: 100%;"> 
+   <view class="search-projects">
+      <view class="search-projects-body" bindtap="searchFocus">
+         <view class="search-input" animation="{{animationData}}">
+            <image src="{{searchImg}}" class="search-icon"></image>
+            <input bindinput="bindReplaceInput" name="searchText" placeholder="搜索项目" focus="{{searching}}" catchblur="searchBlur" bindinput="searchInput" value="{{searchText}}"/>
+            <image src="{{clearImg}}" class="clear-icon" hidden="{{hideClear}}" catchtap="clearSearch"></image>
+        </view>
+
+      </view>
+     
+    </view>
+
+
+       <!--  <view class="list-tabs">
+        </view> -->
+
+      <scroll-view style="height:{{scrollHeight}}px;background:#252525" scroll-y>
+        <!-- 我的项目 -->
+        <view class="list-tab" bindtap="showMyProjects">
+          <text>我的项目</text>
+        </view>
+        <!-- bindscrolltolower="loadMoreMyProjects" bindscrolltoupper="refresh" -->
+        <view class="list-body">          
+            <block wx:if="{{myProjectList.length > 0}}">
+              <view class="item clearfix" wx:for="{{myProjectList}}" wx:key="index" bindtap="toProject" data-id="{{item.id}}" data-name="{{item.name}}"
+              style="border-bottom: {{myProjectList.length - 1 == index ? '0px' : '5px solid #252525)'}};">
+                <!-- <view class="item-left">
+                  <image src="./img/pro.png" mode="aspectFit" lazy-load="{{true}}"></image>
+                </view> -->
+                 <!-- style="width: {{liWidth}}px" -->
+                <view class="item-right">
+                  <text class="item-title">{{item.name}}</text>
+                  <text class="item-des">包含{{item.file_count}}项，共{{item.storage_size}}M</text>
+                </view>
+              </view>
+            </block>
+            <view class="empty-project" wx:else>
+                暂无项目，请登录新阅官网进行更多操作
+            </view>
+        </view>
+        <!--  bindscrolltolower="loadMoreJoinProjects" bindscrolltoupper="refresh"-->
+
+
+        <!-- 我参加的项目  -->
+        <view class="list-tab" bindtap="showJoinProjects">
+          <text>我参与的</text>
+        </view>
+        <view class="list-body"s>
+            <block wx:if="{{joinProjectList.length > 0}}">
+              <view class="item clearfix" wx:for="{{joinProjectList}}" wx:key="index" bindtap="toProject" data-name="{{item.name}}" data-id="{{item.project_number}}" wx:if="{{joinProjectList.length > 0}}"
+                  style="border-bottom: {{joinProjectList.length - 1 == index ? '0px' : '5px solid #252525'}}">
+                <!-- <view class="item-left">
+                  <image src="./img/pro.png" mode="aspectFit" lazy-load="{{true}}"></image>
+                </view> -->
+                 <!-- style="width: {{liWidth}}px" -->
+                <view class="item-right">
+                  <text class="item-title">{{item.name}}</text>
+                  <text class="item-des">包含{{item.file_count}}项，共{{item.storage_size}}M</text>
+                </view>
+              </view>
+            </block>
+              <view class="empty-project" wx:else>
+                  暂无项目，请登录新阅官网进行更多操作
+              </view>
+        </view>
+
+      </scroll-view>
+
+          <!-- <scroll-view class="list-body" scroll-y="true"  style="height: {{scrollHeight}}px" bindscrolltoupper="refresh" scroll-with-animation="true">
+              <view class="item clearfix" wx:for="{{searchResults}}" wx:key="index" bindtap="toProject">
+                <view class="item-right">
+                  <text class="item-title">{{item.name}}</text>
+                </view>
+              </view>
+        </scroll-view> -->
+
+  <!-- <view class="bottom" hidden="{{hideBottom}}">
+    <view>{{loadMoreData}}</view>
+    <view>{{refreshTime}}</view>
+  </view> -->
+</view>
+
+
+<!-- scroll-view设置高度无法触发 onReachBottom方法-->
+<!--  bindscrolltolower="loadMore" lower-threshold="100"  style="height: {{scrollHeight}}px"  -->
+

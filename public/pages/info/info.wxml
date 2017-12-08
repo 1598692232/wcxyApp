@@ -1,0 +1,190 @@
+
+<view class="section tc" style="height: {{scrollHeightAll}}px">
+  <video id="myVideo" class="info-video" src="{{url}}" enable-danmu controls objectFit="contain"
+  autoplay bindtimeupdate="getVideoTime" bindpause="getVideoTime2" muted="{{muted}}" bindfullscreenchange="handleFullScreen">
+    <cover-view class="video-select-btn-p" catchtap="showPSelect" wx:if="{{fullScreen && !videoClicked}}">
+        {{pNo}}P
+    </cover-view>
+    <cover-view bindtap="hidePselect" class="video-cover" wx:if="{{fullScreen && videoClicked}}">
+        <cover-view class="video-select-p-list">
+            <!-- <cover-view style="display:table;width:100%;height:100%"> -->
+                <cover-view class="video-select-table" style="height:{{ps.length * 44}}px;margin-top: -{{ps.length * 44 / 2}}px">
+                    <cover-view wx:for="{{ps}}" wx:key="index" catchtap="changeP" style="color:{{item.activeP ? '#1144d5': ''}}"
+                    data-resolution="{{item.resolution}}" class="video-select-p-li" data-type="video">
+                        {{item.resolution}}
+                    </cover-view>
+                </cover-view>
+            <!-- </cover-view> -->
+        </cover-view>
+    </cover-view>
+
+    <cover-view class="cover-focus" wx:if="{{isFocus}}" bindtap="commentBlur"></cover-view>  
+  </video>
+
+  <!--  wx:if="{{isFocus || cavansShow}}" -->
+  <canvas style="width: 100%; height: 225px; position: fixed; top: 0;left: 0;"
+   canvas-id="firstCanvas" id="firstCanvas" wx:if="{{isFocus || cavansShow}}" bindtouchstart="firstCanvasTouchstart"></canvas>
+<!--  wx:if="{{isFocus}}" -->
+  <canvas style="width: 100%; height: 225px; position: fixed; top: 0;left: 0;" 
+            id="secondCanvas"
+            canvas-id="secondCanvas"
+            bindtouchstart="drawStart"
+            bindtouchmove="drawMove"
+            bindtouchend="drawend"
+            disable-scroll="true"
+            wx:if="{{isFocus}}"
+            ></canvas>
+          <!-- catchtap="catap" -->
+    <canvas style="width: 100%; height: 70px; position: fixed; top: 225px;left: 0; z-index: 1000;"
+            canvas-id="thirdCanvas" id="thirdCanvas" 
+            disable-scroll="true"
+            bindtouchstart="thirdDrawStart"
+            bindtouchmove="thirdDrawMove"
+            bindtouchend="thirdDrawend"
+            wx:if="{{isFocus}}" 
+    ></canvas>
+            <!--  wx:if="{{isFocus}}" -->
+
+   
+
+  <view class="video-info">
+        <!-- <view class="cancel-canvas" bindtap="cancelCanvas" wx:if="{{cavansShow && !isFocus}}">
+                取消画板
+             </view> -->
+      <view class="video-title">
+          <!-- <text>{{name}}</text> -->
+          <view class="select-version-p" bindtap="selectVersionAndP" id="version-select" data-id="version-select">
+              <image src="./img/bg1.png" mode="scaleToFill"></image>
+              <text>v{{versionNo}}版本</text>
+          </view>
+          <view class="select-version-p" bindtap="selectVersionAndP" id="p-select" data-id="p-select">
+              <image src="./img/bg2.png" mode="scaleToFill"></image>
+              <text>{{pNo}}P</text>
+          </view>
+          
+      </view>
+      <!-- wx:if="{{isFocus}}" -->
+      <view class="label-control" wx:if="{{isFocus}}">
+        <view class="label-body">  
+            <view class="label-body-left">
+                <view class="label-img" wx:for="{{drawType}}" wx:key="index" bindtap="selectDrawType" data-key="{{index}}" id="draw-control{{index}}" >
+                    <image src="{{item.activeImg}}" mode="aspectFit" wx:if="{{drawTypeActive == item.name}}"></image>  
+                    <image src="{{item.img}}" mode="aspectFit" wx:else></image>         
+                </view>  
+                
+                <view class="label-color-block" animation="{{colorBlockAnimation}}">
+                    <view class="label-color-block-select" wx:for="{{noSelectColors}}" wx:key="index" data-key="{{index}}"  
+                            catchtap="selectColor" id="draw-control{{index + 6}}">
+                        <view class="label-color-select" 
+                                style="background-color:{{item}}; box-shadow: 0 0 3px {{item}};">
+                        </view>
+                    </view>
+                </view>
+            </view>
+            <!-- style="border-top-left-radius: {{labelBodyRightWidth}}px; border-top-right-radius: {{labelBodyRightWidth}}px;" -->
+            <view class="label-body-right" id="draw-control4" style="background: {{colorShow ? '#535353' : ''}}">
+                <view class="label-color-active" bindtap="toggleColorBlock" 
+                style="background-color: {{colorActive}}; box-shadow: 0 0 3px {{colorActive}};">
+                </view>    
+            </view>
+        </view>
+        <view class="label-body-last" bindtap="commentBlur" id="draw-control5">取消</view>
+      </view>
+      <view class="video-author">{{username}} · {{createTime}}</view>
+  </view>
+  <view class="push-comment">
+        <form bindsubmit="sendComment">
+           <view class="push-comment-input clearfix">
+               <input placeholder="发表评论..." cursor-spacing="10" name="commentText" style="color:#fff" bindinput="changeBtn"
+               bindfocus="commentFocus" bindblur="commentBlur" value="{{commentText}}" fixed="{{true}}" focus="{{isFocus}}"/> 
+               <!-- hidden="{{hideSendComment}}" -->
+               <button class="send-commit" form-type="submit" style="background: {{sendCommentBtnStyle}}">
+                   发送
+               </button>
+           </view>
+         </form>
+       </view>
+  <!-- bindscrolltolower="loadMore" -->
+  <scroll-view scroll-y="true" style="height: {{scrollHeight}}px" class="list-body">
+   
+    <view wx:if="{{commentList.length > 0}}">
+            <view class="list-body-cover" wx:if="{{isFocus}}"></view>
+    <!-- 评论 -->
+    <view class="comment-body" wx:for="{{commentList}}" wx:key="index" style="background-color:{{item.background}}" >
+        <!-- 评论区 -->
+        <view class="comment-master {{item.delTranstion}}" bindtouchstart="delTouchStart" bindtouchmove="delTouchMove"  bindtouchend="delTouchEnd" style="transform: translateX({{item.translateX}}px);" data-index="{{index}}">
+          <view class="comment-tou">
+            <image src="{{item.avatar}}"></image>
+          </view>
+          <view class="comment-master-text" data-time="{{item.media_time}}" data-index="{{index}}" data-id="{{item.id}}"  bindtap="toVideoPosition">
+              <view class="comment-header clearfix">
+                  <text class="comment-name" style="color: {{item.nameColor ? item.nameColor : ''}}">{{item.realname}}</text>
+                  <text class="comment-timer" style="background: {{item.timeBackground ? item.timeBackground : ''}}">{{item.comment_time}}</text>
+              </view>
+              <view class="comment-body1">
+                 <text>{{item.content}} </text>
+                 <view class="comment-do clearfix">
+                   <text catchtap="toBackPage" data-index="{{item.id}}" data-doc-id="{{doc_id}}" data-avatar="{{item.avatar}}">回复</text>
+                 </view>
+              </view>
+          </view>
+           <view class='comment-del' bindtap="handleDelComment" data-index="{{index}}" style="background: {{item.delColor}}" data-userid="{{item.user_id}}">
+              删除
+          </view>
+        </view>
+
+        <!-- 回复区 -->
+        <view class="comment-back" wx:if="{{item.replies.length > 0}}" catchtap="toBackPage" data-index="{{item.id}}" data-doc-id="{{doc_id}}" data-avatar="{{item.avatar}}">
+            <text class="comment-look-back" wx:if="{{item.replies.length > 1}}">查看{{item.replies.length - 1}}条往期的回复</text>
+            <view class="back-body">
+                <view class="back-tou">
+                    <image src="{{item.replies[item.replies.length - 1].avatar != '' ? item.replies[item.replies.length - 1].avatar : tx}}"></image>
+                </view>
+
+                <view class="back-info">
+                    <text class="back-name">{{item.replies[item.replies.length - 1].realname}}</text>
+                    <text class="back-text">{{item.replies[item.replies.length - 1].content}}</text>
+                </view>
+            </view>
+        </view>
+    </view>
+    <!-- 评论 end -->
+      
+    </view>
+
+    <view wx:if="{{commentList.length == 0}}" class="sofa">
+        ～暂无评论，抢沙发！！～
+    </view>
+
+
+  </scroll-view>
+
+
+
+</view>
+
+
+<view class="info-cover" wx:if="{{versionSelect || PSelect}}" bindtap="hideSelect"> 
+    <view class="info-cover-select select-ani-one" wx:if="{{versionSelect}}" style="top: {{selectY}}px;width: {{selectWidth}}px">
+        <view class="info-arrow" style="left: {{arrowX}}px"></view>
+        <scroll-view class="version-p-list" scroll-y>
+          <view class="version-p-li" wx:for="{{versions}}" wx:key="index" bindtap="changeVersion" 
+            data-id="{{item.doc_id}}" data-index="{{index + 1}}" style="border-bottom:{{index == versions.length -1 ? '0' : ''}}">
+            <view class="version-name" style="color:{{item.activeVersion ? '#1144d5': ''}}">V{{index + 1}}版本</view>
+            <view class="video-name" style="color:{{item.activeVersion ? '#1144d5': ''}}">{{info.name}}</view>
+          </view>
+        </scroll-view>
+    </view>
+
+
+    <view class="info-cover-select select-ani-two"  wx:if="{{PSelect}}" style="top: {{selectY}}px;width: {{selectWidth}}px">
+        <view class="info-arrow" style="left: {{arrowX}}px"></view>
+        <scroll-view class="version-p-list" scroll-y>
+          <view class="version-p-li" wx:for="{{ps}}" wx:key="index" bindtap="changeP"  data-resolution="{{item.resolution}}"
+            style="border-bottom:{{index == ps.length -1 ? '0' : ''}}">
+            <view class="version-name" style="color:{{item.activeP ? '#1144d5': ''}}">{{item.resolution}}P</view>
+            <view class="video-name" style="color:{{item.activeP ? '#1144d5': ''}}">{{info.name}}</view>
+          </view>
+        </scroll-view>
+    </view>
+</view>

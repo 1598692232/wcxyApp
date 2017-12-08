@@ -1,0 +1,35 @@
+{
+	"description": "项目配置文件。",
+	"setting": {
+		"urlCheck": false,
+		"es6": true,
+		"postcss": true,
+		"minified": true,
+		"newFeature": true
+	},
+	"compileType": "miniprogram",
+	"libVersion": "1.5.4",
+	"appid": "wx97c95abd0c52aaa9",
+	"projectname": "%E6%96%B0%E9%98%85",
+	"condition": {
+		"search": {
+			"current": -1,
+			"list": []
+		},
+		"conversation": {
+			"current": -1,
+			"list": []
+		},
+		"miniprogram": {
+			"current": -1,
+			"list": [
+				{
+					"id": -1,
+					"name": "info",
+					"pathName": "pages/info/info",
+					"query": "url=http://video.uxinyue.com/e39524cb4d8844cca861a3e1cf00e528/15608d5efebf49c6bfe12543b47b4c67-a5b7d8911cc7d347a9c9dd7e9b1d521b.mp4&name=媒体管理&id=269&username=2225898872&createTime=30天前&coverImg=http://xinyue-1253999721.cossh.myqcloud.com/cover_img/f6vURePCnvAFbkjCxMGWnE1vGKIkQI3js8YuAEzH.jpg&projectId=P231509719105"
+				}
+			]
+		}
+	}
+}

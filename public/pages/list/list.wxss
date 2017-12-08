@@ -1,0 +1,131 @@
+.list-body{
+    box-sizing: border-box;
+    /* background: #383b4b; */
+    background: #000;
+}
+.list-tabs {
+    display: flex;
+    flex: 1;
+}
+.list-tab {
+    display: flex;
+    flex: 1;
+    background: #252525;
+    color: #605f6f;
+    font-size: 14px;
+    line-height: 44px;
+    padding-left: 10px;
+    justify-content: left;
+}
+.refresh{
+    text-align:center;
+    line-height: 44px;
+    font-size:14px;
+    color: #838383;
+    overflow: hidden;
+}
+.item{
+    box-sizing: border-box;
+    padding: 10px;
+    width: 100%;
+    border-bottom: 5px solid #252525;
+    /*border-bottom: 1px solid #f8f8f8;*/
+}
+.item-left{
+    float: left;
+    display: flex;
+    max-width: 100%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    width:60px;
+    height: 60px;
+    border-radius: 5px;
+    justify-content: center;
+    align-items: center;
+    /* background: #e1e1e1 */
+}
+.item-left image{
+    width: 40px;
+    height: 40px;
+}
+.item-right{
+    float: right;
+    /*margin-left: 10px;*/
+    padding-bottom: 10px;
+    width: 100%;
+    /*height: 80px;*/
+    /* border-bottom: 1px solid rgba(0,0,0,.2); */
+    box-sizing: content-box;
+}
+.item-title{
+    display: block;
+    font-size:16px;
+    color:#fff;
+    line-height: 40px;
+}
+.item-des{
+    display: block;
+    font-size:12px;
+    line-height: 20px;
+    color:#4a4a52;
+    width: 100%;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+.search-projects{
+    width: 100%;
+    padding:5px 10px;
+    text-align: center;
+    background-color: #252525;
+}
+.search-projects-body{
+    width:100%;
+    background: #000;
+    height: 30px;
+    border-radius: 3px;
+    box-sizing: border-box;
+    padding: 0 30px 0 0;
+}
+.search-input input {
+    width:100%;
+    line-height: 30px;
+    height: 30px;
+    border-radius: 3px;
+    font-size:12px;
+    box-sizing: border-box;
+    text-align:left;
+}
+
+.search-input{
+    position: relative;
+    width: 80px;
+    padding-left: 30px;
+    height: 30px;
+    box-sizing: border-box;
+    display: inline-block;
+    color: #fff;
+
+}
+.search-icon{
+    display: inline-block;
+    position: absolute;
+    left: 5px;
+    top: 5px;
+    width: 20px;
+    height: 20px;
+    z-index: 100;
+}
+.clear-icon{
+    display: inline-block;
+    position: absolute;
+    right: -20px;
+    top: 5px;
+    width: 20px;
+    height: 20px;
+    z-index: 100;
+}
+.empty-project{
+    background:#252525;
+}
+
