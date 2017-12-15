@@ -72,7 +72,12 @@ Page({
         sendCommentBtnStyle: '',
         prevCommentList: [],
         commentNotice: false,
-        commentActiveIndex: 0
+        commentActiveIndex: 0,
+        getTimer: null,
+        passwordModal: false,
+        shareCode: null,
+        options: {},
+        linkPassword: ''
     },
 
     changeBtn(e) {
@@ -105,21 +110,153 @@ Page({
   	},
 
     onLoad(options) {
+        this.data.options = options
+    },
+
+    onShow() {
         let self = this
+        let scene = []
+        let opt = {}
         wx.showLoading()
         wx.setStorage({
             key: 'info_data',
             data: ''
         })
-
-        self.setData({
-            project_id: options.projectId,
-            doc_id: options.id,
-            versionActive: options.id
-        })
-        wx.setNavigationBarTitle({title: options.name})        
+        if (self.data.options.scene) {
+            scene = decodeURIComponent(self.data.options.scene).split('=')
+            // scene.forEach(item => {
+            //     let it = item.split('=')
+            //     opt[it[0]] = it[1]
+            // })
+            self.data.shareCode = scene[1]
+            // self.setData({
+            //     project_id: opt.project_id
+            // })
+            self.requestLinkShare(1).then(() => self.infoInit())
+        } else {
+            self.setData({
+                project_id: this.data.options.project_id,
+                doc_id: this.data.options.id,
+                versionActive: this.data.options.id
+            })
+            self.infoInit()
+        }
     },
 
+    enterShareLink(e){
+        this.data.linkPassword =  e.detail.value.linkPassword
+        this.requestLinkShare(2).then(() => this.infoInit())
+    },
+ 
+    requestLinkShare(times) {
+        let self = this
+        let host = wx.getStorageSync('app').host 
+
+        return new Promise((resolve, reject) => {
+
+            let store = wx.getStorageSync('app')
+            
+            let reqData = Object.assign({}, store, {
+                code: self.data.shareCode,
+                password: self.data.linkPassword 
+            })
+
+            wx.request({
+                url: host + '/wxapi/sharelink',
+                data: reqData,
+                header: {
+                    'content-type': 'application/json' // 默认值
+                },
+                method: 'GET',
+                success(res){
+                    wx.hideLoading()
+                    if (res.data.status == 1) {
+                        wx.showLoading()
+                        self.setData({
+                            passwordModal: false,
+                            project_id: res.data.data.project_id,
+                            doc_id: res.data.data.files[0].id,
+                            versionActive: res.data.data.files[0].id
+                        })
+                        resolve()
+                    } else {
+                        wx.hideLoading()
+                        self.setData({
+                            passwordModal: true
+                        })
+                        if (times != 1) {
+                            wx.showModal({
+                                title: '提示',
+                                content: res.data.msg,
+                                showCancel: false
+                            })
+                        }
+                    }
+                },
+                fail(res) {
+                    let rs = JSON.stringify(res)
+                    wx.hideLoading()
+                    wx.showModal({
+                        title: '提示',
+                        content: rs,
+                        showCancel: false
+                    })
+                }
+            })
+        })
+       
+    },
+
+    infoInit() {
+        let self = this
+        
+        Util.getSystemInfo().then(res => {
+            self.setData({
+                scrollHeightAll: res.windowHeight,
+                scrollHeight: res.windowHeight - 345,
+                selectWidth: res.windowWidth - 20
+            })
+
+            let store = wx.getStorageSync('app')
+        
+            let reqData = Object.assign({}, store, {
+                doc_id: self.data.doc_id,
+                // project_id: this.data.project_id,
+                show_completed: 1
+            })
+
+            self.getVideoInfo(store.host, reqData, (data) => {
+                data.versions.forEach((item, index)=> {
+                    if (index == 0) {
+                        item.activeVersion = true
+                    } else {
+                        item.activeVersion = false
+                    }
+                })
+
+                data.resolution.forEach((item, k) => {
+                    if (k == 0) {
+                        item.activeP = true
+                    } else {
+                        item.activeP = false
+                    }
+                })
+
+                self.setData({
+                    versions: data.versions,
+                    ps: data.resolution,
+                    versionNo: 1,
+                    pNo: data.resolution[0].resolution,
+                    url:  data.resolution[0].src,
+                    username: data.realname,
+                    createTime: Util.getCreateTime(data.created_at)
+                })
+                wx.setNavigationBarTitle({ title: data.name })   
+            })
+            self.getCommentList(Object.assign({}, reqData, {project_id: self.data.project_id}))
+        })
+    },
+ 
     toggleColorBlock() {
        let animation = wx.createAnimation({
             duration: 450,
@@ -174,21 +311,20 @@ Page({
 
     getCommentList(reqData){
         let self = this
-
-        let getTimer = null
+        clearInterval(self.data.getTimer) 
 
         // 监听请求是否成功
-        let listenerSuccess = () => {
-            setInterval(() => {
-                if (!self.data.commentNotice) {
-                    clearInterval(getTimer)
-                    intervalGetCommentList()
-                }
-            }, 5000)
-        }
+        // let listenerSuccess = () => {
+        //     setInterval(() => {
+        //         if (!self.data.commentNotice) {
+        //             clearInterval(self.data.getTimer)
+        //             intervalGetCommentList()
+        //         }
+        //     }, 5000)
+        // }
 
         let intervalGetCommentList = () => {
-            getTimer = setInterval(() => {
+            self.data.getTimer = setInterval(() => {
                 getList()
             }, 5000)
         }
@@ -229,18 +365,16 @@ Page({
                 })
             }, res => {
                 self.data.commentNotice = true
-                wx.showModal({
-                    title: '提示',
-                    content: '获取评论数据失败！',
-                    showCancel: false
-                })
+                // wx.showModal({
+                //     title: '提示',
+                //     content: '获取评论数据失败！',
+                //     showCancel: false
+                // })
             })
         }
 
+        intervalGetCommentList()
         getList()
-        setTimeout(() => {
-            intervalGetCommentList()
-        }, 5000)
     },
 
     changeVersion(e) {
@@ -251,7 +385,6 @@ Page({
             project_id: this.data.project_id,
             show_completed: 1
         })
-
        
         self.getVideoInfo(store.host, reqData, (data) => {
             self.setData({
@@ -320,56 +453,6 @@ Page({
                 videoClicked: false
             })
         }  
-    },
-
-    onShow() {
-        let self = this
-        
-        Util.getSystemInfo().then(res => {
-            self.setData({
-                scrollHeightAll: res.windowHeight,
-                scrollHeight: res.windowHeight - 345,
-                selectWidth: res.windowWidth - 20
-            })
-
-            let store = wx.getStorageSync('app')
-        
-            let reqData = Object.assign({}, store, {
-                doc_id: self.data.doc_id,
-                project_id: this.data.project_id,
-                show_completed: 1
-            })
-
-            self.getVideoInfo(store.host, reqData, (data) => {
-                data.versions.forEach((item, index)=> {
-                    if (index == 0) {
-                        item.activeVersion = true
-                    } else {
-                        item.activeVersion = false
-                    }
-                })
-
-                data.resolution.forEach((item, k) => {
-                    if (k == 0) {
-                        item.activeP = true
-                    } else {
-                        item.activeP = false
-                    }
-                })
-
-                self.setData({
-                    versions: data.versions,
-                    ps: data.resolution,
-                    versionNo: 1,
-                    pNo: data.resolution[0].resolution,
-                    url:  data.resolution[0].src,
-                    username: data.realname,
-                    createTime: Util.getCreateTime(data.created_at)
-                })
-            })
-            self.getCommentList(reqData)
-        })
-
     },
 
     //canvas遮罩，获取画图工具dom，返回Number

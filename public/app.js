@@ -7,12 +7,13 @@ App({
     staticImg: img
   },
   onLaunch: function () {
-    
+    // console.log(wx.getStorageSync('app'), 'local')
+
     Util.setStorage('app', {
-      email: '',
-      token: '',
-      login_id: '',
-      sessionid: '',
+      // email: '',
+      // token: '',
+      // login_id: '',
+      // sessionid: '',
       // host: 'http://10.255.1.97:8989',
       // host: 'http://111.231.106.53',
       host: 'https://www.uxinyue.com',

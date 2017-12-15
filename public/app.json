@@ -33,7 +33,7 @@
     "color:": "#9b9b9b"
   },
   "networkTimeout": {
-    "request": 20000,
+    "request": 5000,
     "downloadFile": 20000
   }
 }

@@ -543,8 +543,55 @@
     line-height: 50px;
 }
 
+.info-password-cover{
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 100;
+    background: #252525;
+    padding-top: 100px
+}
 
+.info-password-modal{
+    top: 30px;
+    width: 250px;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow: 0 0 100px #666;
+}
 
+.info-password-modal button{
+    font-size: 14px;
+    border-radius: 0;
+    background: #1a3bde;
+    color: #fff;
+    line-height: 50px
+}
+
+.info-password-title{
+    text-align: center;
+    line-height: 40px;
+    font-size: 15px;
+}
+
+.info-password-input{
+    padding: 0 20px;
+    margin-bottom: 10px;
+    font-size: 14px;
+
+}
+
+.info-password-input input {
+    border: 1px solid #eee;
+    line-height: 40px;
+    height: 40px;
+    text-align: center;
+    border-radius: 3px;
+}
 
 
 

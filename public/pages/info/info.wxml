@@ -1,5 +1,5 @@
 
-<view class="section tc" style="height: {{scrollHeightAll}}px">
+<view class="section tc" style="height: {{scrollHeightAll}}px"  wx:if="{{!passwordModal}}">
   <video id="myVideo" class="info-video" src="{{url}}" enable-danmu controls objectFit="contain"
   autoplay bindtimeupdate="getVideoTime" bindpause="getVideoTime2" muted="{{muted}}" bindfullscreenchange="handleFullScreen">
     <cover-view class="video-select-btn-p" catchtap="showPSelect" wx:if="{{fullScreen && !videoClicked}}">
@@ -186,5 +186,17 @@
             <view class="video-name" style="color:{{item.activeP ? '#1144d5': ''}}">{{info.name}}</view>
           </view>
         </scroll-view>
+    </view>
+</view>
+
+<view class="info-password-cover" wx:if="{{passwordModal}}">
+    <view class="info-password-modal">
+        <form bindsubmit="enterShareLink">
+            <view class="info-password-title">密码</view>
+            <view class="info-password-input">
+                <input type="text" value="{{linkPassword}}" name="linkPassword"/>
+            </view>
+            <button form-type="submit">确定</button>
+        </form>
     </view>
 </view>

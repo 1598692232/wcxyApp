@@ -138,7 +138,7 @@ Page({
             let url = '/pages/info/info?url=' + video.src + '&name=' 
                 + e.currentTarget.dataset.name + '&id=' + e.currentTarget.dataset.id 
                 + '&username=' + e.currentTarget.dataset.username + '&createTime=' + e.currentTarget.dataset.createTime
-                + '&coverImg=' + e.currentTarget.dataset.coverImg + '&projectId=' + wx.getStorageSync('project_id')
+                + '&coverImg=' + e.currentTarget.dataset.coverImg + '&project_id=' + wx.getStorageSync('project_id')
 
             wx.navigateTo({
                 url: url,
