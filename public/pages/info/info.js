@@ -122,6 +122,7 @@ Page({
             key: 'info_data',
             data: ''
         })
+
         if (self.data.options.scene) {
             scene = decodeURIComponent(self.data.options.scene).split('=')
             // scene.forEach(item => {
@@ -221,7 +222,7 @@ Page({
         
             let reqData = Object.assign({}, store, {
                 doc_id: self.data.doc_id,
-                // project_id: this.data.project_id,
+                project_id: self.data.project_id,
                 show_completed: 1
             })
 
@@ -860,8 +861,8 @@ Page({
 
     },
 
-	 // 发送评论
-	 sendComment(e) {
+	// 发送评论
+    sendComment(e) {
         let self = this
 
         let res = wx.getStorageSync('app')
@@ -1019,7 +1020,7 @@ Page({
             self.data.sendComment = false
         })
 
-	 },
+    },
 
 	 //跳到指定时间播放
 	 toVideoPosition(e) {
@@ -1143,7 +1144,7 @@ Page({
 	 },
 
     onShareAppMessage () {
-        let url = '/pages/info/info?id=' + this.data.doc_id + '&projectId=' + this.data.project_id
+        let url = '/pages/info/info?id=' + this.data.doc_id + '&project_id=' + this.data.project_id
 	    return {
 	        title: this.data.info.name,
 	        path: url,
