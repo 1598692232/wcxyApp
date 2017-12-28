@@ -75,6 +75,7 @@ Page({
             }
           }
         })
+        // self.isLoginforHandle()
     },
 
     isLoginforHandle() {
@@ -82,11 +83,9 @@ Page({
 
         //获取存储的code
         let store = wx.getStorageSync('app')
-
         Util.ajax('init', 'get', {code: store.code}).then((json) => {
 
             let data = Object.assign({}, store, json)
-            
             if (data.token == '') {
                 //如果没有登录，设置storage
                 // Util.setStorage({

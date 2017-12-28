@@ -14,7 +14,7 @@ Page({
         zan: app.data.staticImg.zan,
         zanActive: app.data.staticImg.zanActive,
         page: 1,
-        videoTime: 0,
+        videoTime: '',
         focusTime: 0,
         url: '',
         name: '',
@@ -77,7 +77,8 @@ Page({
         passwordModal: false,
         shareCode: null,
         options: {},
-        linkPassword: ''
+        linkPassword: '',
+        videoPause: false
     },
 
     changeBtn(e) {
@@ -98,6 +99,7 @@ Page({
                 cavansShow: false
             })
             this.videoCtx.play()
+            self.data.videoPause = false   
         }
     },
 
@@ -111,6 +113,19 @@ Page({
 
     onLoad(options) {
         this.data.options = options
+        let self = this
+        wx.createSelectorQuery().select('#myVideo').fields({
+            dataset: true,
+            size: true,
+            scrollOffset: true,
+            properties: ['scrollX', 'scrollY']
+            }, function(res){
+                self.setData({
+                    firstCanvasWidth: res.width,
+                    firstCanvasHeight: res.height
+                })
+         
+            }).exec()
     },
 
     onShow() {
@@ -294,6 +309,7 @@ Page({
     getVideoInfo(host, reqData, fn) {
         let self = this
         wx.showLoading()
+
         Util.ajax('file/info', 'get', reqData).then(json => {
             self.setData({
                 info: json,
@@ -333,7 +349,7 @@ Page({
         let getList = () => {
             // listenerSuccess()
             self.data.commentNotice = false
-            return Util.ajax('comment', 'get', reqData).then(json => {
+            return Util.ajax('comment', 'get', reqData, 1).then(json => {
                 self.data.commentNotice = true
                 if (self.data.prevCommentList != json.list) {
                     self.data.prevCommentList = json.list
@@ -380,6 +396,9 @@ Page({
 
     changeVersion(e) {
         let self = this
+        self.setData({
+            cavansShow: false
+        })
         let store = wx.getStorageSync('app')
 	    let reqData = Object.assign({}, store, {
 	    	doc_id: e.currentTarget.dataset.id,
@@ -421,6 +440,7 @@ Page({
             setTimeout(() => {
                 self.videoCtx.seek(self.data.videoTime)
                 self.videoCtx.play()
+                self.data.videoPause = false                
             }, 300)
         })
 
@@ -429,6 +449,10 @@ Page({
     
     changeP(e) {
         let self = this
+        self.setData({
+            cavansShow: false
+        })
+
         self.data.ps.forEach(item => {
             if (item.resolution == e.currentTarget.dataset.resolution) {
                 item.activeP = true
@@ -447,6 +471,7 @@ Page({
         setTimeout(() => {
             self.videoCtx.seek(self.data.videoTime)
             self.videoCtx.play()
+            self.data.videoPause = false            
         }, 300)
         
         if (e.currentTarget.dataset.type != undefined && e.currentTarget.dataset.type == 'video') {
@@ -544,7 +569,6 @@ Page({
         if (Math.abs(this.data.thirdTap.x - this.data.thirdTap.x2) <= 20 
             && Math.abs(this.data.thirdTap.y - this.data.thirdTap.y2) <= 20
         && this.data.thirdTap.endTime - this.data.thirdTap.startTime <= 500) {
-                
             let key = this.getDrawControlPosition(this.data.thirdTap.x)
     
             if (key <= 3) {
@@ -563,6 +587,7 @@ Page({
                     this.data.cxtShowBlock.clearRect(0,0, this.data.firstCanvasWidth, this.data.firstCanvasHeight)
                     this.data.commentDraw = []
                     this.videoCtx.play()
+                    this.data.videoPause = false
                     this.setData({
                         isFocus: false,
                         sendCommentBtnStyle: ''
@@ -806,12 +831,23 @@ Page({
         let res = wx.getStorageSync('app')
         
         // 延时处理拖动不能获取播放时间的问题
-        self.videoCtx.play()
+        // self.videoCtx.play()
         self.setData({
             muted: true,
             isFocus: true,
             cavansShow: false
         })
+
+        let handlePauseVideoTime = () => {
+            self.videoCtx.play()
+            setTimeout(() => {
+                let videoTime = self.data.videoTime
+                self.data.focusTime = videoTime
+                self.videoCtx.pause()
+                self.videoCtx.seek(videoTime)
+                self.data.videoPause = true
+            }, 500)
+        }
 
         setTimeout(() => {
             let context = wx.createCanvasContext('secondCanvas')
@@ -821,44 +857,49 @@ Page({
                 cxt: context,
                 cxtShowBlock: context2
             })
-
+    
             self.data.cxtShowBlock.clearRect(0, 0, self.data.firstCanvasWidth, self.data.firstCanvasHeight)
             self.data.cxtShowBlock.draw()
+    
+            // wx.createSelectorQuery().select('#firstCanvas').fields({
+            //     dataset: true,
+            //     size: true,
+            //     scrollOffset: true,
+            //     properties: ['scrollX', 'scrollY']
+            //     }, function(res){
+            //         self.setData({
+            //             firstCanvasWidth: res.width,
+            //             firstCanvasHeight: res.height
+            //         })
+             
+            //     }).exec()
 
-            wx.createSelectorQuery().select('#firstCanvas').fields({
-                dataset: true,
-                size: true,
-                scrollOffset: true,
-                properties: ['scrollX', 'scrollY']
-                }, function(res){
-                    self.setData({
-                        firstCanvasWidth: res.width,
-                        firstCanvasHeight: res.height
-                    })
-                    self.initDrawControlPosiotion()
-                }).exec()
+                self.initDrawControlPosiotion()
+    
+        }, 100)
+        
+        self.setData({
+            muted: false
+        })
 
+        if (self.data.videoPause) {
+            handlePauseVideoTime()
+        } else {
+            self.data.focusTime =  self.data.videoTime
             self.videoCtx.pause()
-            let videoTime = self.data.videoTime
-            self.setData({
-                videoTime: videoTime - 0.5,
-                muted: false
-            })
-            self.videoCtx.seek(videoTime - 0.5)
-            self.setData({
-                focusTime: parseInt(self.data.videoTime)
-            })
-        }, 500)
+            self.data.videoPause = true            
+        }
+        
+        // 为了防止暂停播放会+1秒
+        // self.data.videoTime = ''
     },
     
     commentBlur() {
         this.videoCtx.play()
-        // setTimeout(() => {
-            this.setData({
-                isFocus: false
-            })
-        // }, 500)
-
+        this.setData({
+            isFocus: false
+        })
+        // this.data.videoPause = false        
     },
 
 	// 发送评论
@@ -878,6 +919,9 @@ Page({
                 createTime: self.data.createTime,
                 coverImg: self.data.coverImg
             }
+            setTimeout(() => {
+                self.videoCtx.pause()
+            }, 1000)
 
             wx.setStorageSync('info_data', infoData)
             if (isLogin) {
@@ -886,7 +930,10 @@ Page({
                     content: text,
                     success: function(res) {
                         if (res.confirm) {
-                            wx.navigateTo({url: '/pages/signin/signin'})
+                            wx.navigateTo({url: '/pages/user/user'})
+                            // wx.reLaunch({
+                            //     url: '/pages/list/list'
+                            // })
                         }
                     },
                     showCancel: false
@@ -1017,6 +1064,7 @@ Page({
             })
         }).then((res) => {
             self.videoCtx.play()
+            self.data.videoPause = false            
             self.data.sendComment = false
         })
 
@@ -1073,7 +1121,8 @@ Page({
 
 	 	// 模拟时间点击
 	 	let time = e.currentTarget.dataset.time
-
+ 		this.videoCtx.seek(time + 0.5)
+        this.videoCtx.pause()
         this.data.commentList.map(item => {
             // item.background = ''
             item.timeBackground = '#535353'
@@ -1086,9 +1135,9 @@ Page({
             commentList: this.data.commentList
         })
 
- 		this.videoCtx.seek(time)
-        this.videoCtx.pause()
-
+ 		// this.videoCtx.seek(time)
+        // this.videoCtx.pause()
+        self.data.videoPause = true        
 	 },
 
 	 // 获取播放时间
@@ -1100,12 +1149,16 @@ Page({
 
 
      getVideoTime2(e) {
-        this.setData({
-            videoTime: this.data.videoTime
-        })
+        // this.data.focusTime = this.data.videoTime
+        // this.data.videoTime = ''
+        this.data.videoPause = true
      },
 
+     listenerPlay(e) {
+        this.data.videoPause = false
+     },
 
+    //  跳转回复页面
 	 toBackPage(e) {
 	 	// let commentCurrent = JSON.stringify(this.data.commentList[e.currentTarget.dataset.index])
         let res = wx.getStorageSync('app')
@@ -1134,7 +1187,7 @@ Page({
             })
 
         } else { 
-            
+
             wx.navigateTo({
               url: `/pages/call_back/call_back?commentId=${e.currentTarget.dataset.index}
               &docId=${this.data.doc_id}&projectId=${this.data.project_id}&avatar=${e.currentTarget.dataset.avatar}`
@@ -1144,7 +1197,12 @@ Page({
 	 },
 
     onShareAppMessage () {
+        //  self.data.shareCode = scene[1]
         let url = '/pages/info/info?id=' + this.data.doc_id + '&project_id=' + this.data.project_id
+
+        if (this.data.shareCode ) {
+            url = '/pages/info/info?scene=' + this.data.options.scene
+        }
 	    return {
 	        title: this.data.info.name,
 	        path: url,
@@ -1265,6 +1323,11 @@ Page({
             doc_id: this.data.doc_id,
         }, store)
         let self = this
+
+        self.setData({
+            cavansShow: false
+        })
+
         wx.showLoading({
             title: '正在删除...'
         })

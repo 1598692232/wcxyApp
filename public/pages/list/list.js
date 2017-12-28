@@ -32,13 +32,15 @@ Page({
 
             let infoData = wx.getStorageSync('info_data')
             if (infoData != '') {
-                let url = '/pages/info/info?url=' + infoData.url + '&name='
+                setTimeout(() => {
+                    let url = '/pages/info/info?url=' + infoData.url + '&name='
                     + infoData.name + '&id=' + infoData.doc_id
                     + '&username=' + infoData.username + '&createTime=' + infoData.createTime
-                    + '&coverImg=' + infoData.coverImg 
-                wx.navigateTo({
-                    url: url
-                })
+                    + '&coverImg=' + infoData.coverImg + '&project_id=' + infoData.project_id
+                    wx.navigateTo({
+                        url: url
+                    })
+                }, 1000)
             }
         })
     },
@@ -113,10 +115,16 @@ Page({
 
             wx.hideLoading()
         }, res => {
+
             wx.showModal({
                 title: '提示',
-                content: '获取我的项目失败！',
-                showCancel: false
+                content: '获取我的项目失败,请重新登录！！',
+                showCancel: false,
+                success: function(res) {
+                    if (res.confirm) {
+                        wx.navigateTo({url: '/pages/signin/signin?login_out=1'})
+                    }
+                }
             })
         })
 
@@ -130,11 +138,17 @@ Page({
             })
             self.setAllProjects()
             wx.hideLoading()
-        }, () => {
+        }, (res) => {
+
             wx.showModal({
                 title: '提示',
-                content: '获取参与项目失败！',
-                showCancel: false
+                content: '获取参与项目失败,请重新登录！！',
+                showCancel: false,
+                success: function(res) {
+                    if (res.confirm) {
+                        wx.navigateTo({url: '/pages/signin/signin?login_out=1'})
+                    }
+                }
             })
         })
     },

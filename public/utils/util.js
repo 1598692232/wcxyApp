@@ -38,7 +38,7 @@ const timeToMinAndSec = time => {
     }
 }
 
-const ajax = (url, type, data) => {
+const ajax = (url, type, data, failHide) => {
     let host = wx.getStorageSync('app').host 
     return new Promise((resolve, reject) => {
         wx.request({
@@ -57,11 +57,12 @@ const ajax = (url, type, data) => {
                 }
             },
             fail(res) {
+                if (failHide) return 
                 let rs = JSON.stringify(res)
                 wx.hideLoading()
                 wx.showModal({
                     title: '提示',
-                    content: rs,
+                    content: '网络请求失败',
                     cancelShow: false
                 })
             }
