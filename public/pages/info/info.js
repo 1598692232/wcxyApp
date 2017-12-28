@@ -166,7 +166,7 @@ Page({
  
     requestLinkShare(times) {
         let self = this
-        let host = wx.getStorageSync('app').host 
+        let host = wx.getStorageSync('app').host || 'https://www.uxinyue.com'
 
         return new Promise((resolve, reject) => {
 
@@ -176,7 +176,7 @@ Page({
                 code: self.data.shareCode,
                 password: self.data.linkPassword 
             })
-
+            
             wx.request({
                 url: host + '/wxapi/sharelink',
                 data: reqData,
@@ -949,10 +949,9 @@ Page({
                     }
                 })
             }
-           
         }
 
-        if (res.token == '') {
+        if (res.token == '' || !res.token) {
            returnTosignin('评论／回复需登录', false)
            return
         } 
