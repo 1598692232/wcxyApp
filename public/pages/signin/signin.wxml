@@ -16,6 +16,9 @@
 				hidden="{{hiddenPasswordClear}}"></image>
 			</view>
 			<button form-type="submit" class="login-btn" cursor-spacing="20">登录</button>
+			<view class="forget-text2" bindtap="toRegister">
+				还没账号？立即注册
+			</view>
 			<view class="forget-text" bindtap="toForget">
 				忘记密码？
 			</view>

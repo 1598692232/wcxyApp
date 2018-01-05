@@ -39,8 +39,8 @@ const timeToMinAndSec = time => {
 }
 
 const ajax = (url, type, data, failHide) => {
-    // let host = wx.getStorageSync('app').host   
-    let host = 'https://www.uxinyue.com'
+    let hosts = wx.getStorageSync('app').host   
+    let host = hosts || 'https://www.uxinyue.com'
     
     return new Promise((resolve, reject) => {
         wx.request({
@@ -52,7 +52,7 @@ const ajax = (url, type, data, failHide) => {
             method: type,
             success(res){
                 wx.hideLoading()
-                if (res.data.status == 1) {
+                if (parseInt(res.data.status) == 1) {
                     resolve(res.data.data)
                 } else {
                     reject(res)

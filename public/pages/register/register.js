@@ -13,8 +13,7 @@ Page({
 		scrollHeight: 0,
 		sendEmail: false
 	},
-
-	onLoad(options) {
+    onLoad(options) {
         let self = this
 
         wx.getSystemInfo({
@@ -25,10 +24,9 @@ Page({
                 wx.setNavigationBarTitle({title: '忘记密码'})
             }
         })
+    },
 
-	},
-	
-	handleNext(e) {
+    handleNext(e) {
 		
 		if (e.detail.value.email.trim() == '' || !exp.test(e.detail.value.email)){
 			wx.showModal({
@@ -44,29 +42,35 @@ Page({
 		this.data.sendEmail = true
 		let self = this
 
-		Util.ajax('sendvalidate', 'post', {
+		Util.ajax('self_invite', 'post', {
 			sessionid: store.sessionid,
 			email: e.detail.value.email
 		}).then(json => {
-			wx.setStorage({
-				key: 'forget_email',
-				data: e.detail.value.email
-			})
-			wx.navigateTo({
-				url: '/pages/forget_next/forget_next'
+            wx.showModal({
+				title: '提示',
+				content: '邮件已发送，注册完之后直接返回登录页面！！',
+                showCancel: false,
+                confirmText: '返回登录',
+                success(res) {
+                    if (res.confirm) {
+                        wx.navigateBack()
+                    } 
+                }
 			})
 		}, res => {
 			wx.showModal({
 				title: '提示',
-				content: '邮箱验证码发送失败！',
-				showCancel: false
+				content: res.data.msg,
+                showCancel: false,
+                confirmText: '关闭',
 			})
 		}).then(() => {
 			self.data.sendEmail = false
 		})
 	},
+    
 
-	clearInput(e) {
+    clearInput(e) {
 		this.setData({
 			emailText: '',
 			emailFocus: true,
@@ -101,5 +105,4 @@ Page({
 			hiddenEmailClear: true,
 		})
 	}
-
 })

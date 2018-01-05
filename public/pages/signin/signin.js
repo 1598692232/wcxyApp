@@ -289,6 +289,12 @@ Page({
         wx.navigateTo({
             url: '/pages/forget/forget'
         })
+    },
+
+    toRegister() {
+        wx.navigateTo({
+            url: '/pages/register/register'
+        })
     }
 
 })
