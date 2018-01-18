@@ -58,7 +58,7 @@ Page({
 		}, res => {
 			wx.showModal({
 				title: '提示',
-				content: '邮箱验证码发送失败！',
+				content: res.data.msg,
 				showCancel: false
 			})
 		}).then(() => {
