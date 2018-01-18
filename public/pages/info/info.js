@@ -956,7 +956,7 @@ Page({
            return
         } 
 
-        if (pids.indexOf(self.data.project_id) < 0) {
+        if (pids == undefined || pids.length == 0 || pids.indexOf(self.data.project_id) < 0) {
             returnTosignin('只有参与该项目的人才能评论', true)
             return
         }
