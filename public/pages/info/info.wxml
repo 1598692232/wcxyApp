@@ -165,9 +165,9 @@
 
 
 <view class="info-cover" wx:if="{{versionSelect || PSelect}}" bindtap="hideSelect"> 
-    <view class="info-cover-select select-ani-one" wx:if="{{versionSelect}}" style="top: {{selectY}}px;width: {{selectWidth}}px">
+    <view class="info-cover-select select-ani-one" wx:if="{{versionSelect}}" style="top: {{selectY}}px;width: {{selectWidth}}px;height:auto;">
         <view class="info-arrow" style="left: {{arrowX}}px"></view>
-        <scroll-view class="version-p-list" scroll-y>
+        <scroll-view class="version-p-list" scroll-y style="max-height:150px;overflow:auto;">
           <view class="version-p-li" wx:for="{{versions}}" wx:key="index" bindtap="changeVersion" 
             data-id="{{item.doc_id}}" data-index="{{index + 1}}" style="border-bottom:{{index == versions.length -1 ? '0' : ''}}">
             <view class="version-name" style="color:{{item.activeVersion ? '#1144d5': ''}}">V{{index + 1}}版本</view>
