@@ -171,15 +171,15 @@
           <view class="version-p-li" wx:for="{{versions}}" wx:key="index" bindtap="changeVersion" 
             data-id="{{item.doc_id}}" data-index="{{index + 1}}" style="border-bottom:{{index == versions.length -1 ? '0' : ''}}">
             <view class="version-name" style="color:{{item.activeVersion ? '#1144d5': ''}}">V{{index + 1}}版本</view>
-            <view class="video-name" style="color:{{item.activeVersion ? '#1144d5': ''}}">{{info.name}}</view>
+            <view class="video-name" style="color:{{item.activeVersion ? '#1144d5': ''}}">{{item.name}}</view>
           </view>
         </scroll-view>
     </view>
 
 
-    <view class="info-cover-select select-ani-two"  wx:if="{{PSelect}}" style="top: {{selectY}}px;width: {{selectWidth}}px">
+    <view class="info-cover-select select-ani-two"  wx:if="{{PSelect}}" style="top: {{selectY}}px;width: {{selectWidth}}px;height:auto;">
         <view class="info-arrow" style="left: {{arrowX}}px"></view>
-        <scroll-view class="version-p-list" scroll-y>
+        <scroll-view class="version-p-list" scroll-y style="max-height:150px;overflow:auto;">
           <view class="version-p-li" wx:for="{{ps}}" wx:key="index" bindtap="changeP"  data-resolution="{{item.resolution}}"
             style="border-bottom:{{index == ps.length -1 ? '0' : ''}}">
             <view class="version-name" style="color:{{item.activeP ? '#1144d5': ''}}">{{item.resolution}}P</view>

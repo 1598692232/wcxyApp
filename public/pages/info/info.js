@@ -442,6 +442,7 @@ Page({
                 self.videoCtx.play()
                 self.data.videoPause = false                
             }, 300)
+            wx.setNavigationBarTitle({ title: data.name })
         })
 
         self.getCommentList(reqData)
