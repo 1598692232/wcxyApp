@@ -21,7 +21,7 @@ Page({
             	self.setData({
                     scrollHeight: res.windowHeight
                 })
-                wx.setNavigationBarTitle({title: '忘记密码'})
+                wx.setNavigationBarTitle({title: '注册'})
             }
         })
     },
