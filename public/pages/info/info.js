@@ -437,11 +437,14 @@ Page({
                 username: data.realname,
                 createTime: Util.getCreateTime(data.created_at)
             })
+
             setTimeout(() => {
-                self.videoCtx.seek(self.data.videoTime)
+                // self.videoCtx.seek(self.data.videoTime)
+                self.videoCtx.seek(0)
                 self.videoCtx.play()
-                self.data.videoPause = false                
+                self.data.videoPause = false           
             }, 300)
+            wx.setNavigationBarTitle({ title: data.name })
         })
 
         self.getCommentList(reqData)
