@@ -99,7 +99,7 @@ Page({
                 cavansShow: false
             })
             this.videoCtx.play()
-            self.data.videoPause = false   
+            this.data.videoPause = false   
         }
     },
 
@@ -829,55 +829,49 @@ Page({
 
  	// 评论输入框聚焦
 	commentFocus() {
-        let self = this
+        let self = this;
+
+        let context = wx.createCanvasContext('secondCanvas')
+        let context2 = wx.createCanvasContext('firstCanvas')
+
+        self.setData({
+            cxt: context,
+            cxtShowBlock: context2
+        })
+
+        self.data.cxtShowBlock.clearRect(0, 0, self.data.firstCanvasWidth, self.data.firstCanvasHeight)
+        self.data.cxtShowBlock.draw();
+
 
         let res = wx.getStorageSync('app')
-        
+        self.videoCtx.pause();
         // 延时处理拖动不能获取播放时间的问题
         // self.videoCtx.play()
         self.setData({
             muted: true,
             isFocus: true,
             cavansShow: false
-        })
+        });
 
         let handlePauseVideoTime = () => {
             self.videoCtx.play()
             setTimeout(() => {
-                let videoTime = self.data.videoTime
-                self.data.focusTime = videoTime
-                self.videoCtx.pause()
-                self.videoCtx.seek(videoTime)
-                self.data.videoPause = true
+                self.videoCtx.pause();
+                setTimeout(() => {
+                    let ms = new Date().getMilliseconds() / 1000;
+                    this.data.videoTime = this.data.videoTime + ms; 
+                    let videoTime = self.data.videoTime - 0.5;
+                    self.data.focusTime = videoTime;
+                    self.videoCtx.seek(videoTime)
+                    self.data.videoPause = true
+                }, 100);
+                
             }, 500)
         }
 
         setTimeout(() => {
-            let context = wx.createCanvasContext('secondCanvas')
-            let context2 = wx.createCanvasContext('firstCanvas')
-    
-            self.setData({
-                cxt: context,
-                cxtShowBlock: context2
-            })
-    
-            self.data.cxtShowBlock.clearRect(0, 0, self.data.firstCanvasWidth, self.data.firstCanvasHeight)
-            self.data.cxtShowBlock.draw()
-    
-            // wx.createSelectorQuery().select('#firstCanvas').fields({
-            //     dataset: true,
-            //     size: true,
-            //     scrollOffset: true,
-            //     properties: ['scrollX', 'scrollY']
-            //     }, function(res){
-            //         self.setData({
-            //             firstCanvasWidth: res.width,
-            //             firstCanvasHeight: res.height
-            //         })
-             
-            //     }).exec()
 
-                self.initDrawControlPosiotion()
+            self.initDrawControlPosiotion()
     
         }, 100)
         
@@ -888,9 +882,15 @@ Page({
         if (self.data.videoPause) {
             handlePauseVideoTime()
         } else {
-            self.data.focusTime =  self.data.videoTime
-            self.videoCtx.pause()
-            self.data.videoPause = true            
+            // self.videoCtx.pause()
+            //这里时间不够准确所以加个延时，将暂停借口移到最上方
+            setTimeout(() => {
+                let ms = new Date().getMilliseconds() / 1000;
+                this.data.videoTime = this.data.videoTime + ms; 
+                self.data.focusTime =  self.data.videoTime;
+                self.data.videoPause = true 
+            }, 100)
+                    
         }
         
         // 为了防止暂停播放会+1秒
@@ -1015,7 +1015,7 @@ Page({
                     break
             }
         })
-   
+
         let reqData = Object.assign({}, store, {
 	    	content: e.detail.value.commentText,
  			label: '',
@@ -1123,7 +1123,7 @@ Page({
 
 	 	// 模拟时间点击
 	 	let time = e.currentTarget.dataset.time
- 		this.videoCtx.seek(time + 0.5)
+ 		this.videoCtx.seek(time)
         this.videoCtx.pause()
         this.data.commentList.map(item => {
             // item.background = ''
@@ -1142,23 +1142,23 @@ Page({
         self.data.videoPause = true        
 	 },
 
-	 // 获取播放时间
-	 getVideoTime(e) {
- 		this.setData({
- 			videoTime: e.detail.currentTime
- 		})
-	 },
+    // 获取播放时间
+    getVideoTime(e) {
+        this.data.videoTime = parseInt(e.detail.currentTime);
+    },
 
 
-     getVideoTime2(e) {
-        // this.data.focusTime = this.data.videoTime
-        // this.data.videoTime = ''
-        this.data.videoPause = true
-     },
+    getVideoTime2(e) {
+        this.data.videoPause = true;
+        // let ms = new Date().getMilliseconds() / 1000;
+        // this.data.videoTime = this.data.videoTime + ms; 
+        // console.log(this.data.videoTime , 'this.data.videoTime ')
+    },
 
-     listenerPlay(e) {
+    listenerPlay(e) {
+        // this.ms = 1 - new Date().getMilliseconds() / 1000;
         this.data.videoPause = false
-     },
+    },
 
     //  跳转回复页面
 	 toBackPage(e) {

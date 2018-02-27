@@ -26,7 +26,7 @@
    canvas-id="firstCanvas" id="firstCanvas" wx:if="{{isFocus || cavansShow}}" bindtouchstart="firstCanvasTouchstart"></canvas>
 <!--  wx:if="{{isFocus}}" -->
   <canvas style="width: 100%; height: {{firstCanvasHeight}}px; position: fixed; top: 0;left: 0;" 
-            id="secondCanvas"
+            id="secondCanvas" canvas-id="secondCanvas"
             canvas-id="secondCanvas"
             bindtouchstart="drawStart"
             bindtouchmove="drawMove"
