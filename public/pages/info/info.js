@@ -886,7 +886,7 @@ Page({
             //这里时间不够准确所以加个延时，将暂停借口移到最上方
             setTimeout(() => {
                 let ms = new Date().getMilliseconds() / 1000;
-                this.data.videoTime = this.data.videoTime + ms; 
+                this.data.videoTime = this.data.videoTime + ms + 0.25; 
                 self.data.focusTime =  self.data.videoTime;
                 self.data.videoPause = true 
             }, 100)
