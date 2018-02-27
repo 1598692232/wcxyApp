@@ -819,6 +819,7 @@ Page({
                 scrollOffset: true,
                 properties: ['scrollX', 'scrollY']
                 }, function(res){
+                    if (!res) return;
                     if (key > 5) {
                         res.width += 30
                     }
@@ -840,8 +841,9 @@ Page({
         })
 
         self.data.cxtShowBlock.clearRect(0, 0, self.data.firstCanvasWidth, self.data.firstCanvasHeight)
+        self.data.cxt.clearRect(0, 0, self.data.firstCanvasWidth, self.data.firstCanvasHeight)
         self.data.cxtShowBlock.draw();
-
+        self.data.cxt.draw();
 
         let res = wx.getStorageSync('app')
         self.videoCtx.pause();
@@ -854,25 +856,25 @@ Page({
         });
 
         let handlePauseVideoTime = () => {
-            self.videoCtx.play()
-            setTimeout(() => {
-                self.videoCtx.pause();
+            // self.videoCtx.play()
+            // setTimeout(() => {
+                // self.videoCtx.pause();
                 // setTimeout(() => {
-                    let ms = new Date().getMilliseconds() / 1000;
-                    this.data.videoTime = this.data.videoTime + ms; 
-                    let videoTime = self.data.videoTime - 0.05;
-                    self.data.focusTime = videoTime;
+                    let ct = new Date().getTime();
+                    let vt1 = this.data.videoTime;
+                    let ms = ((ct - this.ms) % 1000) / 1000;
+                    let vt2= this.data.videoTime + ms; 
+                    self.data.videoTime = parseInt(vt2) > parseInt(vt1) ? vt1 + 0.5 : vt2;
+                    self.data.focusTime = self.data.videoTime;
                     self.videoCtx.seek(videoTime)
                     self.data.videoPause = true
                 // }, 100);
                 
-            }, 300)
+            // }, 300)
         }
 
         setTimeout(() => {
-
             self.initDrawControlPosiotion()
-    
         }, 100)
         
         self.setData({
@@ -885,8 +887,12 @@ Page({
             // self.videoCtx.pause()
             //这里时间不够准确所以加个延时，将暂停借口移到最上方
             setTimeout(() => {
+                let ct = new Date().getTime();
+                // let ms = ((ct - this.ms) % 1000) / 1000;
                 let ms = new Date().getMilliseconds() / 1000;
-                this.data.videoTime = this.data.videoTime + ms + 0.25; 
+                let vt1 = this.data.videoTime;
+                let vt2 = this.data.videoTime + ms; 
+                self.data.videoTime = parseInt(vt2) > parseInt(vt1) ? vt1 + 0.5 : vt2;
                 self.data.focusTime =  self.data.videoTime;
                 self.data.videoPause = true 
             }, 100)
@@ -1095,6 +1101,7 @@ Page({
                 scrollOffset: true,
                 properties: ['scrollX', 'scrollY']
                 }, function(res){
+                    if (!res) return;
                     self.setData({
                         firstCanvasWidth: res.width,
                         firstCanvasHeight: res.height
@@ -1144,6 +1151,7 @@ Page({
 
     // 获取播放时间
     getVideoTime(e) {
+        // console.log(e.detail.currentTime, '')
         this.data.videoTime = parseInt(e.detail.currentTime);
     },
 
@@ -1156,7 +1164,8 @@ Page({
     },
 
     listenerPlay(e) {
-        // this.ms = 1 - new Date().getMilliseconds() / 1000;
+        this.ms = new Date().getTime();
+
         this.data.videoPause = false
     },
 
