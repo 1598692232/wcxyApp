@@ -857,16 +857,16 @@ Page({
             self.videoCtx.play()
             setTimeout(() => {
                 self.videoCtx.pause();
-                setTimeout(() => {
+                // setTimeout(() => {
                     let ms = new Date().getMilliseconds() / 1000;
                     this.data.videoTime = this.data.videoTime + ms; 
-                    let videoTime = self.data.videoTime - 0.5;
+                    let videoTime = self.data.videoTime - 0.05;
                     self.data.focusTime = videoTime;
                     self.videoCtx.seek(videoTime)
                     self.data.videoPause = true
-                }, 100);
+                // }, 100);
                 
-            }, 500)
+            }, 300)
         }
 
         setTimeout(() => {
