@@ -846,7 +846,6 @@ Page({
         self.data.cxt.draw();
 
         let res = wx.getStorageSync('app')
-        self.videoCtx.pause();
         // 延时处理拖动不能获取播放时间的问题
         // self.videoCtx.play()
         self.setData({
@@ -856,21 +855,19 @@ Page({
         });
 
         let handlePauseVideoTime = () => {
-            // self.videoCtx.play()
-            // setTimeout(() => {
-                // self.videoCtx.pause();
-                // setTimeout(() => {
-                    let ct = new Date().getTime();
-                    let vt1 = this.data.videoTime;
-                    let ms = ((ct - this.ms) % 1000) / 1000;
-                    let vt2= this.data.videoTime + ms; 
-                    self.data.videoTime = parseInt(vt2) > parseInt(vt1) ? vt1 + 0.5 : vt2;
-                    self.data.focusTime = self.data.videoTime;
-                    self.videoCtx.seek(videoTime)
-                    self.data.videoPause = true
-                // }, 100);
-                
-            // }, 300)
+            self.videoCtx.play()
+            setTimeout(() => {
+                self.videoCtx.pause();
+                let ct = new Date().getTime();
+                let vt1 = self.data.videoTime;
+                let ms = ((ct - this.ms) % 1000) / 1000;
+                let vt2= self.data.videoTime + ms - 0.25; 
+                self.data.videoTime = parseInt(vt2) > parseInt(vt1) ? vt1 + 0.5 : vt2;
+                self.data.focusTime = self.data.videoTime;
+                // console.log(self.data.focusTime, 'self.data.focusTime')
+                self.videoCtx.seek(self.data.focusTime)
+                self.data.videoPause = true
+            }, 500)
         }
 
         setTimeout(() => {
@@ -884,7 +881,7 @@ Page({
         if (self.data.videoPause) {
             handlePauseVideoTime()
         } else {
-            // self.videoCtx.pause()
+            self.videoCtx.pause();
             //这里时间不够准确所以加个延时，将暂停借口移到最上方
             setTimeout(() => {
                 let ct = new Date().getTime();
@@ -1128,8 +1125,8 @@ Page({
         
         // if (this.data.isFocus) return
 
-	 	// 模拟时间点击
-	 	let time = e.currentTarget.dataset.time
+        // 模拟时间点击
+        let time = e.currentTarget.dataset.time;
  		this.videoCtx.seek(time)
         this.videoCtx.pause()
         this.data.commentList.map(item => {
@@ -1151,7 +1148,7 @@ Page({
 
     // 获取播放时间
     getVideoTime(e) {
-        // console.log(e.detail.currentTime, '')
+        console.log(e.detail.currentTime, '777')
         this.data.videoTime = parseInt(e.detail.currentTime);
     },
 
