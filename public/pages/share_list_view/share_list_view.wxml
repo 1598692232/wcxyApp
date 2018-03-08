@@ -1,0 +1,71 @@
+<view class="shareListView" style="height:{{scrollHeight}}px;">
+    <view class="share-list-view-info">
+        <view class="share-list-top">
+            <view class="wx-logo" bindtap="toBigWXLogo">
+                <image src="./img/wx.jpg" data-src="http://a.300.cn/images/20180112/5a587685399cd.png"></image>
+            </view>
+            <view class="list-info">
+                <view class="share-list-name">新建链接</view>
+                <view class="share-list-info">
+                    <view>查看数：13</view>
+                    <view>包含7个文件</view>
+                    <view>有效期：永久有效</view>
+                    <view>密码: 8as2</view>
+                </view>
+            </view>
+        </view>
+        <button class="share-list-copyBtn" bindtap="toCopyAndTransmit" open-type="share" data-password="123456789">
+            <image src="./img/share.png"></image>
+            复制密码并转发
+        </button>
+    </view>
+    <view class="share-list-view-video">
+        <view class="share-list-video">
+            <view class="name">Julien Et Barbara </view>
+            <video src="http://video.uxinyue.com/23d3fe67ae094c62bfe20dbb4d1d0725/2a4453c5c810440c817640337f6fbb51-5287d2089db37e62345123a1be272f8b.mp4"
+                objectFit="contain" controls bindpause="getVideoTime2"
+            ></video>
+            <view class="info">
+                <view class="avatar">
+                    <image></image>
+                    <text>8小时</text>
+                </view>
+                <view class="comment">
+                    <image src="./img/comment.png"></image>
+                    <text>28</text>
+                </view>
+                <view class="play-num">24次播放</view>
+            </view>
+        </view>
+        <view class="share-list-video">
+                <view class="name">Julien Et Barbara </view>
+                <video src="http://video.uxinyue.com/23d3fe67ae094c62bfe20dbb4d1d0725/2a4453c5c810440c817640337f6fbb51-5287d2089db37e62345123a1be272f8b.mp4"></video>
+                <view class="info">
+                    <view class="avatar">
+                        <image></image>
+                        <text>8小时</text>
+                    </view>
+                    <view class="comment">
+                        <image src="./img/comment.png"></image>
+                        <text>28</text>
+                    </view>
+                    <view class="play-num">24次播放</view>
+                </view>
+            </view>
+            <view class="share-list-video">
+                    <view class="name">Julien Et Barbara </view>
+                    <video src="http://video.uxinyue.com/23d3fe67ae094c62bfe20dbb4d1d0725/2a4453c5c810440c817640337f6fbb51-5287d2089db37e62345123a1be272f8b.mp4"></video>
+                    <view class="info">
+                        <view class="avatar">
+                            <image></image>
+                            <text>8小时</text>
+                        </view>
+                        <view class="comment">
+                            <image src="./img/comment.png"></image>
+                            <text>28</text>
+                        </view>
+                        <view class="play-num">24次播放</view>
+                    </view>
+                </view>
+    </view>
+</view>

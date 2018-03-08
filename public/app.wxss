@@ -5,10 +5,10 @@
   flex-direction: column;
   align-items: center;
   /* justify-content: space-between; */
-  padding: 200rpx 0;
+  padding: 160rpx 0;
   box-sizing: border-box;
   /* background: #353446; */
-  background: #252525;
+  background: #2c3243;
 } 
 .clearfix:after{
 	content: '';

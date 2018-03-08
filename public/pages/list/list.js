@@ -17,6 +17,7 @@ Page({
         hiddenMy: false,
         tabOne: 'background: #0036df;color: #fff;',
         tabTwo: '',
+        currentTab:0
     },
 
     onLoad() {
@@ -25,7 +26,7 @@ Page({
 
         Util.getSystemInfo().then(res => {
             self.setData({
-                scrollHeight: res.windowHeight - 40,
+                scrollHeight: res.windowHeight - 74,
                 listInfoWidth: res.windowWidth - 110,
                 liWidth: res.windowWidth - 110
             })
@@ -44,7 +45,23 @@ Page({
             }
         })
     },
-
+    //滑动切换
+    swiperTab(e){
+        this.setData({
+            currentTba:e.detail.current
+        })
+    },
+    //点击切换
+    clickTab(e) {
+        let self = this
+        if( self.data.currentTab === e.target.dataset.current ) {  
+            return false;  
+        } else { 
+            self.setData({
+                currentTab: e.target.dataset.current  
+            })
+        } 
+    },
     onShow() {
         let store = wx.getStorageSync('app')
 
@@ -273,5 +290,5 @@ Page({
 	        path: '/pages/list/list',
             imageUrl: './img/xy2.jpg'
 	    }
-	}
+    }
 })

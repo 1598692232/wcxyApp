@@ -10,13 +10,20 @@ Page({
 		videoList: [],
         breadcrumbList: [],
         txList: [],
+        txFiveList: [],
 		liWidth: 0,
-		scrollHeight: 0,
+        scrollHeight: 0,
+        scrollNumberHeight: 0,
 		page: 1,
         breadcrumbWidth: '',
         projectName: '',
         query: '',
         showBreadcrumb: false,
+        showMemberDrop: false,
+        showShare: false,
+        selectShare: false,
+        selectShareList: [],
+        selectedID: 0
 	},
 
 	onLoad(options) {
@@ -26,7 +33,8 @@ Page({
             self.setData({
                 liWidth: result.windowWidth - 160,
                 query: wx.createSelectorQuery(),
-                scrollHeight: result.windowHeight - 30
+                scrollHeight: result.windowHeight,
+                scrollNumberHeight: result.windowHeight-263
             })
             wx.setNavigationBarTitle({title: options.projectName})
 
@@ -47,7 +55,8 @@ Page({
                     videoList: json.list,
                     breadcrumbList: [{id: 0, name: options.projectName}],
                     projectName: options.projectName,
-                    scrollHeight: result.windowHeight - 30,
+                    scrollHeight: result.windowHeight,
+                    scrollNumberHeight: result.windowHeight-263,
                     breadcrumbWidth: 100
                 })
             }, res => {
@@ -75,7 +84,8 @@ Page({
             })
 
             self.setData({
-                txList: json.list
+                txList: json.list,
+                txFiveList: json.list.slice(0,5)
             })
         }, res => {
             wx.showModal({
@@ -106,7 +116,7 @@ Page({
             self.setData({
                 videoList: json.list,
                 breadcrumbList: [].concat([{id: 0, name: self.data.projectName}],json.breadcrumb),
-                breadcrumbWidth: 100 + json.breadcrumb * 100
+                breadcrumbWidth: 100 + json.breadcrumb.length * 100
             })
             if (e.currentTarget.dataset.id == 0) {
                 self.setData({
@@ -116,7 +126,8 @@ Page({
                 self.setData({
                     showBreadcrumb: true
                 })
-            }            
+            } 
+            wx.setNavigationBarTitle({title: self.data.breadcrumbList.pop().name})          
          }, res => {
             wx.showModal({
                 title: '提示',
@@ -144,6 +155,57 @@ Page({
                 url: url,
             })
         }
-	}
+    },
+    toMemberList(e) {
+        let self = this
+        self.setData({
+            showMemberDrop: true
+        })
+    },
+    MembertoProject(e) {
+        let self = this
+        self.setData({
+            showMemberDrop: false
+        })
+    },
+    toShareList(e) {
+        wx.navigateTo({
+            url: '/pages/share_list/share_list'
+        })
+    },
+    toCreateShare(e) {
+        let self = this
+        self.setData({
+            showShare: true
+        })
+    },
+    toSelectShare(e) {
+        let self = this
+        function deleteArr(arr,index) {
+            arr.splice(index,1)
+            return arr
+        }
+ 
+        self.setData({
+            selectShareList: (self.data.selectShareList.indexOf(e.currentTarget.dataset.id) === -1)?self.data.selectShareList.concat(e.currentTarget.dataset.id):deleteArr(self.data.selectShareList,self.data.selectShareList.findIndex((v)=>{return v === e.currentTarget.dataset.id})),
+            selectShare: (self.data.selectShareList.indexOf(e.currentTarget.dataset.id) === -1) ? true :false,
+            selectedID: e.currentTarget.dataset.id
+        })
+        console.log(self.data.selectShare,'++++++++style')
+        console.log(self.data.selectShareList,'----------list')
+    },
+    toCloseCreateShare(e) {
+        let self = this
+        self.setData({
+            showShare: false,
+            selectShareList: []
+        })
+    },
+    toCreateShareList(e) {
+        let self = this
+        wx.navigateTo({
+            url: '/pages/share_create/share_create'
+        })
+    }
 
 })

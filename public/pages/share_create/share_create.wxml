@@ -1,0 +1,109 @@
+<view class="create-share-list-box" style="height:{{scrollHeight}}px;">
+    <block>
+        <view wx:if="{{createShareList.length<=5}}">
+            <view class="create-share-list-top">
+                <view class="create-share-list" wx:for="{{createShareList}}" style="margin-left:{{index===0?0:'-78px'}};z-index:{{9999 - index}};" wx:key="index">
+                    <view class="share-pic">
+                        <image src="{{item.src}}"></image>
+                    </view>
+                    <view class="share-name">
+                        <text>{{item.name}}</text>
+                    </view>
+                </view>
+            </view>
+        </view>
+        <view wx:else>
+            <scroll-view scroll-x>
+                <view class="create-share-list-top2" style="width: {{120+createShareList.length * 50}}px">
+                    <view class="create-share-list" wx:for="{{createShareList}}" style="margin-left:{{index===0?0:'-78px'}};z-index:{{9999 - index}};" wx:key="index">
+                        <view class="share-pic">
+                            <image src="{{item.src}}"></image>
+                        </view>
+                        <view class="share-name">
+                            <text>{{item.name}}</text>
+                        </view>
+                    </view>
+                </view>
+            </scroll-view>
+        </view>
+    </block>
+
+    <view class="group">
+        <view class="group-content">
+            <view class="row link-name">
+                <view class="row-wrapper">
+                    <view class="left">
+                        <input type="text" placeholder="请输入分享标题" bindinput="bindKeyInput" focus="{{focus}}"/>
+                    </view>
+                    <view class="right" bindtap="bindButtonTap">
+                        <image src="./img/pen.png"></image>
+                    </view>
+                </view>
+            </view>
+            <view class="row btn">
+                <view class="row-wrapper">
+                    <view class="left">
+                        <text>允许审阅</text>
+                    </view>
+                    <view class="right">
+                        <switch bindchange="switch1Change" color="#00CC96" checked="{{allowApproval}}"/>                        
+                    </view>
+                </view>
+            </view>
+            <view class="row btn">
+                <view class="row-wrapper">
+                    <view class="left">
+                        <text>显示所有版本</text>
+                    </view>
+                    <view class="right">
+                        <switch bindchange="switch2Change" color="#00CC96" checked="{{showAllVersions}}"/>                        
+                    </view>
+                </view>
+            </view>
+            <view class="row btn">
+                <view class="row-wrapper">
+                    <view class="left">
+                        <text>允许下载</text>
+                    </view>
+                    <view class="right">
+                        <switch bindchange="switch3Change" color="#00CC96" checked="{{enableDownloading}}"/>                        
+                    </view>
+                </view>
+            </view>
+            <view class="row btn">
+                <view class="row-wrapper">
+                    <view class="left">
+                        <text>密码</text>
+                    </view>
+                    <view class="right">
+                        <switch bindchange="switch4Change" color="#00CC96" checked="{{requirePassword}}"/>                        
+                    </view>
+                </view>
+            </view>
+            <view class="row btn">
+                <view class="row-wrapper">
+                    <view class="left">
+                        <text>有效期</text>
+                    </view>
+                    <view class="right">
+                        <switch bindchange="switch1ChangeTime" color="#00CC96"/>                        
+                    </view>
+                </view>
+            </view>
+            <view wx:if="{{deadline}}">
+                <view class="row-picker">
+                    <picker mode="multiSelector" value="{{dateTime1}}" bindchange="changeDateTime1" bindcolumnchange="changeDateTimeColumn1" range="{{dateTimeArray1}}">
+                        <view class="tui-picker-detail">
+                            设置过期时间: {{dateTimeArray1[0][dateTime1[0]]}}-{{dateTimeArray1[1][dateTime1[1]]}}-{{dateTimeArray1[2][dateTime1[2]]}} {{dateTimeArray1[3][dateTime1[3]]}}:{{dateTimeArray1[4][dateTime1[4]]}}
+                        </view>
+                    </picker>
+                </view>
+            </view>
+        </view>
+    </view>
+
+    <view class="bottom-btn">
+        <view bindtap="toCloseShareList">取消</view>
+        <view bindtap="toShareListView">保存</view>
+    </view>
+</view>

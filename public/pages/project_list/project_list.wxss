@@ -1,33 +1,58 @@
 .pl-container{
 	width: 100%;
+	position: relative;
 }
 
 .pl-list{
 	width: 100%;
 	box-sizing:border-box;
-	/* background: #454b5c; */
-	background: #000
+	background: #383B4A;
 }
 .pl-body{
 	width:100%;
+	margin-bottom: 50px;
 }
 .pl-li{
 	width: 100%;
-	/*height: 343rpx;*/
-	/*background: #f2f2f2;*/
-	margin-right: 10px;
-	margin-bottom: 10px;
-	padding: 10px;
+	/* margin-right: 10px; */
+	/* margin-bottom: 10px; */
+	padding: 8px 12px;
 	overflow: hidden;
-	border-bottom: 5px solid #343545;
+	border-bottom: 2px solid #2F3344;
+	position: relative;
+}
+.pl-li .share-btn{
+	width: 25px;
+	height: 25px;
+	border-radius: 50%;
+	position: absolute;
+	right: 22px;
+	bottom: 17px;
+	background: rgba(255,255,255,0.70);
+	box-shadow: 0 1px 3px 0 rgba(0,0,0,0.50);
+}
+.pl-li .select-share{
+	width: 25px;
+	height: 25px;
+	border-radius: 50%;
+	position: absolute;
+	right: 22px;
+	bottom: 17px;
+	background: #0345C7;
+}
+.pl-li .select-share image{
+	width: 25px;
+	height: 25px;
 }
 .pl-img-body{
 	position: relative;
 	float: left;
-	width:130px;
-	height:100px;
+	width:120px;
+	height:92px;
+	border-radius: 4px;
+	overflow: hidden;
 	/* background: #21212d; */
-	background: #252525;
+	/* background: #252525; */
 }
 .pl-show-count:before{
 	content: "";
@@ -66,10 +91,8 @@
 	height: 100%;
 }
 .pl-des-body{
-	float: right;
-	padding: 0 10px;
-	/* height: 123rpx; */
-	/* background-color: #21212d; */
+	float: left;
+	margin: 8px 0 8px 8px;
 }
 .pl-name{
 	display: inline-block;
@@ -81,23 +104,24 @@
 	white-space: nowrap;
 	overflow: hidden;
 	color: #fff;
-	line-height: 20px;
+	/* line-height: 20px; */
 	margin-top: 5px;
+	font-weight: 400;
 }
 
 .pl-user{
 	width: 100%;
-	margin-top: 30rpx;
+	margin-top: 28rpx;
 }
 
 .pl-user-tou{
 	float: left;
-	width:40rpx;
-	height: 40rpx;
+	width:30rpx;
+	height: 30rpx;
 	border-radius: 50%
 }
 .pl-text{
-	margin-top: 20rpx;
+	/* margin-top: 10rpx; */
 }
 
 .pl-text-p{
@@ -105,7 +129,7 @@
 	margin-right: 10px; 
 	float: left;
 	font-size: 12px;
-	color: #dbdbdb;
+	color: #9B9B9B;
 	line-height:1;	
 }
 
@@ -118,19 +142,25 @@
 
 .pl-create-timer{
 	display: inline-block;
-	margin-left: 5px;
+	margin-left: 4px;
 	float: left;
-	line-height: 40rpx;
+	line-height: 36rpx;
 	color:#6c6b7b;
-	font-size: 12px
+	font-size: 11px;
 }
 
 .breadcrumb-nav{
-	overflow: hidden;
+	/* overflow-y: hidden; */
+	/* overflow-x: auto; */
 	width: 100%;
 	/*background: #545d72;*/
-	background: #353446;
+	background: #383B4A;
 	padding: 10px 0;
+	border-bottom: 2px solid #2F3344;
+	line-height: 56px;
+}
+.breadcrumb-nav .clearfix{
+	padding: 12px 0;
 }
 
 .breadcrumb-nav-li{
@@ -154,6 +184,14 @@
 	height: 100%;
 	z-index:0;
 }
+.breadcrumb-nav-li image{
+	position: absolute;
+	left: -4px;
+	top:8px;
+	width:14px;
+	height:16px;
+	z-index:0;
+}
 .breadcrumb-nav-li .text{
 	display: inline-block;
 	float: left;
@@ -161,7 +199,7 @@
 	overflow: hidden;
 	/*padding-left: 13px;*/
 	padding-left: 15px;
-	font-size: 12px;
+	font-size: 15px;
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	z-index:1;
@@ -196,13 +234,16 @@
 	background: #343545;
 }
 .join-member-list{
+	height: 56px;
+	border-bottom: 2px solid #2F3344;
 	display: flex;
 	position: relative;
 	flex-wrap: nowrap;
-	padding-left: 80px;
+	/* padding-left: 80px; */
 	height: 81px;
-	/* justify-content: center; */
+	justify-content: center;
 	align-items: center;
+	background: #383B4A;
 }
 .join-member-intro{
 	position: absolute;
@@ -230,14 +271,20 @@
 	font-size: 12px;
 }
 .join-member-li{
-	display: flex;
 	width: 40px;
 	height: 40px;
-	/* padding:0 10px; */
-	/* height: 100px; */
-	align-items: center;
-	justify-content: center;
-	/* flex-direction: column */
+	border-radius: 50%;
+	border: 5px solid #383B4A;
+	position: relative;
+	overflow: hidden;
+	margin-left: -14px;
+}
+.join-member-li-more{
+	background: #0345C7;
+	color: #fff;
+	text-align: center;
+	line-height: 30px;
+	font-size: 14px;
 }
 .join-member-li image{
 	background: #000;
@@ -264,21 +311,144 @@
 	height:100%;
 	justify-content: center;
 	align-items: center;
-	opacity: 0.7
+	/* opacity: 0.7 */
 }
 .play-img image{
-	width:40px;
-	height:40px;
+	width:33px;
+	height:33px;
 }
 .pl-floder{
+	width: 120px;
+	height: 92px;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 }
 
 .pl-floder image{
-	width: 70px;
-	width: 60px;
+	width: 100%;
+	height: 100%;
+}
+
+/*  联系人列表展示 */
+.member-drop{
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0,0,0,0.5);
+}
+.member-drop-list-show{
+	width: 100%;
+	height: 436px;
+	background: #383B4A;
+	position: relative;
+}
+.member-drop-add{
+	height: 80px;
+	border-bottom: 2px solid #2F3344;
+	font-size: 15px;
+	color: #9B9B9B;
+	letter-spacing: 1.29px;
+	padding: 26px 12px 0;
+	display: flex;
+}
+.member-drop-add image{
+	width: 34px;
+	height: 34px;
+}
+.member-drop-add .text{
+	line-height: 36px;
+	margin-left: 12px;
+}
+
+.join-member-drop-box{
+	width: 100%;
+	height: 316px;
+	overflow: auto;
+}
+.join-member-drop{
+	width: 100%;
+	height: auto;
+	background: #383B4A;
+}
+.join-member-drop-li{
+	padding: 12px 0 0;
+	display: flex;
+}
+.join-member-drop-li .image{
+	padding: 0 12px;
+	display: flex;
+	justify-content: center;
+	align-content: center;
+}
+.join-member-drop-li .image image{
+	width: 34px;
+	height: 34px;
+	border-radius: 50%;
+}
+.join-member-drop-li .list{
+	padding-bottom: 12px;
+	flex-grow: 1;
+	border-bottom: 2px solid #2F3344;
+	text-align: left;
+}
+.join-member-drop-li .list .join-member-name{
+	text-align: left;
+	font-size: 15px;
+	color: #FFFFFF;
+	letter-spacing: 1.29px;
+}
+.join-member-drop-li .list .join-member-type{
+	text-align: left;
+	font-size: 12px;
+	color: #9B9B9B;
+	letter-spacing: 1.03px;
+}
+.member-drop-quit{
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	height: 40px;
+	font-size: 15px;
+	color: #9B9B9B;
+	letter-spacing: 1.29px;
+	padding: 0 12px;
+	line-height: 40px;
+}
+.member-drop-list-btn{
+	width: 80px;
+	height: 40px;
+	background: #1A3BDE;
+	border-radius: 80px;
+	margin: 10px auto 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.member-drop-list-btn image{
+	width: 20px;
+	height: 20px;
 }
 
 
+/* 分享按钮 */
+.share{
+	position: fixed;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	height: 50px;
+	padding: 0 22px;
+	background: #303440;
+	color: #fff;
+	display: flex;
+	justify-content: space-between;
+	line-height: 50px;
+	font-size: 15px;
+}
+.createShare{
+	background: #0345C7;
+}

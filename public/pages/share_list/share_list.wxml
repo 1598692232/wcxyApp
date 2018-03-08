@@ -1,0 +1,17 @@
+<view class="share-list-box" style="height:{{scrollHeight}}px;">
+    <view class="share-list" wx:for="{{txList}}" wx:key="index">
+        <view class="pic">
+            <image src=""></image>
+        </view>
+        <view class="info">
+            <view class="share-list-name">{{item.name}}</view>
+            <view class="share-list-info">
+                <view><image></image></view>
+                <view class="text">{{item.time}}</view>
+            </view>
+        </view>
+        <view class="number">
+            包含<text>{{item.num}}</text>个文件
+        </view>
+    </view>
+</view>
