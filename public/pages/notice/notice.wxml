@@ -1,0 +1,54 @@
+<view style="height: 100%;background: #383B4A;"> 
+     <scroll-view style="height:{{scrollHeight}}px;" scroll-y>
+        <view class="notice-tips">
+          <view class="notice-tips-text">
+              全部通知
+          </view>
+        </view>
+        <view class="list-body">
+            <block wx:if="{{noticeList.length > 0}}">
+              <view class="item clearfix" bindtap="toNoticeSystemInfo">
+                <view class="item-left system-message">
+                  <image src="./img/notice_news.png"></image>
+                </view>
+                <view class="item-right">
+                  <text class="item-title">系统消息</text>
+                  <text class="item-comment">新阅 v1.0.8(NEW)</text>
+                </view>
+                <view class="item-number-box">
+                  <view class="item-number">1</view>
+                </view>
+              </view>
+              <view class="item clearfix" wx:for="{{noticeList}}" wx:key="index" bindtap="toNoticeInfo" wx:if="{{noticeList.length > 0}}">
+                <view class="item-left">
+                  <block>
+                    <view wx:if="{{item.src}}">
+                        <image src="./img/notice_news.png"></image>
+                    </view>
+                    <view class="empty-notice" wx:else>
+                        <view class="item-left-title">{{item.name}}</view>
+                    </view>
+                  </block>
+                </view>
+                <view class="item-right">
+                  <text class="item-title">{{item.name}}</text>
+                  <text class="item-comment">{{item.text}}</text>
+                </view>
+                <view class="item-number-box">
+                  <view class="item-number">99+</view>
+                </view>
+              </view>
+            </block>
+              <view class="empty-notice" wx:else>
+                <image src="./img/notice_empty.png"></image>
+                暂时没有任何通知哦
+              </view>
+        </view>
+    </scroll-view>
+ </view>
+ 
+ 
+ <!-- scroll-view设置高度无法触发 onReachBottom方法-->
+ <!--  bindscrolltolower="loadMore" lower-threshold="100"  style="height: {{scrollHeight}}px"  -->
+ 
+ 

@@ -43,6 +43,12 @@
 					"pathName": "pages/info/info",
 					"query": "project_id=P1661511345288&id=801",
 					"scene": "1011"
+				},
+				{
+					"id": -1,
+					"name": "notice",
+					"pathName": "pages/notice/notice",
+					"query": ""
 				}
 			]
 		}

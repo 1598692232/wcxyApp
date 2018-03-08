@@ -1,0 +1,25 @@
+<view style="height: 100%;background: #383B4A;"> 
+        <scroll-view style="height:{{scrollHeight}}px;position: relative;" scroll-y>
+            <view class="notice-tips">
+                <view class="notice-tips-text">
+                    系统通知
+                </view>
+            </view>
+           <view class="list-body">
+               <block wx:if="{{noticeList.length > 0}}">
+                 <view class="item-system" wx:key="index" wx:if="{{noticeList.length > 0}}" wx:for="{{noticeList}}" wx:key="index" >
+                    <view class="item-system-left">
+                        <text>新阅 v1.0.6</text>
+                    </view>
+                    <view class="item-system-right">
+                        <text>1月8日</text>
+                    </view>
+                 </view>
+               </block>
+                 <view class="empty-notice" wx:else>
+                   <image src="./img/notice_empty.png"></image>
+                   暂时没有任何通知哦
+                 </view>
+           </view>
+       </scroll-view>
+    </view>
