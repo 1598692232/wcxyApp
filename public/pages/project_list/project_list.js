@@ -138,6 +138,7 @@ Page({
     },
 
 	toInfo(e) {
+        console.log( e.currentTarget.dataset.id , wx.getStorageSync('project_id'), '999');
         let self = this
         if (e.currentTarget.dataset.type == 'folder') {
             self.selectFolder(e)
@@ -146,11 +147,17 @@ Page({
                 return item1.resolution > item2.resolution ? item1 : item2
             })
             
-            let url = '/pages/info/info?url=' + video.src + '&name=' 
-                + e.currentTarget.dataset.name + '&id=' + e.currentTarget.dataset.id 
-                + '&username=' + e.currentTarget.dataset.username + '&createTime=' + e.currentTarget.dataset.createTime
-                + '&coverImg=' + e.currentTarget.dataset.coverImg + '&project_id=' + wx.getStorageSync('project_id')
+            
+            // let url = '/pages/info/info?url=' + video.src + '&name=' 
+            //     + e.currentTarget.dataset.name + '&id=' + e.currentTarget.dataset.id 
+            //     + '&username=' + e.currentTarget.dataset.username + '&createTime=' + e.currentTarget.dataset.createTime
+            //     + '&coverImg=' + e.currentTarget.dataset.coverImg + '&project_id=' + wx.getStorageSync('project_id')
 
+            let url = '/pages/info/info?&name=' 
+            + e.currentTarget.dataset.name + '&id=' + e.currentTarget.dataset.id 
+            + '&username=' + e.currentTarget.dataset.username
+            + '&project_id=' + wx.getStorageSync('project_id')
+            console.log(url, 'url')
             wx.navigateTo({
                 url: url,
             })

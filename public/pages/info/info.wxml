@@ -48,7 +48,7 @@
 
    
 
-  <view class="video-info" style="height: 30px;margin-top: -5px">
+  <view class="video-info" style="height: 36px;margin-top: -5px;background: #383b49">
         <!-- <view class="cancel-canvas" bindtap="cancelCanvas" wx:if="{{cavansShow && !isFocus}}">
                 取消画板
              </view> -->
@@ -68,11 +68,22 @@
       <!-- wx:if="{{isFocus}}" -->
       <view class="label-control" wx:if="{{true}}">
         <view class="label-body">  
-
+            <view class="label-type">
                 <view class="label-img" wx:for="{{drawType}}" wx:key="index" bindtap="selectDrawType" data-key="{{index}}" id="draw-control{{index}}" >
                         <image src="{{item.activeImg}}" mode="aspectFit" wx:if="{{drawTypeActive == item.name}}"></image>  
                         <image src="{{item.img}}" mode="aspectFit" wx:else></image>         
                 </view>  
+            </view>
+
+            <view class="label-type">
+                <view class="label-color-block-select" wx:for="{{noSelectColors}}" wx:key="index" data-key="{{index}}"  
+                    catchtap="selectColor" id="draw-control{{index + 6}}">
+                    <view class="label-color-select" 
+                            style="background-color:{{item}}; box-shadow: 0 0 3px {{item}};">
+                    </view>
+                </view>
+            </view>
+               
             <!-- <view class="label-body-left">
                 <view class="label-img" wx:for="{{drawType}}" wx:key="index" bindtap="selectDrawType" data-key="{{index}}" id="draw-control{{index}}" >
                     <image src="{{item.activeImg}}" mode="aspectFit" wx:if="{{drawTypeActive == item.name}}"></image>  
@@ -108,8 +119,16 @@
                    发送
                </button> -->
            </view>
-         </form>
-       </view>
+        </form>
+    </view>
+    <view class="comment-footer">
+        <view class="comment-footer-left">
+            <text>取消</text>
+        </view>
+        <view class="comment-footer-right">
+            <text>发送</text>
+        </view>
+    </view>
   <!-- bindscrolltolower="loadMore" -->
   <scroll-view scroll-y="true" style="height: {{scrollHeight}}px" class="list-body">
    

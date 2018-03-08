@@ -112,6 +112,7 @@ Page({
   	},
 
     onLoad(options) {
+        console.log(options, 'options')
         this.data.options = options
         let self = this
         wx.createSelectorQuery().select('#myVideo').fields({
@@ -122,7 +123,9 @@ Page({
             }, function(res){
                 self.setData({
                     firstCanvasWidth: res.width,
-                    firstCanvasHeight: res.height
+                    firstCanvasHeight: res.height,
+                    doc_id: options.id,
+                    project_id: options.project_id
                 })
          
             }).exec()
@@ -234,7 +237,7 @@ Page({
             })
 
             let store = wx.getStorageSync('app')
-        
+        console.log(self.data)
             let reqData = Object.assign({}, store, {
                 doc_id: self.data.doc_id,
                 project_id: self.data.project_id,
@@ -1148,7 +1151,7 @@ Page({
 
     // 获取播放时间
     getVideoTime(e) {
-        console.log(e.detail.currentTime, '777')
+        // console.log(e.detail.currentTime, '777')
         this.data.videoTime = parseInt(e.detail.currentTime);
     },
 
