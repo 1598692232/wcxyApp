@@ -31,6 +31,7 @@
 
 .info-video{ 
     width:100%;
+    height: 211px;
 }
 .do-block{
     position: absolute;
@@ -229,7 +230,8 @@
     position: relative;
     align-items: center;
     height: 60px;
-    padding: 10px 10px 10px 0;
+    /* padding: 10px 10px 10px 0; */
+    padding: 0 10px 0 0;
     border-bottom: 1px solid #2c2b3b;
     /* background: #21252d */
     background: #252525;
@@ -437,12 +439,13 @@
 .label-control{
     position:absolute;
     left: 0;
-    top: 5px;
+    /* top: 5px; */
     width:100%;
-    height:50px;
-    padding-top:10px;
+    height:30px;
+    padding-top:0px;
+    /* margin-top: -20px; */
     z-index:100;
-    padding:0 5px;
+    /* padding:0 5px; */
     background:#252525;    
 }
 
@@ -450,8 +453,10 @@
     display: flex;
     flex: 1;
     float: left;
-    width: 78%;
-    height: 50px;
+    /* width: 78%; */
+    width: 100%;
+    /* height: 50px; */
+    height: 30px;
     margin-right: 2%;
     background: #252525;
 }
@@ -520,16 +525,18 @@
 
 
 .label-img{
-    display: block;
-    width: 25%;
+    display: flex;
+    width: 12.5%;
     float: left;
-    padding: 15px;
+    justify-content: center;
+    align-items: center;
+    /* padding: 15px; */
     height: 100%;
     /* justify-content: center */
 }
 .label-img image{
-    width: 100%;
-    height: 100%;
+    width: 20px;
+    height: 20px;
 }
 
 .cancel-canvas{
@@ -591,6 +598,14 @@
     height: 40px;
     text-align: center;
     border-radius: 3px;
+}
+
+.send-comment{
+    padding:0;
+}
+.send-comment input{
+    width: 100%;
+    border-radius: 0;
 }
 
 
