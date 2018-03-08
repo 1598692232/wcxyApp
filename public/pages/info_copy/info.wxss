@@ -235,7 +235,6 @@
     /* border-bottom: 1px solid #2c2b3b; */
     /* background: #21252d */
     background: #252525;
-    transition: all 0.3s linear;
 }
 .video-title {
     display: flex;

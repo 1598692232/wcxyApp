@@ -92,7 +92,30 @@
                     </view>
                 </view>
             </view>
+               
+            <!-- <view class="label-body-left">
+                <view class="label-img" wx:for="{{drawType}}" wx:key="index" bindtap="selectDrawType" data-key="{{index}}" id="draw-control{{index}}" >
+                    <image src="{{item.activeImg}}" mode="aspectFit" wx:if="{{drawTypeActive == item.name}}"></image>  
+                    <image src="{{item.img}}" mode="aspectFit" wx:else></image>         
+                </view>  
+                
+                <view class="label-color-block" animation="{{colorBlockAnimation}}">
+                    <view class="label-color-block-select" wx:for="{{noSelectColors}}" wx:key="index" data-key="{{index}}"  
+                            catchtap="selectColor" id="draw-control{{index + 6}}">
+                        <view class="label-color-select" 
+                                style="background-color:{{item}}; box-shadow: 0 0 3px {{item}};">
+                        </view>
+                    </view>
+                </view>
+            </view> -->
+            <!-- style="border-top-left-radius: {{labelBodyRightWidth}}px; border-top-right-radius: {{labelBodyRightWidth}}px;" -->
+            <!-- <view class="label-body-right" id="draw-control4" style="background: {{colorShow ? '#535353' : ''}}">
+                <view class="label-color-active" bindtap="toggleColorBlock" 
+                style="background-color: {{colorActive}}; box-shadow: 0 0 3px {{colorActive}};">
+                </view>    
+            </view> -->
         </view>
+        <!-- <view class="label-body-last" bindtap="commentBlur" id="draw-control5">取消</view> -->
       </view>
   </view>
   <view class="push-comment send-comment">
