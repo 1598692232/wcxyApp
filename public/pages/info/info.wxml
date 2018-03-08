@@ -36,23 +36,23 @@
             ></canvas>
           <!-- catchtap="catap" -->
     <!-- 画图控制器 -->
-    <!-- <canvas style="width: 100%; height: 70px; position: fixed; top: 211px;left: 0; z-index: 1000;"
+    <canvas style="width: 100%; height: 36px; position: fixed; top: 211px;left: 0; z-index: 1000;"
             canvas-id="thirdCanvas" id="thirdCanvas" 
             disable-scroll="true"
             bindtouchstart="thirdDrawStart"
             bindtouchmove="thirdDrawMove"
             bindtouchend="thirdDrawend"
             wx:if="{{isFocus}}" 
-    ></canvas> -->
+    ></canvas>
             <!--  wx:if="{{isFocus}}" -->
 
    
 
-  <view class="video-info" style="height: 36px;margin-top: -5px;background: #383b49">
+  <view class="video-info" style="height: {{isFocus ? 36 : 60}}px;margin-top: -5px;background: #383b49">
         <!-- <view class="cancel-canvas" bindtap="cancelCanvas" wx:if="{{cavansShow && !isFocus}}">
                 取消画板
              </view> -->
-      <!-- <view class="video-title">
+      <view class="video-title">
           <view class="select-version-p" bindtap="selectVersionAndP" id="version-select" data-id="version-select">
               <image src="./img/bg1.png" mode="scaleToFill"></image>
               <text>v{{versionNo}}版本</text>
@@ -61,12 +61,12 @@
               <image src="./img/bg2.png" mode="scaleToFill"></image>
               <text>{{pNo}}P</text>
           </view>
-      </view> -->
+      </view>
 
       <!-- <view class="video-author">{{username}} · {{createTime}}</view> -->
 
       <!-- wx:if="{{isFocus}}" -->
-      <view class="label-control" wx:if="{{true}}">
+      <view class="label-control" wx:if="{{isFocus}}">
         <view class="label-body">  
             <view class="label-type">
                 <view class="label-img" wx:for="{{drawType}}" wx:key="index" bindtap="selectDrawType" data-key="{{index}}" id="draw-control{{index}}" >
@@ -75,11 +75,20 @@
                 </view>  
             </view>
 
-            <view class="label-type">
-                <view class="label-color-block-select" wx:for="{{noSelectColors}}" wx:key="index" data-key="{{index}}"  
-                    catchtap="selectColor" id="draw-control{{index + 6}}">
-                    <view class="label-color-select" 
-                            style="background-color:{{item}}; box-shadow: 0 0 3px {{item}};">
+            <!-- noSelectColors -->
+            <view class="label-color">
+                <view class="label-color-li"  wx:for="{{colors}}" wx:key="index" data-key="{{index}}"  
+                catchtap="selectColor" id="draw-control{{index + 6}}">
+                    <view class="label-color-block-select">
+                        <block wx:if="{{item == colorActive}}">
+                            <view class="label-color-select active" style="background-color:{{item}}; box-shadow: 0 0 3px {{item}};">
+                            </view>
+                        </block>
+                        <block wx:else>
+                            <view class="label-color-select" style="background-color:{{item}}">
+                            </view>
+                        </block>
+                        
                     </view>
                 </view>
             </view>
@@ -121,7 +130,15 @@
            </view>
         </form>
     </view>
-    <view class="comment-footer">
+    <view class="comment-footer" wx:if="{{isFocus}}">
+        <canvas style="width: 100%; height: 30px; position: absolute; top: 0;left: 0; z-index: 1000;"
+            canvas-id="fourCanvas" id="fourCanvas" 
+            disable-scroll="true"
+            bindtouchstart="thirdDrawStart"
+            bindtouchmove="thirdDrawMove"
+            bindtouchend="thirdDrawend"
+            wx:if="{{isFocus}}" 
+        ></canvas>
         <view class="comment-footer-left">
             <text>取消</text>
         </view>

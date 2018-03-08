@@ -226,18 +226,42 @@ Page({
        
     },
 
+    setScrollHeight(wh) {
+        let self = this;
+        let topNodes = ['#myVideo', '.send-comment', '.video-info'];
+        let topHeight = 0;
+        topNodes.forEach((item, k) => {
+            wx.createSelectorQuery().select(item).fields({
+                dataset: true,
+                size: true,
+                scrollOffset: true,
+                properties: ['scrollX', 'scrollY']
+            }, function(res){
+                topHeight += res.height;
+                if (k == topNodes.length - 1) {
+                    self.setData({
+                        scrollHeight: wh - topHeight,
+                    })     
+                }
+            }).exec();
+        });
+    },
+
     infoInit() {
         let self = this
         
         Util.getSystemInfo().then(res => {
+            let topHeight = 0;
+            self.setScrollHeight(res.windowHeight);
+
             self.setData({
                 scrollHeightAll: res.windowHeight,
-                scrollHeight: res.windowHeight - 345,
+                // scrollHeight: res.windowHeight - 345,
                 selectWidth: res.windowWidth - 20
             })
 
             let store = wx.getStorageSync('app')
-        console.log(self.data)
+
             let reqData = Object.assign({}, store, {
                 doc_id: self.data.doc_id,
                 project_id: self.data.project_id,
