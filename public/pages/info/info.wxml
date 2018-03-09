@@ -47,22 +47,9 @@
             <!--  wx:if="{{isFocus}}" -->
 
     <view class="video-info" style="height: {{isFocus ? 36 : 60}}px;margin-top: -5px;background: #383b49">
-        <!-- <view class="cancel-canvas" bindtap="cancelCanvas" wx:if="{{cavansShow && !isFocus}}">
-                取消画板
-             </view> -->
-        <!-- <view class="video-title">
-          <view class="select-version-p" bindtap="selectVersionAndP" id="version-select" data-id="version-select">
-              <image src="./img/bg1.png" mode="scaleToFill"></image>
-              <text>v{{versionNo}}版本</text>
-          </view>
-          <view class="select-version-p" bindtap="selectVersionAndP" id="p-select" data-id="p-select">
-              <image src="./img/bg2.png" mode="scaleToFill"></image>
-              <text>{{pNo}}P</text>
-          </view>
-        </view> -->
 
         <view class="video-make">
-            <view class="video-make-li">
+            <view class="video-make-li" bindtap="toggleStatusSelect" data-show="{{true}}">
                 <view class="video-make-status">审核通过</view>
                 <view class="video-make-arrow"></view>
             </view>
@@ -195,12 +182,16 @@
 </view>
 
 <!-- 选择 -->
-<view class="video-action-body">
-    <view class="video-action">
+<view class="video-action-body" wx:if="{{statusSelectShow}}">
+    <view class="video-action" animation="{{animationSelect}}">
+        <view class="video-action-sure">
+            <view class="video-action-sure-left" bindtap="toggleStatusSelect" data-show="{{false}}">取消</view>
+            <view class="video-action-sure-right">确定</view>
+        </view>
         <picker-view indicator-class="video-action-selcted" style="width: 100%; height: 250px;" mask-class="video-action-mask"
-                value="{{value}}" bindchange="bindChange">
+                value="{{statusVal}}" bindchange="bindChange">
             <picker-view-column>
-            <view wx:for="{{years}}" wx:key="index"  class="video-action-li" style="opacity: {{item == years[value[0]] ? 1 : 0.6}}">{{item}}年</view>
+            <view wx:for="{{status}}" wx:key="index"  class="video-action-li" style="opacity: {{item == status[statusVal[0]] ? 1 : 0.6}}">{{item}}年</view>
             </picker-view-column>
         </picker-view>
     </view>

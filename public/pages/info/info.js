@@ -3,25 +3,6 @@ let Util = require('../../utils/util.js')
 import { drawRect, drawArrow, drawLine } from '../../utils/draw.js'
 const app = getApp();
 
-
-const date = new Date()
-const years = []
-const months = []
-const days = []
-
-for (let i = 1990; i <= date.getFullYear(); i++) {
-  years.push(i)
-}
-
-for (let i = 1 ; i <= 12; i++) {
-  months.push(i)
-}
-
-for (let i = 1 ; i <= 31; i++) {
-  days.push(i)
-}
-
-
 Page({
 
     data: {
@@ -100,15 +81,12 @@ Page({
         videoPause: false,
 
 
-        years: [1,2,3,4,5],
-        year: 1,
-        months: months,
-        month: 2,
-        days: days,
-        day: 2,
-        year: date.getFullYear(),
-        value: [0],
-
+        status: [1,2,3,4,5],
+        statusVal: [0],
+        statusActive: 1,
+        animationSelect: null,
+        statusSelectShow: false,
+    
     },
 
     bindChange: function(e) {
@@ -116,10 +94,8 @@ Page({
         const val = e.detail.value;
         console.log(val)
         this.setData({
-          year: this.data.years[val[0]],
-          month: this.data.months[val[1]],
-          day: this.data.days[val[2]],
-          value: val
+          statusActive: val[0],
+          statusVal: val
         })
     },
 
@@ -150,7 +126,7 @@ Page({
     // rgb(52, 163, 219)
 
     onReady: function (res) {
-	    this.videoCtx = wx.createVideoContext('myVideo')
+        this.videoCtx = wx.createVideoContext('myVideo');
   	},
 
     onLoad(options) {
@@ -1479,6 +1455,38 @@ Page({
         this.setData({
             videoClicked: false
         })
+    },
+
+    toggleStatusSelect(e) {
+        console.log(e)
+        let show = e.currentTarget.dataset.show;
+        let animation = wx.createAnimation({
+            duration: 450,
+            timingFunction: 'cubic-bezier(0.23, 1, 0.32, 1)',
+        });
+
+        if (show) {
+            animation.translateY('-294px').step();
+            this.setData({
+                statusSelectShow: e.currentTarget.dataset.show,
+            })
+            setTimeout(() => {
+                this.setData({
+                    animationSelect:animation.export()
+                }) 
+            });
+        } else {
+            animation.translateY('0px').step();
+            this.setData({
+                animationSelect:animation.export()
+            });
+            setTimeout(() => {
+                this.setData({
+                    statusSelectShow: e.currentTarget.dataset.show,
+                });
+            }, 450);
+        }
+       
     }
 
 })
