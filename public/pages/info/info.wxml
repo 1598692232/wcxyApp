@@ -49,7 +49,7 @@
 
         <view class="video-make clearfix" wx:if="{{!isFocus}}">
             <view class="video-make-li" bindtap="toggleSelect" data-show="{{true}}" data-field="statusSelectShow" data-animation="animationSelect">
-                <view class="video-make-status">审核通过</view>
+                <view class="video-make-status">{{visibleStatusText}}</view>
                 <view class="video-make-arrow"></view>
             </view>
             <view class="video-make-li" bindtap="toggleSelect" data-show="{{true}}" data-field="versionSelectShow" data-animation="animationSelect2">
@@ -186,12 +186,15 @@
     <view class="video-action" animation="{{animationSelect}}">
         <view class="video-action-sure">
             <view class="video-action-sure-left" bindtap="toggleSelect" data-show="{{false}}" data-field="statusSelectShow" data-animation="animationSelect">取消</view>
-            <view class="video-action-sure-right">确定</view>
+            <view class="video-action-sure-right" bindtap="changeStatus">确定</view>
         </view>
         <picker-view indicator-class="video-action-selcted" style="width: 100%; height: 250px;" mask-class="video-action-mask"
                 value="{{statusVal}}" bindchange="statusChange">
             <picker-view-column>
-            <view wx:for="{{statusList}}" wx:key="index"  class="video-action-li" style="opacity: {{item == statusList[statusVal[0]] ? 1 : 0.6}}">{{item}}年</view>
+            <view wx:for="{{statusList}}" wx:key="index"  class="video-action-li video-action-li-status clearfix" style="opacity: {{index == statusVal[0] ? 1 : 0.6}}">
+                <image class="video-action-status-icon" src="{{'img/' + index + '.png'}}">{{item}}</image>
+                <view class="video-action-status-text">{{item}}</view>
+            </view>
             </picker-view-column>
         </picker-view>
     </view>

@@ -138,7 +138,6 @@ Page({
     },
 
 	toInfo(e) {
-        console.log( e.currentTarget.dataset.id , wx.getStorageSync('project_id'), '999');
         let self = this
         if (e.currentTarget.dataset.type == 'folder') {
             self.selectFolder(e)
@@ -146,7 +145,6 @@ Page({
             let video = self.data.videoList[e.currentTarget.dataset.index].project_file.resolution.reduce(function (item1,item2) {
                 return item1.resolution > item2.resolution ? item1 : item2
             })
-            
             
             // let url = '/pages/info/info?url=' + video.src + '&name=' 
             //     + e.currentTarget.dataset.name + '&id=' + e.currentTarget.dataset.id 

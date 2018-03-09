@@ -237,6 +237,7 @@
     /* background: #21252d */
     background: #252525;
     transition: all 0.3s linear;
+    overflow:hidden;
 }
 .video-title {
     display: flex;
@@ -250,7 +251,7 @@
 }
 .video-author {
     float: right;
-    width: 50%;
+    width: 40%;
     display: block;
     height: 60px;
     line-height: 60px;
@@ -685,7 +686,7 @@
 .video-make{
     float: left;
     padding:15px 10px;
-    width: 50%;
+    width: 60%;
 }
 
 .video-make-li{
@@ -712,6 +713,7 @@
     border-left: 5px solid transparent;
     border-right: 5px solid transparent;
     border-top: 8px solid #fff;
+    opacity:0.6
 }
 
 .video-action-li{
@@ -719,6 +721,13 @@
     line-height: 50px;
     /* background: #383b49; */
     color: #fff;
+}
+
+.video-action-li-status{
+    width: 100%;
+    box-sizing: border-box;
+    padding-left: 10px;
+    text-align: left;
 }
 
 .video-action-selcted{
@@ -796,5 +805,20 @@
 }
 
 
+.video-action-status-icon{
+    float: left;
+    height: 20px;
+    width: 20px;
+    margin-top: 15px;
+    margin-right: 10px;
+}
+
+.video-action-status-text{
+    float: left;
+    width: 60%;
+    height: 50px;
+    color: #fff;
+    font-size: 15px;
+}
 
 

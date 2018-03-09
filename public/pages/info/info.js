@@ -3,6 +3,14 @@ let Util = require('../../utils/util.js')
 import { drawRect, drawArrow, drawLine } from '../../utils/draw.js'
 const app = getApp();
 
+const STAUS = {
+    0: '移除标签',
+    1: '审核通过',
+    2: '进行中',
+    3: '待审核',
+    4: '意见搜集完成',
+};
+
 Page({
 
     data: {
@@ -82,11 +90,12 @@ Page({
         videoPause: false,
 
 
-        statusList: [1,2,3,4,5],
+        statusList: ['移除标签','审核通过','进行中','待审核','意见搜集完成'],
         statusVal: [0],
-        statusActive: 1,
+        statusActive: '',
         animationSelect: null,
         statusSelectShow: false,
+        visibleStatusText:'',
 
         // versionsList: [1,2,3],
         versionVal: [0],
@@ -100,7 +109,7 @@ Page({
     statusChange: function(e) {
         const val = e.detail.value;
         this.setData({
-          statusActive: val[0],
+          statusActive: val[0] == 0 ? '审核' : this.data.statusList[val[0]],
           statusVal: val
         })
     },
@@ -324,6 +333,7 @@ Page({
                 self.setData({
                     versions: data.versions,
                     ps: data.resolution,
+                    visibleStatusText: data.review == 0 ? '审核' :STAUS[data.review],
                     // versionNo: 1,
                     visibleVersion: 0,
                     pNo: data.resolution[0].resolution,
@@ -459,6 +469,33 @@ Page({
 
         intervalGetCommentList()
         getList()
+    },
+
+    changeStatus() {
+        let self = this;
+        let store = wx.getStorageSync('app');
+	    let reqData = Object.assign({}, store, {
+            doc_id: self.data.doc_id,
+            project_id: self.data.project_id,
+            review: self.data.statusVal[0],
+            _method: 'put'
+        });
+
+        self.toggleSelect(null, false, 'statusSelectShow', 'animationSelect');
+        Util.ajax('file/review', 'post', reqData).then(json => {
+            wx.showToast({
+                title: '修改成功！',
+                icon: 'success'
+            });
+            // console.log(statusList[statusVal[0]], 'ppp')
+            self.setData({
+                visibleStatusText: self.data.statusList[self.data.statusVal[0]]
+            });
+        }, () => {
+            wx.showToast({
+                title: '修改失败！'
+            });
+        });
     },
 
     changeVersion(e) {
