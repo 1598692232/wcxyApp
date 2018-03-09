@@ -1064,14 +1064,17 @@ Page({
             }
         })
 
+
         let reqData = Object.assign({}, store, {
 	    	content: e.detail.value.commentText,
  			label: '',
  			media_time: self.data.focusTime,
  			doc_id: self.data.doc_id,
             project_id: wx.getStorageSync('project_id'),
-            label: JSON.stringify(self.data.commentDraw)
-        })
+            label: JSON.stringify(self.data.commentDraw),
+        });
+        
+        delete reqData.code;
 
         Util.ajax('comment', 'post', reqData).then(json => {
             let list = self.data.commentList
