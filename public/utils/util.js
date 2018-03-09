@@ -123,6 +123,14 @@ const getSystemInfo = (completeCallback) => {
     })
 }
 
+const formatVideoTime = (videoTime) => {
+    let m = parseInt(videoTime / 60);
+    let s = videoTime % 60;
+    m = m >= 10 ? m : '0' + m;
+    s = s >= 10 ? s : '0' + s;
+    return m + ':' + s;
+}
+
 module.exports = {
   formatTime: formatTime,
   getCreateTime: getCreateTime,
@@ -130,5 +138,6 @@ module.exports = {
   ajax: ajax,
   setStorage: setStorage,
   getStorage: getStorage,
-  getSystemInfo: getSystemInfo
+  getSystemInfo: getSystemInfo,
+  formatVideoTime
 }

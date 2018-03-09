@@ -55,10 +55,10 @@
 					"query": ""
 				},
 				{
-					"id": -1,
+					"id": 4,
 					"name": "info_new",
 					"pathName": "pages/info/info",
-					"query": "url=http://video.uxinyue.com/23d3fe67ae094c62bfe20dbb4d1d0725/2a4453c5c810440c817640337f6fbb51-a5b7d8911cc7d347a9c9dd7e9b1d521b.mp4&name=3F7CAE54-15F29423761-1379-0064-227-94904.mp4.mp4&id=1034&username=stone1645&createTime=77天前&coverImg=http://xinyue-1253999721.cossh.myqcloud.com/cover_img/1omuDR8yGLfXH0iMoWN2nOsFLQomeyHQJaUUGXwR.jpg&project_id=P2571513772781 ",
+					"query": "name=280edf50-161314041d0-0004-e632-f3f-94298&id=3041&username=1037359589&project_id=P2101520413594",
 					"scene": "1011"
 				}
 			]

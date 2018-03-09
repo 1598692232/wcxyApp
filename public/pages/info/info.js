@@ -88,12 +88,13 @@ Page({
         animationSelect: null,
         statusSelectShow: false,
 
-        versionsList: [1,2,3],
+        // versionsList: [1,2,3],
         versionVal: [0],
         versionActive: 1,
         animationSelect2: null,
         versionSelectShow: false,
-    
+        visibleVersionNo: 0,
+        currentVideoTime: '00:00'
     },
 
     statusChange: function(e) {
@@ -107,7 +108,7 @@ Page({
     versionChange: function (e) {
         const val = e.detail.value;
         this.setData({
-          versionActive: val[0],
+          versionActive: this.data.versions[val[0]],
           versionVal: val
         })
     },
@@ -323,12 +324,16 @@ Page({
                 self.setData({
                     versions: data.versions,
                     ps: data.resolution,
-                    versionNo: 1,
+                    // versionNo: 1,
+                    visibleVersion: 0,
                     pNo: data.resolution[0].resolution,
                     url:  data.resolution[0].src,
                     username: data.realname,
                     createTime: Util.getCreateTime(data.created_at)
-                })
+                });
+
+                // console.log(self.data.versions)
+
                 wx.setNavigationBarTitle({ title: data.name })   
             })
             self.getCommentList(Object.assign({}, reqData, {project_id: self.data.project_id}))
@@ -457,24 +462,34 @@ Page({
     },
 
     changeVersion(e) {
-        let self = this
+        let self = this;
+
+        if (self.data.versionVal[0] == self.data.visibleVersionNo) {
+            self.toggleSelect(null, false, 'versionSelectShow', 'animationSelect2');
+            return;
+        }
+
         self.setData({
             cavansShow: false
-        })
+        });
+
+        
+        
         let store = wx.getStorageSync('app')
 	    let reqData = Object.assign({}, store, {
-	    	doc_id: e.currentTarget.dataset.id,
+            // doc_id: e.currentTarget.dataset.id,
+            doc_id: self.data.versionActive.id,
             project_id: this.data.project_id,
             show_completed: 1
         })
        
         self.getVideoInfo(store.host, reqData, (data) => {
             self.setData({
-                doc_id:  e.currentTarget.dataset.id
+                doc_id: self.data.versionActive.id
             })
 
             data.versions.forEach(item => {
-                if (item.doc_id == e.currentTarget.dataset.id) {
+                if (item.doc_id == self.data.versionActive.id) {
                     item.activeVersion = true
                 } else {
                     item.activeVersion = false
@@ -495,10 +510,14 @@ Page({
             self.setData({
                 versions: data.versions,
                 ps: data.resolution,
-                versionNo: e.currentTarget.dataset.index,
+                // versionNo: e.currentTarget.dataset.index,
+                // versionNo: self.data.versionActive.version_no,
+                visibleVersionNo: self.data.versionVal[0],
                 username: data.realname,
                 createTime: Util.getCreateTime(data.created_at)
-            })
+            });
+
+            self.toggleSelect(null, false, 'versionSelectShow', 'animationSelect2');
 
             setTimeout(() => {
                 // self.videoCtx.seek(self.data.videoTime)
@@ -603,14 +622,19 @@ Page({
         if (Math.abs(this.data.fourthTap.x - this.data.fourthTap.x2) <= 20 
             && Math.abs(this.data.fourthTap.y - this.data.fourthTap.y2) <= 20
         && this.data.fourthTap.endTime - this.data.fourthTap.startTime <= 500) {
-            console.log
-            if (this.data.fourthTap.x <= 40) {
-
+            // 触发取消
+            if (this.data.fourthTap.x <= this.data.firstCanvasWidth * 0.14) {
                 this.commentBlur();
             }
 
-            if (this.data.fourthTap.x >= this.data.firstCanvasWidth - 40) {
+            // 触发发送
+            if (this.data.fourthTap.x >= this.data.firstCanvasWidth * 0.86) {
                 this.sendComment();
+            }
+
+            // 触发时间
+            if (this.data.fourthTap.x > this.data.firstCanvasWidth * 0.14 && this.data.fourthTap.x < this.data.firstCanvasWidth * 0.86) {
+                this.toggelNeedTime()
             }
         }
     },
@@ -888,8 +912,14 @@ Page({
         this.videoCtx.play()
         this.setData({
             isFocus: false
-        })
+        });
         // this.data.videoPause = false        
+    },
+
+    toggelNeedTime() {
+        this.setData({
+            needTime: !this.data.needTime
+        })
     },
 
 	// 发送评论
@@ -1011,6 +1041,10 @@ Page({
             project_id: wx.getStorageSync('project_id'),
             label: JSON.stringify(self.data.commentDraw),
         });
+
+        if (!self.data.needTime) {
+            delete reqData.media_time;
+        }
         
         delete reqData.code;
 
@@ -1026,7 +1060,7 @@ Page({
             let newComment = {
                 content: self.data.commentText,
                 comment_time: Util.timeToMinAndSec(self.data.focusTime),
-                media_time: self.data.focusTime,
+                media_time: self.data.needTime ? self.data.focusTime : -1,
                 doc_id: self.data.doc_id,
                 project_id: wx.getStorageSync('project_id'),
                 id: json.id,
@@ -1042,7 +1076,8 @@ Page({
             list.unshift(newComment)
             self.setData({
                 commentList: list,
-                commentText: ''
+                commentText: '',
+                isFocus: false
             })
 
             self.data.commentDraw = []
@@ -1136,6 +1171,9 @@ Page({
     getVideoTime(e) {
         // console.log(e.detail.currentTime, '777')
         this.data.videoTime = parseInt(e.detail.currentTime);
+        this.setData({
+            currentVideoTime: Util.formatVideoTime(this.data.videoTime)
+        });
     },
 
 
@@ -1398,10 +1436,21 @@ Page({
         })
     },
 
-    toggleSelect(e) {
-        let show = e.currentTarget.dataset.show;
-        let showField = e.currentTarget.dataset.field;
-        let animationSelect = e.currentTarget.dataset.animation;
+    toggleSelect(e, isShow, fieldShow, feildAnimationSelect) {
+        let show = null;
+        let showField = null;
+        let animationSelect = null;
+
+        if (e) {
+            show = e.currentTarget.dataset.show;
+            showField = e.currentTarget.dataset.field;
+            animationSelect = e.currentTarget.dataset.animation;
+        } else {
+            show = isShow;
+            showField = fieldShow;
+            animationSelect = feildAnimationSelect;
+        }
+
         let animation = wx.createAnimation({
             duration: 300,
             timingFunction: 'cubic-bezier(0.23, 1, 0.32, 1)',
@@ -1411,9 +1460,9 @@ Page({
         let o2 = {};
 
         if (show) {
-            animation.translateY('-294px').step();
-            o[showField] = e.currentTarget.dataset.show
-            this.setData(o)
+            animation.translateY('-100%').step();
+            o[showField] = show;
+            this.setData(o);
             setTimeout(() => {
                 o2[animationSelect] = animation.export();
                 this.setData(o2);
@@ -1423,7 +1472,7 @@ Page({
             o2[animationSelect] = animation.export();
             this.setData(o2);
             setTimeout(() => {
-                o[showField] = e.currentTarget.dataset.show
+                o[showField] = show;
                 this.setData(o);
             }, 300);
         }

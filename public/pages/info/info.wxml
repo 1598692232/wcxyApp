@@ -44,23 +44,22 @@
             bindtouchend="thirdDrawend"
             wx:if="{{isFocus}}" 
     ></canvas>
-            <!--  wx:if="{{isFocus}}" -->
 
     <view class="video-info" style="height: {{isFocus ? 36 : 60}}px;margin-top: -5px;background: #383b49">
 
-        <view class="video-make">
+        <view class="video-make clearfix" wx:if="{{!isFocus}}">
             <view class="video-make-li" bindtap="toggleSelect" data-show="{{true}}" data-field="statusSelectShow" data-animation="animationSelect">
                 <view class="video-make-status">审核通过</view>
                 <view class="video-make-arrow"></view>
             </view>
             <view class="video-make-li" bindtap="toggleSelect" data-show="{{true}}" data-field="versionSelectShow" data-animation="animationSelect2">
-                <view class="video-make-status">V1版本</view>
+                <view class="video-make-status">V{{visibleVersionNo + 1}}版本</view>
                 <view class="video-make-arrow"></view>
             </view>
         </view>
 
 
-      <view class="video-author">{{username}} · {{createTime}}</view>
+      <view class="video-author"  wx:if="{{!isFocus}}">{{username}} · {{createTime}}</view>
 
       <!-- wx:if="{{isFocus}}" -->
       <view class="label-control" wx:if="{{isFocus}}">
@@ -113,6 +112,10 @@
             <view class="comment-footer-left">
                 取消
             </view>
+            <view class="comment-footer-time" style="color:{{needTime ? '#086ac1': ''}}">
+                <image class="time-check" src="./img/time_check.png" wx:if="{{needTime}}"></image>
+                {{currentVideoTime}}
+            </view>
             <view class="comment-footer-right" bindTap="sendComment">
                 发送
             </view>
@@ -134,7 +137,7 @@
           <view class="comment-master-text" data-time="{{item.media_time}}" data-index="{{index}}" data-id="{{item.id}}"  bindtap="toVideoPosition">
               <view class="comment-header clearfix">
                   <text class="comment-name" style="color: {{item.nameColor ? item.nameColor : ''}}">{{item.realname}}</text>
-                  <text class="comment-timer" style="background: {{item.timeBackground ? item.timeBackground : ''}}">{{item.comment_time}}</text>
+                  <text class="comment-timer" style="background: {{item.timeBackground ? item.timeBackground : ''}}" wx:if="{{item.media_time > 0}}">{{item.comment_time}}</text>
               </view>
               <view class="comment-body1">
                  <text>{{item.content}} </text>
@@ -179,7 +182,7 @@
 </view>
 
 <!-- 选择 -->
-<view class="video-action-body" wx:if="{{statusSelectShow}}" bindtap="toggleSelect" data-show="{{false}}" data-field="statusSelectShow" data-animation="animationSelect">
+<view class="video-action-body" wx:if="{{statusSelectShow}}">
     <view class="video-action" animation="{{animationSelect}}">
         <view class="video-action-sure">
             <view class="video-action-sure-left" bindtap="toggleSelect" data-show="{{false}}" data-field="statusSelectShow" data-animation="animationSelect">取消</view>
@@ -194,16 +197,19 @@
     </view>
 </view>
 
-<view class="video-action-body" wx:if="{{versionSelectShow}}" bindtap="toggleSelect" data-show="{{false}}" data-field="versionSelectShow" data-animation="animationSelect2">
-    <view class="video-action" animation="{{animationSelect2}}">
+<view class="video-action-body" wx:if="{{versionSelectShow}}">
+    <view class="video-action video-action2" animation="{{animationSelect2}}">
         <view class="video-action-sure">
             <view class="video-action-sure-left" bindtap="toggleSelect" data-show="{{false}}" data-field="versionSelectShow" data-animation="animationSelect2">取消</view>
-            <view class="video-action-sure-right">确定</view>
+            <view class="video-action-sure-right" bindtap="changeVersion">确定</view>
         </view>
-        <picker-view indicator-class="video-action-selcted" style="width: 100%; height: 250px;" mask-class="video-action-mask"
+        <picker-view indicator-class="video-action-selcted" indicator-style="height:60px;" style="width: 100%; height: 240px;" mask-class="video-action-mask"
                 value="{{versionVal}}" bindchange="versionChange">
             <picker-view-column>
-            <view wx:for="{{versionsList}}" wx:key="index"  class="video-action-li" style="opacity: {{item == versionsList[versionVal[0]] ? 1 : 0.6}}">{{item}}年</view>
+            <view wx:for="{{versions}}" wx:key="index"  class="video-action-li version" style="opacity: {{index == versionVal[0] ? 1 : 0.6}};height: 60px">
+                <view class="video-action-version-no">V{{index + 1}}版本</view>
+                <view class="video-action-version-name">{{item.name}}</view>
+            </view>
             </picker-view-column>
         </picker-view>
     </view>
