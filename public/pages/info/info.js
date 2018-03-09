@@ -69,6 +69,7 @@ Page({
         cavansShow: false,
         drawControl: [],
         thirdTap:{x: '', y: '', x2:'', y2:'', startTime: 0, endTime: 0},
+        fourthTap:{x: '', y: '', x2:'', y2:'', startTime: 0, endTime: 0},
         sendCommentBtnStyle: '',
         prevCommentList: [],
         commentNotice: false,
@@ -112,6 +113,11 @@ Page({
     },
 
     changeBtn(e) {
+    
+        this.setData({
+            commentText: e.detail.value
+        });
+        
         if (e.detail.value != '' || this.data.commentDraw.length != 0) {
             this.setData({
                 sendCommentBtnStyle: '#1125e5'
@@ -577,6 +583,40 @@ Page({
     },
     // 画板空间事件触发结束
 
+    //input底部canvas，防止键盘失效，tap手机不起作用，使用touchstart触发
+    fourthDrawStart(e) {
+        this.data.fourthTap.x = e.touches[0].x
+        this.data.fourthTap.y = e.touches[0].y
+        this.data.fourthTap.x2 = e.touches[0].x
+        this.data.fourthTap.y2 = e.touches[0].y
+        this.data.fourthTap.startTime = new Date().getTime()
+        this.data.fourthTap.endTime = new Date().getTime()
+    },
+    
+    fourthDrawMove(e) {
+        this.data.fourthTap.x2 = e.touches[0].x
+        this.data.fourthTap.y2 = e.touches[0].y
+        this.data.fourthTap.endTime = new Date().getTime()
+    },
+
+    fourthDrawend(e) {
+        if (Math.abs(this.data.fourthTap.x - this.data.fourthTap.x2) <= 20 
+            && Math.abs(this.data.fourthTap.y - this.data.fourthTap.y2) <= 20
+        && this.data.fourthTap.endTime - this.data.fourthTap.startTime <= 500) {
+            console.log
+            if (this.data.fourthTap.x <= 40) {
+
+                this.commentBlur();
+            }
+
+            if (this.data.fourthTap.x >= this.data.firstCanvasWidth - 40) {
+                this.sendComment();
+            }
+        }
+    },
+    // input底部canvas事件触发结束
+
+
     //画画开始
     drawStart(e) {     
         if (!this.data.isFocus) return
@@ -961,11 +1001,10 @@ Page({
                     }
                     break
             }
-        })
-
+        });
 
         let reqData = Object.assign({}, store, {
-	    	content: e.detail.value.commentText,
+	    	content: self.data.commentText,
  			label: '',
  			media_time: self.data.focusTime,
  			doc_id: self.data.doc_id,
@@ -982,10 +1021,10 @@ Page({
 
             wx.showToast({
                 title: '评论成功！！'
-            })
+            });
 
             let newComment = {
-                content: e.detail.value.commentText,
+                content: self.data.commentText,
                 comment_time: Util.timeToMinAndSec(self.data.focusTime),
                 media_time: self.data.focusTime,
                 doc_id: self.data.doc_id,

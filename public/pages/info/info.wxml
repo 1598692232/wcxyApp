@@ -93,34 +93,31 @@
       </view>
   </view>
 
-  <view class="push-comment send-comment">
-        <form bindsubmit="sendComment">
-           <view class="push-comment-input clearfix">
-               <input placeholder="发表评论..." cursor-spacing="10" name="commentText" style="color:#fff" bindinput="changeBtn"
-               bindfocus="commentFocus" bindblur="commentBlur" value="{{commentText}}" fixed="{{true}}" focus="{{isFocus}}"/> 
-               <!-- hidden="{{hideSendComment}}" -->
-               <!-- <button class="send-commit" form-type="submit" style="background: {{sendCommentBtnStyle}}">
-                   发送
-               </button> -->
-           </view>
-        </form>
-    </view>
-    <view class="comment-footer" wx:if="{{isFocus}}">
-        <!-- <canvas style="width: 100%; height: 30px; position: absolute; top: 0;left: 0; z-index: 1000;"
-            canvas-id="fourCanvas" id="fourCanvas" 
-            disable-scroll="true"
-            bindtouchstart="thirdDrawStart"
-            bindtouchmove="thirdDrawMove"
-            bindtouchend="thirdDrawend"
-            wx:if="{{isFocus}}" 
-        ></canvas> -->
-        <view class="comment-footer-left">
-            取消
+    <form>
+        <view class="push-comment send-comment">
+            <view class="push-comment-input clearfix">
+                <input placeholder="发表评论..." cursor-spacing="10" name="commentText" style="color:#fff" bindinput="changeBtn"
+                bindfocus="commentFocus" bindblur="commentBlur" value="{{commentText}}" fixed="{{true}}" focus="{{isFocus}}" /> 
+            </view>
+        
         </view>
-        <view class="comment-footer-right">
-            发送
+        <view class="comment-footer" wx:if="{{isFocus}}">
+            <canvas style="width: 100%; height: 30px; position: absolute; top: 0;left: 0; z-index: 1000;"
+                canvas-id="fourthCanvas" id="fourthCanvas" 
+                disable-scroll="true"
+                bindtouchstart="fourthDrawStart"
+                bindtouchmove="fourthDrawMove"
+                bindtouchend="fourthDrawend"
+                wx:if="{{isFocus}}"
+            ></canvas>
+            <view class="comment-footer-left">
+                取消
+            </view>
+            <view class="comment-footer-right" bindTap="sendComment">
+                发送
+            </view>
         </view>
-    </view>
+    </form>
 
   <!-- bindscrolltolower="loadMore" -->
   <scroll-view scroll-y="true" style="height: {{scrollHeight}}px" class="list-body">
@@ -209,32 +206,6 @@
             <view wx:for="{{versionsList}}" wx:key="index"  class="video-action-li" style="opacity: {{item == versionsList[versionVal[0]] ? 1 : 0.6}}">{{item}}年</view>
             </picker-view-column>
         </picker-view>
-    </view>
-</view>
-
-
-<view class="info-cover" wx:if="{{versionSelect || PSelect}}" bindtap="hideSelect"> 
-    <view class="info-cover-select select-ani-one" wx:if="{{versionSelect}}" style="top: {{selectY}}px;width: {{selectWidth}}px;height:auto;">
-        <view class="info-arrow" style="left: {{arrowX}}px"></view>
-        <scroll-view class="version-p-list" scroll-y style="max-height:150px;overflow:auto;">
-          <view class="version-p-li" wx:for="{{versions}}" wx:key="index" bindtap="changeVersion" 
-            data-id="{{item.doc_id}}" data-index="{{index + 1}}" style="border-bottom:{{index == versions.length -1 ? '0' : ''}}">
-            <view class="version-name" style="color:{{item.activeVersion ? '#1144d5': ''}}">V{{index + 1}}版本</view>
-            <view class="video-name" style="color:{{item.activeVersion ? '#1144d5': ''}}">{{item.name}}</view>
-          </view>
-        </scroll-view>
-    </view>
-
-
-    <view class="info-cover-select select-ani-two"  wx:if="{{PSelect}}" style="top: {{selectY}}px;width: {{selectWidth}}px;height:auto;">
-        <view class="info-arrow" style="left: {{arrowX}}px"></view>
-        <scroll-view class="version-p-list" scroll-y style="max-height:150px;overflow:auto;">
-          <view class="version-p-li" wx:for="{{ps}}" wx:key="index" bindtap="changeP"  data-resolution="{{item.resolution}}"
-            style="border-bottom:{{index == ps.length -1 ? '0' : ''}}">
-            <view class="version-name" style="color:{{item.activeP ? '#1144d5': ''}}">{{item.resolution}}P</view>
-            <view class="video-name" style="color:{{item.activeP ? '#1144d5': ''}}">{{info.name}}</view>
-          </view>
-        </scroll-view>
     </view>
 </view>
 
