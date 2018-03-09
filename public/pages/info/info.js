@@ -405,17 +405,7 @@ Page({
 
     getCommentList(reqData){
         let self = this
-        clearInterval(self.data.getTimer) 
-
-        // 监听请求是否成功
-        // let listenerSuccess = () => {
-        //     setInterval(() => {
-        //         if (!self.data.commentNotice) {
-        //             clearInterval(self.data.getTimer)
-        //             intervalGetCommentList()
-        //         }
-        //     }, 5000)
-        // }
+        clearInterval(self.data.getTimer);
 
         let intervalGetCommentList = () => {
             self.data.getTimer = setInterval(() => {
