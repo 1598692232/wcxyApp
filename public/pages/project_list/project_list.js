@@ -157,7 +157,7 @@ Page({
             + e.currentTarget.dataset.name + '&id=' + e.currentTarget.dataset.id 
             + '&username=' + e.currentTarget.dataset.username
             + '&project_id=' + wx.getStorageSync('project_id')
-            console.log(url, 'url')
+
             wx.navigateTo({
                 url: url,
             })

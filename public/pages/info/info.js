@@ -81,21 +81,33 @@ Page({
         videoPause: false,
 
 
-        status: [1,2,3,4,5],
+        statusList: [1,2,3,4,5],
         statusVal: [0],
         statusActive: 1,
         animationSelect: null,
         statusSelectShow: false,
+
+        versionsList: [1,2,3],
+        versionVal: [0],
+        versionActive: 1,
+        animationSelect2: null,
+        versionSelectShow: false,
     
     },
 
-    bindChange: function(e) {
-        
+    statusChange: function(e) {
         const val = e.detail.value;
-        console.log(val)
         this.setData({
           statusActive: val[0],
           statusVal: val
+        })
+    },
+
+    versionChange: function (e) {
+        const val = e.detail.value;
+        this.setData({
+          versionActive: val[0],
+          versionVal: val
         })
     },
 
@@ -130,7 +142,6 @@ Page({
   	},
 
     onLoad(options) {
-        console.log(options, 'options')
         this.data.options = options
         let self = this
         wx.createSelectorQuery().select('#myVideo').fields({
@@ -529,74 +540,6 @@ Page({
         }  
     },
 
-    //canvas遮罩，获取画图工具dom，返回Number
-    getDrawControlPosition(x) {
-        let drawControl = this.data.drawControl
-        let self = this
-        let tapIndex = ''
-        // self.initDrawControlPosiotion()
-
-        // setTimeout(() => {
-
-            if(self.data.colorShow) {
-                if (x > 0 && x < self.data.drawControl[6].width) {
-                    return 6
-                }
-                // 这里的处理可能存在的bug：画板控制器闪屏或者js报错
-                drawControl.forEach((item, key) => {
-                    if (key <= 3) return
-                    let offX = 0;
-                    if (key > 5) {
-                        for(let i = 6; i < key; i++){
-                            if (self.data.drawControl[i]) {
-                                offX += self.data.drawControl[i].width
-                            }
-                        }
-                    } else {
-                        for(let i = 0; i < key; i++){
-                            if (self.data.drawControl[i]) {
-                                offX += self.data.drawControl[i].width
-                            }
-                        }
-                      
-                    }
-                   
-                    if (item && x > offX && x < offX + item.width) {
-                        tapIndex = key
-                    } 
-                    
-                    if (tapIndex == '') {
-                        tapIndex = 8
-                    }
-                   
-                })
-                
-            } else {
-                if (x > 0 && x < self.data.drawControl[0].width) {
-                    return 0
-                }
-    
-                drawControl.forEach((item, key) => {
-                    if (key == 0) return
-                    let offX = 0;
-        
-                    for(let i = 0; i < key; i++){
-                        if (self.data.drawControl[i]) {
-                            offX += self.data.drawControl[i].width
-                        }
-                    }
-        
-                    if (item && x > offX && x < offX + item.width) {
-                        tapIndex = key
-                    }
-                })
-            }
-
-        // }, 100)
-        
-        return tapIndex;
-    },
-
     //画画空间加个canvas，防止键盘失效，tap手机不起作用，使用touchstart触发
     thirdDrawStart(e) {
         this.data.thirdTap.x = e.touches[0].x
@@ -617,63 +560,19 @@ Page({
         if (Math.abs(this.data.thirdTap.x - this.data.thirdTap.x2) <= 20 
             && Math.abs(this.data.thirdTap.y - this.data.thirdTap.y2) <= 20
         && this.data.thirdTap.endTime - this.data.thirdTap.startTime <= 500) {
-            let key = this.getDrawControlPosition(this.data.thirdTap.x)
-    
+            // let key = this.getDrawControlPosition(this.data.thirdTap.x)
+
+            let key = Math.floor(this.data.thirdTap.x / (this.data.firstCanvasWidth / 8)) ;
+
             if (key <= 3) {
                 this.setData({
                     drawTypeActive: this.data.drawType[key].name
                 }) 
-                return 
+            } else {
+                this.setData({
+                    colorActive: this.data.colors[key % 4]
+                })
             }
-            
-            let colors = ''
-            switch(key) {
-                case 4: 
-                    this.toggleColorBlock()
-                    break;
-                case 5:
-                    this.data.cxtShowBlock.clearRect(0,0, this.data.firstCanvasWidth, this.data.firstCanvasHeight)
-                    this.data.commentDraw = []
-                    this.videoCtx.play()
-                    this.data.videoPause = false
-                    this.setData({
-                        isFocus: false,
-                        sendCommentBtnStyle: ''
-                    })
-                    break;
-                case 6:
-                    this.setData({
-                        colorActive: this.data.noSelectColors[0]
-                    })
-                    colors = this.data.colors.filter(item => item != this.data.colorActive)
-                    this.setData({
-                        noSelectColors: colors
-                    })
-
-                    this.toggleColorBlock()
-                    break;
-                case 7:
-                    this.setData({
-                        colorActive: this.data.noSelectColors[1]
-                    })
-                    colors = this.data.colors.filter(item => item != this.data.colorActive)
-                    this.setData({
-                        noSelectColors: colors
-                    })
-                    this.toggleColorBlock()
-                    break;
-                case 8:
-                    this.setData({
-                        colorActive: this.data.noSelectColors[2]
-                    })
-                    colors = this.data.colors.filter(item => item != this.data.colorActive)
-                    this.setData({
-                        noSelectColors: colors
-                    })
-                    this.toggleColorBlock()
-                    break;
-            }
-
         }
     },
     // 画板空间事件触发结束
@@ -865,9 +764,9 @@ Page({
                 properties: ['scrollX', 'scrollY']
                 }, function(res){
                     if (!res) return;
-                    if (key > 5) {
-                        res.width += 30
-                    }
+                    // if (key > 5) {
+                    //     res.width += 30
+                    // }
                     self.data.drawControl.push(res)
                 }).exec()
         })
@@ -1460,36 +1359,35 @@ Page({
         })
     },
 
-    toggleStatusSelect(e) {
-        console.log(e)
+    toggleSelect(e) {
         let show = e.currentTarget.dataset.show;
+        let showField = e.currentTarget.dataset.field;
+        let animationSelect = e.currentTarget.dataset.animation;
         let animation = wx.createAnimation({
-            duration: 450,
+            duration: 300,
             timingFunction: 'cubic-bezier(0.23, 1, 0.32, 1)',
         });
 
+        let o = {};
+        let o2 = {};
+
         if (show) {
             animation.translateY('-294px').step();
-            this.setData({
-                statusSelectShow: e.currentTarget.dataset.show,
-            })
+            o[showField] = e.currentTarget.dataset.show
+            this.setData(o)
             setTimeout(() => {
-                this.setData({
-                    animationSelect:animation.export()
-                }) 
+                o2[animationSelect] = animation.export();
+                this.setData(o2);
             });
         } else {
             animation.translateY('0px').step();
-            this.setData({
-                animationSelect:animation.export()
-            });
+            o2[animationSelect] = animation.export();
+            this.setData(o2);
             setTimeout(() => {
-                this.setData({
-                    statusSelectShow: e.currentTarget.dataset.show,
-                });
-            }, 450);
+                o[showField] = e.currentTarget.dataset.show
+                this.setData(o);
+            }, 300);
         }
-       
     }
 
 })

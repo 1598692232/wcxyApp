@@ -49,11 +49,11 @@
     <view class="video-info" style="height: {{isFocus ? 36 : 60}}px;margin-top: -5px;background: #383b49">
 
         <view class="video-make">
-            <view class="video-make-li" bindtap="toggleStatusSelect" data-show="{{true}}">
+            <view class="video-make-li" bindtap="toggleSelect" data-show="{{true}}" data-field="statusSelectShow" data-animation="animationSelect">
                 <view class="video-make-status">审核通过</view>
                 <view class="video-make-arrow"></view>
             </view>
-            <view class="video-make-li">
+            <view class="video-make-li" bindtap="toggleSelect" data-show="{{true}}" data-field="versionSelectShow" data-animation="animationSelect2">
                 <view class="video-make-status">V1版本</view>
                 <view class="video-make-arrow"></view>
             </view>
@@ -106,19 +106,19 @@
         </form>
     </view>
     <view class="comment-footer" wx:if="{{isFocus}}">
-        <canvas style="width: 100%; height: 30px; position: absolute; top: 0;left: 0; z-index: 1000;"
+        <!-- <canvas style="width: 100%; height: 30px; position: absolute; top: 0;left: 0; z-index: 1000;"
             canvas-id="fourCanvas" id="fourCanvas" 
             disable-scroll="true"
             bindtouchstart="thirdDrawStart"
             bindtouchmove="thirdDrawMove"
             bindtouchend="thirdDrawend"
             wx:if="{{isFocus}}" 
-        ></canvas>
+        ></canvas> -->
         <view class="comment-footer-left">
-            <text>取消</text>
+            取消
         </view>
         <view class="comment-footer-right">
-            <text>发送</text>
+            发送
         </view>
     </view>
 
@@ -182,16 +182,31 @@
 </view>
 
 <!-- 选择 -->
-<view class="video-action-body" wx:if="{{statusSelectShow}}">
+<view class="video-action-body" wx:if="{{statusSelectShow}}" bindtap="toggleSelect" data-show="{{false}}" data-field="statusSelectShow" data-animation="animationSelect">
     <view class="video-action" animation="{{animationSelect}}">
         <view class="video-action-sure">
-            <view class="video-action-sure-left" bindtap="toggleStatusSelect" data-show="{{false}}">取消</view>
+            <view class="video-action-sure-left" bindtap="toggleSelect" data-show="{{false}}" data-field="statusSelectShow" data-animation="animationSelect">取消</view>
             <view class="video-action-sure-right">确定</view>
         </view>
         <picker-view indicator-class="video-action-selcted" style="width: 100%; height: 250px;" mask-class="video-action-mask"
-                value="{{statusVal}}" bindchange="bindChange">
+                value="{{statusVal}}" bindchange="statusChange">
             <picker-view-column>
-            <view wx:for="{{status}}" wx:key="index"  class="video-action-li" style="opacity: {{item == status[statusVal[0]] ? 1 : 0.6}}">{{item}}年</view>
+            <view wx:for="{{statusList}}" wx:key="index"  class="video-action-li" style="opacity: {{item == statusList[statusVal[0]] ? 1 : 0.6}}">{{item}}年</view>
+            </picker-view-column>
+        </picker-view>
+    </view>
+</view>
+
+<view class="video-action-body" wx:if="{{versionSelectShow}}" bindtap="toggleSelect" data-show="{{false}}" data-field="versionSelectShow" data-animation="animationSelect2">
+    <view class="video-action" animation="{{animationSelect2}}">
+        <view class="video-action-sure">
+            <view class="video-action-sure-left" bindtap="toggleSelect" data-show="{{false}}" data-field="versionSelectShow" data-animation="animationSelect2">取消</view>
+            <view class="video-action-sure-right">确定</view>
+        </view>
+        <picker-view indicator-class="video-action-selcted" style="width: 100%; height: 250px;" mask-class="video-action-mask"
+                value="{{versionVal}}" bindchange="versionChange">
+            <picker-view-column>
+            <view wx:for="{{versionsList}}" wx:key="index"  class="video-action-li" style="opacity: {{item == versionsList[versionVal[0]] ? 1 : 0.6}}">{{item}}年</view>
             </picker-view-column>
         </picker-view>
     </view>
