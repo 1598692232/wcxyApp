@@ -240,7 +240,7 @@
 	position: relative;
 	flex-wrap: nowrap;
 	/* padding-left: 80px; */
-	height: 81px;
+	/* height: 81px; */
 	justify-content: center;
 	align-items: center;
 	background: #383B4A;

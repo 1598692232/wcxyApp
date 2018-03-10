@@ -20,6 +20,10 @@
 			"current": -1,
 			"list": []
 		},
+		"game": {
+			"current": -1,
+			"list": []
+		},
 		"miniprogram": {
 			"current": -1,
 			"list": [
@@ -45,10 +49,18 @@
 					"scene": "1011"
 				},
 				{
-					"id": -1,
+					"id": 3,
 					"name": "notice",
 					"pathName": "pages/notice/notice",
-					"query": ""
+					"query": "token:Y2FkMzhmNmI5ZDgwZTRlZmM0YTlhMzRmYWJhMTRkYzVmNGRiMDA2M2NmOWMwOTMwOWFhZDM3NDZmZDQ5NTA3Zg==; login_id:241;new_time:1420572841",
+					"scene": "1011"
+				},
+				{
+					"id": -1,
+					"name": "share_list_view",
+					"pathName": "pages/share_list_view/share_list_view",
+					"query": "id=801",
+					"scene": "1011"
 				}
 			]
 		}

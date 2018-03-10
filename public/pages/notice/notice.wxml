@@ -19,23 +19,26 @@
                   <view class="item-number">1</view>
                 </view>
               </view>
-              <view class="item clearfix" wx:for="{{noticeList}}" wx:key="index" bindtap="toNoticeInfo" wx:if="{{noticeList.length > 0}}">
+              <view class="item clearfix" wx:for="{{noticeList}}" wx:key="index" bindtap="toNoticeInfo" wx:if="{{noticeList.length > 0}}"
+                data-id="{{item.project_id}}" data-time="{{item.time}}" data-count="{{item.count}}"
+                >
                 <view class="item-left">
                   <block>
                     <view wx:if="{{item.src}}">
                         <image src="./img/notice_news.png"></image>
                     </view>
                     <view class="empty-notice" wx:else>
-                        <view class="item-left-title">{{item.name}}</view>
+                        <view class="item-left-title">{{item.first_name}}</view>
                     </view>
                   </block>
                 </view>
                 <view class="item-right">
-                  <text class="item-title">{{item.name}}</text>
-                  <text class="item-comment">{{item.text}}</text>
+                  <text class="item-title">{{item.project_name}}</text>
+                  <text class="item-comment">{{item.first_content}}</text>
                 </view>
                 <view class="item-number-box">
-                  <view class="item-number">99+</view>
+                  <view class="item-number" wx:if="item.notice_content.length<99">{{item.notice_content.length}}</view>
+                  <view class="item-number" wx:else>99+</view>
                 </view>
               </view>
             </block>

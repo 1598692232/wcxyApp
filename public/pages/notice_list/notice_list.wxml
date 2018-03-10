@@ -6,25 +6,26 @@
              </view>
            </view>
            <view class="list-body">
-               <block wx:if="{{noticeList.length > 0}}">
-                 <view class="item {{item.isTouchMove ? 'touch-move-active' : ''}}" wx:for="{{noticeList}}" wx:key="index" wx:if="{{noticeList.length > 0}}" data-index="{{index}}" bindtouchstart="touchstart" bindtouchmove="touchmove">
+               <block wx:if="{{noticeListInfo.length > 0}}">    
+                 <view class="item {{item.isTouchMove ? 'touch-move-active' : ''}}" wx:for="{{noticeListInfo}}" wx:key="index"
+                  wx:if="{{noticeListInfo.length > 0}}" data-index="{{index}}" data-createtime="{{item.createtime}}" bindtouchstart="touchstart" bindtouchmove="touchmove">
                    <view class="item-left-content">
                         <view class="item-left">
                             <block>
-                                <view wx:if="{{item.src}}">
-                                    <image src="./img/notice_news.png"></image>
+                                <view class="image" wx:if="{{item.userinfo.avatar}}">
+                                    <image src="{{item.userinfo.avatar}}"></image>
                                 </view>
                                 <view class="empty-notice" wx:else>
-                                    <view class="item-left-title">{{item.name}}</view>
+                                    <view class="item-left-title">{{item.userinfo.realname}}</view>
                                 </view>
                             </block>
                         </view>
                         <view class="item-right">
-                        <text class="item-title">{{item.name}}</text>
-                        <text class="item-comment">{{item.text}}</text>
+                        <text class="item-title">{{item.userinfo.realname}}</text>
+                        <text class="item-comment">{{item.userinfo.realname}}{{item.noticetype}}[{{item.content_name}}]</text>
                         </view>
                         <view class="item-time-box">
-                        <view class="item-time">1天前</view>
+                        <view class="item-time">{{item.createtime}}</view>
                         </view>
                    </view>
                    <view class="del" catchtap="del" data-index="{{index}}">删除</view>
