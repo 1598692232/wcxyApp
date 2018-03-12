@@ -25,7 +25,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": -1,
+			"current": 9,
 			"list": [
 				{
 					"id": 0,
@@ -86,6 +86,11 @@
 					"name": "info-mp3",
 					"pathName": "pages/info/info",
 					"query": " project_list.js? [sm]:175 /pages/info/info?&name=4d4dad12059b518d5bfdadabcdf6344f-bf6a56af153ea7d2fae8eab30447309c&id=3022&username=stone&project_id=P231520389602"
+				},
+				{
+					"id": -1,
+					"name": "share_list_view",
+					"pathName": "pages/share_list_view/share_list_view"
 				}
 			]
 		}
