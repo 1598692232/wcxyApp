@@ -6,6 +6,7 @@
     "pages/notice/notice",
     "pages/notice_list/notice_list",
     "pages/notice_system_list/notice_system_list",
+    "pages/notice_system_info/notice_system_info",
     "pages/user/user",
     "pages/info/info",
     "pages/logs/logs",

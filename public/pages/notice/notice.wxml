@@ -12,15 +12,18 @@
                   <image src="./img/notice_news.png"></image>
                 </view>
                 <view class="item-right">
-                  <text class="item-title">系统消息</text>
-                  <text class="item-comment">新阅 v1.0.8(NEW)</text>
+                  <text class="item-title">{{project_name}}</text>
+                  <!-- <text class="item-comment">新阅 v1.0.8(NEW)</text> -->
                 </view>
-                <view class="item-number-box">
-                  <view class="item-number">1</view>
-                </view>
+                <block wx:if="{{notice_count>0}}">
+                  <view class="item-number-box">
+                    <view class="item-number" wx:if="{{notice_count<99}}">{{notice_count}}</view>
+                    <view class="item-number" wx:else>99+</view>
+                  </view>
+                </block>
               </view>
               <view class="item clearfix" wx:for="{{noticeList}}" wx:key="index" bindtap="toNoticeInfo" wx:if="{{noticeList.length > 0}}"
-                data-id="{{item.project_id}}" data-time="{{item.time}}" data-count="{{item.count}}"
+                data-id="{{item.project_id}}" data-time="{{item.time}}" data-count="{{item.count}}" data-name="{{item.project_name}}"
                 >
                 <view class="item-left">
                   <block>
@@ -36,10 +39,12 @@
                   <text class="item-title">{{item.project_name}}</text>
                   <text class="item-comment">{{item.first_content}}</text>
                 </view>
-                <view class="item-number-box">
-                  <view class="item-number" wx:if="item.notice_content.length<99">{{item.notice_content.length}}</view>
-                  <view class="item-number" wx:else>99+</view>
-                </view>
+                <block wx:if="{{item.count>0}}">
+                  <view class="item-number-box">
+                    <view class="item-number" wx:if="{{item.count<99}}">{{item.count}}</view>
+                    <view class="item-number" wx:else>99+</view>
+                  </view>
+                </block> 
               </view>
             </block>
               <view class="empty-notice" wx:else>

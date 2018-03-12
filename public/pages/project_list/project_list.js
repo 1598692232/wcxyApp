@@ -22,11 +22,22 @@ Page({
         showMemberDrop: false,
         showShare: false,
         selectShare: false,
-        selectShareList: []
+        selectShareList: [],
+        isAdmin: false
 	},
 
 	onLoad(options) {
-		let self = this;
+        console.log(options,'options')
+        let self = this;
+        if(options.project_type==='admin'){
+            self.setData({
+                isAdmin: true
+            })
+        }else{
+            self.setData({
+                isAdmin: false
+            })
+        }
         wx.showLoading()
         Util.getSystemInfo().then(result => {
             self.setData({

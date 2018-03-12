@@ -213,6 +213,7 @@ Page({
         })
         wx.navigateTo({
           url: '/pages/project_list/project_list?project_id=' + e.currentTarget.dataset.id + '&projectName=' + e.currentTarget.dataset.name
+          + '&project_type=' + e.currentTarget.dataset.type
         })
     },
 

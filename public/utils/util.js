@@ -28,6 +28,13 @@ const getCreateTime = time => {
   }
 }
 
+const getCreateTimeDate = time => {
+    var date = new Date(time*1000)
+    var month = date.getMonth()+1;
+    var day = date.getDate(); 
+    return month+'月'+day+'日'
+  }
+
 const timeToMinAndSec = time => {
     if (time >= 1) {
         let minute = parseInt(time / 60) < 10 ? `0${parseInt(time / 60)}` : parseInt(time / 60)
@@ -126,6 +133,7 @@ const getSystemInfo = (completeCallback) => {
 module.exports = {
   formatTime: formatTime,
   getCreateTime: getCreateTime,
+  getCreateTimeDate: getCreateTimeDate,
   timeToMinAndSec: timeToMinAndSec,
   ajax: ajax,
   setStorage: setStorage,

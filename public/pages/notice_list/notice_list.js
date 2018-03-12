@@ -11,13 +11,14 @@ Page({
         startY: 0,
         isTouchMove: false,
         scrollHeightList: 0,
-        projectId: 0
+        projectId: 0,
+        title: ''
     },
 
     onLoad(options) {
-        console.log(options,'options')
         let self = this
         self.setData({
+            title: options.project_name,
             projectId: options.project_id
         })
         Util.getSystemInfo().then(res => {
@@ -42,67 +43,18 @@ Page({
 
     //初始化列表页
     initList() {
-        const translateNotificationType = (type) => {
-            switch (type) {
-              case 'upload':
-                return '上传了';
-              case 'comment':
-                return '评论了';
-              case 'change':
-                return '修改了';
-              case 'changecover':
-                return '修改了';
-              case 'merge':
-                return '合并了';
-              case 'deletecomment':
-                return '删除了'
-              case 'deletedoc':
-                return '删除了'
-              case 'deleteversion':
-                return '解除了'
-              case 'created_doc':
-                return '创建了'
-              case 'join':
-                return '加入了'
-              case 'deleteprojectuser':
-                return '退出了'
-              default:
-                return type
-            }
-        }
-
-        const translateNotificationTypeText = (type) => {
-            switch (type) {
-                case 'changecover':
-                 return '封面'
-                case 'deleteversion':
-                 return '版本'
-                case 'created_doc':
-                 return '封面'
-                case 'changecover':
-                 return '文件夹'
-                case 'change':
-                 return '状态'
-                case 'deletecomment':
-                 return '评论'
-            }
-        }
-
         let self = this
         let store = wx.getStorageSync('app')
         let reqData = Object.assign({}, {token: store.token},{login_id:store.login_id})
         reqData.project_id = self.data.projectId
-        console.log(reqData,'reqData')
         wx.showLoading()
         Util.ajax('notice/detail', 'get',reqData).then(data => {
             data.map(item => {
-                item.noticetype = translateNotificationType(item.type),
                 item.createtime = Util.getCreateTime(item.created_at)
             })
             self.setData({
                 noticeListInfo: data
             })
-            console.log(self.data.noticeListInfo,'-------noticeListInfo')
             wx.hideLoading()
         }, res => {
             wx.showModal({
@@ -135,6 +87,7 @@ Page({
     touchmove: function (e) {
         var that = this,
         index = e.currentTarget.dataset.index,//当前索引
+        id = e.currentTarget.dataset.id,//当前id
         startX = that.data.startX,//开始X坐标
         startY = that.data.startY,//开始Y坐标
         touchMoveX = e.changedTouches[0].clientX,//滑动变化坐标
@@ -145,7 +98,7 @@ Page({
         v.isTouchMove = false
         //滑动超过30度角 return
         if (Math.abs(angle) > 30) return;
-        if (i == index) {
+        if (v.id == id) {
             if (touchMoveX > startX) //右滑
             v.isTouchMove = false
             else //左滑
@@ -170,9 +123,17 @@ Page({
     },
     //删除事件
     del: function (e) {
-        this.data.noticeListInfo.splice(e.currentTarget.dataset.index, 1)
-        this.setData({
-            noticeListInfo: this.data.noticeListInfo
+        let self = this
+        let store = wx.getStorageSync('app')
+        let reqData = Object.assign({}, {token: store.token},{login_id:store.login_id})
+        console.log(e.currentTarget.dataset.id,'e.currentTarget.dataset.id')
+        reqData.notice_id = e.currentTarget.dataset.id
+        Util.ajax('notice/cell', 'delete',reqData).then(data => {
+            self.onShow()
+        }, res => {
+            wx.showToast({
+                title: '删除消息成功'
+            })
         })
     },
     delAll: function (e) {
@@ -182,13 +143,20 @@ Page({
             content: '确定要清空全部消息，这是一个不可逆的操作!!!',
             success: function(res) {
                 if(res.confirm){
-                    self.setData({
-                        noticeListInfo: []
+                    let store = wx.getStorageSync('app')
+                    let reqData = Object.assign({}, {token: store.token},{login_id:store.login_id})
+                    reqData.notice_ids = self.data.noticeListInfo.map(v=>v.id).toString()
+                    Util.ajax('notices', 'delete',reqData).then(data => {
+                    }, res => {
+                        self.initList() 
+                        wx.showToast({
+                            title: '清空成功'
+                        })                     
                     })
                 } else if (res.cancel) {
                     console.log('用户点击取消')
                 }
             }
-        })
+        })  
     }
 })

@@ -1,0 +1,5 @@
+.system_content{
+    color: #fff;
+    font-size: 13px;
+    padding: 15px;
+}

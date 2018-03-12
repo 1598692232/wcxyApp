@@ -2,33 +2,33 @@
         <scroll-view style="height:{{scrollHeightList}}px;" scroll-y>
            <view class="notice-tips">
              <view class="notice-tips-text">
-                醉乡民谣
+                {{title}}
              </view>
            </view>
            <view class="list-body">
                <block wx:if="{{noticeListInfo.length > 0}}">    
                  <view class="item {{item.isTouchMove ? 'touch-move-active' : ''}}" wx:for="{{noticeListInfo}}" wx:key="index"
-                  wx:if="{{noticeListInfo.length > 0}}" data-index="{{index}}" data-createtime="{{item.createtime}}" bindtouchstart="touchstart" bindtouchmove="touchmove">
+                  wx:if="{{noticeListInfo.length > 0}}" data-index="{{index}}"  data-id="{{item.id}}" data-createtime="{{item.createtime}}" bindtouchstart="touchstart" bindtouchmove="touchmove">
                    <view class="item-left-content">
                         <view class="item-left">
                             <block>
-                                <view class="image" wx:if="{{item.userinfo.avatar}}">
-                                    <image src="{{item.userinfo.avatar}}"></image>
+                                <view class="image" wx:if="{{item.avatar}}">
+                                    <image src="{{item.avatar}}"></image>
                                 </view>
                                 <view class="empty-notice" wx:else>
-                                    <view class="item-left-title">{{item.userinfo.realname}}</view>
+                                    <view class="item-left-title">{{item.realname}}</view>
                                 </view>
                             </block>
                         </view>
                         <view class="item-right">
-                        <text class="item-title">{{item.userinfo.realname}}</text>
-                        <text class="item-comment">{{item.userinfo.realname}}{{item.noticetype}}[{{item.content_name}}]</text>
+                        <text class="item-title">{{item.realname}}</text>
+                        <text class="item-comment">{{item.content}}</text>
                         </view>
                         <view class="item-time-box">
                         <view class="item-time">{{item.createtime}}</view>
                         </view>
                    </view>
-                   <view class="del" catchtap="del" data-index="{{index}}">删除</view>
+                   <view class="del" catchtap="del" data-index="{{index}}" data-id="{{item.id}}">删除</view>
                  </view>
                </block>
                  <view class="empty-notice" wx:else>

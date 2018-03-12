@@ -1,0 +1,3 @@
+<view class="system_info" style="height:{{scrollHeight}}px">
+    <view class="system_content">{{noticeListInfo}}</view>
+</view>

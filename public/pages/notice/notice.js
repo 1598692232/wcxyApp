@@ -7,7 +7,9 @@ Page({
         animationData: {},
         hideClear: true,
         listInfoWidth: 0,
-        scrollHeight: 0
+        scrollHeight: 0,
+        notice_count: 0,
+        project_name: ''
     },
 
     onLoad() {
@@ -35,41 +37,69 @@ Page({
         
     },
     //初始化列表页
+    // noticeList存储获取的列表
     initList() {
         let self = this
-
+        let store = wx.getStorageSync('app')
         //获取当前时间戳  
         var timestamp = Date.parse(new Date());  
         timestamp = timestamp / 1000;  
         console.log("当前时间戳为：" + timestamp);
+
+        var timeback = wx.getStorageSync(store.login_id.toString()).noticeList0==null?timestamp:wx.getStorageSync(store.login_id.toString()).noticeList0.find((v) => {
+            var arr= []
+            arr.push(v.timestamp)
+            return Math.min(arr)
+        })
         // ajax处理登录，成功后存储本地信息
         // 本地存储用户信息
-        let store = wx.getStorageSync('app')
         let reqData = Object.assign({}, {token: store.token},{login_id:store.login_id})
-        reqData.new_time = 1420572841
+        reqData.new_time = timeback.timestamp
+        // reqData.new_time = 1420843520
         wx.showLoading()
+
+        if(!wx.getStorageSync(store.login_id.toString())){
+            wx.setStorageSync(store.login_id.toString(),{
+                noticeList0 :[]
+            })
+        }
+
         Util.ajax('notice', 'get', reqData).then(data => {
-            data.list.map(item => {
-                console.log(wx.getStorageSync('last_time'),'wx.getStorageSync')
-                if(item.project_id === wx.getStorageSync('last_time')[0].id){
-                    item.time = wx.getStorageSync('last_time')[0].time     
-                } else {
-                    item.time = 1483200000
-                }
-                console.log(item.time,'item.time')
-                item.notice_content.map(v=>{
-                    if(v.created_at > item.time){
-                        // console.log(v,'vvvvvv')
-                    }
-                })
+            data.list.map((item,i) => {
+                i++;
+        // ----------------------  
+        // 在localstorage里
                 item.count = 0
+                var thisItemData = wx.getStorageSync(store.login_id.toString()).noticeList0.find((v) => {
+                    return v.id == item.project_id
+                })
+                if(thisItemData){
+                    if(thisItemData.timestamp){
+                        item.notice_content.forEach((v)=> {
+                            if(v.created_at > thisItemData.timestamp){
+                                item.count += 1
+                            }
+                        })
+                    }
+                }else{
+                    if(wx.getStorageSync(store.login_id.toString()).noticeList0.length < i){
+                        var sumData = wx.getStorageSync(store.login_id.toString())
+                        sumData.noticeList0.push({
+                            id: item.project_id,
+                            timestamp:timestamp
+                        })
+                        wx.setStorageSync(store.login_id.toString(), sumData)
+                    }
+                }
+        // ----------------------
             })
             self.setData({
                 noticeList: data.list,
-                // noticeListType: translateNotificationType(data.notice_content[0].type)
+                notice_count:data.notice_count,
+                project_name: data.project_name
             })
-            console.log(self.data.noticeList,'-------list')
-            wx.hideLoading()
+            // console.log(self.data.noticeList,'-------list')
+            wx.hideLoading()    
         }, res => {
             wx.showModal({
                 title: '提示',
@@ -81,51 +111,33 @@ Page({
                     }
                 }
             })
-        })
-        
+        }) 
     },
     //跳转至系统消息
     toNoticeSystemInfo(e) {
         wx.navigateTo({
-          url: '/pages/notice_system_list/notice_system_list'
+          url: '/pages/notice_system_list/notice_system_list?project_id= -1'
         })
     },
     // 跳转至消息详情列表页
     toNoticeInfo(e) {
         var timestamp = Date.parse(new Date());
         timestamp = timestamp / 1000;
-        let newStorage = Object.assign({},{id:e.currentTarget.dataset.id})
-        newStorage.time = timestamp
-        var arr = []
-        arr = arr.concat(newStorage)
-
-        wx.setStorage({
-            key: 'last_time',
-            data: arr
+        // --------------------
+        // 点击时设置时间戳
+        let store = wx.getStorageSync('app')
+        var sumData = wx.getStorageSync(store.login_id.toString())
+        var userItem = sumData.noticeList0.find((v) => {
+            return v.id == e.currentTarget.dataset.id
         })
-
+        userItem.timestamp = timestamp
+        wx.setStorageSync(store.login_id.toString(), sumData)
+        // ----------------------
         let self = this
         let url = '/pages/notice_list/notice_list?project_id=' + e.currentTarget.dataset.id 
-        + '&created_at=' + e.currentTarget.dataset.time
-        console.log(url,'url6666')
+        + '&project_name=' + e.currentTarget.dataset.name
         wx.navigateTo({
             url: url,
         })
     },
-    // setAllNotice() {
-    //     wx.getStorageSync('last_time')
-    //     let last_time = []
-    //     this.data.noticeList.forEach(v => {
-    //         if( v.id === wx.getStorageSync('last_time').id) {
-    //             v.time = wx.getStorageSync('last_time').time
-    //         } else {
-    //             v.time = timestamp
-    //         }
-    //         last_time.push(v)
-    //     })
-    //     wx.setStorage({
-    //         key: 'last_time',
-    //         data: last_time
-    //     })
-    // },
 })

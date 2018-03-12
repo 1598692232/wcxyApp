@@ -183,7 +183,13 @@
 					</view>
 				</scroll-view>
 			</view>
-			<view class="member-drop-quit" bindtap="MembertoProject">退出工程</view>
+			<view wx:if="{{isAdmin}}">
+				<view class="member-drop-quit" bindtap="MembertoProject">删除项目</view>
+			</view>
+			<view wx:else>
+				<view class="member-drop-quit" bindtap="MembertoProject">退出工程</view>
+			</view>
+	
 		</view>
 		<view class="member-drop-list-btn" bindtap="MembertoProject">
 			<image src="./img/jiantou-top.png"></image>

@@ -21,7 +21,7 @@
         <block wx:if="{{currentTab==0}}">
           <view class="list-body">          
             <block wx:if="{{myProjectList.length > 0}}">
-              <view class="item clearfix" wx:for="{{myProjectList}}" wx:key="index" bindtap="toProject" data-id="{{item.id}}" data-name="{{item.name}}">
+              <view class="item clearfix" wx:for="{{myProjectList}}" wx:key="index" bindtap="toProject" data-id="{{item.id}}" data-name="{{item.name}}" data-type="{{item.type}}">
                 <view class="item-left">
                   <view wx:if="{{item.src}}">
                       <img src=""/>
@@ -45,7 +45,7 @@
         <block wx:else>
           <view class="list-body">
             <block wx:if="{{joinProjectList.length > 0}}">
-              <view class="item clearfix" wx:for="{{joinProjectList}}" wx:key="index" bindtap="toProject" data-name="{{item.name}}" data-id="{{item.project_number}}" wx:if="{{joinProjectList.length > 0}}">
+              <view class="item clearfix" wx:for="{{joinProjectList}}" wx:key="index" bindtap="toProject" data-name="{{item.name}}" data-id="{{item.project_number}}" data-type="{{item.type}}" wx:if="{{joinProjectList.length > 0}}">
                 <view class="item-left">
                   <view wx:if="{{item.src}}">
                       <img src="{{item.src}}"/>
