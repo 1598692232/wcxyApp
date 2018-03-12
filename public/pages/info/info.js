@@ -11,6 +11,8 @@ const STAUS = {
     4: '意见搜集完成',
 };
 
+let au = 'http://video2.uxinyue.com/Act-mp3/84bafc35c2f24a5fa86ad703252c0d4f/946bb58cb645dbb79bbc77e3851075c4-bbc724b4be1dc17641a30fda1d1a65f2.mp3?OSSAccessKeyId=LTAILWCfmthKUqkk&Expires=1520857506&Signature=bfyrUor6oud2MAVO3ROjWNXoDsU%3D'
+
 Page({
 
     data: {
@@ -109,9 +111,13 @@ Page({
         poster: 'http://y.gtimg.cn/music/photo_new/T002R300x300M000003rsKF44GyaSk.jpg?max_age=2592000',
         name: '此时此刻',
         author: '许巍',
-        src: 'http://ws.stream.qqmusic.qq.com/M500001VfvsJ21xFqb.mp3?guid=ffffffff82def4af4b12b3cd9337d5e7&uin=346897220&vkey=6292F51E1E384E06DCBDC9AB7C49FD713D632D313AC4858BACB8DDD29067D3C601481D36E62053BF8DFEAF74C0A5CCFADD6471160CAF3E6A&fromtag=46',
+        src: au,
 
-        audioPause: false
+        audioPause: true,
+        audioProgress: 0,
+        audioProgressMaxWidth: 0,
+        audioProgressNum: 0,
+        audioTime: 0,
     },
 
     statusChange: function(e) {
@@ -162,9 +168,15 @@ Page({
     // rgb(52, 163, 219)
 
     onReady: function (res) {
-     
+        let self = this;
+        Util.getSystemInfo().then(res => {
+            self.windowWidth = res.windowWidth
+        })
+        
         this.videoCtx = wx.createVideoContext('myVideo');
         this.audioCtx = wx.createAudioContext('myAudio');
+
+
   	},
 
     onLoad(options) {
@@ -176,6 +188,7 @@ Page({
             scrollOffset: true,
             properties: ['scrollX', 'scrollY']
             }, function(res){
+                if (!res) return;
                 self.setData({
                     firstCanvasWidth: res.width,
                     firstCanvasHeight: res.height,
@@ -184,6 +197,20 @@ Page({
                 })
          
             }).exec()
+
+        wx.createSelectorQuery().select('#info-audio-progress').fields({
+            dataset: true,
+            size: true,
+            scrollOffset: true,
+            properties: ['scrollX', 'scrollY']
+            }, function(res){
+                if (!res) return;
+                self.setData({
+                    audioProgressMaxWidth: res.width,
+                });
+            }).exec(function (res) {
+             
+            })
     },
 
     onShow() {
@@ -292,6 +319,7 @@ Page({
                 scrollOffset: true,
                 properties: ['scrollX', 'scrollY']
             }, function(res){
+                if (!res) return;
                 topHeight += res.height;
                 if (k == topNodes.length - 1) {
                     self.setData({
@@ -349,7 +377,8 @@ Page({
                     pNo: data.resolution[0].resolution,
                     url:  data.resolution[0].src,
                     username: data.realname,
-                    createTime: Util.getCreateTime(data.created_at)
+                    createTime: Util.getCreateTime(data.created_at),
+                    audioTime: data.time
                 });
 
                 // console.log(self.data.versions)
@@ -1553,13 +1582,58 @@ Page({
     },
 
     toggleAudio() {
-        if (!this.data.audioPause) {
+        if (this.data.audioPause) {
             this.audioCtx.play();
+            this.setData({
+                audioPause: false
+            });
         } else {
             this.audioCtx.pause();
+            this.setData({
+                audioPause: true
+            });
         }
+    },
+
+    audioUpdate(e) {
+        this.setData({
+            audioProgress: e.detail.currentTime / e.detail.duration,
+            audioProgressNum: e.detail.currentTime / e.detail.duration * this.data.audioProgressMaxWidth,
+            audioTime: e.detail.duration
+        })
+    },
+
+    audioTouchstart(e) {
+        let offestX = this.windowWidth * 0.14 + this.windowWidth * 0.05;
+        this.audioTouch = {
+            x1: e.touches[0].clientX,
+            offestX,
+            startX: this.data.audioProgressNum,
+            audioProgress: this.data.audioProgress
+        }
+    },
+
+    audioTouchmove(e) {
+        this.audioTouch.x2 = e.touches[0].clientX;
+        let moveX = this.audioTouch.x2 - this.audioTouch.x1;
+        let audioProgressNum = this.audioTouch.startX +  moveX;
+        let audioProgress = audioProgressNum / this.data.audioProgressMaxWidth
+        this.setData({
+            audioProgress,
+            audioProgressNum,
+            audioPause: true
+        });
+        this.audioTouch.audioProgress = audioProgress;
+        this.audioCtx.pause()
+    },
+
+    audioTouchend(e) {
+        let currentTime = this.audioTouch.audioProgress * this.data.audioTime;
+        this.audioCtx.seek(currentTime);
+        this.audioCtx.play();
+        this.setData({
+            audioPause: false
+        });
     }
-
-
 
 })

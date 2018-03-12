@@ -19,23 +19,35 @@
 
             <cover-view class="cover-focus" wx:if="{{isFocus}}" bindtap="commentBlur"></cover-view>  
         </video> -->
-        <audio poster="{{poster}}" name="{{name}}" author="{{author}}" src="{{src}}" id="myAudio" controls loop style="display: none"></audio>
+
+
+        <!-- <audio poster="{{poster}}" name="{{name}}" author="{{author}}" src="{{src}}" id="myAudio"
+         controls loop style="display: none" bindtimeupdate="audioUpdate"></audio>
         <view class="info-audio">
             <view class="info-audio-icon">
                 <image src="./img/mp3.png" mode="aspectFit" ></image>
             </view>
             <view class="info-audio-control">
-                <view class="info-audio-play" bindTap="toggleAudio">
-                    <image src="./img/play.png" mode="aspectFit" wx:if="{{!audioPause}}"></image>
+                <view class="info-audio-play" bindtap="toggleAudio">
+                    <image src="./img/play.png" mode="aspectFit" wx:if="{{audioPause}}"></image>
                     <image src="./img/pause.png" mode="aspectFit" wx:else></image>
                 </view>
-                <view class="info-audio-progress">
+                <view class="info-audio-progress" id="info-audio-progress">
                     <view class="info-audio-progress-max">
-                        <view class="info-audio-progress-current"></view>
+                        <view class="info-audio-progress-current" style="width: {{audioProgressNum}}px"></view>
                     </view>
-                    <view class="info-audio-progress-circle"></view>
+                    <view class="info-audio-progress-circle" style="left: {{audioProgressNum}}px"
+                    bindtouchstart="audioTouchstart"
+                    bindtouchmove="audioTouchmove"
+                    bindtouchend="audioTouchend"
+                    ></view>
                 </view>
             </view>
+        </view> -->
+
+
+        <view class="info-pic"> 
+            <image src="{{src}}"></image>
         </view>
     </view>
 
