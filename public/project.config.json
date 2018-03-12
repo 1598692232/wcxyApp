@@ -60,6 +60,13 @@
 					"pathName": "pages/info/info",
 					"query": "name=280edf50-161314041d0-0004-e632-f3f-94298&id=3041&username=1037359589&project_id=P2101520413594",
 					"scene": "1011"
+				},
+				{
+					"id": -1,
+					"name": "share-create",
+					"pathName": "pages/share_create/share_create",
+					"query": "",
+					"scene": "1011"
 				}
 			]
 		}

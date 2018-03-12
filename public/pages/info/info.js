@@ -52,6 +52,7 @@ Page({
         sendComment: false,
         delComment: false,
         isFocus: false,
+        videoCurrentTimeInt: new Date().getTime(),
 
         colorActive: '#E74A3C',
         colors: ['#E74A3C', '#E67422', '#1ABCA1', '#34A3DB'],
@@ -636,7 +637,13 @@ Page({
         this.data.fourthTap.x2 = e.touches[0].x
         this.data.fourthTap.y2 = e.touches[0].y
         this.data.fourthTap.startTime = new Date().getTime()
-        this.data.fourthTap.endTime = new Date().getTime()
+        this.data.fourthTap.endTime = new Date().getTime();
+
+        if (this.data.fourthTap.x > this.data.firstCanvasWidth * 0.14 && this.data.fourthTap.x < this.data.firstCanvasWidth * 0.86) {
+            this.data.allowTimeTap = true;
+        } else {
+            this.data.allowTimeTap = false;
+        }
     },
     
     fourthDrawMove(e) {
@@ -661,7 +668,7 @@ Page({
 
             // 触发时间
             if (this.data.fourthTap.x > this.data.firstCanvasWidth * 0.14 && this.data.fourthTap.x < this.data.firstCanvasWidth * 0.86) {
-                if (this.data.commentDraw) return;
+                if (this.data.commentDraw && !this.data.allowTimeTap) return;
                 this.toggelNeedTime()
             }
         }
@@ -876,7 +883,7 @@ Page({
 
         let context = wx.createCanvasContext('secondCanvas')
         let context2 = wx.createCanvasContext('firstCanvas')
-
+        
         self.setData({
             cxt: context,
             cxtShowBlock: context2
@@ -899,14 +906,21 @@ Page({
         let handlePauseVideoTime = () => {
             self.videoCtx.play()
             setTimeout(() => {
-                self.videoCtx.pause();
-                let ct = new Date().getTime();
-                let vt1 = self.data.videoTime;
-                let ms = ((ct - this.ms) % 1000) / 1000;
-                let vt2= self.data.videoTime + ms - 0.25; 
-                self.data.videoTime = parseInt(vt2) > parseInt(vt1) ? vt1 + 0.5 : vt2;
-                self.data.focusTime = self.data.videoTime;
+                // self.videoCtx.pause();
+                // let ct = new Date().getTime();
+                // let vt1 = self.data.videoTime;
+                // let ms = ((ct - this.ms) % 1000) / 1000;
+                // let vt2= self.data.videoTime + ms - 0.25; 
+                // self.data.videoTime = parseInt(vt2) > parseInt(vt1) ? vt1 + 0.5 : vt2;
+                // self.data.focusTime = self.data.videoTime;
                 // console.log(self.data.focusTime, 'self.data.focusTime')
+                // self.videoCtx.seek(self.data.focusTime)
+                // self.data.videoPause = true
+
+                self.videoCtx.pause()
+                let ct1 = new Date().getTime();
+                let ms = ct1 - self.data.videoCurrentTimeInt;
+                self.data.focusTime = self.data.videoTime + parseInt(ms) / 1000 - 0.5;
                 self.videoCtx.seek(self.data.focusTime)
                 self.data.videoPause = true
             }, 500)
@@ -916,25 +930,32 @@ Page({
             self.initDrawControlPosiotion()
         }, 100)
         
-        self.setData({
-            muted: false
-        })
+        // self.setData({
+        //     muted: false
+        // })
 
         if (self.data.videoPause) {
             handlePauseVideoTime()
         } else {
-            self.videoCtx.pause();
-            //这里时间不够准确所以加个延时，将暂停借口移到最上方
             setTimeout(() => {
-                let ct = new Date().getTime();
-                // let ms = ((ct - this.ms) % 1000) / 1000;
-                let ms = new Date().getMilliseconds() / 1000;
-                let vt1 = this.data.videoTime;
-                let vt2 = this.data.videoTime + ms; 
-                self.data.videoTime = parseInt(vt2) > parseInt(vt1) ? vt1 + 0.5 : vt2;
-                self.data.focusTime =  self.data.videoTime;
-                self.data.videoPause = true 
+                let ct1 = new Date().getTime();
+                let ms = ct1 - self.data.videoCurrentTimeInt;
+                self.videoCtx.pause();
+                self.data.focusTime =  self.data.videoTime + parseInt(ms) / 1000;
+                self.data.videoPause = true  
             }, 100)
+           
+            //这里时间不够准确所以加个延时，将暂停借口移到最上方
+            // setTimeout(() => {
+            //     let ct = new Date().getTime();
+            //     // let ms = ((ct - this.ms) % 1000) / 1000;
+            //     let ms = new Date().getMilliseconds() / 1000;
+            //     let vt1 = this.data.videoTime;
+            //     let vt2 = this.data.videoTime + ms; 
+            //     self.data.videoTime = parseInt(vt2) > parseInt(vt1) ? vt1 + 0.5 : vt2;
+            //     self.data.focusTime =  self.data.videoTime;
+            //     self.data.videoPause = true    
+            // }, 100)
                     
         }
         
@@ -1133,6 +1154,7 @@ Page({
 	 //跳到指定时间播放
 	 toVideoPosition(e) {
         let self = this
+        if (e.currentTarget.dataset.time < 0 ) return;
         this.setData({
             cavansShow: true,
             commentActiveIndex: e.currentTarget.dataset.id
@@ -1182,8 +1204,15 @@ Page({
 
         // 模拟时间点击
         let time = e.currentTarget.dataset.time;
- 		this.videoCtx.seek(time)
-        this.videoCtx.pause()
+        let timeInt = parseInt(time);
+        let floatTime = time - timeInt + 0.5;
+        this.videoCtx.seek(timeInt);
+
+        setTimeout(() => {
+            this.videoCtx.pause()
+        }, floatTime)
+ 	
+       
         this.data.commentList.map(item => {
             // item.background = ''
             item.timeBackground = '#535353'
@@ -1203,7 +1232,9 @@ Page({
 
     // 获取播放时间
     getVideoTime(e) {
-        // console.log(e.detail.currentTime, '777')
+        if (this.data.videoTime != parseInt(e.detail.currentTime)) {
+            this.data.videoCurrentTimeInt = new Date().getTime();
+        }
         this.data.videoTime = parseInt(e.detail.currentTime);
         this.setData({
             currentVideoTime: Util.formatVideoTime(this.data.videoTime)
