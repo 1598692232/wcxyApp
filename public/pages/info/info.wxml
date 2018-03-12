@@ -1,26 +1,43 @@
 
 <view class="section tc" style="height: {{scrollHeightAll}}px"  wx:if="{{!passwordModal}}">
-    <block></block>
-    <video id="myVideo" class="info-video" src="{{url}}" enable-danmu controls objectFit="contain" bindplay="listenerPlay"
-    autoplay bindtimeupdate="getVideoTime" bindpause="getVideoTime2" muted="{{true}}" bindfullscreenchange="handleFullScreen">
-        <cover-view class="video-select-btn-p" catchtap="showPSelect" wx:if="{{fullScreen && !videoClicked}}">
-            {{pNo}}P
-        </cover-view>
-        <cover-view bindtap="hidePselect" class="video-cover" wx:if="{{fullScreen && videoClicked}}">
-            <cover-view class="video-select-p-list">
-                <!-- <cover-view style="display:table;width:100%;height:100%"> -->
+    <view style="width: 100%;height:211px" id="play-body">
+        <!-- <video id="myVideo" class="info-video" src="{{url}}" enable-danmu controls objectFit="contain" bindplay="listenerPlay"
+        autoplay bindtimeupdate="getVideoTime" bindpause="getVideoTime2" muted="{{true}}" bindfullscreenchange="handleFullScreen">
+            <cover-view class="video-select-btn-p" catchtap="showPSelect" wx:if="{{fullScreen && !videoClicked}}">
+                {{pNo}}P
+            </cover-view>
+            <cover-view bindtap="hidePselect" class="video-cover" wx:if="{{fullScreen && videoClicked}}">
+                <cover-view class="video-select-p-list">
                     <cover-view class="video-select-table" style="height:{{ps.length * 44}}px;margin-top: -{{ps.length * 44 / 2}}px">
                         <cover-view wx:for="{{ps}}" wx:key="index" catchtap="changeP" style="color:{{item.activeP ? '#1144d5': ''}}"
                         data-resolution="{{item.resolution}}" class="video-select-p-li" data-type="video">
                             {{item.resolution}}
                         </cover-view>
                     </cover-view>
-                <!-- </cover-view> -->
+                </cover-view>
             </cover-view>
-        </cover-view>
 
-        <cover-view class="cover-focus" wx:if="{{isFocus}}" bindtap="commentBlur"></cover-view>  
-    </video>
+            <cover-view class="cover-focus" wx:if="{{isFocus}}" bindtap="commentBlur"></cover-view>  
+        </video> -->
+        <audio poster="{{poster}}" name="{{name}}" author="{{author}}" src="{{src}}" id="myAudio" controls loop style="display: none"></audio>
+        <view class="info-audio">
+            <view class="info-audio-icon">
+                <image src="./img/mp3.png" mode="aspectFit" ></image>
+            </view>
+            <view class="info-audio-control">
+                <view class="info-audio-play" bindTap="toggleAudio">
+                    <image src="./img/play.png" mode="aspectFit" wx:if="{{!audioPause}}"></image>
+                    <image src="./img/pause.png" mode="aspectFit" wx:else></image>
+                </view>
+                <view class="info-audio-progress">
+                    <view class="info-audio-progress-max">
+                        <view class="info-audio-progress-current"></view>
+                    </view>
+                    <view class="info-audio-progress-circle"></view>
+                </view>
+            </view>
+        </view>
+    </view>
 
   <!--  wx:if="{{isFocus || cavansShow}}" -->
   <canvas style="width: 100%; height: {{firstCanvasHeight}}px; position: fixed; top: 0;left: 0;"

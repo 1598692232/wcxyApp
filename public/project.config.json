@@ -80,6 +80,12 @@
 					"name": "pl",
 					"pathName": "pages/project_list/project_list",
 					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "info-mp3",
+					"pathName": "pages/info/info",
+					"query": " project_list.js? [sm]:175 /pages/info/info?&name=4d4dad12059b518d5bfdadabcdf6344f-bf6a56af153ea7d2fae8eab30447309c&id=3022&username=stone&project_id=P231520389602"
 				}
 			]
 		}
