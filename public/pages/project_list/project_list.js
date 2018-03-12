@@ -148,8 +148,8 @@ Page({
             self.selectFolder(e)
         } else {
 
-            if (e.currentTarget.dataset.fileType != 'video' &&
-            e.currentTarget.dataset.fileType != 'audio'  &&  
+            if (e.currentTarget.dataset.filetype != 'video' &&
+            e.currentTarget.dataset.filetype != 'audio'  &&  
             !pic_type.includes(e.currentTarget.dataset.ext)) {
                 wx.showModal({
                     title: '提示',
