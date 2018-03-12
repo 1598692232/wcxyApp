@@ -661,6 +661,7 @@ Page({
 
             // 触发时间
             if (this.data.fourthTap.x > this.data.firstCanvasWidth * 0.14 && this.data.fourthTap.x < this.data.firstCanvasWidth * 0.86) {
+                if (this.data.commentDraw) return;
                 this.toggelNeedTime()
             }
         }
@@ -767,7 +768,13 @@ Page({
             this.drawAll(item, false)    
         })
 
-        this.data.cxtShowBlock.draw()
+        this.data.cxtShowBlock.draw();
+
+        if (this.data.commentDraw) {
+            this.setData({
+                needTime: true
+            });
+        }
 
         if (this.data.commentDraw.length != 0) {
             this.setData({
@@ -936,6 +943,7 @@ Page({
     },
     
     commentBlur() {
+        this.data.commentDraw = [];
         this.videoCtx.play()
         this.setData({
             isFocus: false
@@ -1062,7 +1070,6 @@ Page({
 
         let reqData = Object.assign({}, store, {
 	    	content: self.data.commentText,
- 			label: '',
  			media_time: self.data.focusTime,
  			doc_id: self.data.doc_id,
             project_id: wx.getStorageSync('project_id'),
