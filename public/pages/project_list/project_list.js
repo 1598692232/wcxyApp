@@ -1,7 +1,7 @@
 let Util = require('../../utils/util.js')
 const app = getApp()
 
-const pic_type = ['jpg', 'jpeg', 'png', 'gif', 'tiff'];
+const PIC_TYPE = ['jpg', 'jpeg', 'png', 'gif', 'tiff'];
 
 Page({
 	data: {
@@ -150,7 +150,7 @@ Page({
 
             if (e.currentTarget.dataset.filetype != 'video' &&
             e.currentTarget.dataset.filetype != 'audio'  &&  
-            !pic_type.includes(e.currentTarget.dataset.ext)) {
+            !PIC_TYPE.includes(e.currentTarget.dataset.ext)) {
                 wx.showModal({
                     title: '提示',
                     content: '文件格式不可查看或播放',
