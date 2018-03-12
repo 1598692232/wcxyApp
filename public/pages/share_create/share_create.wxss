@@ -4,11 +4,12 @@
     background: #383B4A;
 }
 .create-share-list-top{
-    width: 100%;
-    height: 168px;
-    padding: 27px 22px 0;
     display: flex;
-    justify-content: center;
+    width: 200%;
+    height: 100px;
+    padding-top: 10px;
+    padding: 10px 10px 0;
+    flex-wrap: nowrap
 }
 .create-share-list-top2{
     width: auto;
@@ -17,28 +18,38 @@
     display: flex;
 }
 .create-share-list{
-    width: 120px;
-    height: 124px;
-    /* margin-left: -40px; */
+    /* float: left; */
+    width: 90px;
+    height: 100%;
+    margin-right: 10px;
 }
 .create-share-list .share-pic{
-    width: 120px;
-    height: 92px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 60px;
     border-radius: 4px;
     background: #0345C7;
-    box-shadow:3px 0px 4px rgba(0,0,0,0.6);
+    box-shadow:0px 0px 10px 1px rgba(0,0,0,0.6);
     margin-bottom: 4px;
 }
+.share-pic image{
+    height: 100%;
+}
 .create-share-list .share-name{
-    width: 120px;
-    height: 28px;
-    padding: 4px;
+    width: 100%;
+    height: 22px;
+    padding: 0 4px;
+    line-height: 22px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
     background: #222431;
     border-radius: 7px;
     font-size: 9px;
     color: #FFFFFF;
-    line-height: 10px;
-    box-shadow:3px 0px 4px rgba(0,0,0,0.6);
+    box-shadow:0px 0px 10px 1px rgba(0,0,0,0.6);
 }
 
 /* 分享的选择 */
@@ -62,28 +73,33 @@
     justify-content: space-between;
 }
 .row-wrapper .left{
-    font-size: 16px;
+    display: flex;
+    height: 100%;
+    align-items: center;
+    font-size: 14px;
     color: #FFFFFF;
     letter-spacing: 0.62px;
-    line-height: 58px;
 }
 .row-wrapper .right{
-    margin-top: 12px;
+    /* margin-top: 12px; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 47px;
+    height: 100%;
 }
 .row-wrapper .right switch{
-    width: 47px;
-    height: 28px;
+    /* width: 47px;
+    height: 28px; */
 }
 .link-name .left{
-    font-size: 16px;
+    font-size: 14px;
     color: rgba(255,255,255,0.27);
     letter-spacing: 0.62px;
-    margin-top: 12px;
 }
 .link-name .right image{
     width: 25px;
     height: 25px;
-    margin-right: 14px;
 }
 
 /*swtich整体大小*/
@@ -132,4 +148,15 @@
     color: #FFFFFF;
     line-height: 50px;
     padding: 0 22px;
+}
+
+.create-share-header{
+    text-align: center;
+    font-size: 13px;
+    padding-top: 15px;
+    color: #e1e1e1;
+    z-index:0;
+}
+.create-share-header text{
+    color: #fff;
 }

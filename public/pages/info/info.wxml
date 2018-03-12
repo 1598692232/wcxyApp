@@ -1,32 +1,50 @@
 
 <view class="section tc" style="height: {{scrollHeightAll}}px"  wx:if="{{!passwordModal}}">
-  <video id="myVideo" class="info-video" src="{{url}}" enable-danmu controls objectFit="contain" bindplay="listenerPlay"
-  autoplay bindtimeupdate="getVideoTime" bindpause="getVideoTime2" muted="{{muted}}" bindfullscreenchange="handleFullScreen">
-    <cover-view class="video-select-btn-p" catchtap="showPSelect" wx:if="{{fullScreen && !videoClicked}}">
-        {{pNo}}P
-    </cover-view>
-    <cover-view bindtap="hidePselect" class="video-cover" wx:if="{{fullScreen && videoClicked}}">
-        <cover-view class="video-select-p-list">
-            <!-- <cover-view style="display:table;width:100%;height:100%"> -->
-                <cover-view class="video-select-table" style="height:{{ps.length * 44}}px;margin-top: -{{ps.length * 44 / 2}}px">
-                    <cover-view wx:for="{{ps}}" wx:key="index" catchtap="changeP" style="color:{{item.activeP ? '#1144d5': ''}}"
-                    data-resolution="{{item.resolution}}" class="video-select-p-li" data-type="video">
-                        {{item.resolution}}
+    <view style="width: 100%;height:211px" id="play-body">
+        <!-- <video id="myVideo" class="info-video" src="{{url}}" enable-danmu controls objectFit="contain" bindplay="listenerPlay"
+        autoplay bindtimeupdate="getVideoTime" bindpause="getVideoTime2" muted="{{true}}" bindfullscreenchange="handleFullScreen">
+            <cover-view class="video-select-btn-p" catchtap="showPSelect" wx:if="{{fullScreen && !videoClicked}}">
+                {{pNo}}P
+            </cover-view>
+            <cover-view bindtap="hidePselect" class="video-cover" wx:if="{{fullScreen && videoClicked}}">
+                <cover-view class="video-select-p-list">
+                    <cover-view class="video-select-table" style="height:{{ps.length * 44}}px;margin-top: -{{ps.length * 44 / 2}}px">
+                        <cover-view wx:for="{{ps}}" wx:key="index" catchtap="changeP" style="color:{{item.activeP ? '#1144d5': ''}}"
+                        data-resolution="{{item.resolution}}" class="video-select-p-li" data-type="video">
+                            {{item.resolution}}
+                        </cover-view>
                     </cover-view>
                 </cover-view>
-            <!-- </cover-view> -->
-        </cover-view>
-    </cover-view>
+            </cover-view>
 
-    <cover-view class="cover-focus" wx:if="{{isFocus}}" bindtap="commentBlur"></cover-view>  
-  </video>
+            <cover-view class="cover-focus" wx:if="{{isFocus}}" bindtap="commentBlur"></cover-view>  
+        </video> -->
+        <audio poster="{{poster}}" name="{{name}}" author="{{author}}" src="{{src}}" id="myAudio" controls loop style="display: none"></audio>
+        <view class="info-audio">
+            <view class="info-audio-icon">
+                <image src="./img/mp3.png" mode="aspectFit" ></image>
+            </view>
+            <view class="info-audio-control">
+                <view class="info-audio-play" bindTap="toggleAudio">
+                    <image src="./img/play.png" mode="aspectFit" wx:if="{{!audioPause}}"></image>
+                    <image src="./img/pause.png" mode="aspectFit" wx:else></image>
+                </view>
+                <view class="info-audio-progress">
+                    <view class="info-audio-progress-max">
+                        <view class="info-audio-progress-current"></view>
+                    </view>
+                    <view class="info-audio-progress-circle"></view>
+                </view>
+            </view>
+        </view>
+    </view>
 
   <!--  wx:if="{{isFocus || cavansShow}}" -->
   <canvas style="width: 100%; height: {{firstCanvasHeight}}px; position: fixed; top: 0;left: 0;"
    canvas-id="firstCanvas" id="firstCanvas" wx:if="{{isFocus || cavansShow}}" bindtouchstart="firstCanvasTouchstart"></canvas>
-<!--  wx:if="{{isFocus}}" -->
-  <canvas style="width: 100%; height: {{firstCanvasHeight}}px; position: fixed; top: 0;left: 0;" 
-            id="secondCanvas"
+    <!--  wx:if="{{isFocus}}" -->
+    <canvas style="width: 100%; height: {{firstCanvasHeight}}px; position: fixed; top: 0;left: 0;" 
+            id="secondCanvas" canvas-id="secondCanvas"
             canvas-id="secondCanvas"
             bindtouchstart="drawStart"
             bindtouchmove="drawMove"
@@ -35,7 +53,8 @@
             wx:if="{{isFocus}}"
             ></canvas>
           <!-- catchtap="catap" -->
-    <canvas style="width: 100%; height: 70px; position: fixed; top: 225px;left: 0; z-index: 1000;"
+    <!-- 画图控制器 -->
+    <canvas style="width: 100%; height: 36px; position: fixed; top: 211px;left: 0; z-index: 1000;"
             canvas-id="thirdCanvas" id="thirdCanvas" 
             disable-scroll="true"
             bindtouchstart="thirdDrawStart"
@@ -43,67 +62,84 @@
             bindtouchend="thirdDrawend"
             wx:if="{{isFocus}}" 
     ></canvas>
-            <!--  wx:if="{{isFocus}}" -->
 
-   
+    <view class="video-info" style="height: {{isFocus ? 36 : 60}}px;margin-top: -5px;background: #383b49">
 
-  <view class="video-info">
-        <!-- <view class="cancel-canvas" bindtap="cancelCanvas" wx:if="{{cavansShow && !isFocus}}">
-                取消画板
-             </view> -->
-      <view class="video-title">
-          <!-- <text>{{name}}</text> -->
-          <view class="select-version-p" bindtap="selectVersionAndP" id="version-select" data-id="version-select">
-              <image src="./img/bg1.png" mode="scaleToFill"></image>
-              <text>v{{versionNo}}版本</text>
-          </view>
-          <view class="select-version-p" bindtap="selectVersionAndP" id="p-select" data-id="p-select">
-              <image src="./img/bg2.png" mode="scaleToFill"></image>
-              <text>{{pNo}}P</text>
-          </view>
-          
-      </view>
+        <view class="video-make clearfix" wx:if="{{!isFocus}}">
+            <view class="video-make-li" bindtap="toggleSelect" data-show="{{true}}" data-field="statusSelectShow" data-animation="animationSelect">
+                <view class="video-make-status">{{visibleStatusText}}</view>
+                <view class="video-make-arrow"></view>
+            </view>
+            <view class="video-make-li" bindtap="toggleSelect" data-show="{{true}}" data-field="versionSelectShow" data-animation="animationSelect2">
+                <view class="video-make-status">V{{visibleVersionNo + 1}}版本</view>
+                <view class="video-make-arrow"></view>
+            </view>
+        </view>
+
+
+      <view class="video-author"  wx:if="{{!isFocus}}">{{username}} · {{createTime}}</view>
+
       <!-- wx:if="{{isFocus}}" -->
       <view class="label-control" wx:if="{{isFocus}}">
         <view class="label-body">  
-            <view class="label-body-left">
+            <view class="label-type">
                 <view class="label-img" wx:for="{{drawType}}" wx:key="index" bindtap="selectDrawType" data-key="{{index}}" id="draw-control{{index}}" >
-                    <image src="{{item.activeImg}}" mode="aspectFit" wx:if="{{drawTypeActive == item.name}}"></image>  
-                    <image src="{{item.img}}" mode="aspectFit" wx:else></image>         
+                        <image src="{{item.activeImg}}" mode="aspectFit" wx:if="{{drawTypeActive == item.name}}"></image>  
+                        <image src="{{item.img}}" mode="aspectFit" wx:else></image>         
                 </view>  
-                
-                <view class="label-color-block" animation="{{colorBlockAnimation}}">
-                    <view class="label-color-block-select" wx:for="{{noSelectColors}}" wx:key="index" data-key="{{index}}"  
-                            catchtap="selectColor" id="draw-control{{index + 6}}">
-                        <view class="label-color-select" 
-                                style="background-color:{{item}}; box-shadow: 0 0 3px {{item}};">
-                        </view>
+            </view>
+
+            <!-- noSelectColors -->
+            <view class="label-color">
+                <view class="label-color-li"  wx:for="{{colors}}" wx:key="index" data-key="{{index}}"  
+                catchtap="selectColor" id="draw-control{{index + 6}}">
+                    <view class="label-color-block-select">
+                        <block wx:if="{{item == colorActive}}">
+                            <view class="label-color-select active" style="background-color:{{item}}; box-shadow: 0 0 3px {{item}};">
+                            </view>
+                        </block>
+                        <block wx:else>
+                            <view class="label-color-select" style="background-color:{{item}}">
+                            </view>
+                        </block>
+                        
                     </view>
                 </view>
             </view>
-            <!-- style="border-top-left-radius: {{labelBodyRightWidth}}px; border-top-right-radius: {{labelBodyRightWidth}}px;" -->
-            <view class="label-body-right" id="draw-control4" style="background: {{colorShow ? '#535353' : ''}}">
-                <view class="label-color-active" bindtap="toggleColorBlock" 
-                style="background-color: {{colorActive}}; box-shadow: 0 0 3px {{colorActive}};">
-                </view>    
+        </view>
+      </view>
+  </view>
+
+    <form>
+        <view class="push-comment send-comment">
+            <view class="push-comment-input clearfix">
+                <input placeholder="发表评论..." cursor-spacing="10" name="commentText" style="color:#fff" bindinput="changeBtn"
+                bindfocus="commentFocus" bindblur="commentBlur" value="{{commentText}}" fixed="{{true}}" focus="{{isFocus}}" /> 
+            </view>
+        
+        </view>
+        <view class="comment-footer" wx:if="{{isFocus}}">
+            <canvas style="width: 100%; height: 30px; position: absolute; top: 0;left: 0; z-index: 1000;"
+                canvas-id="fourthCanvas" id="fourthCanvas" 
+                disable-scroll="true"
+                bindtouchstart="fourthDrawStart"
+                bindtouchmove="fourthDrawMove"
+                bindtouchend="fourthDrawend"
+                wx:if="{{isFocus}}"
+            ></canvas>
+            <view class="comment-footer-left">
+                取消
+            </view>
+            <view class="comment-footer-time" style="color:{{needTime ? '#086ac1': ''}}">
+                <image class="time-check" src="./img/time_check.png" wx:if="{{needTime}}"></image>
+                {{currentVideoTime}}
+            </view>
+            <view class="comment-footer-right" bindTap="sendComment">
+                发送
             </view>
         </view>
-        <view class="label-body-last" bindtap="commentBlur" id="draw-control5">取消</view>
-      </view>
-      <view class="video-author">{{username}} · {{createTime}}</view>
-  </view>
-  <view class="push-comment">
-        <form bindsubmit="sendComment">
-           <view class="push-comment-input clearfix">
-               <input placeholder="发表评论..." cursor-spacing="10" name="commentText" style="color:#fff" bindinput="changeBtn"
-               bindfocus="commentFocus" bindblur="commentBlur" value="{{commentText}}" fixed="{{true}}" focus="{{isFocus}}"/> 
-               <!-- hidden="{{hideSendComment}}" -->
-               <button class="send-commit" form-type="submit" style="background: {{sendCommentBtnStyle}}">
-                   发送
-               </button>
-           </view>
-         </form>
-       </view>
+    </form>
+
   <!-- bindscrolltolower="loadMore" -->
   <scroll-view scroll-y="true" style="height: {{scrollHeight}}px" class="list-body">
    
@@ -119,7 +155,7 @@
           <view class="comment-master-text" data-time="{{item.media_time}}" data-index="{{index}}" data-id="{{item.id}}"  bindtap="toVideoPosition">
               <view class="comment-header clearfix">
                   <text class="comment-name" style="color: {{item.nameColor ? item.nameColor : ''}}">{{item.realname}}</text>
-                  <text class="comment-timer" style="background: {{item.timeBackground ? item.timeBackground : ''}}">{{item.comment_time}}</text>
+                  <text class="comment-timer" style="background: {{item.timeBackground ? item.timeBackground : ''}}" wx:if="{{item.media_time > 0}}">{{item.comment_time}}</text>
               </view>
               <view class="comment-body1">
                  <text>{{item.content}} </text>
@@ -163,29 +199,40 @@
 
 </view>
 
-
-<view class="info-cover" wx:if="{{versionSelect || PSelect}}" bindtap="hideSelect"> 
-    <view class="info-cover-select select-ani-one" wx:if="{{versionSelect}}" style="top: {{selectY}}px;width: {{selectWidth}}px;height:auto;">
-        <view class="info-arrow" style="left: {{arrowX}}px"></view>
-        <scroll-view class="version-p-list" scroll-y style="max-height:150px;overflow:auto;">
-          <view class="version-p-li" wx:for="{{versions}}" wx:key="index" bindtap="changeVersion" 
-            data-id="{{item.doc_id}}" data-index="{{index + 1}}" style="border-bottom:{{index == versions.length -1 ? '0' : ''}}">
-            <view class="version-name" style="color:{{item.activeVersion ? '#1144d5': ''}}">V{{index + 1}}版本</view>
-            <view class="video-name" style="color:{{item.activeVersion ? '#1144d5': ''}}">{{item.name}}</view>
-          </view>
-        </scroll-view>
+<!-- 选择 -->
+<view class="video-action-body" wx:if="{{statusSelectShow}}">
+    <view class="video-action" animation="{{animationSelect}}">
+        <view class="video-action-sure">
+            <view class="video-action-sure-left" bindtap="toggleSelect" data-show="{{false}}" data-field="statusSelectShow" data-animation="animationSelect">取消</view>
+            <view class="video-action-sure-right" bindtap="changeStatus">确定</view>
+        </view>
+        <picker-view indicator-class="video-action-selcted" style="width: 100%; height: 250px;" mask-class="video-action-mask"
+                value="{{statusVal}}" bindchange="statusChange">
+            <picker-view-column>
+            <view wx:for="{{statusList}}" wx:key="index"  class="video-action-li video-action-li-status clearfix" style="opacity: {{index == statusVal[0] ? 1 : 0.6}}">
+                <image class="video-action-status-icon" src="{{'img/' + index + '.png'}}">{{item}}</image>
+                <view class="video-action-status-text">{{item}}</view>
+            </view>
+            </picker-view-column>
+        </picker-view>
     </view>
+</view>
 
-
-    <view class="info-cover-select select-ani-two"  wx:if="{{PSelect}}" style="top: {{selectY}}px;width: {{selectWidth}}px;height:auto;">
-        <view class="info-arrow" style="left: {{arrowX}}px"></view>
-        <scroll-view class="version-p-list" scroll-y style="max-height:150px;overflow:auto;">
-          <view class="version-p-li" wx:for="{{ps}}" wx:key="index" bindtap="changeP"  data-resolution="{{item.resolution}}"
-            style="border-bottom:{{index == ps.length -1 ? '0' : ''}}">
-            <view class="version-name" style="color:{{item.activeP ? '#1144d5': ''}}">{{item.resolution}}P</view>
-            <view class="video-name" style="color:{{item.activeP ? '#1144d5': ''}}">{{info.name}}</view>
-          </view>
-        </scroll-view>
+<view class="video-action-body" wx:if="{{versionSelectShow}}">
+    <view class="video-action video-action2" animation="{{animationSelect2}}">
+        <view class="video-action-sure">
+            <view class="video-action-sure-left" bindtap="toggleSelect" data-show="{{false}}" data-field="versionSelectShow" data-animation="animationSelect2">取消</view>
+            <view class="video-action-sure-right" bindtap="changeVersion">确定</view>
+        </view>
+        <picker-view indicator-class="video-action-selcted" indicator-style="height:60px;" style="width: 100%; height: 240px;" mask-class="video-action-mask"
+                value="{{versionVal}}" bindchange="versionChange">
+            <picker-view-column>
+            <view wx:for="{{versions}}" wx:key="index"  class="video-action-li version" style="opacity: {{index == versionVal[0] ? 1 : 0.6}};height: 60px">
+                <view class="video-action-version-no">V{{index + 1}}版本</view>
+                <view class="video-action-version-name">{{item.name}}</view>
+            </view>
+            </picker-view-column>
+        </picker-view>
     </view>
 </view>
 
@@ -200,3 +247,7 @@
         </form>
     </view>
 </view>
+
+
+
+

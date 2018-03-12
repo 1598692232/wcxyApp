@@ -1,16 +1,8 @@
 let Util = require('../../utils/util.js')
 
 import { drawRect, drawArrow, drawLine } from '../../utils/draw.js'
-const app = getApp();
-
-const STAUS = {
-    0: '移除标签',
-    1: '审核通过',
-    2: '进行中',
-    3: '待审核',
-    4: '意见搜集完成',
-};
-
+const app = getApp()
+//4f5875 b7bbd5
 Page({
 
     data: {
@@ -52,7 +44,6 @@ Page({
         sendComment: false,
         delComment: false,
         isFocus: false,
-        videoCurrentTimeInt: new Date().getTime(),
 
         colorActive: '#E74A3C',
         colors: ['#E74A3C', '#E67422', '#1ABCA1', '#34A3DB'],
@@ -78,7 +69,6 @@ Page({
         cavansShow: false,
         drawControl: [],
         thirdTap:{x: '', y: '', x2:'', y2:'', startTime: 0, endTime: 0},
-        fourthTap:{x: '', y: '', x2:'', y2:'', startTime: 0, endTime: 0},
         sendCommentBtnStyle: '',
         prevCommentList: [],
         commentNotice: false,
@@ -88,54 +78,10 @@ Page({
         shareCode: null,
         options: {},
         linkPassword: '',
-        videoPause: false,
-
-
-        statusList: ['移除标签','审核通过','进行中','待审核','意见搜集完成'],
-        statusVal: [0],
-        statusActive: '',
-        animationSelect: null,
-        statusSelectShow: false,
-        visibleStatusText:'审核',
-
-        // versionsList: [1,2,3],
-        versionVal: [0],
-        versionActive: 1,
-        animationSelect2: null,
-        versionSelectShow: false,
-        visibleVersionNo: 0,
-        currentVideoTime: '00:00',
-
-        poster: 'http://y.gtimg.cn/music/photo_new/T002R300x300M000003rsKF44GyaSk.jpg?max_age=2592000',
-        name: '此时此刻',
-        author: '许巍',
-        src: 'http://ws.stream.qqmusic.qq.com/M500001VfvsJ21xFqb.mp3?guid=ffffffff82def4af4b12b3cd9337d5e7&uin=346897220&vkey=6292F51E1E384E06DCBDC9AB7C49FD713D632D313AC4858BACB8DDD29067D3C601481D36E62053BF8DFEAF74C0A5CCFADD6471160CAF3E6A&fromtag=46',
-
-        audioPause: false
-    },
-
-    statusChange: function(e) {
-        const val = e.detail.value;
-        this.setData({
-          statusActive: val[0] == 0 ? '审核' : this.data.statusList[val[0]],
-          statusVal: val
-        })
-    },
-
-    versionChange: function (e) {
-        const val = e.detail.value;
-        this.setData({
-          versionActive: this.data.versions[val[0]],
-          versionVal: val
-        })
+        videoPause: false
     },
 
     changeBtn(e) {
-    
-        this.setData({
-            commentText: e.detail.value
-        });
-        
         if (e.detail.value != '' || this.data.commentDraw.length != 0) {
             this.setData({
                 sendCommentBtnStyle: '#1125e5'
@@ -162,15 +108,13 @@ Page({
     // rgb(52, 163, 219)
 
     onReady: function (res) {
-     
-        this.videoCtx = wx.createVideoContext('myVideo');
-        this.audioCtx = wx.createAudioContext('myAudio');
+	    this.videoCtx = wx.createVideoContext('myVideo')
   	},
 
     onLoad(options) {
         this.data.options = options
         let self = this
-        wx.createSelectorQuery().select('#play-body').fields({
+        wx.createSelectorQuery().select('#myVideo').fields({
             dataset: true,
             size: true,
             scrollOffset: true,
@@ -178,9 +122,7 @@ Page({
             }, function(res){
                 self.setData({
                     firstCanvasWidth: res.width,
-                    firstCanvasHeight: res.height,
-                    doc_id: options.id,
-                    project_id: options.project_id
+                    firstCanvasHeight: res.height
                 })
          
             }).exec()
@@ -281,42 +223,18 @@ Page({
        
     },
 
-    setScrollHeight(wh) {
-        let self = this;
-        let topNodes = ['#myVideo', '.send-comment', '.video-info'];
-        let topHeight = 0;
-        topNodes.forEach((item, k) => {
-            wx.createSelectorQuery().select(item).fields({
-                dataset: true,
-                size: true,
-                scrollOffset: true,
-                properties: ['scrollX', 'scrollY']
-            }, function(res){
-                topHeight += res.height;
-                if (k == topNodes.length - 1) {
-                    self.setData({
-                        scrollHeight: wh - topHeight,
-                    })     
-                }
-            }).exec();
-        });
-    },
-
     infoInit() {
         let self = this
         
         Util.getSystemInfo().then(res => {
-            let topHeight = 0;
-            self.setScrollHeight(res.windowHeight);
-
             self.setData({
                 scrollHeightAll: res.windowHeight,
-                // scrollHeight: res.windowHeight - 345,
+                scrollHeight: res.windowHeight - 345,
                 selectWidth: res.windowWidth - 20
             })
 
             let store = wx.getStorageSync('app')
-
+        
             let reqData = Object.assign({}, store, {
                 doc_id: self.data.doc_id,
                 project_id: self.data.project_id,
@@ -343,17 +261,12 @@ Page({
                 self.setData({
                     versions: data.versions,
                     ps: data.resolution,
-                    visibleStatusText: data.review == 0 ? '审核' :STAUS[data.review],
-                    // versionNo: 1,
-                    visibleVersion: 0,
+                    versionNo: 1,
                     pNo: data.resolution[0].resolution,
                     url:  data.resolution[0].src,
                     username: data.realname,
                     createTime: Util.getCreateTime(data.created_at)
-                });
-
-                // console.log(self.data.versions)
-
+                })
                 wx.setNavigationBarTitle({ title: data.name })   
             })
             self.getCommentList(Object.assign({}, reqData, {project_id: self.data.project_id}))
@@ -415,7 +328,17 @@ Page({
 
     getCommentList(reqData){
         let self = this
-        clearInterval(self.data.getTimer);
+        clearInterval(self.data.getTimer) 
+
+        // 监听请求是否成功
+        // let listenerSuccess = () => {
+        //     setInterval(() => {
+        //         if (!self.data.commentNotice) {
+        //             clearInterval(self.data.getTimer)
+        //             intervalGetCommentList()
+        //         }
+        //     }, 5000)
+        // }
 
         let intervalGetCommentList = () => {
             self.data.getTimer = setInterval(() => {
@@ -471,62 +394,25 @@ Page({
         getList()
     },
 
-    changeStatus() {
-        let self = this;
-        let store = wx.getStorageSync('app');
-	    let reqData = Object.assign({}, store, {
-            doc_id: self.data.doc_id,
-            project_id: self.data.project_id,
-            review: self.data.statusVal[0],
-            _method: 'put'
-        });
-
-        self.toggleSelect(null, false, 'statusSelectShow', 'animationSelect');
-        Util.ajax('file/review', 'post', reqData).then(json => {
-            wx.showToast({
-                title: '修改成功！',
-                icon: 'success'
-            });
-            // console.log(statusList[statusVal[0]], 'ppp')
-            self.setData({
-                visibleStatusText: self.data.statusList[self.data.statusVal[0]]
-            });
-        }, () => {
-            wx.showToast({
-                title: '修改失败！'
-            });
-        });
-    },
-
     changeVersion(e) {
-        let self = this;
-
-        if (self.data.versionVal[0] == self.data.visibleVersionNo) {
-            self.toggleSelect(null, false, 'versionSelectShow', 'animationSelect2');
-            return;
-        }
-
+        let self = this
         self.setData({
             cavansShow: false
-        });
-
-        
-        
+        })
         let store = wx.getStorageSync('app')
 	    let reqData = Object.assign({}, store, {
-            // doc_id: e.currentTarget.dataset.id,
-            doc_id: self.data.versionActive.id,
+	    	doc_id: e.currentTarget.dataset.id,
             project_id: this.data.project_id,
             show_completed: 1
         })
        
         self.getVideoInfo(store.host, reqData, (data) => {
             self.setData({
-                doc_id: self.data.versionActive.id
+                doc_id:  e.currentTarget.dataset.id
             })
 
             data.versions.forEach(item => {
-                if (item.doc_id == self.data.versionActive.id) {
+                if (item.doc_id == e.currentTarget.dataset.id) {
                     item.activeVersion = true
                 } else {
                     item.activeVersion = false
@@ -547,14 +433,10 @@ Page({
             self.setData({
                 versions: data.versions,
                 ps: data.resolution,
-                // versionNo: e.currentTarget.dataset.index,
-                // versionNo: self.data.versionActive.version_no,
-                visibleVersionNo: self.data.versionVal[0],
+                versionNo: e.currentTarget.dataset.index,
                 username: data.realname,
                 createTime: Util.getCreateTime(data.created_at)
-            });
-
-            self.toggleSelect(null, false, 'versionSelectShow', 'animationSelect2');
+            })
 
             setTimeout(() => {
                 // self.videoCtx.seek(self.data.videoTime)
@@ -602,6 +484,74 @@ Page({
         }  
     },
 
+    //canvas遮罩，获取画图工具dom，返回Number
+    getDrawControlPosition(x) {
+        let drawControl = this.data.drawControl
+        let self = this
+        let tapIndex = ''
+        // self.initDrawControlPosiotion()
+
+        // setTimeout(() => {
+
+            if(self.data.colorShow) {
+                if (x > 0 && x < self.data.drawControl[6].width) {
+                    return 6
+                }
+                // 这里的处理可能存在的bug：画板控制器闪屏或者js报错
+                drawControl.forEach((item, key) => {
+                    if (key <= 3) return
+                    let offX = 0;
+                    if (key > 5) {
+                        for(let i = 6; i < key; i++){
+                            if (self.data.drawControl[i]) {
+                                offX += self.data.drawControl[i].width
+                            }
+                        }
+                    } else {
+                        for(let i = 0; i < key; i++){
+                            if (self.data.drawControl[i]) {
+                                offX += self.data.drawControl[i].width
+                            }
+                        }
+                      
+                    }
+                   
+                    if (item && x > offX && x < offX + item.width) {
+                        tapIndex = key
+                    } 
+                    
+                    if (tapIndex == '') {
+                        tapIndex = 8
+                    }
+                   
+                })
+                
+            } else {
+                if (x > 0 && x < self.data.drawControl[0].width) {
+                    return 0
+                }
+    
+                drawControl.forEach((item, key) => {
+                    if (key == 0) return
+                    let offX = 0;
+        
+                    for(let i = 0; i < key; i++){
+                        if (self.data.drawControl[i]) {
+                            offX += self.data.drawControl[i].width
+                        }
+                    }
+        
+                    if (item && x > offX && x < offX + item.width) {
+                        tapIndex = key
+                    }
+                })
+            }
+
+        // }, 100)
+        
+        return tapIndex;
+    },
+
     //画画空间加个canvas，防止键盘失效，tap手机不起作用，使用touchstart触发
     thirdDrawStart(e) {
         this.data.thirdTap.x = e.touches[0].x
@@ -622,68 +572,66 @@ Page({
         if (Math.abs(this.data.thirdTap.x - this.data.thirdTap.x2) <= 20 
             && Math.abs(this.data.thirdTap.y - this.data.thirdTap.y2) <= 20
         && this.data.thirdTap.endTime - this.data.thirdTap.startTime <= 500) {
-            // let key = this.getDrawControlPosition(this.data.thirdTap.x)
-
-            let key = Math.floor(this.data.thirdTap.x / (this.data.firstCanvasWidth / 8)) ;
-
+            let key = this.getDrawControlPosition(this.data.thirdTap.x)
+    
             if (key <= 3) {
                 this.setData({
                     drawTypeActive: this.data.drawType[key].name
                 }) 
-            } else {
-                this.setData({
-                    colorActive: this.data.colors[key % 4]
-                })
+                return 
             }
+            
+            let colors = ''
+            switch(key) {
+                case 4: 
+                    this.toggleColorBlock()
+                    break;
+                case 5:
+                    this.data.cxtShowBlock.clearRect(0,0, this.data.firstCanvasWidth, this.data.firstCanvasHeight)
+                    this.data.commentDraw = []
+                    this.videoCtx.play()
+                    this.data.videoPause = false
+                    this.setData({
+                        isFocus: false,
+                        sendCommentBtnStyle: ''
+                    })
+                    break;
+                case 6:
+                    this.setData({
+                        colorActive: this.data.noSelectColors[0]
+                    })
+                    colors = this.data.colors.filter(item => item != this.data.colorActive)
+                    this.setData({
+                        noSelectColors: colors
+                    })
+
+                    this.toggleColorBlock()
+                    break;
+                case 7:
+                    this.setData({
+                        colorActive: this.data.noSelectColors[1]
+                    })
+                    colors = this.data.colors.filter(item => item != this.data.colorActive)
+                    this.setData({
+                        noSelectColors: colors
+                    })
+                    this.toggleColorBlock()
+                    break;
+                case 8:
+                    this.setData({
+                        colorActive: this.data.noSelectColors[2]
+                    })
+                    colors = this.data.colors.filter(item => item != this.data.colorActive)
+                    this.setData({
+                        noSelectColors: colors
+                    })
+                    this.toggleColorBlock()
+                    break;
+            }
+
         }
     },
     // 画板空间事件触发结束
-
-    //input底部canvas，防止键盘失效，tap手机不起作用，使用touchstart触发
-    fourthDrawStart(e) {
-        this.data.fourthTap.x = e.touches[0].x
-        this.data.fourthTap.y = e.touches[0].y
-        this.data.fourthTap.x2 = e.touches[0].x
-        this.data.fourthTap.y2 = e.touches[0].y
-        this.data.fourthTap.startTime = new Date().getTime()
-        this.data.fourthTap.endTime = new Date().getTime();
-
-        if (this.data.fourthTap.x > this.data.firstCanvasWidth * 0.14 && this.data.fourthTap.x < this.data.firstCanvasWidth * 0.86) {
-            this.data.allowTimeTap = true;
-        } else {
-            this.data.allowTimeTap = false;
-        }
-    },
-    
-    fourthDrawMove(e) {
-        this.data.fourthTap.x2 = e.touches[0].x
-        this.data.fourthTap.y2 = e.touches[0].y
-        this.data.fourthTap.endTime = new Date().getTime()
-    },
-
-    fourthDrawend(e) {
-        if (Math.abs(this.data.fourthTap.x - this.data.fourthTap.x2) <= 20 
-            && Math.abs(this.data.fourthTap.y - this.data.fourthTap.y2) <= 20
-        && this.data.fourthTap.endTime - this.data.fourthTap.startTime <= 500) {
-            // 触发取消
-            if (this.data.fourthTap.x <= this.data.firstCanvasWidth * 0.14) {
-                this.commentBlur();
-            }
-
-            // 触发发送
-            if (this.data.fourthTap.x >= this.data.firstCanvasWidth * 0.86) {
-                this.sendComment();
-            }
-
-            // 触发时间
-            if (this.data.fourthTap.x > this.data.firstCanvasWidth * 0.14 && this.data.fourthTap.x < this.data.firstCanvasWidth * 0.86) {
-                if (this.data.commentDraw && !this.data.allowTimeTap) return;
-                this.toggelNeedTime()
-            }
-        }
-    },
-    // input底部canvas事件触发结束
-
 
     //画画开始
     drawStart(e) {     
@@ -784,13 +732,7 @@ Page({
             this.drawAll(item, false)    
         })
 
-        this.data.cxtShowBlock.draw();
-
-        if (this.data.commentDraw) {
-            this.setData({
-                needTime: true
-            });
-        }
+        this.data.cxtShowBlock.draw()
 
         if (this.data.commentDraw.length != 0) {
             this.setData({
@@ -878,9 +820,9 @@ Page({
                 properties: ['scrollX', 'scrollY']
                 }, function(res){
                     if (!res) return;
-                    // if (key > 5) {
-                    //     res.width += 30
-                    // }
+                    if (key > 5) {
+                        res.width += 30
+                    }
                     self.data.drawControl.push(res)
                 }).exec()
         })
@@ -915,21 +857,14 @@ Page({
         let handlePauseVideoTime = () => {
             self.videoCtx.play()
             setTimeout(() => {
-                // self.videoCtx.pause();
-                // let ct = new Date().getTime();
-                // let vt1 = self.data.videoTime;
-                // let ms = ((ct - this.ms) % 1000) / 1000;
-                // let vt2= self.data.videoTime + ms - 0.25; 
-                // self.data.videoTime = parseInt(vt2) > parseInt(vt1) ? vt1 + 0.5 : vt2;
-                // self.data.focusTime = self.data.videoTime;
+                self.videoCtx.pause();
+                let ct = new Date().getTime();
+                let vt1 = self.data.videoTime;
+                let ms = ((ct - this.ms) % 1000) / 1000;
+                let vt2= self.data.videoTime + ms - 0.25; 
+                self.data.videoTime = parseInt(vt2) > parseInt(vt1) ? vt1 + 0.5 : vt2;
+                self.data.focusTime = self.data.videoTime;
                 // console.log(self.data.focusTime, 'self.data.focusTime')
-                // self.videoCtx.seek(self.data.focusTime)
-                // self.data.videoPause = true
-
-                self.videoCtx.pause()
-                let ct1 = new Date().getTime();
-                let ms = ct1 - self.data.videoCurrentTimeInt;
-                self.data.focusTime = self.data.videoTime + parseInt(ms) / 1000 - 0.5;
                 self.videoCtx.seek(self.data.focusTime)
                 self.data.videoPause = true
             }, 500)
@@ -939,32 +874,25 @@ Page({
             self.initDrawControlPosiotion()
         }, 100)
         
-        // self.setData({
-        //     muted: false
-        // })
+        self.setData({
+            muted: false
+        })
 
         if (self.data.videoPause) {
             handlePauseVideoTime()
         } else {
-            setTimeout(() => {
-                let ct1 = new Date().getTime();
-                let ms = ct1 - self.data.videoCurrentTimeInt;
-                self.videoCtx.pause();
-                self.data.focusTime =  self.data.videoTime + parseInt(ms) / 1000;
-                self.data.videoPause = true  
-            }, 100)
-           
+            self.videoCtx.pause();
             //这里时间不够准确所以加个延时，将暂停借口移到最上方
-            // setTimeout(() => {
-            //     let ct = new Date().getTime();
-            //     // let ms = ((ct - this.ms) % 1000) / 1000;
-            //     let ms = new Date().getMilliseconds() / 1000;
-            //     let vt1 = this.data.videoTime;
-            //     let vt2 = this.data.videoTime + ms; 
-            //     self.data.videoTime = parseInt(vt2) > parseInt(vt1) ? vt1 + 0.5 : vt2;
-            //     self.data.focusTime =  self.data.videoTime;
-            //     self.data.videoPause = true    
-            // }, 100)
+            setTimeout(() => {
+                let ct = new Date().getTime();
+                // let ms = ((ct - this.ms) % 1000) / 1000;
+                let ms = new Date().getMilliseconds() / 1000;
+                let vt1 = this.data.videoTime;
+                let vt2 = this.data.videoTime + ms; 
+                self.data.videoTime = parseInt(vt2) > parseInt(vt1) ? vt1 + 0.5 : vt2;
+                self.data.focusTime =  self.data.videoTime;
+                self.data.videoPause = true 
+            }, 100)
                     
         }
         
@@ -973,18 +901,11 @@ Page({
     },
     
     commentBlur() {
-        this.data.commentDraw = [];
         this.videoCtx.play()
         this.setData({
             isFocus: false
-        });
-        // this.data.videoPause = false        
-    },
-
-    toggelNeedTime() {
-        this.setData({
-            needTime: !this.data.needTime
         })
+        // this.data.videoPause = false        
     },
 
 	// 发送评论
@@ -1096,21 +1017,16 @@ Page({
                     }
                     break
             }
-        });
+        })
 
         let reqData = Object.assign({}, store, {
-	    	content: self.data.commentText,
+	    	content: e.detail.value.commentText,
+ 			label: '',
  			media_time: self.data.focusTime,
  			doc_id: self.data.doc_id,
             project_id: wx.getStorageSync('project_id'),
-            label: JSON.stringify(self.data.commentDraw),
-        });
-
-        if (!self.data.needTime) {
-            delete reqData.media_time;
-        }
-        
-        delete reqData.code;
+            label: JSON.stringify(self.data.commentDraw)
+        })
 
         Util.ajax('comment', 'post', reqData).then(json => {
             let list = self.data.commentList
@@ -1119,12 +1035,12 @@ Page({
 
             wx.showToast({
                 title: '评论成功！！'
-            });
+            })
 
             let newComment = {
-                content: self.data.commentText,
+                content: e.detail.value.commentText,
                 comment_time: Util.timeToMinAndSec(self.data.focusTime),
-                media_time: self.data.needTime ? self.data.focusTime : -1,
+                media_time: self.data.focusTime,
                 doc_id: self.data.doc_id,
                 project_id: wx.getStorageSync('project_id'),
                 id: json.id,
@@ -1140,8 +1056,7 @@ Page({
             list.unshift(newComment)
             self.setData({
                 commentList: list,
-                commentText: '',
-                isFocus: false
+                commentText: ''
             })
 
             self.data.commentDraw = []
@@ -1163,7 +1078,6 @@ Page({
 	 //跳到指定时间播放
 	 toVideoPosition(e) {
         let self = this
-        if (e.currentTarget.dataset.time < 0 ) return;
         this.setData({
             cavansShow: true,
             commentActiveIndex: e.currentTarget.dataset.id
@@ -1213,15 +1127,8 @@ Page({
 
         // 模拟时间点击
         let time = e.currentTarget.dataset.time;
-        let timeInt = parseInt(time);
-        let floatTime = time - timeInt + 0.5;
-        this.videoCtx.seek(timeInt);
-
-        setTimeout(() => {
-            this.videoCtx.pause()
-        }, floatTime)
- 	
-       
+ 		this.videoCtx.seek(time)
+        this.videoCtx.pause()
         this.data.commentList.map(item => {
             // item.background = ''
             item.timeBackground = '#535353'
@@ -1241,13 +1148,8 @@ Page({
 
     // 获取播放时间
     getVideoTime(e) {
-        if (this.data.videoTime != parseInt(e.detail.currentTime)) {
-            this.data.videoCurrentTimeInt = new Date().getTime();
-        }
+        console.log(e.detail.currentTime, '777')
         this.data.videoTime = parseInt(e.detail.currentTime);
-        this.setData({
-            currentVideoTime: Util.formatVideoTime(this.data.videoTime)
-        });
     },
 
 
@@ -1508,58 +1410,6 @@ Page({
         this.setData({
             videoClicked: false
         })
-    },
-
-    toggleSelect(e, isShow, fieldShow, feildAnimationSelect) {
-        let show = null;
-        let showField = null;
-        let animationSelect = null;
-
-        if (e) {
-            show = e.currentTarget.dataset.show;
-            showField = e.currentTarget.dataset.field;
-            animationSelect = e.currentTarget.dataset.animation;
-        } else {
-            show = isShow;
-            showField = fieldShow;
-            animationSelect = feildAnimationSelect;
-        }
-
-        let animation = wx.createAnimation({
-            duration: 300,
-            timingFunction: 'cubic-bezier(0.23, 1, 0.32, 1)',
-        });
-
-        let o = {};
-        let o2 = {};
-
-        if (show) {
-            animation.translateY('-100%').step();
-            o[showField] = show;
-            this.setData(o);
-            setTimeout(() => {
-                o2[animationSelect] = animation.export();
-                this.setData(o2);
-            });
-        } else {
-            animation.translateY('0px').step();
-            o2[animationSelect] = animation.export();
-            this.setData(o2);
-            setTimeout(() => {
-                o[showField] = show;
-                this.setData(o);
-            }, 300);
-        }
-    },
-
-    toggleAudio() {
-        if (!this.data.audioPause) {
-            this.audioCtx.play();
-        } else {
-            this.audioCtx.pause();
-        }
     }
-
-
 
 })
