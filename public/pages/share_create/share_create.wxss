@@ -30,12 +30,13 @@
     width: 100%;
     height: 60px;
     border-radius: 4px;
-    background: #0345C7;
+    background: #30343f;
     box-shadow:0px 0px 10px 1px rgba(0,0,0,0.6);
     margin-bottom: 4px;
 }
 .share-pic image{
     height: 100%;
+    width: 100%;
 }
 .create-share-list .share-name{
     width: 100%;
@@ -46,7 +47,7 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     background: #222431;
-    border-radius: 7px;
+    border-radius: 3px;
     font-size: 9px;
     color: #FFFFFF;
     box-shadow:0px 0px 10px 1px rgba(0,0,0,0.6);
@@ -159,4 +160,36 @@
 }
 .create-share-header text{
     color: #fff;
+}
+
+.share-file-icon{
+    width: 30px;
+    height: 30px;
+}
+
+.create-share-ext{
+	position: relative;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 30px;
+	height: 30px;
+	color: #fff;
+	font-size: 12px;
+	color: #fff;
+}
+
+.create-share-ext image {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	margin-top: -15px;
+	margin-left: -15px;
+	width: 30px;
+	z-index: 0;
+}
+.create-share-ext text{
+	position: relative;
+    z-index: 1;
+    font-size: 12px;
 }

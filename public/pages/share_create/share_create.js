@@ -33,7 +33,8 @@ Page({
         var lastTime = obj1.dateTime.pop();
         this.setData({
             dateTimeArray1: obj1.dateTimeArray,
-            dateTime1: obj1.dateTime
+            dateTime1: obj1.dateTime,
+            createShareList: wx.getStorageSync('share_file')
         });
         console.log(wx.getStorageSync('share_file'));
     },
@@ -59,8 +60,7 @@ Page({
         })
         self.setData({
             txList: [{name:'1月之前的后期素材',time:'1天前',num:7},{name:'1月之前的后期素材',time:'1天前',num:7}],
-            createShareList: [{img:'',name:'月之前的后期素材.mp4'},{img:'',name:'月之前的后期素材.mp4'},{img:'',name:'月之前的后期素材.mp4'},{img:'',name:'月之前的后期素材.mp4'},],
-            
+            // createShareList: [{img:'',name:'月之前的后期素材.mp4'},{img:'',name:'月之前的后期素材.mp4'},{img:'',name:'月之前的后期素材.mp4'},{img:'',name:'月之前的后期素材.mp4'},],
         })
     },
     // 链接名称
