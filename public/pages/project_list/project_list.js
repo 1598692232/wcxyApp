@@ -22,8 +22,7 @@ Page({
         showMemberDrop: false,
         showShare: false,
         selectShare: false,
-        selectShareList: [],
-        selectedID: 0
+        selectShareList: []
 	},
 
 	onLoad(options) {
@@ -49,6 +48,7 @@ Page({
                     item.project_file.time = Util.timeToMinAndSec(item.project_file.time)
                     item.user_info.avatar = item.user_info.avatar == '' ? self.data.tx : item.user_info.avatar
                     item.size_text = (item.size / Math.pow(1024, 2)).toFixed(2)
+                    item.selected = false
                 })
 
                 self.setData({
@@ -110,7 +110,8 @@ Page({
                 let sec = item.project_file.time % 60
                 item.project_file.time = Util.timeToMinAndSec(item.project_file.time)
                 item.user_info.avatar = item.user_info.avatar == '' ? self.data.tx : item.user_info.avatar
-                item.size_text = (item.size / Math.pow(1024, 2)).toFixed(2)                        
+                item.size_text = (item.size / Math.pow(1024, 2)).toFixed(2)  
+                item.selected = false                      
             })
 
             self.setData({
@@ -133,7 +134,7 @@ Page({
                 title: '提示',
                 content: '文件获取失败！',
                 showCancel: false
-              })
+            })
          })
     },
 
@@ -181,29 +182,43 @@ Page({
         let self = this
         self.setData({
             showShare: true
-        })
+        })       
     },
     toSelectShare(e) {
         let self = this
+        // 给遍历的数组videoList添加属性selected是否被选中
+        e.currentTarget.dataset.selected = !e.currentTarget.dataset.selected
+        this.setData({
+            videoList:setSelectedVideo(self.data.videoList, e.currentTarget.dataset.id)
+        })
+        function setSelectedVideo(arr,id){
+           var selectedVideo = arr.find(v => v.id ==id)
+           selectedVideo.selected = !selectedVideo.selected
+           return arr
+        }
+        // console.log(self.data.videoList.map(v=>v.selected),'---6666')
+
+        // 得到选择的数组id
         function deleteArr(arr,index) {
             arr.splice(index,1)
             return arr
         }
- 
         self.setData({
             selectShareList: (self.data.selectShareList.indexOf(e.currentTarget.dataset.id) === -1)?self.data.selectShareList.concat(e.currentTarget.dataset.id):deleteArr(self.data.selectShareList,self.data.selectShareList.findIndex((v)=>{return v === e.currentTarget.dataset.id})),
-            selectShare: (self.data.selectShareList.indexOf(e.currentTarget.dataset.id) === -1) ? true :false,
-            selectedID: e.currentTarget.dataset.id
         })
-        console.log(self.data.selectShare,'++++++++style')
-        console.log(self.data.selectShareList,'----------list')
+        // self.setData({
+        //     selectShare: (self.data.selectShareList.indexOf(e.currentTarget.dataset.id) === -1) ? false:true
+        // })
+
+        // console.log(self.data.selectShareList,'id-list')
     },
     toCloseCreateShare(e) {
         let self = this
         self.setData({
             showShare: false,
-            selectShareList: []
+            // selectShareList: []
         })
+        // self.data.videoList.map(v=>v.selected=false)
     },
     toCreateShareList(e) {
         let self = this

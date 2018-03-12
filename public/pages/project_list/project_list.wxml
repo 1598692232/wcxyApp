@@ -60,7 +60,7 @@
 				data-url="{{item.project_file.url}}" data-name="{{item.name}}" 
 				data-id="{{item.id}}" data-username="{{item.user_info.realname}}" 
 				data-create-time="{{item.created_time}}" data-type="{{item.type}}" data-cover-img="{{item.cover_img[0]}}" 
-				data-index="{{index}}">
+				data-index="{{index}}"  data-selected="item.selected">
 					<view class="pl-img-body">
 						<block wx:if="{{item.type == 'folder'}}">
 							<view class="pl-img pl-floder">
@@ -93,23 +93,20 @@
 						</view>
 						<view class="pl-user clearfix">
 							<image class="pl-user-tou" src="{{item.user_info.avatar}}" mode="aspectFit" lazy-load="{{true}}"></image>
-							
 							<text class="pl-create-timer">{{item.created_time}}</text>
 						</view>
 					</view>
-					<!-- <text style="color:#fff">{{item.id}}llll{{selectedID}}---{{selectShareList}}-----</text> -->
-					<!-- <text style="color:#fff">{{selectShareList.indexOf(selectedID)}}</text> -->
-					<!-- <view style="color:#fff" class="{{selectShareList.indexOf(item.id)===-1?'share-btn':'select-share'}}"></view> -->
-					<view wx:if="{{selectShareList.indexOf(item.id)!==-1}}">
-						<view class="share-btn"></view>
-					</view>
-					<view wx:else>
+					<view wx:if="{{item.selected}}">
 						<view class="share-btn select-share">
 							<image src="./img/share_selected.png"></image>
 						</view>
 					</view>
+					<view wx:else>
+						<view class="share-btn"></view>						
+					</view>
 				</view>
 			</view>
+		
 			<view wx:if="{{!showShare}}">
 				<view class="pl-li clearfix" wx:for="{{videoList}}" wx:key="index" bindtap="toInfo" 
 				data-url="{{item.project_file.url}}" data-name="{{item.name}}" 
@@ -123,14 +120,12 @@
 							</view>
 						</block>
 						<block wx:if="{{item.type == 'file'}}">
-							
 								<!-- <view class="pl-count">
 									<text>{{item.version_count}}</text>
 								</view> -->
 								<view class="play-img">
 								<image src="./img/play.png" mode="aspectFit" lazy-load="{{true}}"></image> 								
 								</view>
-	
 								<!-- <view class="pl-timer">
 									<text>{{item.project_file.time}}</text>
 								</view> -->

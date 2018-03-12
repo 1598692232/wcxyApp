@@ -3,176 +3,132 @@ const app = getApp()
 
 Page({
     data: {
-        noticeList: [],
+        noticeListInfo: [],
         animationData: {},
         hideClear: true,
         listInfoWidth: 0,
         startX: 0,
         startY: 0,
         isTouchMove: false,
-        scrollHeightList: 0
+        scrollHeightList: 0,
+        projectId: 0
     },
 
-    onLoad() {
+    onLoad(options) {
+        console.log(options,'options')
         let self = this
-        wx.showLoading()
-
+        self.setData({
+            projectId: options.project_id
+        })
         Util.getSystemInfo().then(res => {
             self.setData({
                 scrollHeightList: res.windowHeight,
                 listInfoWidth: res.windowWidth - 110,
                 liWidth: res.windowWidth - 110
             })
-
-            let infoData = wx.getStorageSync('info_data')
-            if (infoData != '') {
-                setTimeout(() => {
-                    let url = '/pages/info/info?url=' + infoData.url + '&name='
-                    + infoData.name + '&id=' + infoData.doc_id
-                    + '&username=' + infoData.username + '&createTime=' + infoData.createTime
-                    + '&coverImg=' + infoData.coverImg + '&project_id=' + infoData.project_id
-                    wx.navigateTo({
-                        url: url
-                    })
-                }, 1000)
-            }
         })
     },
     onShow() {
         let store = wx.getStorageSync('app')
-
         if (store.token == '') {
             wx.navigateTo({
                 url: '/pages/signin/signin'
             })
         } else {
-            // 评论输入框动画注册
-            let animation = wx.createAnimation({
-                duration: 300,
-                timingFunction: 'ease',
-            })
-
             let self = this
-
-            self.animation = animation
-
             self.initList()
-        }
-        
-    },
-
-    consoleLoginError(errText) {
-        this.setData({
-            hiddenErr: false,
-            errMsg: errText
-        })
-        this.animation.opacity(1).step()
-        this.setData({
-            animationData: this.animation.export()
-        })
-
-        setTimeout(() => {
-            this.animation.opacity(0).step({duration: 1000})
-            this.setData({
-                animationData: this.animation.export(),
-            })
-            setTimeout(() => {
-                this.setData({
-                    hiddenErr: true,
-                })
-            }, 1000)
-        }, 2000)
+        }  
     },
 
     //初始化列表页
     initList() {
-        let store = wx.getStorageSync('app')
-        let self = this
+        const translateNotificationType = (type) => {
+            switch (type) {
+              case 'upload':
+                return '上传了';
+              case 'comment':
+                return '评论了';
+              case 'change':
+                return '修改了';
+              case 'changecover':
+                return '修改了';
+              case 'merge':
+                return '合并了';
+              case 'deletecomment':
+                return '删除了'
+              case 'deletedoc':
+                return '删除了'
+              case 'deleteversion':
+                return '解除了'
+              case 'created_doc':
+                return '创建了'
+              case 'join':
+                return '加入了'
+              case 'deleteprojectuser':
+                return '退出了'
+              default:
+                return type
+            }
+        }
 
-        Util.ajax('project', 'get', store).then(data => {
-            let pros = []
-            data.list.forEach(item => {
-                if (item.type == 'admin') {
-                    item.storage_size = item.storage_count != undefined ? (item.storage_count / Math.pow(1024, 2)).toFixed(2) : 0                            
-                    //演示项目处理
-                    item.storage_size = item.name == '演示项目' ? 166.29 : item.storage_size
-                    item.file_count = item.name == '演示项目' ? '2' : item.file_count
-                    pros.push(item)
-                }
+        const translateNotificationTypeText = (type) => {
+            switch (type) {
+                case 'changecover':
+                 return '封面'
+                case 'deleteversion':
+                 return '版本'
+                case 'created_doc':
+                 return '封面'
+                case 'changecover':
+                 return '文件夹'
+                case 'change':
+                 return '状态'
+                case 'deletecomment':
+                 return '评论'
+            }
+        }
+
+        let self = this
+        let store = wx.getStorageSync('app')
+        let reqData = Object.assign({}, {token: store.token},{login_id:store.login_id})
+        reqData.project_id = self.data.projectId
+        console.log(reqData,'reqData')
+        wx.showLoading()
+        Util.ajax('notice/detail', 'get',reqData).then(data => {
+            data.map(item => {
+                item.noticetype = translateNotificationType(item.type),
+                item.createtime = Util.getCreateTime(item.created_at)
             })
             self.setData({
-                noticeList: [{name:'醉乡民谣',text:'Kevin 评论了[醉乡民谣】'},{name:'小城故事多',text:'新阅 v1.0.8(NEW)'},{name:'官网教学视频制作剪辑参考样式',text:'Kevin 评论了[官网教学视频制作剪辑参考样式]'}]
+                noticeListInfo: data
             })
-
+            console.log(self.data.noticeListInfo,'-------noticeListInfo')
             wx.hideLoading()
         }, res => {
-
             wx.showModal({
                 title: '提示',
-                content: '获取我的项目失败,请重新登录！！',
+                content: '获取消息通知失败,请重新登录！！',
                 showCancel: false,
                 success: function(res) {
                     if (res.confirm) {
-                        wx.navigateTo({url: '/pages/signin/signin?login_out=1'})
+                        wx.navigateTo({url: '/pages/signin/signin?login_out=2'})
                     }
                 }
             })
-        })
-
-        Util.ajax('project/join', 'get', store).then(data => {
-            data.list.forEach(item => {
-                item.storage_size = item.storage_count != undefined ? (item.storage_count / Math.pow(1024, 2)).toFixed(2) : 0
-            })
-            self.setData({
-                joinProjectList: data.list,
-                joinProjectListTemp: data.list
-            })
-            wx.hideLoading()
-        }, (res) => {
-
-            wx.showModal({
-                title: '提示',
-                content: '获取参与项目失败,请重新登录！！',
-                showCancel: false,
-                success: function(res) {
-                    if (res.confirm) {
-                        wx.navigateTo({url: '/pages/signin/signin?login_out=1'})
-                    }
-                }
-            })
-        })
-    },
-
-    toNoticeSystemInfo(e) {
-        wx.setStorage({
-            key: 'project_id',
-            data: e.currentTarget.dataset.id
-        })
-        wx.navigateTo({
-          url: '/pages/project_list/project_list?project_id=' + e.currentTarget.dataset.id + '&projectName=' + e.currentTarget.dataset.name
-        })
-    },
-    toNoticeInfo(e) {
-        wx.setStorage({
-            key: 'project_id',
-            data: e.currentTarget.dataset.id
-        })
-        wx.navigateTo({
-          url: '/pages/project_list/project_list?project_id=' + e.currentTarget.dataset.id + '&projectName=' + e.currentTarget.dataset.name
         })
     },
 
     //手指触摸动作开始 记录起点X坐标
     touchstart: function (e) {
         //开始触摸时 重置所有删除
-        this.data.noticeList.forEach(function (v, i) {
+        this.data.noticeListInfo.forEach(function (v, i) {
         if (v.isTouchMove)//只操作为true的
             v.isTouchMove = false;
         })
         this.setData({
         startX: e.changedTouches[0].clientX,
         startY: e.changedTouches[0].clientY,
-        noticeList: this.data.noticeList
+        noticeListInfo: this.data.noticeListInfo
         })
     },
     //滑动事件处理
@@ -185,7 +141,7 @@ Page({
         touchMoveY = e.changedTouches[0].clientY,//滑动变化坐标
         //获取滑动角度
         angle = that.angle({ X: startX, Y: startY }, { X: touchMoveX, Y: touchMoveY });
-        that.data.noticeList.forEach(function (v, i) {
+        that.data.noticeListInfo.forEach(function (v, i) {
         v.isTouchMove = false
         //滑动超过30度角 return
         if (Math.abs(angle) > 30) return;
@@ -198,7 +154,7 @@ Page({
         })
         //更新数据
         that.setData({
-            noticeList: that.data.noticeList
+            noticeListInfo: that.data.noticeListInfo
         })
     },
     /**
@@ -214,14 +170,25 @@ Page({
     },
     //删除事件
     del: function (e) {
-        this.data.noticeList.splice(e.currentTarget.dataset.index, 1)
+        this.data.noticeListInfo.splice(e.currentTarget.dataset.index, 1)
         this.setData({
-            noticeList: this.data.noticeList
+            noticeListInfo: this.data.noticeListInfo
         })
     },
     delAll: function (e) {
-        this.setData({
-            noticeList: []
+        let self = this
+        wx.showModal({
+            title: '提示',
+            content: '确定要清空全部消息，这是一个不可逆的操作!!!',
+            success: function(res) {
+                if(res.confirm){
+                    self.setData({
+                        noticeListInfo: []
+                    })
+                } else if (res.cancel) {
+                    console.log('用户点击取消')
+                }
+            }
         })
     }
 })

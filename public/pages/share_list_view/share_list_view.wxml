@@ -10,14 +10,16 @@
                     <view>查看数：13</view>
                     <view>包含7个文件</view>
                     <view>有效期：永久有效</view>
-                    <view>密码: 8as2</view>
+                    <view selectable="true">密码: 8as4</view>
                 </view>
             </view>
         </view>
-        <button class="share-list-copyBtn" bindtap="toCopyAndTransmit" open-type="share" data-password="123456789">
-            <image src="./img/share.png"></image>
-            复制密码并转发
-        </button>
+        <view catchtap="copyTBL">
+            <button class="share-list-copyBtn" bindtap="toCopyAndTransmit" open-type="share" data-password="123456789">
+                <image src="./img/share.png"></image>
+                复制密码并转发
+            </button>
+        </view>
     </view>
     <view class="share-list-view-video">
         <view class="share-list-video">
@@ -30,7 +32,7 @@
                     <image></image>
                     <text>8小时</text>
                 </view>
-                <view class="comment">
+                <view class="comment" bindtap="toShareInfo">
                     <image src="./img/comment.png"></image>
                     <text>28</text>
                 </view>

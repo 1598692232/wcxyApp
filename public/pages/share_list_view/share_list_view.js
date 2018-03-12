@@ -55,29 +55,52 @@ Page({
     },
     onShareAppMessage: function (res) {
         if (res.from === 'button') {
-          // 来自页面内转发按钮
-        //   console.log(res.target)
-        //   console.log(res.target.dataset.password,'password')
-        //   wx.setClipboardData({
-        //     data: res.target.dataset.password,
-        //     success: function(res) {
-        //       wx.getClipboardData({
-        //         success: function(res) {
-        //           console.log(res.data) // data
-        //         }
-        //       })
-        //     }
-        //   })
+            // 来自页面内转发按钮
+            //   console.log(res.target)
         }
         return {
           title: '自定义转发标题',
           path: '/pages/share_list_view/share_list_view',
           success: function(res) {
             // 转发成功
+            // wx.showModal({
+            //     title: '提示',  
+            //     content: '转发成功', 
+            //     success: function(res) {  
+            //         if (res.confirm) {  
+            //         console.log('确定')  
+            //         } else if (res.cancel) {  
+            //         console.log('取消')  
+            //         }  
+            //     }
+            // })
           },
           fail: function(res) {
             // 转发失败
           }
         }
+    },
+    copyTBL:function(e){  
+        var self=this;
+        wx.setClipboardData({
+            data: '密码: 8as4',
+            success: function(res) {
+            // self.setData({copyTip:true}),  
+                // wx.showModal({
+                //     title: '提示', 
+                //     content: '复制成功',  
+                //     success: function(res) {  
+                //         if (res.confirm) {  
+                //         console.log('确定')  
+                //         } else if (res.cancel) {  
+                //         console.log('取消')  
+                //         }  
+                //     }
+                // })
+            } 
+        });  
+    },
+    toShareInfoe(e) {
+
     }
 })
