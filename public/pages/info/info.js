@@ -96,7 +96,7 @@ Page({
         statusActive: '',
         animationSelect: null,
         statusSelectShow: false,
-        visibleStatusText:'',
+        visibleStatusText:'审核',
 
         // versionsList: [1,2,3],
         versionVal: [0],
@@ -883,7 +883,7 @@ Page({
 
         let context = wx.createCanvasContext('secondCanvas')
         let context2 = wx.createCanvasContext('firstCanvas')
-        
+
         self.setData({
             cxt: context,
             cxtShowBlock: context2

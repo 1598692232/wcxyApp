@@ -1,6 +1,8 @@
 let Util = require('../../utils/util.js')
 const app = getApp()
 
+const pic_type = ['jpg', 'jpeg', 'png', 'gif', 'tiff'];
+
 Page({
 	data: {
 		videoImg: app.data.staticImg.videoImg,
@@ -49,7 +51,7 @@ Page({
                     item.user_info.avatar = item.user_info.avatar == '' ? self.data.tx : item.user_info.avatar
                     item.size_text = (item.size / Math.pow(1024, 2)).toFixed(2)
                     item.selected = false
-                })
+                });
 
                 self.setData({
                     videoList: json.list,
@@ -58,7 +60,8 @@ Page({
                     scrollHeight: result.windowHeight,
                     scrollNumberHeight: result.windowHeight-263,
                     breadcrumbWidth: 100
-                })
+                });
+                console.log(self.data.videoList)
             }, res => {
                 wx.showModal({
                     title: '提示',
@@ -139,13 +142,26 @@ Page({
     },
 
 	toInfo(e) {
-        let self = this
+        let self = this;
+
         if (e.currentTarget.dataset.type == 'folder') {
             self.selectFolder(e)
         } else {
-            let video = self.data.videoList[e.currentTarget.dataset.index].project_file.resolution.reduce(function (item1,item2) {
-                return item1.resolution > item2.resolution ? item1 : item2
-            })
+
+            if (e.currentTarget.dataset.fileType != 'video' &&
+            e.currentTarget.dataset.fileType != 'audio'  &&  
+            !pic_type.includes(e.currentTarget.dataset.ext)) {
+                wx.showModal({
+                    title: '提示',
+                    content: '文件格式不可查看或播放',
+                    showCancel: false
+                })
+                return;
+            }
+
+            // let video = self.data.videoList[e.currentTarget.dataset.index].project_file.resolution.reduce(function (item1,item2) {
+            //     return item1.resolution > item2.resolution ? item1 : item2
+            // })
             
             // let url = '/pages/info/info?url=' + video.src + '&name=' 
             //     + e.currentTarget.dataset.name + '&id=' + e.currentTarget.dataset.id 
@@ -205,12 +221,7 @@ Page({
         }
         self.setData({
             selectShareList: (self.data.selectShareList.indexOf(e.currentTarget.dataset.id) === -1)?self.data.selectShareList.concat(e.currentTarget.dataset.id):deleteArr(self.data.selectShareList,self.data.selectShareList.findIndex((v)=>{return v === e.currentTarget.dataset.id})),
-        })
-        // self.setData({
-        //     selectShare: (self.data.selectShareList.indexOf(e.currentTarget.dataset.id) === -1) ? false:true
-        // })
-
-        // console.log(self.data.selectShareList,'id-list')
+        });    
     },
     toCloseCreateShare(e) {
         let self = this
@@ -222,6 +233,15 @@ Page({
     },
     toCreateShareList(e) {
         let self = this
+        let shareList = [];
+        self.data.selectShareList.forEach((item, k) => {
+            let doc = self.data.videoList.filter(it => it.id == item)[0];
+            shareList.push(doc);
+        });
+        wx.setStorage({
+            key: 'share_file',
+            data: shareList
+        });
         wx.navigateTo({
             url: '/pages/share_create/share_create'
         })

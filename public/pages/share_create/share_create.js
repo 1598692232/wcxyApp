@@ -35,7 +35,7 @@ Page({
             dateTimeArray1: obj1.dateTimeArray,
             dateTime1: obj1.dateTime
         });
-        
+        console.log(wx.getStorageSync('share_file'));
     },
     // 时间选择器
     changeDateTime1(e) {
@@ -113,9 +113,7 @@ Page({
 
     // 取消分享
     toCloseShareList(e) {
-        wx.navigateTo({
-            url: '/pages/project_list/project_list'
-        })
+        wx.navigateBack()
     },
     // 保存分享
     toShareListView(e) {

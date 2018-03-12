@@ -210,10 +210,10 @@ Page({
         wx.setStorage({
             key: 'project_id',
             data: e.currentTarget.dataset.id
-        })
-        wx.navigateTo({
-          url: '/pages/project_list/project_list?project_id=' + e.currentTarget.dataset.id + '&projectName=' + e.currentTarget.dataset.name
-        })
+        });
+        let url = '/pages/project_list/project_list?project_id=' + e.currentTarget.dataset.id + '&projectName=' + e.currentTarget.dataset.name;
+        console.log(url)
+        wx.navigateTo({ url })
     },
 
     searchFocus(e) {

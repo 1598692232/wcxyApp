@@ -67,6 +67,19 @@
 					"pathName": "pages/share_create/share_create",
 					"query": "",
 					"scene": "1011"
+				},
+				{
+					"id": -1,
+					"name": "share-create2",
+					"pathName": "pages/share_create/share_create",
+					"query": "",
+					"scene": "1011"
+				},
+				{
+					"id": -1,
+					"name": "pl",
+					"pathName": "pages/project_list/project_list",
+					"query": ""
 				}
 			]
 		}
