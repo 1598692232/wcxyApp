@@ -14,8 +14,6 @@ Page({
 
     onLoad() {
         let self = this
-        wx.showLoading()
-
         Util.getSystemInfo().then(res => {
             self.setData({
                 scrollHeight: res.windowHeight,
@@ -41,22 +39,35 @@ Page({
     initList() {
         let self = this
         let store = wx.getStorageSync('app')
+
+         //获取当天零点的时间戳 
+        const start = new Date(new Date(new Date().toLocaleDateString()).getTime());
+        var timestampday = Date.parse(start); 
+        timestampday = timestampday / 1000; 
+
         //获取当前时间戳  
         var timestamp = Date.parse(new Date());  
         timestamp = timestamp / 1000;  
         console.log("当前时间戳为：" + timestamp);
 
-        var timeback = wx.getStorageSync(store.login_id.toString()).noticeList0==null?timestamp:wx.getStorageSync(store.login_id.toString()).noticeList0.find((v) => {
-            var arr= []
-            arr.push(v.timestamp)
-            return Math.min(arr)
+        var sumData22 = wx.getStorageSync(store.login_id.toString())
+        var min
+        var arrsumData = sumData22.noticeList0?sumData22.noticeList0:[]
+        var userItem22 = arrsumData.forEach((v,i) => {
+            console.log(v.timestamp,'v.timestamp')
+            if(i==0){
+                min = v.timestamp
+            }else{
+                min = min<v.timestamp?min:v.timestamp
+            }
+            return min
         })
+        console.log(min,'min')
         // ajax处理登录，成功后存储本地信息
         // 本地存储用户信息
         let reqData = Object.assign({}, {token: store.token},{login_id:store.login_id})
-        reqData.new_time = timeback.timestamp
-        // reqData.new_time = 1420843520
-        wx.showLoading()
+        reqData.new_time = min?min:timestampday
+        // reqData.new_time = 1517488068
 
         if(!wx.getStorageSync(store.login_id.toString())){
             wx.setStorageSync(store.login_id.toString(),{
@@ -65,7 +76,8 @@ Page({
         }
 
         Util.ajax('notice', 'get', reqData).then(data => {
-            data.list.map((item,i) => {
+            var data0 = data.list?data.list:[]
+            data0.map((item,i) => {
                 i++;
         // ----------------------  
         // 在localstorage里
@@ -86,7 +98,7 @@ Page({
                         var sumData = wx.getStorageSync(store.login_id.toString())
                         sumData.noticeList0.push({
                             id: item.project_id,
-                            timestamp:timestamp
+                            timestamp:Date.parse(new Date())/1000
                         })
                         wx.setStorageSync(store.login_id.toString(), sumData)
                     }
@@ -97,8 +109,7 @@ Page({
                 noticeList: data.list,
                 notice_count:data.notice_count,
                 project_name: data.project_name
-            })
-            wx.hideLoading()    
+            })   
         }, res => {
             wx.showModal({
                 title: '提示',

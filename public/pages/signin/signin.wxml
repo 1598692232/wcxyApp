@@ -9,7 +9,7 @@
 		<form bindsubmit="handleLogin">
 			<view class="login-input-body">
 				<image class="login-input-icon" src="{{email}}"></image>
-				<input type="text" name="email" class="login-input" placeholder="请输入您的邮箱/手机号" placeholder-style="font-size:13px;" value="{{emailText}}" focus="{{emailFocus}}" bindinput="handleInput" bindfocus="handleFocus" data-name="email" bindblur="handleBlur"/>
+				<input type="text" name="email" class="login-input" placeholder="请输入您的邮箱" placeholder-style="font-size:13px;" value="{{emailText}}" focus="{{emailFocus}}" bindinput="handleInput" bindfocus="handleFocus" data-name="email" bindblur="handleBlur"/>
 				<image class="login-input-clear" src="{{clear}}" catchtap="clearInput" hidden="{{hiddenEmailClear}}" data-name="email"></image>
 			</view>
 			<view class="login-input-body">
