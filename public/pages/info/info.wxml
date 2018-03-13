@@ -127,9 +127,12 @@
   </view>
 
     <form>
-        <view class="push-comment send-comment" style="height: {{isFocus ? infoHeight / 3 : 44}}px">
-            <view class="push-comment-input clearfix">
-                <input placeholder="发表评论..." cursor-spacing="10" name="commentText" style="color:#fff,line-height: {{isFocus ? infoHeight / 3 : 44}}px" bindinput="changeBtn"  
+        <view class="push-comment send-comment" style="height: {{isFocus ? infoHeight / 3 : 44}}px;">
+            <view class="push-comment-input clearfix" style="padding-left:{{isFocus ? 5 : 44}}px">
+                <view class="comment-input-icon" wx:if="{{!isFocus}}">
+                    <image src="./img/huabi-active.png" mode="aspectFit"></image>
+                </view>
+                <input placeholder="发表评论..." cursor-spacing="10" name="commentText" style="color:#fff,line-height: {{isFocus ? infoHeight / 3 : 44}}px;padding-left:{{isFocus ? 5 : 0}} 5px" bindinput="changeBtn"  
                 bindfocus="commentFocus" bindblur="commentBlur" value="{{commentText}}" fixed="{{true}}" focus="{{isFocus}}" /> 
             </view>
         

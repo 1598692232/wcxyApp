@@ -25,8 +25,7 @@ Page({
             })
            
         });
-
-        if (options.password) {
+        if (options.password != undefined) {
             let params = {
                 share_code: options.code,
                 password: options.password
@@ -36,8 +35,6 @@ Page({
                 password: options.password
             });
             this.initList(params);
-            
-           
         } else {
             let scene = decodeURIComponent(options.scene).split('=');
             self.setData({

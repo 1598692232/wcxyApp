@@ -61,7 +61,7 @@ page {
     left: 0; */
     width: 100%;
     /* background: #2a2e3b; */
-    background: #383B4A;
+    background: #2d303e;
     box-sizing:border-box;
     padding: 5px;
     z-index:100;
@@ -71,7 +71,7 @@ page {
     height: 44px;
     line-height: 1.5;
     font-size: 13px;
-    padding:5px;
+    padding-right:5px;
     /*padding-top: 10px;*/
     box-sizing: border-box;
     /* background-color: #535b73; */

@@ -1,35 +1,7 @@
 <view class="create-share-list-box" style="height:{{scrollHeight}}px;">
     <view class="create-share-header">
-        已选择 <text>6</text> 个文件
+        已选择 <text>{{createShareList.length}}</text> 个文件
     </view>
-    <!-- <block>
-        <view wx:if="{{createShareList.length<=5}}">
-            <view class="create-share-list-top">
-                <view class="create-share-list" wx:for="{{createShareList}}" style="margin-left:{{index===0?0:'-78px'}};z-index:{{9999 - index}};" wx:key="index">
-                    <view class="share-pic">
-                        <image src="{{item.src}}"></image>
-                    </view>
-                    <view class="share-name">
-                        <text>{{item.name}}</text>
-                    </view>
-                </view>
-            </view>
-        </view>
-        <view wx:else>
-            <scroll-view scroll-x>
-                <view class="create-share-list-top2" style="width: {{120+createShareList.length * 50}}px">
-                    <view class="create-share-list" wx:for="{{createShareList}}" style="margin-left:{{index===0?0:'-78px'}};z-index:{{9999 - index}};" wx:key="index">
-                        <view class="share-pic">
-                            <image src="{{item.src}}"></image>
-                        </view>
-                        <view class="share-name">
-                            <text>{{item.name}}</text>
-                        </view>
-                    </view>
-                </view>
-            </scroll-view>
-        </view>
-    </block> -->
 
     <scroll-view scroll-x>
         <view class="create-share-list-top" style="width: {{(createShareList.length * 100 + 10)}}px">
