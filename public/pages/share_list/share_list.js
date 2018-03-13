@@ -30,8 +30,8 @@ Page({
             data.list.map(item => {
                 item.avatar = item.avatar == '' ? self.data.tx : item.avatar
                 item.createtime = Util.getCreateTime(item.created_at)
-                item.image = item.files[0]?item.files[0].cover_img:null
-                item.number = item.files.length
+                item.image = item.share_img
+                item.number = item.files_count
             })
             self.setData({
                 shareList: data.list
@@ -40,7 +40,7 @@ Page({
         }, res => {
             wx.showModal({
                 title: '提示',
-                content: '获取消息通知失败,请重新登录！！',
+                content: res.data.msg,
                 showCancel: false,
                 success: function(res) {
                     if (res.confirm) {

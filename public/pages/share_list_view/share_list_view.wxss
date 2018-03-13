@@ -74,7 +74,7 @@
 }
 .share-list-video{
     width: 100%;
-    height: auto;
+    height: 310px;
     padding-bottom: 12px;
 }
 .share-list-video .name{
