@@ -98,7 +98,7 @@ Page({
                         var sumData = wx.getStorageSync(store.login_id.toString())
                         sumData.noticeList0.push({
                             id: item.project_id,
-                            timestamp:Date.parse(new Date())/1000
+                            timestamp:Date.parse(new Date(new Date(new Date().toLocaleDateString()).getTime()))/1000
                         })
                         wx.setStorageSync(store.login_id.toString(), sumData)
                     }
