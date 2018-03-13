@@ -1,53 +1,59 @@
 
 <view class="section tc" style="height: {{scrollHeightAll}}px"  wx:if="{{!passwordModal}}">
     <view style="width: 100%;height:211px" id="play-body">
-        <!-- <video id="myVideo" class="info-video" src="{{url}}" enable-danmu controls objectFit="contain" bindplay="listenerPlay"
-        autoplay bindtimeupdate="getVideoTime" bindpause="getVideoTime2" muted="{{true}}" bindfullscreenchange="handleFullScreen">
-            <cover-view class="video-select-btn-p" catchtap="showPSelect" wx:if="{{fullScreen && !videoClicked}}">
-                {{pNo}}P
-            </cover-view>
-            <cover-view bindtap="hidePselect" class="video-cover" wx:if="{{fullScreen && videoClicked}}">
-                <cover-view class="video-select-p-list">
-                    <cover-view class="video-select-table" style="height:{{ps.length * 44}}px;margin-top: -{{ps.length * 44 / 2}}px">
-                        <cover-view wx:for="{{ps}}" wx:key="index" catchtap="changeP" style="color:{{item.activeP ? '#1144d5': ''}}"
-                        data-resolution="{{item.resolution}}" class="video-select-p-li" data-type="video">
-                            {{item.resolution}}
+        <block wx:if="{{info.file_type == 'video'}}">
+            <video id="myVideo" class="info-video" src="{{url}}" enable-danmu controls objectFit="contain" bindplay="listenerPlay"
+            autoplay bindtimeupdate="getVideoTime" bindpause="getVideoTime2" muted="{{true}}" bindfullscreenchange="handleFullScreen">
+                <cover-view class="video-select-btn-p" catchtap="showPSelect" wx:if="{{fullScreen && !videoClicked}}">
+                    {{pNo}}P
+                </cover-view>
+                <cover-view bindtap="hidePselect" class="video-cover" wx:if="{{fullScreen && videoClicked}}">
+                    <cover-view class="video-select-p-list">
+                        <cover-view class="video-select-table" style="height:{{ps.length * 44}}px;margin-top: -{{ps.length * 44 / 2}}px">
+                            <cover-view wx:for="{{ps}}" wx:key="index" catchtap="changeP" style="color:{{item.activeP ? '#1144d5': ''}}"
+                            data-resolution="{{item.resolution}}" class="video-select-p-li" data-type="video">
+                                {{item.resolution}}
+                            </cover-view>
                         </cover-view>
                     </cover-view>
                 </cover-view>
-            </cover-view>
+    
+                <cover-view class="cover-focus" wx:if="{{isFocus}}" bindtap="commentBlur"></cover-view>  
+            </video>
+        </block>
+     
 
-            <cover-view class="cover-focus" wx:if="{{isFocus}}" bindtap="commentBlur"></cover-view>  
-        </video> -->
-
-
-        <!-- <audio poster="{{poster}}" name="{{name}}" author="{{author}}" src="{{src}}" id="myAudio"
-         controls loop style="display: none" bindtimeupdate="audioUpdate"></audio>
-        <view class="info-audio">
-            <view class="info-audio-icon">
-                <image src="./img/mp3.png" mode="aspectFit" ></image>
-            </view>
-            <view class="info-audio-control">
-                <view class="info-audio-play" bindtap="toggleAudio">
-                    <image src="./img/play.png" mode="aspectFit" wx:if="{{audioPause}}"></image>
-                    <image src="./img/pause.png" mode="aspectFit" wx:else></image>
+        <block wx:if="{{info.file_type == 'audio'}}">
+            <audio src="{{url}}" id="myAudio"
+            controls loop style="display: none" bindtimeupdate="audioUpdate"></audio>
+            <view class="info-audio">
+                <view class="info-audio-icon">
+                    <image src="./img/mp3.png" mode="aspectFit" ></image>
                 </view>
-                <view class="info-audio-progress" id="info-audio-progress">
-                    <view class="info-audio-progress-max">
-                        <view class="info-audio-progress-current" style="width: {{audioProgressNum}}px"></view>
+                <view class="info-audio-control">
+                    <view class="info-audio-play" bindtap="toggleAudio">
+                        <image src="./img/play.png" mode="aspectFit" wx:if="{{audioPause}}"></image>
+                        <image src="./img/pause.png" mode="aspectFit" wx:else></image>
                     </view>
-                    <view class="info-audio-progress-circle" style="left: {{audioProgressNum}}px"
-                    bindtouchstart="audioTouchstart"
-                    bindtouchmove="audioTouchmove"
-                    bindtouchend="audioTouchend"
-                    ></view>
+                    <view class="info-audio-time">{{audioCurrentTimeText}}</view>
+                    <view class="info-audio-progress" id="info-audio-progress">
+                        <view class="info-audio-progress-max">
+                            <view class="info-audio-progress-current" style="width: {{audioProgressNum}}px"></view>
+                        </view>
+                        <view class="info-audio-progress-circle" style="left: {{audioProgressNum}}px"
+                        bindtouchstart="audioTouchstart"
+                        bindtouchmove="audioTouchmove"
+                        bindtouchend="audioTouchend"
+                        ></view>
+                    </view>
                 </view>
             </view>
-        </view> -->
+        </block>
+      
 
 
-        <view class="info-pic"> 
-            <image src="{{src}}"></image>
+        <view class="info-pic"  wx:if="{{info.file_type != 'image'}}"> 
+            <image src="{{info.cover_img[0]}}" mode="aspectFit"></image>
         </view>
     </view>
 
@@ -92,7 +98,7 @@
       <view class="video-author"  wx:if="{{!isFocus}}">{{username}} · {{createTime}}</view>
 
       <!-- wx:if="{{isFocus}}" -->
-      <view class="label-control" wx:if="{{isFocus}}">
+      <view class="label-control" wx:if="{{isFocus && info.file_type == 'video'}}">
         <view class="label-body">  
             <view class="label-type">
                 <view class="label-img" wx:for="{{drawType}}" wx:key="index" bindtap="selectDrawType" data-key="{{index}}" id="draw-control{{index}}" >
@@ -142,7 +148,7 @@
             <view class="comment-footer-left">
                 取消
             </view>
-            <view class="comment-footer-time" style="color:{{needTime ? '#086ac1': ''}}">
+            <view class="comment-footer-time" style="color:{{needTime ? '#086ac1': ''}}" wx:if="{{info.file_type != 'image'}}">
                 <image class="time-check" src="./img/time_check.png" wx:if="{{needTime}}"></image>
                 {{currentVideoTime}}
             </view>

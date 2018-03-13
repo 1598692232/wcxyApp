@@ -860,15 +860,24 @@
 .info-audio-progress{
     position: relative;
     box-sizing: border-box;
-    width: 86%;
+    width: 76%;
     padding: 0 10px;
     float: left;
     height: 44px;
 }
 
+.info-audio-time{
+    width: 10%;
+    float: left;
+    color: #fff;
+    font-size: 12px;
+    line-height: 44px;
+    text-align: center,
+}
+
 .info-audio-progress-max{
     position: absolute;
-    left: 5%;
+    left: 10px;
     top: 50%;
     margin-top: -1.5px;
     width: 90%;
@@ -891,7 +900,7 @@
     width: 20px;
     height: 20px;
     border-radius: 50%;
-    background: rgba(255,255,255,1);
+    background: rgba(255,255,255,0.5);
 }
 
 

@@ -11,8 +11,7 @@ const STAUS = {
     4: '意见搜集完成',
 };
 
-let au = 'http://video2.uxinyue.com/Act-mp3/84bafc35c2f24a5fa86ad703252c0d4f/946bb58cb645dbb79bbc77e3851075c4-bbc724b4be1dc17641a30fda1d1a65f2.mp3?OSSAccessKeyId=LTAILWCfmthKUqkk&Expires=1520857506&Signature=bfyrUor6oud2MAVO3ROjWNXoDsU%3D'
-
+let au = 'http://video2.uxinyue.com/Act-mp3/1f6f3a2140554129a7f1172c09768602/4d4dad12059b518d5bfdadabcdf6344f-bdd71a93b57eb975c8251bb5227d59d1.mp3?OSSAccessKeyId=LTAILWCfmthKUqkk&Expires=1520911637&Signature=Wi3KemVcK2arECDsn4u9J2FmCOA%3D'
 Page({
 
     data: {
@@ -118,6 +117,7 @@ Page({
         audioProgressMaxWidth: 0,
         audioProgressNum: 0,
         audioTime: 0,
+        audioCurrentTimeText: '00:00'
     },
 
     statusChange: function(e) {
@@ -196,21 +196,9 @@ Page({
                     project_id: options.project_id
                 })
          
-            }).exec()
+        }).exec()
 
-        wx.createSelectorQuery().select('#info-audio-progress').fields({
-            dataset: true,
-            size: true,
-            scrollOffset: true,
-            properties: ['scrollX', 'scrollY']
-            }, function(res){
-                if (!res) return;
-                self.setData({
-                    audioProgressMaxWidth: res.width,
-                });
-            }).exec(function (res) {
-             
-            })
+
     },
 
     onShow() {
@@ -222,6 +210,24 @@ Page({
             key: 'info_data',
             data: ''
         })
+
+        setTimeout(() => {
+            wx.createSelectorQuery().select('#info-audio-progress').fields({
+                dataset: true,
+                size: true,
+                scrollOffset: true,
+                properties: ['scrollX', 'scrollY']
+                }, function(res){
+                if (!res) return;
+                self.setData({
+                    audioProgressMaxWidth: res.width * 0.9,
+                });
+            }).exec(function (res) {
+                
+            })
+
+        }, 100)
+     
 
         if (self.data.options.scene) {
             scene = decodeURIComponent(self.data.options.scene).split('=')
@@ -366,20 +372,27 @@ Page({
                     } else {
                         item.activeP = false
                     }
-                })
-
-                self.setData({
+                });
+                
+                let info =  {
                     versions: data.versions,
                     ps: data.resolution,
                     visibleStatusText: data.review == 0 ? '审核' :STAUS[data.review],
                     // versionNo: 1,
                     visibleVersion: 0,
-                    pNo: data.resolution[0].resolution,
-                    url:  data.resolution[0].src,
                     username: data.realname,
-                    createTime: Util.getCreateTime(data.created_at),
-                    audioTime: data.time
-                });
+                    createTime: Util.getCreateTime(data.created_at)
+                }
+
+                if (data.file_type == 'video') {
+                    info = Object.assign({}, info, {pNo: data.resolution[0].resolution, url:  data.resolution[0].src,});
+                }
+
+                if(data.file_type == 'audio') {
+                    info = Object.assign({}, info, {audioTime: data.time});
+                }
+
+                self.setData(info);
 
                 // console.log(self.data.versions)
 
@@ -550,6 +563,13 @@ Page({
         })
        
         self.getVideoInfo(store.host, reqData, (data) => {
+            if (!['video', 'audio', 'image'].includes(data.ext)) {
+                wx.showToast({
+                    title: '文件格式不可查看',
+                });
+                return;
+            }
+
             self.setData({
                 doc_id: self.data.versionActive.id
             })
@@ -1597,14 +1617,14 @@ Page({
 
     audioUpdate(e) {
         this.setData({
-            audioProgress: e.detail.currentTime / e.detail.duration,
-            audioProgressNum: e.detail.currentTime / e.detail.duration * this.data.audioProgressMaxWidth,
-            audioTime: e.detail.duration
+            audioProgress: e.detail.currentTime / this.data.audioTime,
+            audioProgressNum: e.detail.currentTime / this.data.audioTime * this.data.audioProgressMaxWidth,
+            audioCurrentTimeText: Util.formatVideoTime(e.detail.currentTime)
         })
     },
 
     audioTouchstart(e) {
-        let offestX = this.windowWidth * 0.14 + this.windowWidth * 0.05;
+        let offestX = this.windowWidth * (0.14 + 0.1) + 10;
         this.audioTouch = {
             x1: e.touches[0].clientX,
             offestX,
@@ -1617,11 +1637,21 @@ Page({
         this.audioTouch.x2 = e.touches[0].clientX;
         let moveX = this.audioTouch.x2 - this.audioTouch.x1;
         let audioProgressNum = this.audioTouch.startX +  moveX;
-        let audioProgress = audioProgressNum / this.data.audioProgressMaxWidth
+        //防止拖动超出
+        if (audioProgressNum < 0) {
+            audioProgressNum = 0
+        }
+        if (audioProgressNum > this.data.audioProgressMaxWidth) {
+            audioProgressNum = this.data.audioProgressMaxWidth
+        }
+
+        let audioProgress = audioProgressNum / this.data.audioProgressMaxWidth;
+        
         this.setData({
             audioProgress,
             audioProgressNum,
-            audioPause: true
+            audioPause: true,
+            audioCurrentTimeText: Util.formatVideoTime(audioProgress * this.data.audioTime)
         });
         this.audioTouch.audioProgress = audioProgress;
         this.audioCtx.pause()
