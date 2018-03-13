@@ -82,28 +82,32 @@ Page({
                 i++;
         // ----------------------  
         // 在localstorage里
-                item.count = 0
-                var thisItemData = wx.getStorageSync(store.login_id.toString()).noticeList0.find((v) => {
-                    return v.id == item.project_id
-                })
-                if(thisItemData){
-                    if(thisItemData.timestamp){
-                        item.notice_content.forEach((v)=> {
-                            if(v.created_at > thisItemData.timestamp){
-                                item.count += 1
-                            }
-                        })
-                    }
-                }else{
-                    if(wx.getStorageSync(store.login_id.toString()).noticeList0.length < i){
-                        var sumData = wx.getStorageSync(store.login_id.toString())
-                        sumData.noticeList0.push({
-                            id: item.project_id,
-                            timestamp:Date.parse(new Date(new Date(new Date().toLocaleDateString()).getTime()))/1000
-                        })
-                        wx.setStorageSync(store.login_id.toString(), sumData)
+                function count(){
+                    item.count = 0
+                    var thisItemData = wx.getStorageSync(store.login_id.toString()).noticeList0.find((v) => {
+                        return v.id == item.project_id
+                    })
+                    if(thisItemData){
+                        if(thisItemData.timestamp){
+                            item.notice_content.forEach((v)=> {
+                                if(v.created_at > thisItemData.timestamp){
+                                    item.count += 1
+                                }
+                            })
+                        }
+                    }else{
+                        if(wx.getStorageSync(store.login_id.toString()).noticeList0.length < i){
+                            var sumData = wx.getStorageSync(store.login_id.toString())
+                            sumData.noticeList0.push({
+                                id: item.project_id,
+                                timestamp:Date.parse(new Date(new Date(new Date().toLocaleDateString()).getTime()))/1000
+                            })
+                            wx.setStorageSync(store.login_id.toString(), sumData)
+                            count()
+                        }
                     }
                 }
+                count()
         // ----------------------
             })
             self.setData({
