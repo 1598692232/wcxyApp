@@ -25,12 +25,16 @@
     background: #000;
 }
 .share-list .info{
-    height: 44px;
-    margin-top: 22px;
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+   justify-content: center;
+    /* height: 44px; */
+    /* margin-top: 22px; */
 }
 .share-list .info .share-list-name{
     font-size: 13px;
-    line-height: 20px;
+    line-height: 30px;
     color: #FFFFFF;
 }
 .share-list .info .share-list-info{
