@@ -4,10 +4,15 @@ const app = getApp()
 Page({
     data: {
         scrollHeight: 0,
-        shareList: []
+        shareList: [],
+        projectID: 0,
+        tx: app.data.staticImg.manager,
     },
     onLoad(options) {
-		let self = this;
+        let self = this;
+        self.setData({
+            projectID:options.project_id
+        })
         Util.getSystemInfo().then(result => {
             self.setData({
                 scrollHeight: result.windowHeight,
@@ -15,17 +20,40 @@ Page({
             wx.setNavigationBarTitle({title: '链接'})
         })
     },
-    
-
     onShow() {
         let self = this
-        // 获取参与成员头像姓名
         let store = wx.getStorageSync('app')
-        let reqData = Object.assign({}, store, {
-            project_id: wx.getStorageSync('project_id')
-        })
-        self.setData({
-            txList: [{name:'1月之前的后期素材',time:'1天前',num:7},{name:'1月之前的后期素材',time:'1天前',num:7}]
+        let reqData = Object.assign({}, {token: store.token},{login_id:store.login_id})
+        reqData.project_id = self.data.projectID
+        wx.showLoading()
+        Util.ajax('sharelink/list', 'get',reqData).then(data => {
+            data.list.map(item => {
+                item.avatar = item.avatar == '' ? self.data.tx : item.avatar
+                item.createtime = Util.getCreateTime(item.created_at)
+                item.image = item.files[0]?item.files[0].cover_img:null
+                item.number = item.files.length
+            })
+            self.setData({
+                shareList: data.list
+            })
+            wx.hideLoading()
+        }, res => {
+            wx.showModal({
+                title: '提示',
+                content: '获取消息通知失败,请重新登录！！',
+                showCancel: false,
+                success: function(res) {
+                    if (res.confirm) {
+                        wx.navigateTo({url: '/pages/signin/signin?login_out=2'})
+                    }
+                }
+            })
         })
     },
+    toShareInfo(e){
+        wx.navigateTo({
+            url: '/pages/share_list_view/share_list_view?code=' + e.currentTarget.dataset.code 
+            + '&password=' + e.currentTarget.dataset.password + '&id=' + e.currentTarget.dataset.id
+        })
+    }
 })
