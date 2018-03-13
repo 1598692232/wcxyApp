@@ -50,23 +50,24 @@ Page({
         timestamp = timestamp / 1000;  
         console.log("当前时间戳为：" + timestamp);
 
-        var sumData22 = wx.getStorageSync(store.login_id.toString())
-        var min
-        var arrsumData = sumData22.noticeList0?sumData22.noticeList0:[]
-        var userItem22 = arrsumData.forEach((v,i) => {
-            console.log(v.timestamp,'v.timestamp')
-            if(i==0){
-                min = v.timestamp
-            }else{
-                min = min<v.timestamp?min:v.timestamp
-            }
-            return min
-        })
-        console.log(min,'min')
+        // 获得最小的
+        // var sumData22 = wx.getStorageSync(store.login_id.toString())
+        // var min
+        // var arrsumData = sumData22.noticeList0?sumData22.noticeList0:[]
+        // var userItem22 = arrsumData.forEach((v,i) => {
+        //     console.log(v.timestamp,'v.timestamp')
+        //     if(i==0){
+        //         min = v.timestamp
+        //     }else{
+        //         min = min<v.timestamp?min:v.timestamp
+        //     }
+        //     return min
+        // })
+        // console.log(min,'min')
         // ajax处理登录，成功后存储本地信息
         // 本地存储用户信息
         let reqData = Object.assign({}, {token: store.token},{login_id:store.login_id})
-        reqData.new_time = min?min:timestampday
+        reqData.new_time = timestampday
         // reqData.new_time = 1517488068
 
         if(!wx.getStorageSync(store.login_id.toString())){
