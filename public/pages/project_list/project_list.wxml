@@ -19,16 +19,20 @@
 		<view wx:if="{{showShare}}">
 			<scroll-view class="join-member" wx:if="{{!showBreadcrumb}}"> 
 				<view class="join-member-list" id="join-member">
-					<view class="join-member-li" wx:for="{{txList}}" wx:key="index" wx:if="{{txList.length < 5}}">
-							<image src="{{item.avatar}}" class="join-member-tx" mode="scaleToFill"></image>
-							<!-- <view class="join-member-name">{{item.realname}}</view> -->
-					</view>
+					<block wx:if="{{txList.length < 5}}">
+						<view class="join-member-li" wx:for="{{txList}}" wx:key="index" wx:if="{{txList.length < 5}}">
+								<image src="{{item.avatar}}" class="join-member-tx" mode="scaleToFill"></image>
+						</view>
+						<view class="join-member-li join-member-li-more">
+								<view class="add">+</view>
+						</view>
+					</block>
 					<block wx:if="{{txList.length >= 5}}">
 						<view class="join-member-li" wx:for="{{txFiveList}}" wx:key="index" >
 								<image src="{{item.avatar}}" class="join-member-tx" mode="scaleToFill"></image>
 						</view>
 						<view class="join-member-li join-member-li-more">
-								+{{txList.length-5}}
+								<view class="add">+</view>
 						</view>
 					</block>
 				</view>
