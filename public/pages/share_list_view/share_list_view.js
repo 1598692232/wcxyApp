@@ -25,11 +25,14 @@ Page({
             })
            
         });
+
         if (options.password != undefined) {
-            let params = {
+            let params = {};
+            params = {
                 share_code: options.code,
                 password: options.password
             }
+            
             self.setData({
                 code: options.code,
                 password: options.password
@@ -38,9 +41,33 @@ Page({
         } else {
             let scene = decodeURIComponent(options.scene).split('=');
             self.setData({
-                passwordModal: true,
                 code: scene[1],
-            });
+            })
+            Util.ajax('sharefilelist', 'get', {share_code: scene[1]}).then(data => {
+                data.list.forEach(item => {
+                    item.create_at_text = Util.getCreateTime(item.create_at)
+                    if (item.file_type == "audio") {
+                        item.audioPause = true
+                    }
+                });
+                self.setData({
+                    shareList: data.list,
+                    qrCode: data.qr_code,
+                    deadline: data.deadline,
+                    fileCount: data.file_count,
+                    viewCount: data.view_count,
+                    projectId: data.project_id,
+                    passwordModal: false,
+                    shareName: data.share_name
+                });
+                wx.setNavigationBarTitle({title: data.share_name})
+            }, res => {
+                if (res.data.status == -4) {
+                    self.setData({
+                        passwordModal: true,
+                    })
+                } 
+            })
         }
     },
     
@@ -72,6 +99,7 @@ Page({
 
     initList(params) {
         let self = this;
+        // console.log(params, 'params')
         Util.ajax('sharefilelist', 'get', params).then(data => {
             data.list.forEach(item => {
                 item.create_at_text = Util.getCreateTime(item.create_at)
@@ -125,33 +153,34 @@ Page({
 
     },
 
-    // onShareAppMessage: function (res) {
-    //     if (res.from === 'button') {
-    //         // 来自页面内转发按钮
-    //         //   console.log(res.target)
-    //     }
-    //     return {
-    //       title: this.data.shareName,
-    //       path: '/pages/share_list_view/share_list_view?code=' + self.data.code + '&password=' + self.data.password,
-    //       success: function(res) {
-    //         // 转发成功
-    //         // wx.showModal({
-    //         //     title: '提示',  
-    //         //     content: '转发成功', 
-    //         //     success: function(res) {  
-    //         //         if (res.confirm) {  
-    //         //         console.log('确定')  
-    //         //         } else if (res.cancel) {  
-    //         //         console.log('取消')  
-    //         //         }  
-    //         //     }
-    //         // })
-    //       },
-    //       fail: function(res) {
-    //         // 转发失败
-    //       }
-    //     }
-    // },
+    onShareAppMessage: function (res) {
+        if (res.from === 'button') {
+            // 来自页面内转发按钮
+        }
+        // let passwordUrl = this.data.password == '' ?  '&password=""' :  ''
+        let codeUrl = encodeURIComponent('code=' + this.data.code)
+        return {
+          title: this.data.shareName,
+          path: '/pages/share_list_view/share_list_view?scene=' + codeUrl,
+          success: function(res) {
+            // 转发成功
+            // wx.showModal({
+            //     title: '提示',  
+            //     content: '转发成功', 
+            //     success: function(res) {  
+            //         if (res.confirm) {  
+            //         console.log('确定')  
+            //         } else if (res.cancel) {  
+            //         console.log('取消')  
+            //         }  
+            //     }
+            // })
+          },
+          fail: function(res) {
+            // 转发失败
+          }
+        }
+    },
 
     copyTBL:function(e){  
         var self=this;
@@ -176,7 +205,6 @@ Page({
 
     toShareInfo(e) {
         let { id, name, username, filetype } = e.currentTarget.dataset;
-        console.log(filetype)
         if (!['video', 'audio', 'image'].includes(filetype)) {
             wx.showModal({
                 title: '提示',
@@ -195,7 +223,6 @@ Page({
     },
 
     playOrPauseAudio(e) {
-        console.log(e);
         let id = e.currentTarget.dataset.id;
 
         let currentAudio = this.data.shareList.filter(item => item.id == id)[0];
