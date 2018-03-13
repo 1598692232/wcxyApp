@@ -35,25 +35,31 @@
         <view class="create-share-list-top" style="width: {{(createShareList.length * 100 + 10)}}px">
             <view class="create-share-list" wx:for="{{createShareList}}" wx:key="index">
                 <view class="share-pic">
-                    <block wx:if="{{item.cover_img.length > 0}}">
-                        <image src="{{item.cover_img[0]}}" ></image>
-                    </block>
-                    <block wx:if="{{item.file_type == 'audio'}}">
-                        <view class="share-file-icon">
-                            <image src="./img/mp3.png"  mode="aspectFit"></image>
-                        </view>
-                    </block>
-                    <block wx:else>
-                        <view class="share-file-icon"  wx:if="{{item.ext == 'zip' || item.ext == 'rar' || item.ext == 'dmg'}}">
-                            <image src="./img/compress.png"  mode="aspectFit"></image>
-                        </view>
-                        <block wx:else>
-                            <view class="create-share-ext" wx:if="{{item.cover_img.length == 0}}">
-                                <image  src="./img/file.png"  mode="aspectFit" ></image>
-                                <text>{{item.ext}}</text>
+                    <block wx:if="{{item.type == 'file'}}">
+                        <block wx:if="{{item.cover_img.length > 0}}">
+                            <image src="{{item.cover_img[0]}}" ></image>
+                        </block>
+                        <block wx:if="{{item.file_type == 'audio'}}">
+                            <view class="share-file-icon">
+                                <image src="./img/mp3.png"  mode="aspectFit"></image>
                             </view>
                         </block>
+                        <block wx:else>
+                            <view class="share-file-icon"  wx:if="{{item.ext == 'zip' || item.ext == 'rar' || item.ext == 'dmg'}}">
+                                <image src="./img/compress.png"  mode="aspectFit"></image>
+                            </view>
+                            <block wx:else>
+                                <view class="create-share-ext" wx:if="{{item.cover_img.length == 0}}">
+                                    <image  src="./img/file.png"  mode="aspectFit" ></image>
+                                    <text>{{item.ext}}</text>
+                                </view>
+                            </block>
+                        </block>
                     </block>
+                    <block wx:else>
+                        <image src="./img/folder.png"  mode="aspectFit"></image>
+                    </block>
+                   
           
                 </view>
                 <view class="share-name">
@@ -65,12 +71,12 @@
 
     <view class="group">
         <view class="group-content">
-            <view class="row link-name">
+            <view class="row link-name" bindtap="bindButtonTap">
                 <view class="row-wrapper">
                     <view class="left">
-                        <input type="text" placeholder="请输入分享标题" bindinput="bindKeyInput" focus="{{focus}}"/>
+                        <input type="text" placeholder="请输入分享标题" bindinput="bindKeyInput" focus="{{focus}}" value="{{name}}"/>
                     </view>
-                    <view class="right" bindtap="bindButtonTap">
+                    <view class="right">
                         <image src="./img/pen.png"></image>
                     </view>
                 </view>
@@ -129,7 +135,7 @@
                 <view class="row-picker">
                     <picker mode="multiSelector" value="{{dateTime1}}" bindchange="changeDateTime1" bindcolumnchange="changeDateTimeColumn1" range="{{dateTimeArray1}}">
                         <view class="tui-picker-detail">
-                            设置过期时间: {{dateTimeArray1[0][dateTime1[0]]}}-{{dateTimeArray1[1][dateTime1[1]]}}-{{dateTimeArray1[2][dateTime1[2]]}} {{dateTimeArray1[3][dateTime1[3]]}}:{{dateTimeArray1[4][dateTime1[4]]}}
+                            设置过期时间: {{dateTimeText}}
                         </view>
                     </picker>
                 </view>

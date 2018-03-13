@@ -74,6 +74,10 @@
     padding-bottom: 12px;
 }
 .share-list-video .name{
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
     font-size: 14px;
     color: #9B9B9B;
     line-height: 20px;
@@ -105,4 +109,128 @@
     width: 12px;
     height: 12px;
     margin:0px 2px -2px;
+}
+
+
+.info-audio{
+    position: relative;
+    width: 100%;
+    height: 211px;
+    background: #30343f;
+}
+.info-audio-icon{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 167px;
+}
+.info-audio image{
+    width: 45px;
+}
+.info-audio-control{
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 44px;
+    background: rgba(0,0,0,0.5)
+}
+
+.info-audio-play{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 14%;
+    height: 44px;
+    overflow: hidden;
+    float: left;
+}
+.info-audio-play image{
+    width: 25px;
+}
+
+.info-audio-progress{
+    position: relative;
+    box-sizing: border-box;
+    width: 76%;
+    padding: 0 10px;
+    float: left;
+    height: 44px;
+}
+
+.info-audio-time{
+    width: 10%;
+    float: left;
+    color: #fff;
+    font-size: 12px;
+    line-height: 44px;
+    text-align: center,
+}
+
+.info-audio-progress-max{
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    margin-top: -1.5px;
+    width: 90%;
+    margin: 0 auto;
+    height: 3px;
+    background: #fff;
+    border-radius: 1.5px;
+}
+.info-audio-progress-current{
+    width: 20%;
+    background: #1a3bde;
+    height: 3px;
+}
+
+.info-audio-progress-circle{
+    position: absolute;
+    left: 2.5%;
+    top: 50%;
+    margin-top: -9px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.5);
+}
+
+
+.info-pic{
+    display: flex;
+    width: 100%;
+    height: 211px;
+    justify-content: center;
+    align-items: center;
+}
+
+.info-ext{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 210px;
+    background: #30343f;
+}
+
+.info-ext-bg{
+    position: absolute;
+    width: 45px;
+    height: 50px;
+    left: 50%;
+    top: 50%;
+    z-index:1;
+    margin-left: -22.5px;
+    margin-top: -25px;
+}
+
+.info-ext-text{
+    position: relative;
+    width: 45px;
+    height: 50px;
+    text-align: center;
+    z-index: 2;
+    color: #fff;
+    font-size:12px;
+    line-height: 50px;
 }

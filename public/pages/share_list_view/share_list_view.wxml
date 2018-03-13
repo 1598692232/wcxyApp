@@ -2,15 +2,15 @@
     <view class="share-list-view-info">
         <view class="share-list-top">
             <view class="wx-logo" bindtap="toBigWXLogo">
-                <image src="./img/wx.jpg" data-src="http://a.300.cn/images/20180112/5a587685399cd.png"></image>
+                <image src="{{qrCode}}" data-src="{{qrCode}}"></image>
             </view>
             <view class="list-info">
                 <view class="share-list-name">新建链接</view>
                 <view class="share-list-info">
-                    <view>查看数：13</view>
-                    <view>包含7个文件</view>
-                    <view>有效期：永久有效</view>
-                    <view selectable="true">密码: 8as4</view>
+                    <view>查看数：{{viewCount}}</view>
+                    <view>包含{{fileCount}}个文件</view>
+                    <view>有效期：{{deadline}}</view>
+                    <view selectable="true">密码: {{password}}</view>
                 </view>
             </view>
         </view>
@@ -22,52 +22,70 @@
         </view>
     </view>
     <view class="share-list-view-video">
-        <view class="share-list-video">
-            <view class="name">Julien Et Barbara </view>
-            <video src="http://video.uxinyue.com/23d3fe67ae094c62bfe20dbb4d1d0725/2a4453c5c810440c817640337f6fbb51-5287d2089db37e62345123a1be272f8b.mp4"
-                objectFit="contain" controls bindpause="getVideoTime2"
-            ></video>
+        <view class="share-list-video" wx:for="{{shareList}}" wx:key="{{index}}">
+            <view class="name">{{item.name}} </view>
+            <block wx:if="{{item.file_type == 'video'}}">
+                <video src="{{item.url}}" poster="{{item.cover_img[0]}}"
+                    objectFit="contain" controls bindpause="getVideoTime2"
+                ></video>
+            </block>
+            <block wx:if="{{item.file_type == 'audio'}}">
+                <audio src="{{item.url}}"
+                controls loop style="display: none" bindtimeupdate="audioUpdate"></audio>
+                <view class="info-audio">
+                    <view class="info-audio-icon">
+                        <image src="./img/mp3.png" mode="aspectFit" ></image>
+                    </view>
+                    <view class="info-audio-control">
+                        <view class="info-audio-play" bindtap="toggleAudio">
+                            <image src="./img/play.png" mode="aspectFit" wx:if="{{audioPause}}"></image>
+                            <image src="./img/pause.png" mode="aspectFit" wx:else></image>
+                        </view>
+                        <view class="info-audio-time">{{audioCurrentTimeText}}</view>
+                        <view class="info-audio-progress" id="info-audio-progress">
+                            <view class="info-audio-progress-max">
+                                <view class="info-audio-progress-current" style="width: {{audioProgressNum}}px"></view>
+                            </view>
+                            <view class="info-audio-progress-circle" style="left: {{audioProgressNum}}px"
+                            bindtouchstart="audioTouchstart"
+                            bindtouchmove="audioTouchmove"
+                            bindtouchend="audioTouchend"
+                            ></view>
+                        </view>
+                    </view>
+                </view>
+            </block>
+            <block wx:if="{{item.file_type == 'image'}}">
+                <view class="info-pic"> 
+                    <image src="{{info.cover_img[0]}}" mode="aspectFit"></image>
+                </view>
+            </block>
+
+           
+            <block wx:if="{{item.file_type != 'image' && item.file_type != 'video' && item.file_type != 'audio' }}">
+                <block wx:if="{{item.ext == 'zip' || item.ext == 'dmg' || item.ext == 'rar'}}">
+                    <view class="info-ext"> 
+                        <image src="./img/compress.png" mode="aspectFit"></image>
+                    </view>
+                </block>
+                <view class="info-ext" wx:else>
+                    <image src="./img/file.png" mode="aspectFit" class="info-ext-bg"></image>
+                    <view class="info-ext-text">{{item.ext}}</view>
+                </view>
+            </block>
+        
             <view class="info">
                 <view class="avatar">
-                    <image></image>
-                    <text>8小时</text>
+                    <image src="{{item.user_info.avatar}}"></image>
+                    <text>{{item.create_at_text}}</text>
                 </view>
                 <view class="comment" bindtap="toShareInfo">
                     <image src="./img/comment.png"></image>
-                    <text>28</text>
+                    <text>{{item.comment_count}}</text>
                 </view>
-                <view class="play-num">24次播放</view>
+                <view class="play-num">{{item.view_count}}次播放</view>
             </view>
         </view>
-        <view class="share-list-video">
-                <view class="name">Julien Et Barbara </view>
-                <video src="http://video.uxinyue.com/23d3fe67ae094c62bfe20dbb4d1d0725/2a4453c5c810440c817640337f6fbb51-5287d2089db37e62345123a1be272f8b.mp4"></video>
-                <view class="info">
-                    <view class="avatar">
-                        <image></image>
-                        <text>8小时</text>
-                    </view>
-                    <view class="comment">
-                        <image src="./img/comment.png"></image>
-                        <text>28</text>
-                    </view>
-                    <view class="play-num">24次播放</view>
-                </view>
-            </view>
-            <view class="share-list-video">
-                    <view class="name">Julien Et Barbara </view>
-                    <video src="http://video.uxinyue.com/23d3fe67ae094c62bfe20dbb4d1d0725/2a4453c5c810440c817640337f6fbb51-5287d2089db37e62345123a1be272f8b.mp4"></video>
-                    <view class="info">
-                        <view class="avatar">
-                            <image></image>
-                            <text>8小时</text>
-                        </view>
-                        <view class="comment">
-                            <image src="./img/comment.png"></image>
-                            <text>28</text>
-                        </view>
-                        <view class="play-num">24次播放</view>
-                    </view>
-                </view>
+
     </view>
 </view>

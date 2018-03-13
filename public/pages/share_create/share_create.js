@@ -9,7 +9,7 @@ Page({
         createShareList: [],
         shareListWidth: 0,
         inputValue: '',
-        name: '',
+        name: '新建链接',
         focus: false,
         allowApproval: true,
         showAllVersions: true,
@@ -18,6 +18,7 @@ Page({
         deadline: false,
     },
     onLoad(options) {
+
 		let self = this;
         Util.getSystemInfo().then(result => {
             self.setData({
@@ -31,16 +32,38 @@ Page({
         // 精确到分的处理，将数组的秒去掉
         var lastArray = obj1.dateTimeArray.pop();
         var lastTime = obj1.dateTime.pop();
+
+        let dateTimeArray1 = obj1.dateTimeArray;
+        let dateTime1 = obj1.dateTime;
+        let timestr = dateTimeArray1[0][dateTime1[0]] + '-' + dateTimeArray1[1][dateTime1[1]] + '-' + dateTimeArray1[2][dateTime1[2]] + ' ' + dateTimeArray1[3][dateTime1[3]] + ':' + dateTimeArray1[4][dateTime1[4]];
+        let timeInt = (new Date(Date.parse(timestr.replace(/-/g,"/")))).getTime() / 1000;
+
         this.setData({
             dateTimeArray1: obj1.dateTimeArray,
             dateTime1: obj1.dateTime,
+            dateTimeText: timestr, 
+            shareTimelimit: timeInt,
             createShareList: wx.getStorageSync('share_file')
         });
         console.log(wx.getStorageSync('share_file'));
     },
+
+    onShow() {
+        let shareCreated = wx.getStorageSync('share_created');
+        if (shareCreated == 1) {
+            wx.navigateBack();
+            return;
+        }
+    },
+
     // 时间选择器
     changeDateTime1(e) {
+        let dateTimeArray1 = this.data.dateTimeArray1;
+        let dateTime1 = this.data.dateTime1;
         this.setData({ dateTime1: e.detail.value });
+        let timestr = dateTimeArray1[0][dateTime1[0]] + '-' + dateTimeArray1[1][dateTime1[1]] + '-' + dateTimeArray1[2][dateTime1[2]] + ' ' + dateTimeArray1[3][dateTime1[3]] + ':' + dateTimeArray1[4][dateTime1[4]];
+        let timeInt = (new Date(Date.parse(timestr.replace(/-/g,"/")))).getTime() / 1000;
+        this.setData({ dateTimeText: timestr, shareTimelimit: timeInt });
     },
     changeDateTimeColumn1(e) {
         var arr = this.data.dateTime1, dateArr = this.data.dateTimeArray1; 
@@ -67,7 +90,7 @@ Page({
     bindKeyInput(e) {
         this.setData({
             name: e.detail.value
-        })
+        });
         console.log(this.data.name,'input66666666666666')
     },
     bindButtonTap: function() {
@@ -79,7 +102,7 @@ Page({
     switch1Change: function (e){
         this.setData({
             allowApproval: e.detail.value
-        })
+        });
         console.log('允许审阅，携带值为', this.data.allowApproval)
     },
     // 显示所有版本
@@ -117,9 +140,40 @@ Page({
     },
     // 保存分享
     toShareListView(e) {
-        wx.navigateTo({
-            url: '/pages/share_list_view/share_list_view'
-        })
+        let doc_ids = [];
+        for (let i in this.data.createShareList) {
+            doc_ids.push(this.data.createShareList[i].id);
+        }
+
+        let params = {
+            project_id: wx.getStorageSync('project_id'),
+            doc_ids: doc_ids.join(','),
+            name: this.data.name,
+            review: this.data.allowApproval ? 1 : 0,
+            show_all_version: this.data.showAllVersions ? 1 : 0,
+            download: this.data.enableDownloading ? 1 : 0,
+            switch_password: this.data.requirePassword ? 1: 0,
+            deadline: this.data.deadline ? this.data.shareTimelimit : this.data.deadline
+        }
+        
+        console.log(params, 'params')
+
+        params = Object.assign({}, wx.getStorageSync('app'), params);
+
+        Util.ajax('sharelink', 'post', params).then((data) => {
+            wx.setStorageSync('share_created', 1);
+            wx.redirectTo({
+                url: '/pages/share_list_view/share_list_view?code=' + data.code + '&password=' + data.password
+            })
+        }, (res) => {
+            wx.showModal({
+                title: '提示',
+                content: res.msg,
+                showCancel: false
+            })
+        });
+
+     
     },
 
 })

@@ -25,7 +25,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": -1,
+			"current": 10,
 			"list": [
 				{
 					"id": 0,
@@ -92,6 +92,12 @@
 					"name": "share_list_view",
 					"pathName": "pages/share_list_view/share_list_view",
 					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "share_list_view",
+					"pathName": "pages/share_list_view/share_list_view",
+					"query": "code=af4b5f2642cd894b&password=jvv1"
 				}
 			]
 		}

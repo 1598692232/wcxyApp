@@ -29,7 +29,6 @@ Page({
 	},
 
 	onLoad(options) {
-        console.log(options,'options')
         let self = this;
         if(options.project_type==='admin'){
             self.setData({
@@ -85,7 +84,21 @@ Page({
     
 
     onShow() {
-        let self = this
+        // 创建分享成功之后返回处理
+        let shareCreated = wx.getStorageSync('share_created');
+        if (shareCreated == 1) {
+            wx.setStorageSync('share_created', 0);
+            this.data.videoList.forEach((item) => {
+                item.selected = false
+            })
+            this.setData({
+                showShare: false,
+                selectShareList: [],
+                videoList: this.data.videoList
+            });
+        }
+
+        let self = this;
         // 获取参与成员头像姓名
         let store = wx.getStorageSync('app')
         let reqData = Object.assign({}, store, {
