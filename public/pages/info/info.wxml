@@ -50,9 +50,7 @@
             </view>
         </block>
       
-
-
-        <view class="info-pic"  wx:if="{{info.file_type != 'image'}}"> 
+        <view class="info-pic"  wx:if="{{info.file_type == 'image'}}"> 
             <image src="{{info.cover_img[0]}}" mode="aspectFit"></image>
         </view>
     </view>

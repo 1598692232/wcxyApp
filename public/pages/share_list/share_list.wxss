@@ -29,7 +29,8 @@
     margin-top: 22px;
 }
 .share-list .info .share-list-name{
-    font-size: 15px;
+    font-size: 13px;
+    line-height: 20px;
     color: #FFFFFF;
 }
 .share-list .info .share-list-info{
