@@ -175,8 +175,6 @@ Page({
         
         this.videoCtx = wx.createVideoContext('myVideo');
         this.audioCtx = wx.createAudioContext('myAudio');
-
-
   	},
 
     onLoad(options) {
@@ -217,7 +215,7 @@ Page({
                 size: true,
                 scrollOffset: true,
                 properties: ['scrollX', 'scrollY']
-                }, function(res){
+            }, function(res){
                 if (!res) return;
                 self.setData({
                     audioProgressMaxWidth: res.width * 0.9,

@@ -45,7 +45,6 @@ Page({
             shareTimelimit: timeInt,
             createShareList: wx.getStorageSync('share_file')
         });
-        console.log(wx.getStorageSync('share_file'));
     },
 
     onShow() {
@@ -91,7 +90,6 @@ Page({
         this.setData({
             name: e.detail.value
         });
-        console.log(this.data.name,'input66666666666666')
     },
     bindButtonTap: function() {
         this.setData({
@@ -103,35 +101,30 @@ Page({
         this.setData({
             allowApproval: e.detail.value
         });
-        console.log('允许审阅，携带值为', this.data.allowApproval)
     },
     // 显示所有版本
     switch2Change: function (e){
         this.setData({
             showAllVersions: e.detail.value
         })
-        console.log('显示所有版本，携带值为', this.data.showAllVersions)
     },
     // 允许下载
     switch3Change: function (e){
         this.setData({
             enableDownloading: e.detail.value
         })
-        console.log('允许下载，携带值为', this.data.enableDownloading)
     },
     // 密码
     switch4Change: function (e){
         this.setData({
             requirePassword: e.detail.value
         })
-        console.log('密码，携带值为', this.data.requirePassword)
     },
     // 有效期
     switch1ChangeTime(e) {
         this.setData({
             deadline: e.detail.value
         })
-        console.log('有效期，携带值为', this.data.deadline)
     },
 
     // 取消分享
@@ -156,8 +149,6 @@ Page({
             deadline: this.data.deadline ? this.data.shareTimelimit : this.data.deadline
         }
         
-        console.log(params, 'params')
-
         params = Object.assign({}, wx.getStorageSync('app'), params);
 
         Util.ajax('sharelink', 'post', params).then((data) => {
