@@ -14,6 +14,7 @@
 }
 .wx-logo{
     width: 65px;
+    width: 71px;
     height: 65px;
     background: #fff;
     border-radius: 50%;

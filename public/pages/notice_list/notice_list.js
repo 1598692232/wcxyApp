@@ -4,6 +4,7 @@ const app = getApp()
 Page({
     data: {
         noticeListInfo: [],
+        tx: app.data.staticImg.manager,
         animationData: {},
         hideClear: true,
         listInfoWidth: 0,
@@ -51,6 +52,7 @@ Page({
         Util.ajax('notice/detail', 'get',reqData).then(data => {
             data.map(item => {
                 item.createtime = Util.getCreateTime(item.created_at)
+                item.avatar = item.avatar == '' ? self.data.tx : item.avatar
             })
             self.setData({
                 noticeListInfo: data
@@ -126,7 +128,6 @@ Page({
         let self = this
         let store = wx.getStorageSync('app')
         let reqData = Object.assign({}, {token: store.token},{login_id:store.login_id})
-        console.log(e.currentTarget.dataset.id,'e.currentTarget.dataset.id')
         reqData.notice_id = e.currentTarget.dataset.id
         Util.ajax('notice/cell', 'delete',reqData).then(data => {
             self.onShow()

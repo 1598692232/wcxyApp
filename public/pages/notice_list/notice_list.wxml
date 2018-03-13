@@ -12,12 +12,12 @@
                    <view class="item-left-content">
                         <view class="item-left">
                             <block>
-                                <view class="image" wx:if="{{item.avatar}}">
+                                <view class="image">
                                     <image src="{{item.avatar}}"></image>
                                 </view>
-                                <view class="empty-notice" wx:else>
+                                <!-- <view class="empty-notice" wx:else>
                                     <view class="item-left-title">{{item.realname}}</view>
-                                </view>
+                                </view> -->
                             </block>
                         </view>
                         <view class="item-right">

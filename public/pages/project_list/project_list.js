@@ -25,7 +25,11 @@ Page({
         showShare: false,
         selectShare: false,
         selectShareList: [],
-        isAdmin: false
+        isAdmin: false,
+        title: '',
+        projectID: 0,
+        focus: false,
+        inputValue: ''
 	},
 
 	onLoad(options) {
@@ -39,6 +43,10 @@ Page({
                 isAdmin: false
             })
         }
+        self.setData({
+            title: options.projectName,
+            projectID: options.project_id
+        })
         wx.showLoading()
         Util.getSystemInfo().then(result => {
             self.setData({
@@ -71,7 +79,6 @@ Page({
                     scrollNumberHeight: result.windowHeight-263,
                     breadcrumbWidth: 100
                 });
-                console.log(self.data.videoList)
             }, res => {
                 wx.showModal({
                     title: '提示',
@@ -196,7 +203,6 @@ Page({
             + e.currentTarget.dataset.name + '&id=' + e.currentTarget.dataset.id 
             + '&username=' + e.currentTarget.dataset.username
             + '&project_id=' + wx.getStorageSync('project_id')
-            console.log(url)
             wx.navigateTo({
                 url: url,
             })
@@ -246,7 +252,7 @@ Page({
         }
         self.setData({
             selectShareList: (self.data.selectShareList.indexOf(e.currentTarget.dataset.id) === -1)?self.data.selectShareList.concat(e.currentTarget.dataset.id):deleteArr(self.data.selectShareList,self.data.selectShareList.findIndex((v)=>{return v === e.currentTarget.dataset.id})),
-        });    
+        }); 
     },
     toCloseCreateShare(e) {
         let self = this
@@ -270,6 +276,113 @@ Page({
         wx.navigateTo({
             url: '/pages/share_create/share_create'
         })
+    },
+    toBack(){
+        wx.navigateBack({
+            delta: 1,
+            success: function() {
+                wx.showToast({
+                    title: '删除项目成功!'
+                })
+            }
+        })
+    },
+    toBack2(){
+        wx.navigateBack({
+            delta: 1,
+            success: function() {
+                wx.showToast({
+                    title: '退出项目成功!'
+                })
+            }
+        })
+    },
+    //admin删除项目
+    toDelProject() {
+        let self = this
+        wx.showModal({
+            title: '提示',
+            content: '确定删除“'+ self.data.title +'”项目吗?所有与之相关的媒体资源都将被删除且不可恢复',
+            success: function(res) {
+                if(res.confirm){
+                    let store = wx.getStorageSync('app')
+                    let reqData = Object.assign({}, {token: store.token},{login_id:store.login_id})
+                    reqData.project_id = self.data.projectID
+                    Util.ajax('project', 'delete',reqData).then(data => {
+                        self.toBack()
+                    }, res => {
+                        wx.showToast({
+                            title: '删除项目成功!'
+                        })            
+                    })
+                } else if (res.cancel) {
+                    console.log('用户点击取消')
+                }
+            }
+        }) 
+    },
+    //member退出工程
+    toQuitProject(e) {
+        let self = this
+        wx.showModal({
+            title: '提示',
+            content: '确定要离开项目“'+ self.data.title +'”吗?该项目将不再对您可见，您也将不再收到任何关于该项目的通知',
+            success: function(res) {
+                if(res.confirm){
+                    let store = wx.getStorageSync('app')
+                    let reqData = Object.assign({}, {token: store.token},{login_id:store.login_id})
+                    reqData.project_id = self.data.projectID
+                    Util.ajax('quit', 'put',reqData).then(data => {
+                        self.toBack2()
+                    }, res => {
+                        wx.showToast({
+                            title: '退出项目成功!'
+                        })
+                    })
+                } else if (res.cancel) {
+                    console.log('用户点击取消')
+                }
+            }
+        }) 
+    },
+    //验证邮箱
+    isEmail (str) {
+        return /^[\w.-]+@([\w-]+\.)+[a-zA-Z]+$/.test(str)
+    },
+    //使输入框获得焦点
+    bindButtonTap: function() {
+        this.setData({
+          focus: true
+        })
+    },
+    bindKeyInput: function(e) {
+        let self = this
+        self.setData({
+            inputValue: e.detail.value
+        })
+    },
+    //点击邀请项目成员
+    invite(){
+        let self = this
+        let store = wx.getStorageSync('app')
+        let reqData = Object.assign({}, {token: store.token},{login_id:store.login_id})
+        reqData.project_id = self.data.projectID
+        reqData.emails = self.data.inputValue
+        if(self.isEmail(self.data.inputValue)===false){
+            wx.showToast({
+                title: '邮箱格式不正确',
+                image: './img/error.png',
+                duration: 3000
+            })
+        }else{
+            Util.ajax('invite', 'post',reqData).then(data => {
+                wx.showToast({
+                    title: '邮件发送成功'
+                })
+            }, res => {
+                console.log(res,'res')
+            })
+        } 
     }
 
 })

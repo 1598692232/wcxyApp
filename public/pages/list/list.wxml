@@ -24,10 +24,10 @@
               <view class="item clearfix" wx:for="{{myProjectList}}" wx:key="index" bindtap="toProject" data-id="{{item.id}}" data-name="{{item.name}}" data-type="{{item.type}}">
                 <view class="item-left">
                   <view wx:if="{{item.src}}">
-                      <img src=""/>
+                      <img src="{{item.src}}"/>
                   </view>
                   <view wx:else>
-                    <view class="item-left-text">{{item.name}}</view>
+                    <view class="item-left-text">{{item.first_name}}</view>
                   </view>
                 </view>
                 <view class="item-right">
@@ -51,7 +51,7 @@
                       <img src="{{item.src}}"/>
                   </view>
                   <view wx:else>
-                    <view class="item-left-text">{{item.name}}</view>
+                    <view class="item-left-text">{{item.first_name}}</view>
                   </view>
                 </view>
                 <view class="item-right">

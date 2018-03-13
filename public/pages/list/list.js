@@ -116,6 +116,7 @@ Page({
         Util.ajax('project', 'get', store).then(data => {
             let pros = []
             data.list.forEach(item => {
+                item.first_name = item.name.substr(0, 1)
                 if (item.type == 'admin') {
                     item.storage_size = item.storage_count != undefined ? (item.storage_count / Math.pow(1024, 2)).toFixed(2) : 0                            
                     //演示项目处理
@@ -147,6 +148,7 @@ Page({
 
         Util.ajax('project/join', 'get', store).then(data => {
             data.list.forEach(item => {
+                item.first_name = item.name.substr(0, 1)
                 item.storage_size = item.storage_count != undefined ? (item.storage_count / Math.pow(1024, 2)).toFixed(2) : 0
             })
             self.setData({

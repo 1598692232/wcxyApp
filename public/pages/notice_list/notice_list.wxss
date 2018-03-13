@@ -46,7 +46,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background: #1166EA;
+    /* background: #1166EA; */
     overflow: hidden;
     /* border:1px solid #fff; */
 }

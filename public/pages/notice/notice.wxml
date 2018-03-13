@@ -7,21 +7,24 @@
         </view>
         <view class="list-body">
             <block wx:if="{{noticeList.length > 0}}">
-              <view class="item clearfix" bindtap="toNoticeSystemInfo">
-                <view class="item-left system-message">
-                  <image src="./img/notice_news.png"></image>
-                </view>
-                <view class="item-right">
-                  <text class="item-title">{{project_name}}</text>
-                  <!-- <text class="item-comment">新阅 v1.0.8(NEW)</text> -->
-                </view>
-                <block wx:if="{{notice_count>0}}">
-                  <view class="item-number-box">
-                    <view class="item-number" wx:if="{{notice_count<99}}">{{notice_count}}</view>
-                    <view class="item-number" wx:else>99+</view>
+              <view wx:if="{{notice_count>0}}">
+                  <view class="item clearfix" bindtap="toNoticeSystemInfo">
+                    <view class="item-left system-message">
+                      <image src="./img/notice_news.png"></image>
+                    </view>
+                    <view class="item-right">
+                      <text class="item-title">{{project_name}}</text>
+                      <!-- <text class="item-comment">新阅 v1.0.8(NEW)</text> -->
+                    </view>
+                    <block wx:if="{{notice_count>0}}">
+                      <view class="item-number-box">
+                        <view class="item-number" wx:if="{{notice_count<99}}">{{notice_count}}</view>
+                        <view class="item-number" wx:else>99+</view>
+                      </view>
+                    </block>
                   </view>
-                </block>
               </view>
+              
               <view class="item clearfix" wx:for="{{noticeList}}" wx:key="index" bindtap="toNoticeInfo" wx:if="{{noticeList.length > 0}}"
                 data-id="{{item.project_id}}" data-time="{{item.time}}" data-count="{{item.count}}" data-name="{{item.project_name}}"
                 >

@@ -184,35 +184,65 @@
 
 	<view class="member-drop" wx:if="{{showMemberDrop}}">
 		<view  class="member-drop-list-show">
-			<view class="member-drop-add">
-				<view>
-					<image src="./img/invite.png"></image>
+			<view wx:if="{{isAdmin}}">
+				<view class="member-drop-add">
+					<view bindtap="bindButtonTap">
+						<image src="./img/invite.png"></image>
+					</view>
+					<view class="text">
+						<input placeholder="请输入邮箱添加项目成员" focus="{{focus}}" bindinput="bindKeyInput"/>	
+					</view>
+					<view class="btn" wx:if="{{inputValue}}" bindtap="invite">邀请</view>
 				</view>
-				<view class="text">添加联系人</view>
 			</view>
-			<view class="join-member-drop-box">
-				<scroll-view class="join-member-drop" wx:if="{{!showBreadcrumb}}"> 
-					<view class="join-member-drop-list">
-						<view class="join-member-drop-li" wx:for="{{txList}}" wx:key="index">
-							<view class="image">
-								<image src="{{item.avatar}}" class="join-member-tx" mode="scaleToFill"></image>
-							</view>
-							<view class="list">
-								<view class="join-member-name">{{item.realname}}</view>
-								<view class="join-member-type">
-									<view wx:if="{{item.type==='admin'}}">制作者</view>
-									<view wx:else>审阅者</view>
+
+
+			<view wx:if="{{isAdmin}}">
+				<view class="join-member-drop-box">
+					<scroll-view class="join-member-drop" wx:if="{{!showBreadcrumb}}"> 
+						<view class="join-member-drop-list">
+							<view class="join-member-drop-li" wx:for="{{txList}}" wx:key="index">
+								<view class="image">
+									<image src="{{item.avatar}}" class="join-member-tx" mode="scaleToFill"></image>
+								</view>
+								<view class="list">
+									<view class="join-member-name">{{item.realname}}</view>
+									<view class="join-member-type">
+										<view wx:if="{{item.type==='admin'}}">制作者</view>
+										<view wx:else>审阅者</view>
+									</view>
 								</view>
 							</view>
 						</view>
-					</view>
-				</scroll-view>
-			</view>
-			<view wx:if="{{isAdmin}}">
-				<view class="member-drop-quit" bindtap="MembertoProject">删除项目</view>
+					</scroll-view>
+				</view>
 			</view>
 			<view wx:else>
-				<view class="member-drop-quit" bindtap="MembertoProject">退出工程</view>
+				<view class="join-member-drop-box2">
+					<scroll-view class="join-member-drop" wx:if="{{!showBreadcrumb}}"> 
+						<view class="join-member-drop-list">
+							<view class="join-member-drop-li" wx:for="{{txList}}" wx:key="index">
+								<view class="image">
+									<image src="{{item.avatar}}" class="join-member-tx" mode="scaleToFill"></image>
+								</view>
+								<view class="list">
+									<view class="join-member-name">{{item.realname}}</view>
+									<view class="join-member-type">
+										<view wx:if="{{item.type==='admin'}}">制作者</view>
+										<view wx:else>审阅者</view>
+									</view>
+								</view>
+							</view>
+						</view>
+					</scroll-view>
+				</view>
+			</view>
+				
+			<view wx:if="{{isAdmin}}">
+				<view class="member-drop-quit" bindtap="toDelProject">删除项目</view>
+			</view>
+			<view wx:else>
+				<view class="member-drop-quit" bindtap="toQuitProject">退出工程</view>
 			</view>
 	
 		</view>
