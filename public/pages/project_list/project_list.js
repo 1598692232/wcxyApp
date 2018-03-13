@@ -220,9 +220,10 @@ Page({
             showMemberDrop: false
         })
     },
-    toShareList(e) {
+    toShareList() {
+        let self = this
         wx.navigateTo({
-            url: '/pages/share_list/share_list'
+            url: '/pages/share_list/share_list?project_id=' + self.data.projectID
         })
     },
     toCreateShare(e) {
