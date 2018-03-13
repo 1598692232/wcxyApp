@@ -42,8 +42,8 @@
       "text": "我的"
     }],
     "backgroundColor": "#303340",
-    "selectedColor": "#0046db",
-    "color:": "#9B9B9B"
+    "color": "#9B9B9B",
+    "selectedColor": "#0046db"
   },
   "networkTimeout": {
     "request": 5000,

@@ -98,7 +98,6 @@ Page({
                 notice_count:data.notice_count,
                 project_name: data.project_name
             })
-            // console.log(self.data.noticeList,'-------list')
             wx.hideLoading()    
         }, res => {
             wx.showModal({
