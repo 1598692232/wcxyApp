@@ -117,7 +117,9 @@ Page({
         audioProgressMaxWidth: 0,
         audioProgressNum: 0,
         audioTime: 0,
-        audioCurrentTimeText: '00:00'
+        audioCurrentTimeText: '00:00',
+
+        infoHeight: 166,
     },
 
     statusChange: function(e) {
@@ -180,6 +182,7 @@ Page({
     onLoad(options) {
         this.data.options = options
         let self = this
+
         wx.createSelectorQuery().select('#play-body').fields({
             dataset: true,
             size: true,
@@ -383,6 +386,7 @@ Page({
                     createTime: Util.getCreateTime(data.created_at)
                 }
 
+             
                 if (data.file_type == 'video') {
                     info = Object.assign({}, info, {pNo: data.resolution[0].resolution, url:  data.resolution[0].src});
                 }
@@ -512,17 +516,18 @@ Page({
         getList()
     },
 
-    changeStatus() {
+    changeStatus(review, reviewText) {
         let self = this;
+        
         let store = wx.getStorageSync('app');
 	    let reqData = Object.assign({}, store, {
-            doc_id: self.data.doc_id,
+            doc_id: self.data.info.id,
             project_id: self.data.project_id,
-            review: self.data.statusVal[0],
+            review,
             _method: 'put'
         });
 
-        self.toggleSelect(null, false, 'statusSelectShow', 'animationSelect');
+        // self.toggleSelect(null, false, 'statusSelectShow', 'animationSelect');
         Util.ajax('file/review', 'post', reqData).then(json => {
             wx.showToast({
                 title: '修改成功！',
@@ -530,7 +535,7 @@ Page({
             });
             // console.log(statusList[statusVal[0]], 'ppp')
             self.setData({
-                visibleStatusText: self.data.statusList[self.data.statusVal[0]]
+                visibleStatusText: reviewText
             });
         }, () => {
             wx.showToast({
@@ -539,30 +544,28 @@ Page({
         });
     },
 
-    changeVersion(e) {
+    changeVersion(id) {
         let self = this;
 
-        if (self.data.versionVal[0] == self.data.visibleVersionNo) {
-            self.toggleSelect(null, false, 'versionSelectShow', 'animationSelect2');
-            return;
-        }
+        // if (self.data.versionVal[0] == self.data.visibleVersionNo) {
+        //     self.toggleSelect(null, false, 'versionSelectShow', 'animationSelect2');
+        //     return;
+        // }
 
         self.setData({
             cavansShow: false
         });
 
-        
-        
         let store = wx.getStorageSync('app')
 	    let reqData = Object.assign({}, store, {
             // doc_id: e.currentTarget.dataset.id,
-            doc_id: self.data.versionActive.id,
+            doc_id: id,
             project_id: this.data.project_id,
             show_completed: 1
         })
        
         self.getVideoInfo(store.host, reqData, (data) => {
-            if (!['video', 'audio', 'image'].includes(data.ext)) {
+            if (!['video', 'audio', 'image'].includes(data.file_type)) {
                 wx.showToast({
                     title: '文件格式不可查看',
                 });
@@ -592,12 +595,19 @@ Page({
                 }
             })
 
+            let versionNo = 0;
+            data.versions.forEach((item, k) => {
+                if (item.id == data.id) {
+                    versionNo = k ;
+                }
+            });
+
             self.setData({
                 versions: data.versions,
                 ps: data.resolution,
                 // versionNo: e.currentTarget.dataset.index,
                 // versionNo: self.data.versionActive.version_no,
-                visibleVersionNo: self.data.versionVal[0],
+                visibleVersionNo: versionNo,
                 username: data.realname,
                 createTime: Util.getCreateTime(data.created_at)
             });
@@ -935,8 +945,18 @@ Page({
     },
 
  	// 评论输入框聚焦
-	commentFocus() {
+	commentFocus(e) {
+        console.log(e, 'eeeee')
+        
+
         let self = this;
+
+        console.log(self.data.scrollHeightAll, e.detail.height, 'self.data.scrollHeightAll')
+        self.setData({
+            infoHeight: self.data.scrollHeightAll - e.detail.height - 211
+        });
+        console.log(self.data.infoHeight, 'infoHeight')
+
 
         let context = wx.createCanvasContext('secondCanvas')
         let context2 = wx.createCanvasContext('firstCanvas')
@@ -1663,6 +1683,65 @@ Page({
         this.setData({
             audioPause: false
         });
+    },
+
+    showSelectStatus() {
+        let actions = [
+            '移除标签',
+            '审核通过',
+            '进行中',
+            '待审核',
+            '意见搜集完成'
+        ]
+        let self = this;
+        wx.showActionSheet({
+            itemList: actions,
+            success: function(res) {
+               if (res.cancel) return;
+               if (res.tapIndex == 0) {
+                    self.changeStatus(res.tapIndex, '审核');
+               } else {
+                    self.changeStatus(res.tapIndex, actions[res.tapIndex]);
+               }
+            },
+            fail: function(res) {
+              console.log(res.errMsg)
+            }
+        })
+    },
+
+    showSelectVersion() {
+        let actions = [];
+        let actionObj = [];
+        let self = this;
+        this.data.versions.forEach((item, index) => {
+            if (item.id != self.data.info.id) {
+                let str = 'V' + (index + 1) + '版本';
+                actions.push(str);
+                actionObj.push(item);
+            }
+        });
+
+        if (actions.length == 0) {
+            wx.showModal({
+                title: '提示',
+                content:'暂无其他版本',
+                showCancel: false
+            });
+            return;
+        }
+       
+        wx.showActionSheet({
+            itemList: actions,
+            success: function(res) {
+                if (res.cancel) return;
+                self.changeVersion(actionObj[res.tapIndex].id);
+            },
+            fail: function(res) {
+               console.log(res.errMsg)
+            }
+        })
     }
+
 
 })

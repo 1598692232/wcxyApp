@@ -315,15 +315,14 @@
 	overflow: hidden;
 	margin-left: -14px;
 }
-.join-member-li-more{
+.join-member-li-more .add{
+	width: 30px;
+	height: 30px;
 	background: #0345C7;
 	color: #fff;
 	text-align: center;
 	line-height: 30px;
-	font-size: 14px;
-}
-.join-member-li image{
-	background: #000;
+	font-size: 24px;
 }
 .join-member-tx{
 	/* border: 2px solid #fff; */

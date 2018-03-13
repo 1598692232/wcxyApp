@@ -12,7 +12,7 @@ Page({
         fileCount: null,
         viewCount: null,
         enterShareLink: '',
-        passwordModal: true,
+        passwordModal: false,
         password: '',
         shareName: '',
         manager: app.data.staticImg.manager,
@@ -25,6 +25,7 @@ Page({
             })
            
         });
+
         if (options.password) {
             let params = {
                 share_code: options.code,
@@ -35,6 +36,7 @@ Page({
                 password: options.password
             });
             this.initList(params);
+            
            
         } else {
             let scene = decodeURIComponent(options.scene).split('=');
