@@ -385,11 +385,11 @@ Page({
                 }
 
                 if (data.file_type == 'video') {
-                    info = Object.assign({}, info, {pNo: data.resolution[0].resolution, url:  data.resolution[0].src,});
+                    info = Object.assign({}, info, {pNo: data.resolution[0].resolution, url:  data.resolution[0].src});
                 }
 
                 if(data.file_type == 'audio') {
-                    info = Object.assign({}, info, {audioTime: data.time});
+                    info = Object.assign({}, info, {audioTime: data.time, url:  data.resolution[0].src});
                 }
 
                 self.setData(info);
