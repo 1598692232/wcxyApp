@@ -119,7 +119,7 @@ Page({
         audioTime: 0,
         audioCurrentTimeText: '00:00',
 
-        infoHeight: 166,
+        infoHeight: 132,
     },
 
     statusChange: function(e) {
@@ -946,17 +946,11 @@ Page({
 
  	// 评论输入框聚焦
 	commentFocus(e) {
-        console.log(e, 'eeeee')
-        
-
         let self = this;
 
-        console.log(self.data.scrollHeightAll, e.detail.height, 'self.data.scrollHeightAll')
         self.setData({
             infoHeight: self.data.scrollHeightAll - e.detail.height - 211
         });
-        console.log(self.data.infoHeight, 'infoHeight')
-
 
         let context = wx.createCanvasContext('secondCanvas')
         let context2 = wx.createCanvasContext('firstCanvas')

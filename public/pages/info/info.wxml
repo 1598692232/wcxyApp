@@ -70,7 +70,7 @@
             ></canvas>
           <!-- catchtap="catap" -->
     <!-- 画图控制器 -->
-    <canvas style="width: 100%; height: 36px; position: fixed; top: 211px;left: 0; z-index: 1000;"
+    <canvas style="width: 100%; height: {{infoHeight / 3}}px; position: fixed; top: 211px;left: 0; z-index: 1000;"
             canvas-id="thirdCanvas" id="thirdCanvas" 
             disable-scroll="true"
             bindtouchstart="thirdDrawStart"
@@ -79,9 +79,9 @@
             wx:if="{{isFocus}}" 
     ></canvas>
 
-    <view class="video-info" style="height: {{ isFocus ? infoHeight / 3 : 60}}px;margin-top: -5px;background: #383b49">
+    <view class="video-info" style="height: {{ isFocus ? infoHeight / 3 : 60}}px;background: #383B4A">
 
-        <!-- <view class="video-make clearfix" wx:if="{{!isFocus}}">
+        <view class="video-make clearfix" wx:if="{{!isFocus}}">
             <view class="video-make-li" bindtap="showSelectStatus" data-show="{{true}}" data-field="statusSelectShow" data-animation="animationSelect">
                 <view class="video-make-status">{{visibleStatusText}}</view>
                 <view class="video-make-arrow"></view>
@@ -93,10 +93,10 @@
         </view>
 
 
-      <view class="video-author"  wx:if="{{!isFocus}}">{{username}} · {{createTime}}</view> -->
+      <view class="video-author"  wx:if="{{!isFocus}}">{{username}} · {{createTime}}</view>
 
       <!-- wx:if="{{isFocus}}" -->
-      <view class="label-control" wx:if="{{true && info.file_type == 'video'}}" style="height: {{infoHeight / 3}}px">
+      <view class="label-control" wx:if="{{isFocus && info.file_type == 'video'}}" style="height: {{infoHeight / 3}}px">
         <view class="label-body">  
             <view class="label-type">
                 <view class="label-img" wx:for="{{drawType}}" wx:key="index" bindtap="selectDrawType" data-key="{{index}}" id="draw-control{{index}}" >
@@ -127,14 +127,14 @@
   </view>
 
     <form>
-        <view class="push-comment send-comment" style="height: {{infoHeight / 3}}px">
+        <view class="push-comment send-comment" style="height: {{isFocus ? infoHeight / 3 : 44}}px">
             <view class="push-comment-input clearfix">
-                <input placeholder="发表评论..." cursor-spacing="10" name="commentText" style="color:#fff,line-height: {{infoHeight / 3}}px" bindinput="changeBtn"  
+                <input placeholder="发表评论..." cursor-spacing="10" name="commentText" style="color:#fff,line-height: {{isFocus ? infoHeight / 3 : 44}}px" bindinput="changeBtn"  
                 bindfocus="commentFocus" bindblur="commentBlur" value="{{commentText}}" fixed="{{true}}" focus="{{isFocus}}" /> 
             </view>
         
         </view>
-        <view class="comment-footer" wx:if="{{true}}" style="height: {{infoHeight / 3}} px">
+        <view class="comment-footer" wx:if="{{isFocus}}" style="height: {{infoHeight / 3}}px">
             <canvas style="width: 100%; height: {{infoHeight / 3}}px; position: absolute; top: 0;left: 0; z-index: 1000;"
                 canvas-id="fourthCanvas" id="fourthCanvas" 
                 disable-scroll="true"
@@ -143,14 +143,14 @@
                 bindtouchend="fourthDrawend"
                 wx:if="{{isFocus}}"
             ></canvas>
-            <view class="comment-footer-left">
+            <view class="comment-footer-left" style="line-height: {{infoHeight / 3}}px">
                 取消
             </view>
-            <view class="comment-footer-time" style="color:{{needTime ? '#086ac1': ''}}" wx:if="{{info.file_type != 'image'}}">
+            <view class="comment-footer-time" style="color:{{needTime ? '#086ac1': ''}};line-height: {{infoHeight / 3}}px" wx:if="{{info.file_type != 'image'}}">
                 <image class="time-check" src="./img/time_check.png" wx:if="{{needTime}}"></image>
                 {{currentVideoTime}}
             </view>
-            <view class="comment-footer-right" bindTap="sendComment">
+            <view class="comment-footer-right" bindTap="sendComment" style="line-height: {{infoHeight / 3}}px">
                 发送
             </view>
         </view>

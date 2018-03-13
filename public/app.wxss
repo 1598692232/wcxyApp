@@ -61,7 +61,7 @@ page {
     left: 0; */
     width: 100%;
     /* background: #2a2e3b; */
-    background: #252525;
+    background: #383B4A;
     box-sizing:border-box;
     padding: 5px;
     z-index:100;
@@ -75,7 +75,7 @@ page {
     /*padding-top: 10px;*/
     box-sizing: border-box;
     /* background-color: #535b73; */
-    background: #535353;
+    background: #2d303e;
     border-radius: 3px;
     width: 78%;
 }
@@ -92,7 +92,7 @@ page {
     border-radius: 3px;
     color: #fff;
     /* background-color: #535b73; */
-    background: #535353;
+    background: #2d303e;
 }
 
 
