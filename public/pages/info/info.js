@@ -80,6 +80,7 @@ Page({
         drawControl: [],
         thirdTap:{x: '', y: '', x2:'', y2:'', startTime: 0, endTime: 0},
         fourthTap:{x: '', y: '', x2:'', y2:'', startTime: 0, endTime: 0},
+        fiveTap:{x: '', y: '', x2:'', y2:'', startTime: 0, endTime: 0},
         sendCommentBtnStyle: '',
         prevCommentList: [],
         commentNotice: false,
@@ -120,6 +121,8 @@ Page({
         audioCurrentTimeText: '00:00',
 
         infoHeight: 132,
+        commentBodyH: 0,
+        textareaH: 0,
     },
 
     statusChange: function(e) {
@@ -172,7 +175,8 @@ Page({
     onReady: function (res) {
         let self = this;
         Util.getSystemInfo().then(res => {
-            self.windowWidth = res.windowWidth
+            self.windowWidth = res.windowWidth;
+            self.windowHeight = res.windowHeight;
         })
         
         this.videoCtx = wx.createVideoContext('myVideo');
@@ -210,7 +214,7 @@ Page({
         wx.setStorage({
             key: 'info_data',
             data: ''
-        })
+        });
 
         setTimeout(() => {
             wx.createSelectorQuery().select('#info-audio-progress').fields({
@@ -331,7 +335,7 @@ Page({
                 topHeight += res.height;
                 if (k == topNodes.length - 1) {
                     self.setData({
-                        scrollHeight: wh - topHeight,
+                        scrollHeight: wh - 211 - 60 - 44,
                     })     
                 }
             }).exec();
@@ -343,7 +347,12 @@ Page({
         
         Util.getSystemInfo().then(res => {
             let topHeight = 0;
-            self.setScrollHeight(res.windowHeight);
+            // self.setScrollHeight(res.windowHeight);
+
+            self.setData({
+                scrollHeight: res.windowHeight - 211 - 60 - 44,
+                commentBodyH: res.windowHeight - 211
+            })    
 
             self.setData({
                 scrollHeightAll: res.windowHeight,
@@ -428,7 +437,7 @@ Page({
 
     selectColor(e) {
         this.setData({
-            colorActive: this.data.noSelectColor[e.currentTarget.dataset.key]
+            colorActive: this.data.colors[e.currentTarget.dataset.key]
         })
     },
 
@@ -743,6 +752,40 @@ Page({
     // input底部canvas事件触发结束
 
 
+    // input cavans
+
+    fiveDrawStart(e) {
+        this.data.fiveTap.x = e.touches[0].x
+        this.data.fiveTap.y = e.touches[0].y
+        this.data.fiveTap.x2 = e.touches[0].x
+        this.data.fiveTap.y2 = e.touches[0].y
+        this.data.fiveTap.startTime = new Date().getTime()
+        this.data.fiveTap.endTime = new Date().getTime();
+
+        if (this.data.fiveTap.x > this.data.firstCanvasWidth * 0.14 && this.data.fiveTap.x < this.data.firstCanvasWidth * 0.86) {
+            this.data.allowTimeTap = true;
+        } else {
+            this.data.allowTimeTap = false;
+        }
+    },
+    
+    fiveDrawMove(e) {
+        this.data.fiveTap.x2 = e.touches[0].x
+        this.data.fiveTap.y2 = e.touches[0].y
+        this.data.fiveTap.endTime = new Date().getTime()
+    },
+
+    fiveDrawend(e) {
+        if (Math.abs(this.data.fiveTap.x - this.data.fiveTap.x2) <= 20 
+            && Math.abs(this.data.fiveTap.y - this.data.fiveTap.y2) <= 20
+        && this.data.fiveTap.endTime - this.data.fiveTap.startTime <= 500) {
+            this.setData({
+                isFocus: true
+            })
+        }
+    },
+
+
     //画画开始
     drawStart(e) {     
         if (!this.data.isFocus) return
@@ -948,9 +991,9 @@ Page({
 	commentFocus(e) {
         let self = this;
 
-        self.setData({
-            infoHeight: self.data.scrollHeightAll - e.detail.height - 211
-        });
+        // self.setData({
+        //     infoHeight: self.data.scrollHeightAll - e.detail.height - 211
+        // });
 
         let context = wx.createCanvasContext('secondCanvas')
         let context2 = wx.createCanvasContext('firstCanvas')
@@ -970,7 +1013,7 @@ Page({
         // self.videoCtx.play()
         self.setData({
             muted: true,
-            isFocus: true,
+            // isFocus: true,
             cavansShow: false
         });
 
@@ -1684,7 +1727,7 @@ Page({
             '移除标签',
             '审核通过',
             '进行中',
-            '待审核',
+            '回复待审核',
             '意见搜集完成'
         ]
         let self = this;
@@ -1735,7 +1778,19 @@ Page({
                console.log(res.errMsg)
             }
         })
+    },
+
+    inputFocus(e) {
+        this.setData({
+            isFocus: true,
+            textareaH: this.windowHeight- 211 - e.detail.height - 44 -44
+        });
+        this.commentFocus();
+    },
+
+    changeCommentText(e) {
+        this.setData({
+            commentText: e.detail.value
+        });
     }
-
-
 })

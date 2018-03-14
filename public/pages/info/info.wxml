@@ -1,6 +1,6 @@
 
 <view class="section tc" style="height: {{scrollHeightAll}}px"  wx:if="{{!passwordModal}}">
-    <view style="width: 100%;height:211px" id="play-body">
+    <view style="width: 100%;height:211px;position:relative;" id="play-body">
         <block wx:if="{{info.file_type == 'video'}}">
             <video id="myVideo" class="info-video" src="{{url}}" enable-danmu controls objectFit="contain" bindplay="listenerPlay"
             autoplay bindtimeupdate="getVideoTime" bindpause="getVideoTime2" muted="{{true}}" bindfullscreenchange="handleFullScreen">
@@ -56,10 +56,10 @@
     </view>
 
   <!--  wx:if="{{isFocus || cavansShow}}" -->
-  <canvas style="width: 100%; height: {{firstCanvasHeight}}px; position: fixed; top: 0;left: 0;"
+  <canvas style="width: 100%; height: {{firstCanvasHeight}}px; position: fixed; top: 0;left: 0;z-index: 100"
    canvas-id="firstCanvas" id="firstCanvas" wx:if="{{isFocus || cavansShow}}" bindtouchstart="firstCanvasTouchstart"></canvas>
     <!--  wx:if="{{isFocus}}" -->
-    <canvas style="width: 100%; height: {{firstCanvasHeight}}px; position: fixed; top: 0;left: 0;" 
+    <canvas style="width: 100%; height: {{firstCanvasHeight}}px; position: fixed; top: 0;left: 0;z-index: 200" 
             id="secondCanvas" canvas-id="secondCanvas"
             canvas-id="secondCanvas"
             bindtouchstart="drawStart"
@@ -70,17 +70,9 @@
             ></canvas>
           <!-- catchtap="catap" -->
     <!-- 画图控制器 -->
-    <canvas style="width: 100%; height: {{infoHeight / 3}}px; position: fixed; top: 211px;left: 0; z-index: 1000;"
-            canvas-id="thirdCanvas" id="thirdCanvas" 
-            disable-scroll="true"
-            bindtouchstart="thirdDrawStart"
-            bindtouchmove="thirdDrawMove"
-            bindtouchend="thirdDrawend"
-            wx:if="{{isFocus}}" 
-    ></canvas>
 
-    <view class="video-info" style="height: {{ isFocus ? infoHeight / 3 : 60}}px;background: #383B4A">
 
+    <view class="video-info" style="height: 60px;background: #383B4A" wx:if="{{!isFocus}}">
         <view class="video-make clearfix" wx:if="{{!isFocus}}">
             <view class="video-make-li" bindtap="showSelectStatus" data-show="{{true}}" data-field="statusSelectShow" data-animation="animationSelect">
                 <view class="video-make-status">{{visibleStatusText}}</view>
@@ -94,73 +86,99 @@
 
 
       <view class="video-author"  wx:if="{{!isFocus}}">{{username}} · {{createTime}}</view>
+  </view>
 
-      <!-- wx:if="{{isFocus}}" -->
-      <view class="label-control" wx:if="{{isFocus && info.file_type == 'video'}}" style="height: {{infoHeight / 3}}px">
-        <view class="label-body">  
-            <view class="label-type">
-                <view class="label-img" wx:for="{{drawType}}" wx:key="index" bindtap="selectDrawType" data-key="{{index}}" id="draw-control{{index}}" >
-                        <image src="{{item.activeImg}}" mode="aspectFit" wx:if="{{drawTypeActive == item.name}}"></image>  
-                        <image src="{{item.img}}" mode="aspectFit" wx:else></image>         
-                </view>  
+
+ 
+  
+    <block wx:if="{{isFocus}}">
+
+    <view class="info-comment-body" style="height:{{commentBodyH}}px">
+            <!-- <canvas style="width: 100%; height: 300px; position: fixed; top: 211px;left: 0; z-index: 1000;background: rgba(255,255,255,0.5)"
+            canvas-id="allCanvas" id="allCanvas" 
+            disable-scroll="true"
+            ></canvas> -->
+
+            <view class="comment-footer" style="height: 44px">
+                <canvas style="width: 100%; height: 44px; position: absolute; top: 0;left: 0; z-index: 100;"
+                    canvas-id="fourthCanvas" id="fourthCanvas" 
+                    disable-scroll="true"
+                    bindtouchstart="fourthDrawStart"
+                    bindtouchmove="fourthDrawMove"
+                    bindtouchend="fourthDrawend"
+                ></canvas>
+                <view class="comment-footer-left" style="line-height: 44px">
+                    取消
+                </view>
+                <view class="comment-footer-time" style="color:{{needTime ? '#086ac1': ''}};line-height: 44px" wx:if="{{info.file_type != 'image'}}">
+                    <image class="time-check" src="./img/time_check.png" wx:if="{{needTime}}"></image>
+                    {{currentVideoTime}}
+                </view>
+                <view class="comment-footer-right" bindTap="sendComment" style="line-height: 44px">
+                    发送
+                </view>
             </view>
-
-            <!-- noSelectColors -->
-            <view class="label-color">
-                <view class="label-color-li"  wx:for="{{colors}}" wx:key="index" data-key="{{index}}"  
-                catchtap="selectColor" id="draw-control{{index + 6}}">
-                    <view class="label-color-block-select">
-                        <block wx:if="{{item == colorActive}}">
-                            <view class="label-color-select active" style="background-color:{{item}}; box-shadow: 0 0 3px {{item}};">
-                            </view>
-                        </block>
-                        <block wx:else>
-                            <view class="label-color-select" style="background-color:{{item}}">
-                            </view>
-                        </block>
-                        
+       
+        <view class="label-control" wx:if="{{info.file_type == 'video'}}" style="height: 44px">
+            <!-- <canvas style="width: 100%; height: 44px; position: absolute; top: 0p;left: 0; z-index: 100;"
+                    canvas-id="thirdCanvas" id="thirdCanvas" 
+                    disable-scroll="true"
+                    bindtouchstart="thirdDrawStart"
+                    bindtouchmove="thirdDrawMove"
+                    bindtouchend="thirdDrawend"
+            ></canvas> -->
+            <view class="label-body">  
+                <view class="label-type">
+                    <view class="label-img" wx:for="{{drawType}}" wx:key="index" bindtap="selectDrawType" data-key="{{index}}" id="draw-control{{index}}" >
+                            <image src="{{item.activeImg}}" mode="aspectFit" wx:if="{{drawTypeActive == item.name}}"></image>  
+                            <image src="{{item.img}}" mode="aspectFit" wx:else></image>         
+                    </view>  
+                </view>
+    
+                <!-- noSelectColors -->
+                <view class="label-color">
+                    <view class="label-color-li"  wx:for="{{colors}}" wx:key="index" data-key="{{index}}"  
+                    catchtap="selectColor" id="draw-control{{index + 6}}">
+                        <view class="label-color-block-select">
+                            <block wx:if="{{item == colorActive}}">
+                                <view class="label-color-select active" style="background-color:{{item}}; box-shadow: 0 0 3px {{item}};">
+                                </view>
+                            </block>
+                            <block wx:else>
+                                <view class="label-color-select" style="background-color:{{item}}">
+                                </view>
+                            </block>
+                            
+                        </view>
                     </view>
                 </view>
             </view>
         </view>
-      </view>
-  </view>
 
-    <form>
-        <view class="push-comment send-comment" style="height: {{isFocus ? infoHeight / 3 : 44}}px;">
-            <view class="push-comment-input clearfix" style="padding-left:{{isFocus ? 5 : 44}}px">
-                <view class="comment-input-icon" wx:if="{{!isFocus}}">
-                    <image src="./img/huabi-active.png" mode="aspectFit"></image>
-                </view>
-                <input placeholder="发表评论..." cursor-spacing="10" name="commentText" style="color:#fff,line-height: {{isFocus ? infoHeight / 3 : 44}}px;padding-left:{{isFocus ? 5 : 0}} 5px" bindinput="changeBtn"  
-                bindfocus="commentFocus" bindblur="commentBlur" value="{{commentText}}" fixed="{{true}}" focus="{{isFocus}}" /> 
-            </view>
-        
-        </view>
-        <view class="comment-footer" wx:if="{{isFocus}}" style="height: {{infoHeight / 3}}px">
-            <canvas style="width: 100%; height: {{infoHeight / 3}}px; position: absolute; top: 0;left: 0; z-index: 1000;"
-                canvas-id="fourthCanvas" id="fourthCanvas" 
+        <view class="push-comment send-comment" style="height: {{commentBodyH - 88}}px;">
+            <!-- <canvas style="width: 100%; height: 44px; position: absolute; top: 0p;left: 0; z-index: 100;"
+                canvas-id="fiveCanvas" id="fiveCanvas" 
                 disable-scroll="true"
-                bindtouchstart="fourthDrawStart"
-                bindtouchmove="fourthDrawMove"
-                bindtouchend="fourthDrawend"
-                wx:if="{{isFocus}}"
-            ></canvas>
-            <view class="comment-footer-left" style="line-height: {{infoHeight / 3}}px">
-                取消
-            </view>
-            <view class="comment-footer-time" style="color:{{needTime ? '#086ac1': ''}};line-height: {{infoHeight / 3}}px" wx:if="{{info.file_type != 'image'}}">
-                <image class="time-check" src="./img/time_check.png" wx:if="{{needTime}}"></image>
-                {{currentVideoTime}}
-            </view>
-            <view class="comment-footer-right" bindTap="sendComment" style="line-height: {{infoHeight / 3}}px">
-                发送
+                bindtouchstart="fiveDrawStart"
+                bindtouchmove="fiveDrawMove"
+                bindtouchend="fiveDrawend"
+            ></canvas> -->
+            <view class="push-comment-input clearfix">
+                <!-- <input placeholder="发表评论..." focus="{{isFocus}}" cursor-spacing="10" name="commentText" style="color:#fff,line-height: 44px;padding-left:5px;display:none" bindinput="changeBtn"  
+                bindfocus="commentFocus" value="{{commentText}}" fixed="{{true}}" adjust-position="{{false}}" confirm-hold="false"/>  -->
+
+                <textarea value="{{commentText}}"
+                    focus="{{isFocus}}" cursor-spacing="5" bindinput="changeCommentText"
+                     placeholder="发表评论..."></textarea>
             </view>
         </view>
-    </form>
+
+    </view>
+    </block>
+
 
   <!-- bindscrolltolower="loadMore" -->
-  <scroll-view scroll-y="true" style="height: {{scrollHeight}}px" class="list-body">
+  <scroll-view scroll-y="true" style="height: {{scrollHeight}}px" class="list-body" wx:if="{{!isFocus}}">
    
     <view wx:if="{{commentList.length > 0}}">
             <view class="list-body-cover" wx:if="{{isFocus}}"></view>
@@ -214,7 +232,12 @@
 
   </scroll-view>
 
-
+  <view class="info-footer-comment-btn" bindtap="inputFocus" wx:if="{{!isFocus}}">
+    <view class="comment-btn-icon">
+        <image src="./img/comment-icon.png"></image>
+    </view>
+    <view class="comment-btn-text">发表评论</view>
+  </view>
 
 </view>
 
@@ -266,6 +289,9 @@
         </form>
     </view>
 </view>
+
+
+
 
 
 
