@@ -1,16 +1,31 @@
 <view class="pl-container">
 	<scroll-view  class="breadcrumb-nav" scroll-x wx:if="{{showBreadcrumb}}" style="height: 56px;" scroll-x>
 		<view  style="width: {{breadcrumbWidth}}px" class="clearfix">
-			<view class="breadcrumb-nav-li" wx:for="{{breadcrumbList}}" wx:key="index"
-			data-id="{{item.id}}" bindtap="selectFolder" 
-			style="z-index:{{100 - index}};" >
-				<!-- <image src="{{index == 0 ? './img/bg1.png' : './img/bg2.png'}}" mode="scaleToFill"></image> -->
-				<!-- <view style="opacity:{{breadcrumbList.length - 1 == index ? 1: 0}}">
-				</view> -->
-				<view style="opacity:{{ index == 0 ? 0: 1}}">
-					<image src="./img/jiantou.png"></image>
-				</view>
-				<view class="text">{{item.name}}</view>
+			<view wx:if="{{showShare}}">
+				<view class="breadcrumb-nav-li" wx:for="{{breadcrumbList}}" wx:key="index"
+				data-id="{{item.id}}"
+				style="z-index:{{100 - index}};" >
+					<!-- <image src="{{index == 0 ? './img/bg1.png' : './img/bg2.png'}}" mode="scaleToFill"></image> -->
+					<!-- <view style="opacity:{{breadcrumbList.length - 1 == index ? 1: 0}}">
+					</view> -->
+					<view style="opacity:{{ index == 0 ? 0: 1}}">
+						<image src="./img/jiantou.png"></image>
+					</view>
+					<view class="text">{{item.name}}</view>
+				</view>	
+			</view>
+			<view wx:if="{{!showShare}}">
+				<view class="breadcrumb-nav-li" wx:for="{{breadcrumbList}}" wx:key="index"
+				data-id="{{item.id}}" bindtap="selectFolder" 
+				style="z-index:{{100 - index}};" >
+					<!-- <image src="{{index == 0 ? './img/bg1.png' : './img/bg2.png'}}" mode="scaleToFill"></image> -->
+					<!-- <view style="opacity:{{breadcrumbList.length - 1 == index ? 1: 0}}">
+					</view> -->
+					<view style="opacity:{{ index == 0 ? 0: 1}}">
+						<image src="./img/jiantou.png"></image>
+					</view>
+					<view class="text">{{item.name}}</view>
+				</view>	
 			</view>			
 		</view>
 	</scroll-view>
@@ -260,13 +275,15 @@
 	</view>
 
 	<view wx:if="{{!showShare}}">
-		<view class="share" wx:if="{{!showBreadcrumb}}">
-			<view bindtap="toShareList">链接</view>
+		<view class="share">
+			<view bindtap="toShareList">
+				<text wx:if="{{!showBreadcrumb}}">链接</text>
+			</view>
 			<view bindtap="toCreateShare">创建分享</view>
 		</view>
 	</view>
 	<view wx:if="{{showShare}}">
-		<view class="share createShare" wx:if="{{!showBreadcrumb}}">
+		<view class="share createShare">
 			<view bindtap="toCloseCreateShare">取消</view>
 			<view bindtap="toCreateShareList">下一步</view>
 		</view>
