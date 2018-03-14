@@ -1785,7 +1785,9 @@ Page({
             isFocus: true,
             textareaH: this.windowHeight- 211 - e.detail.height - 44 -44
         });
-        this.commentFocus();
+        setTimeout(() => {
+            this.commentFocus();
+        });
     },
 
     changeCommentText(e) {

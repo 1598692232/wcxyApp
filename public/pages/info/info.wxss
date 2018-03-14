@@ -559,7 +559,7 @@
 .push-comment-input textarea{
     width: 100%;
     box-sizing: border-box;
-    padding:5px 13px;
+    padding:5px 10px;
     color: #fff;
     font-size: 13px;
     line-height: 1.5;
@@ -686,7 +686,7 @@
     font-size: 13px;
     opacity: 0.6;
     box-sizing: border-box;
-    padding-left: 13px;
+    padding-left: 14px;
 }
 
 .comment-footer-time{
@@ -713,7 +713,7 @@
     font-size: 13px;
     opacity: 0.6;
     box-sizing: border-box;
-    padding-right: 13px;
+    padding-right: 14px;
 }
 
 .label-color-li{
