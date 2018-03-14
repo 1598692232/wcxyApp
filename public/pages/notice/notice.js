@@ -14,6 +14,7 @@ Page({
 
     onLoad() {
         let self = this
+        wx.showLoading()
         Util.getSystemInfo().then(res => {
             self.setData({
                 scrollHeight: res.windowHeight,
@@ -114,7 +115,8 @@ Page({
                 noticeList: data.list,
                 notice_count:data.notice_count,
                 project_name: data.project_name
-            })   
+            })
+            wx.hideLoading()   
         }, res => {
             wx.showModal({
                 title: '提示',

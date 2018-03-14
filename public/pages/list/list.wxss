@@ -29,7 +29,7 @@
     box-sizing: border-box;
     width: 100%;
     padding: 15px 12px;
-    border-bottom: 2px solid #2F3344;
+    border-bottom: 1px solid #2F3344;
     display: flex;
 }
 .item-left{
@@ -155,8 +155,8 @@
     color: #9B9B9B;
     font-size: 15px;
     background:#383B4A;
-    border: 2px solid #202330;
-    
+    border: 1px solid #202330;
+    box-sizing: border-box;
 }
 .active{
     color:#fff;
