@@ -18,6 +18,7 @@ Page({
 
     onLoad(options) {
         let self = this
+        wx.showLoading()
         self.setData({
             title: options.project_name,
             projectId: options.project_id
@@ -48,7 +49,6 @@ Page({
         let store = wx.getStorageSync('app')
         let reqData = Object.assign({}, {token: store.token},{login_id:store.login_id})
         reqData.project_id = self.data.projectId
-        wx.showLoading()
         Util.ajax('notice/detail', 'get',reqData).then(data => {
             data.map(item => {
                 item.createtime = Util.getCreateTime(item.created_at)

@@ -33,7 +33,7 @@
 .item{
     box-sizing: border-box;
     width: 100%;
-    border-bottom: 2px solid #2F3344;
+    border-bottom: 1px solid #2F3344;
     display: flex;
     justify-content: space-between;
     position: relative;
@@ -74,7 +74,7 @@
 }
 .item-right{
     margin-left: 8px;
-    max-width: 200px;
+    max-width: 247px;
 }
 .item-title{
     display: block;
@@ -99,7 +99,7 @@
     height: 16px;
     position: absolute;
     right: 20px;
-    top: 30px;
+    top: 15px;
 }
 .item-time{
     font-size: 11px;
@@ -120,7 +120,7 @@
     text-align: center;
     font-size: 13px;
     color: #FFFFFF;
-    border-top: 2px solid #2F3344;
+    border-top: 1px solid #2F3344;
 }
 
 
