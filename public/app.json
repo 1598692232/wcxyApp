@@ -20,9 +20,10 @@
   ],
   "window":{
     "backgroundTextStyle":"dark",
-    "navigationBarBackgroundColor": "#21212d",
+    "navigationBarBackgroundColor": "#252525",
     "navigationBarTitleText": "XINYUE新阅",
-    "navigationBarTextStyle":"#fff"
+    "navigationBarTextStyle":"#fff",
+    "backgroundColor": "#383B4A"
   },
   "tabBar": {
     "list": [{

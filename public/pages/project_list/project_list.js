@@ -270,6 +270,13 @@ Page({
             let doc = self.data.videoList.filter(it => it.id == item)[0];
             shareList.push(doc);
         });
+        if (shareList.length == 0) {
+            wx.showModal({
+                title:'提示',
+                content: '当前为选择分享内容'
+            })
+            return;
+        }
         wx.setStorage({
             key: 'share_file',
             data: shareList

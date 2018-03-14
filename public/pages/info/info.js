@@ -123,6 +123,8 @@ Page({
         infoHeight: 132,
         commentBodyH: 0,
         textareaH: 0,
+        review: 1,
+        share_all_version: 1
     },
 
     statusChange: function(e) {
@@ -168,10 +170,6 @@ Page({
         }
     },
 
-    // rgb(230, 116, 34)
-    // rgb(26, 188, 161)
-    // rgb(52, 163, 219)
-
     onReady: function (res) {
         let self = this;
         Util.getSystemInfo().then(res => {
@@ -185,7 +183,16 @@ Page({
 
     onLoad(options) {
         this.data.options = options
-        let self = this
+        let self = this;
+        console.log(options, 'options');
+
+        if (options.review != undefined && options.share_all_version != undefined ) {
+            self.setData({
+                review: parseInt(options.review),
+                share_all_version: parseInt(options.share_all_version)
+            });
+        }
+
 
         wx.createSelectorQuery().select('#play-body').fields({
             dataset: true,
@@ -1693,6 +1700,7 @@ Page({
         this.audioTouch.x2 = e.touches[0].clientX;
         let moveX = this.audioTouch.x2 - this.audioTouch.x1;
         let audioProgressNum = this.audioTouch.startX +  moveX;
+
         //防止拖动超出
         if (audioProgressNum < 0) {
             audioProgressNum = 0

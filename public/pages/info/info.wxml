@@ -74,19 +74,18 @@
 
     <view class="video-info" style="height: 60px;background: #383B4A" wx:if="{{!isFocus}}">
         <view class="video-make clearfix" wx:if="{{!isFocus}}">
-            <view class="video-make-li" bindtap="showSelectStatus" data-show="{{true}}" data-field="statusSelectShow" data-animation="animationSelect">
+            <view class="video-make-li" wx:if="{{review == 1}}" bindtap="showSelectStatus" data-show="{{true}}" data-field="statusSelectShow" data-animation="animationSelect">
                 <view class="video-make-status">{{visibleStatusText}}</view>
                 <view class="video-make-arrow"></view>
             </view>
-            <view class="video-make-li" bindtap="showSelectVersion" data-show="{{true}}" data-field="versionSelectShow" data-animation="animationSelect2">
+            <view class="video-make-li" wx:if="{{share_all_version == 1}}" bindtap="showSelectVersion" data-show="{{true}}" data-field="versionSelectShow" data-animation="animationSelect2">
                 <view class="video-make-status">V{{visibleVersionNo + 1}}版本</view>
                 <view class="video-make-arrow"></view>
             </view>
         </view>
 
-
-      <view class="video-author"  wx:if="{{!isFocus}}">{{username}} · {{createTime}}</view>
-  </view>
+        <view class="video-author"  wx:if="{{!isFocus}}">{{username}} · {{createTime}}</view>
+    </view>
 
 
  

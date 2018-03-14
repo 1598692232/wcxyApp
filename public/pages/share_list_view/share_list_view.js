@@ -16,6 +16,8 @@ Page({
         password: '',
         shareName: '',
         manager: app.data.staticImg.manager,
+        review: 0,
+        share_all_version: 0
     },
     onLoad(options) {
 		let self = this;
@@ -58,7 +60,9 @@ Page({
                     viewCount: data.view_count,
                     projectId: data.project_id,
                     passwordModal: false,
-                    shareName: data.share_name
+                    shareName: data.share_name,
+                    review: data.review,
+                    share_all_version: data.share_all_version
                 });
                 wx.setNavigationBarTitle({title: data.share_name})
             }, res => {
@@ -115,7 +119,9 @@ Page({
                 viewCount: data.view_count,
                 projectId: data.project_id,
                 passwordModal: false,
-                shareName: data.share_name
+                shareName: data.share_name,
+                review: data.review,
+                share_all_version: data.share_all_version
             });
             wx.setNavigationBarTitle({title: data.share_name})
         }, res => {
@@ -216,7 +222,7 @@ Page({
         let url = '/pages/info/info?&name=' 
             + name + '&id=' + id 
             + '&username=' + username
-            + '&project_id=' + this.data.projectId
+            + '&project_id=' + this.data.projectId + '&review=' + this.data.review + '&share_all_version=' + this.data.review;
         wx.navigateTo({
             url: url,
         })
