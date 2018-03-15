@@ -131,6 +131,7 @@ Page({
         needTime: true,
         isIOS: true,
         commentPage: 1,
+        adjustPosition: false
     },
 
     statusChange: function(e) {
@@ -1178,6 +1179,7 @@ Page({
         this.setData({
             commentTextTemp: this.data.commentText,
             commentText: '',
+            adjustPosition: false
         });
         setTimeout(() => {
             this.videoCtx.play();
@@ -1386,8 +1388,10 @@ Page({
 
 	 //跳到指定时间播放
 	 toVideoPosition(e) {
+
         let self = this
         if (e.currentTarget.dataset.time < 0 ) return;
+
         this.setData({
             cavansShow: true,
             commentActiveIndex: e.currentTarget.dataset.id
@@ -1906,12 +1910,14 @@ Page({
                 isFocus: true,
                 textareaH: this.windowHeight- 211 - e.detail.height - 44 -44,
                 commentText: this.data.commentTextTemp,
+                // adjustPosition: true
             });
+           
             setTimeout(() => {
                 this.setData({
-                    commentFocus: true
+                    adjustPosition: true
                 })
-            }, 300)
+            })
            
     
             if (this.data.info.file_type != 'image') {

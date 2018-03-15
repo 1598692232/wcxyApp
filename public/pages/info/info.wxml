@@ -91,11 +91,6 @@
     </view>
 
 
- 
-  
-   
-
-
   <!-- bindscrolltolower="loadMore" -->
   <scroll-view scroll-y="true" lower-threshold="{{150}}" bindscrolltolower="getMoreComment" style="height: {{scrollHeight}}px" class="list-body" wx:if="{{!isFocus}}">
    
@@ -111,7 +106,7 @@
           <view class="comment-master-text" data-time="{{item.media_time}}" data-index="{{index}}" data-id="{{item.id}}"  bindtap="toVideoPosition">
               <view class="comment-header clearfix">
                   <text class="comment-name" style="color: {{item.nameColor ? item.nameColor : ''}}">{{item.realname}}</text>
-                  <text class="comment-timer" style="background: {{item.timeBackground ? item.timeBackground : ''}}" wx:if="{{item.media_time > 0}}">{{item.comment_time}}</text>
+                  <text class="comment-timer" style="background: {{item.timeBackground ? item.timeBackground : ''}}" wx:if="{{item.media_time >= 0}}">{{item.comment_time}}</text>
               </view>
               <view class="comment-body1">
                  <text>{{item.content}} </text>
@@ -306,8 +301,8 @@
         <view class="comment-btn-icon" wx:if="{{!isFocus}}">
             <image src="./img/comment-icon.png"></image>
         </view>
-        <textarea value="{{commentText}}" focus="{{commentFocus}}" show-confirm-bar="{{false}}"
-            cursor-spacing="5" bindinput="changeCommentText" bindfocus="inputFocus" adjust-position="{{false}}"
+        <textarea value="{{commentText}}" show-confirm-bar="{{false}}"
+            cursor-spacing="5" bindinput="changeCommentText" bindfocus="inputFocus" adjust-position="{{adjustPosition}}"
             placeholder="发表评论..." placeholder-style="font-size: 13px;" cursor-spacing="{{10}}"></textarea>
     </view>
 
