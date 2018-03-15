@@ -1075,10 +1075,12 @@
     top: 299px;
     z-index:1000;
     box-shadow:none;
+    background: #2d303e;
     height:200px;
 }
 .comment-block-active textarea{
     padding: 13px 10px;
+    box-sizing: border-box;
     font-size: 13px;
     color: #fff;
     height: 100px;
