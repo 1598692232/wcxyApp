@@ -7,8 +7,10 @@
            </view>
            <view class="list-body">
                <block wx:if="{{noticeListInfo.length > 0}}">    
-                 <view class="item {{item.isTouchMove ? 'touch-move-active' : ''}}" wx:for="{{noticeListInfo}}" wx:key="index"
-                  wx:if="{{noticeListInfo.length > 0}}" data-index="{{index}}"  data-id="{{item.id}}" data-createtime="{{item.createtime}}" bindtouchstart="touchstart" bindtouchmove="touchmove">
+                 <view class="item {{item.isTouchMove ? 'touch-move-active' : ''}}" wx:for="{{noticeListInfo}}" wx:key="index" bindtap="toCommentInfo"
+                  wx:if="{{noticeListInfo.length > 0}}" 
+                  data-index="{{index}}"  data-id="{{item.id}}" data-createtime="{{item.createtime}}" data-contentid="{{item.content_id}}" data-isproject="{{item.isproject}}" data-type="{{item.type}}"
+                  bindtouchstart="touchstart" bindtouchmove="touchmove">
                    <view class="item-left-content">
                         <view class="item-left">
                             <block>

@@ -15,9 +15,8 @@ Page({
         projectId: 0,
         title: '',
         page: 1,
-        pageSize: 20,
-        hasMoreData: true,
-        contentlist: [],
+        pageSize: 10,
+        hasMoreData: true
     },
 
     onLoad(options) {
@@ -53,36 +52,36 @@ Page({
         let store = wx.getStorageSync('app')
         let reqData = Object.assign({}, {token: store.token},{login_id:store.login_id})
         reqData.project_id = self.data.projectId
-        reqData.pages = self.data.page
+        reqData.page = self.data.page
+        reqData.pre_page = 10
         Util.ajax('notice/detail', 'get',reqData).then(data => {
-            data.map(item => {
+            data.list.map(item => {
                 item.createtime = Util.getCreateTime(item.created_at)
                 item.avatar = item.avatar == '' ? self.data.tx : item.avatar
+                item.isproject = item.content_id.toString().substr(0,1)==='P'?true:false
             })
-            self.setData({
-                noticeListInfo: data
-            })
+            // self.setData({
+            //     noticeListInfo: data.list
+            // })
 
+            var contentlistTem = self.data.noticeListInfo
+            if (self.data.page == 1) {
+                contentlistTem = []
+            }
+            var noticeListInfo = data.list
 
-            // var contentlistTem = self.data.contentlist
-            // if (self.data.page == 1) {
-            //     contentlistTem = []
-            //   }
-            //   var contentlist = data
-            //   if (contentlist.length < self.data.pageSize) {
-            //     self.setData({
-            //       contentlist: contentlistTem.concat(contentlist),
-            //       hasMoreData: false
-            //     })
-            //   } else {
-            //     self.setData({
-            //       contentlist: contentlistTem.concat(contentlist),
-            //       hasMoreData: true,
-            //       page: self.data.page + 1
-            //     })
-            //   }
-            // console.log(self.data.contentlist,'contentlist')
-     
+            if (noticeListInfo.length < self.data.pageSize) {
+                self.setData({
+                    noticeListInfo: contentlistTem.concat(noticeListInfo),
+                    hasMoreData: false
+                })
+            } else {
+                self.setData({
+                    noticeListInfo: contentlistTem.concat(noticeListInfo),
+                    hasMoreData: true,
+                    page: self.data.page + 1
+                })     
+            }
             wx.hideLoading()
         }, res => {
             wx.showModal({
@@ -106,9 +105,9 @@ Page({
             v.isTouchMove = false;
         })
         this.setData({
-        startX: e.changedTouches[0].clientX,
-        startY: e.changedTouches[0].clientY,
-        noticeListInfo: this.data.noticeListInfo
+            startX: e.changedTouches[0].clientX,
+            startY: e.changedTouches[0].clientY,
+            noticeListInfo: this.data.noticeListInfo
         })
     },
     //滑动事件处理
@@ -152,15 +151,23 @@ Page({
     //删除事件
     del: function (e) {
         let self = this
+        wx.showLoading({
+            title: '正在删除...'
+        })
         let store = wx.getStorageSync('app')
         let reqData = Object.assign({}, {token: store.token},{login_id:store.login_id})
         reqData.notice_id = e.currentTarget.dataset.id
         Util.ajax('notice/cell', 'delete',reqData).then(data => {
-            self.onShow()
-        }, res => {
+            self.data.noticeListInfo.splice(e.currentTarget.dataset.index, 1)
+            self.setData({
+                noticeListInfo: self.data.noticeListInfo
+            })
             wx.showToast({
+                icon: 'success',
                 title: '删除消息成功'
             })
+        }, res => {
+            console.log(res,'res')
         })
     },
     delAll: function (e) {
@@ -188,26 +195,45 @@ Page({
     },
     // 页面上拉触底事件的处理函数
     lower(e){
-        // console.log(e,'eeeee')
-        // wx.showToast({
-        //     icon: 'loading',
-        //     title: '加载更多数据',
-        //     duration: 3000
-        // })
-        // let self = this
-        // if (this.data.hasMoreData) {
-        //     self.initList()
-        //     wx.showToast({
-        //         icon: 'loading',
-        //         title: '加载更多数据',
-        //         duration: 2000
-        //     })
-        // } else {
-        //     wx.showToast({
-        //         icon: 'none',
-        //         title: '没有更多数据',
-        //         duration: 2000
-        //     })
-        // }
+        let self = this
+        if (this.data.hasMoreData) {
+            self.initList()
+            wx.showToast({
+                icon: 'loading',
+                title: '加载更多数据',
+                duration: 2000
+            })
+        } else {
+            wx.showToast({
+                icon: 'success',
+                title: '加载完数据',
+                duration: 2000
+            })
+        }
+    },
+    //跳转到播放页面的评论页
+    toCommentInfo(e) {
+        let self = this
+        if(e.currentTarget.dataset.isproject===false){
+            if(e.currentTarget.dataset.type==='deletedoc'||e.currentTarget.dataset.type==='deleteversion'||e.currentTarget.dataset.type==='deletecomment'){
+                wx.showModal({
+                    title: '提示',
+                    content: '不支持此消息的预览',
+                    showCancel: false,
+                    duration: 2000
+                })
+            }else{
+                wx.navigateTo({
+                    url: '/pages/info/info?project_id=' + self.data.projectId + '&id=' + e.currentTarget.dataset.contentid
+                })
+            } 
+        }else{
+            wx.showModal({
+                title: '提示',
+                content: '不支持此消息的预览',
+                showCancel: false,
+                duration: 2000
+            })
+        }
     }
 })
