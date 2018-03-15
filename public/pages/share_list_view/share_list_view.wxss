@@ -244,6 +244,11 @@
     background: #30343f;
 }
 
+.info-ext image{
+	width: 45px;
+	height: 50px;
+}
+
 .info-ext-bg{
     position: absolute;
     width: 45px;

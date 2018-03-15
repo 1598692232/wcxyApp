@@ -225,7 +225,8 @@
     </view>
 
     <view wx:if="{{commentList.length == 0}}" class="sofa">
-        ～暂无评论，抢沙发！！～
+        <image src="./img/empty.png"  mode="aspectFit"></image>
+        <view class="sofa-text">暂时没有评论哦</view>
     </view>
 
 

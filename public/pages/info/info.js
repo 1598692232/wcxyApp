@@ -124,7 +124,8 @@ Page({
         commentBodyH: 0,
         textareaH: 0,
         review: 1,
-        share_all_version: 1
+        share_all_version: 1,
+        needTime: true
     },
 
     statusChange: function(e) {
