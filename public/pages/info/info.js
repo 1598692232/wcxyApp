@@ -126,7 +126,8 @@ Page({
         textareaH: 0,
         review: 1,
         share_all_version: 1,
-        needTime: true
+        needTime: true,
+        isIOS: true
     },
 
     statusChange: function(e) {
@@ -175,6 +176,9 @@ Page({
     onReady: function (res) {
         let self = this;
         Util.getSystemInfo().then(res => {
+            self.setData({
+                isIOS: res.system.indexOf('iOS') > -1 ? true : false
+            });
             self.windowWidth = res.windowWidth;
             self.windowHeight = res.windowHeight;
         })
