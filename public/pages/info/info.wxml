@@ -1,5 +1,5 @@
 <!-- scrollHeightAll -->
-<view style="height: {{scrollHeightAll}}px;background: #1c1d22">
+<view style="height: {{isFocus ? scrollHeightAll : 299}}px;background: #1c1d22">
 <view class="section tc"  wx:if="{{!passwordModal}}">
     <view style="width: 100%;height:211px;position:relative;" id="play-body">
         <block wx:if="{{info.file_type == 'video'}}">
@@ -151,7 +151,7 @@
 
 
   </scroll-view>
-
+<!-- wx:if="{{!isFocus && !isIOS}}" -->
   <view class="info-footer-comment-btn" bindtap="inputFocus" wx:if="{{!isFocus && !isIOS}}">
     <view class="comment-btn-icon">
         <image src="./img/comment-icon.png"></image>
@@ -277,6 +277,7 @@
                 </view>
             </view>
     
+            <!-- wx:if="{{!isIOS}}" -->
             <view class="push-comment send-comment" style="height: {{commentBodyH - 88}}px;" wx:if="{{!isIOS}}">
                 <!-- <canvas style="width: 100%; height: 44px; position: absolute; top: 0p;left: 0; z-index: 100;"
                     canvas-id="fiveCanvas" id="fiveCanvas" 
@@ -289,7 +290,7 @@
                     <!-- <input placeholder="发表评论..." focus="{{isFocus}}" cursor-spacing="10" name="commentText" style="color:#fff,line-height: 44px;padding-left:5px;display:none" bindinput="changeBtn"  
                     bindfocus="commentFocus" value="{{commentText}}" fixed="{{true}}" adjust-position="{{false}}" confirm-hold="false"/>  -->
     
-                    <textarea value="{{commentText}}" auto-focus="{{isFocus}}"
+                    <textarea value="{{commentText}}" focus="{{isFocus}}"  show-confirm-bar="{{false}}"
                         cursor-spacing="5" bindinput="changeCommentText"
                             placeholder="发表评论..."></textarea>
                 </view>
@@ -305,8 +306,8 @@
         <view class="comment-btn-icon" wx:if="{{!isFocus}}">
             <image src="./img/comment-icon.png"></image>
         </view>
-        <textarea value="{{commentText}}" focus="{{commentFocus}}" 
-            cursor-spacing="5" bindinput="changeCommentText" bindfocus="inputFocus" adjust-position="true"
+        <textarea value="{{commentText}}" focus="{{commentFocus}}" show-confirm-bar="{{false}}"
+            cursor-spacing="5" bindinput="changeCommentText" bindfocus="inputFocus" adjust-position="{{false}}"
             placeholder="发表评论..." placeholder-style="font-size: 13px;" cursor-spacing="{{10}}"></textarea>
     </view>
 

@@ -1904,10 +1904,15 @@ Page({
         if (!this.data.isFocus) {
             this.setData({
                 isFocus: true,
-                commentFocus: true,
                 textareaH: this.windowHeight- 211 - e.detail.height - 44 -44,
                 commentText: this.data.commentTextTemp,
             });
+            setTimeout(() => {
+                this.setData({
+                    commentFocus: true
+                })
+            }, 300)
+           
     
             if (this.data.info.file_type != 'image') {
                 setTimeout(() => {

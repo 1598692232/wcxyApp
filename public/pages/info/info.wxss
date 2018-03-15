@@ -1079,7 +1079,7 @@
     position: relative;
     box-shadow:none;
     background: #1c1d22;
-    height:200px;
+    /* height:200px; */
 }
 .comment-block-image-active{
     top: 255px;
