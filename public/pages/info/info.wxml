@@ -55,21 +55,23 @@
         </view>
     </view>
 
-  <!--  wx:if="{{isFocus || cavansShow}}" -->
-  <canvas style="width: 100%; height: {{firstCanvasHeight}}px; position: fixed; top: 0;left: 0;z-index: 100"
-   canvas-id="firstCanvas" id="firstCanvas" wx:if="{{isFocus || cavansShow}}" bindtouchstart="firstCanvasTouchstart"></canvas>
-    <!--  wx:if="{{isFocus}}" -->
-    <canvas style="width: 100%; height: {{firstCanvasHeight}}px; position: fixed; top: 0;left: 0;z-index: 200" 
-            id="secondCanvas" canvas-id="secondCanvas"
-            canvas-id="secondCanvas"
-            bindtouchstart="drawStart"
-            bindtouchmove="drawMove"
-            bindtouchend="drawend"
-            disable-scroll="true"
-            wx:if="{{isFocus}}"
-            ></canvas>
-          <!-- catchtap="catap" -->
-    <!-- 画图控制器 -->
+    <block wx:if="{{info.file_type != 'image'}}">
+    <!--  wx:if="{{isFocus || cavansShow}}" -->
+    <canvas style="width: 100%; height: {{firstCanvasHeight}}px; position: fixed; top: 0;left: 0;z-index: 100"
+    canvas-id="firstCanvas" id="firstCanvas" wx:if="{{isFocus || cavansShow}}" bindtouchstart="firstCanvasTouchstart"></canvas>
+        <!--  wx:if="{{isFocus}}" -->
+        <canvas style="width: 100%; height: {{firstCanvasHeight}}px; position: fixed; top: 0;left: 0;z-index: 200" 
+                id="secondCanvas" canvas-id="secondCanvas"
+                canvas-id="secondCanvas"
+                bindtouchstart="drawStart"
+                bindtouchmove="drawMove"
+                bindtouchend="drawend"
+                disable-scroll="true"
+                wx:if="{{isFocus}}"
+                ></canvas>
+            <!-- catchtap="catap" -->
+        <!-- 画图控制器 -->
+    </block>
 
 
     <view class="video-info" style="height: 60px;background: #383B4A" wx:if="{{!isFocus}}">
@@ -291,7 +293,7 @@
     </view>
 </view>
 
-<view class="comment-block {{ isFocus ? 'comment-block-active' : ''}}" wx:if="{{isIOS}}">
+<view class="comment-block {{ isFocus ? 'comment-block-active' : ''}} {{ isFocus && info.file_type == 'image' ? 'comment-block-image-active' : ''}}" wx:if="{{isIOS}}" style="">
     <view class="comment-btn-icon" wx:if="{{!isFocus}}">
         <image src="./img/comment-icon.png"></image>
     </view>

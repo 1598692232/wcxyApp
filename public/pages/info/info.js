@@ -1268,39 +1268,42 @@ Page({
         if (self.data.sendComment) return
         self.data.sendComment = true
 
-        self.data.commentDraw.forEach((item, key) => {
-            switch(item.tool) {
-                case 'rect':
-                    //rect
-                    item.x = getPerValueXW(item.x)
-                    item.y = getPerValueYH(item.y)
-                    item.w = getPerValueXW(item.w)
-                    item.h = getPerValueYH(item.h)
-                    break;
-                case 'arrow':
-                    //arrow
-                    this.data.cxtShowBlock.setFillStyle(item.color)    
-                    item.x1 = getPerValueXW(item.x1)
-                    item.y1 = getPerValueYH(item.y1)
-                    item.x2 = getPerValueXW(item.x2)
-                    item.y2 = getPerValueYH(item.y2)
-                    break
-                case 'line':
-                    //line
-                    item.x1 = getPerValueXW(item.x1)
-                    item.y1 = getPerValueYH(item.y1)
-                    item.x2 = getPerValueXW(item.x2)
-                    item.y2 = getPerValueYH(item.y2)
-                    break
-                case 'pen':
-                    //pen
-                    for (let i = 0; i < item.xs.length ; i++) {
-                        item.xs[i] = getPerValueXW(item.xs[i])
-                        item.ys[i] = getPerValueYH(item.ys[i])
-                    }
-                    break
-            }
-        });
+        if (self.data.info.file_type != 'image') {
+
+            self.data.commentDraw.forEach((item, key) => {
+                switch(item.tool) {
+                    case 'rect':
+                        //rect
+                        item.x = getPerValueXW(item.x)
+                        item.y = getPerValueYH(item.y)
+                        item.w = getPerValueXW(item.w)
+                        item.h = getPerValueYH(item.h)
+                        break;
+                    case 'arrow':
+                        //arrow
+                        this.data.cxtShowBlock.setFillStyle(item.color)    
+                        item.x1 = getPerValueXW(item.x1)
+                        item.y1 = getPerValueYH(item.y1)
+                        item.x2 = getPerValueXW(item.x2)
+                        item.y2 = getPerValueYH(item.y2)
+                        break
+                    case 'line':
+                        //line
+                        item.x1 = getPerValueXW(item.x1)
+                        item.y1 = getPerValueYH(item.y1)
+                        item.x2 = getPerValueXW(item.x2)
+                        item.y2 = getPerValueYH(item.y2)
+                        break
+                    case 'pen':
+                        //pen
+                        for (let i = 0; i < item.xs.length ; i++) {
+                            item.xs[i] = getPerValueXW(item.xs[i])
+                            item.ys[i] = getPerValueYH(item.ys[i])
+                        }
+                        break
+                }
+            });
+        }
 
         let reqData = Object.assign({}, store, {
 	    	content: self.data.commentText,
@@ -1319,7 +1322,9 @@ Page({
         Util.ajax('comment', 'post', reqData).then(json => {
             let list = self.data.commentList
 
-            self.data.cxtShowBlock.clearRect(0, 0, self.data.firstCanvasWidth, self.data.firstCanvasHeight)
+            if (self.data.info.file_type != 'image') {
+                self.data.cxtShowBlock.clearRect(0, 0, self.data.firstCanvasWidth, self.data.firstCanvasHeight)
+            }
 
             wx.showToast({
                 title: '评论成功！！'
@@ -1888,9 +1893,12 @@ Page({
             textareaH: this.windowHeight- 211 - e.detail.height - 44 -44,
             commentText: this.data.commentTextTemp
         });
-        setTimeout(() => {
-            this.commentFocus();
-        });
+
+        if (this.data.info.file_type != 'image') {
+            setTimeout(() => {
+                this.commentFocus();
+            });
+        }
     },
 
     changeCommentText(e) {

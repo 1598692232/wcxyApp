@@ -1078,6 +1078,9 @@
     background: #2d303e;
     height:200px;
 }
+.comment-block-image-active{
+    top: 255px;
+}
 .comment-block-active textarea{
     padding: 18px 10px;
     box-sizing: border-box;
