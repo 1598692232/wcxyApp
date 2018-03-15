@@ -232,6 +232,11 @@
     height: 211px;
     justify-content: center;
     align-items: center;
+    background: #30343f;
+    overflow: hidden;
+}
+.info-pic image{
+    height: 100%;
 }
 
 .info-ext{
