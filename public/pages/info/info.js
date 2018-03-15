@@ -1049,9 +1049,9 @@ Page({
             }, 500)
         }
 
-        setTimeout(() => {
-            self.initDrawControlPosiotion()
-        }, 100)
+        // setTimeout(() => {
+        //     self.initDrawControlPosiotion()
+        // }, 100)
         
         // self.setData({
         //     muted: false
@@ -1060,13 +1060,13 @@ Page({
         if (self.data.videoPause) {
             handlePauseVideoTime()
         } else {
-            setTimeout(() => {
+            // setTimeout(() => {
                 let ct1 = new Date().getTime();
                 let ms = ct1 - self.data.videoCurrentTimeInt;
                 self.videoCtx.pause();
                 self.data.focusTime =  self.data.videoTime + parseInt(ms) / 1000;
                 self.data.videoPause = true  
-            }, 100)
+            // }, 100)
            
             //这里时间不够准确所以加个延时，将暂停借口移到最上方
             // setTimeout(() => {
@@ -1798,6 +1798,7 @@ Page({
     },
 
     inputFocus(e) {
+     
         this.setData({
             isFocus: true,
             textareaH: this.windowHeight- 211 - e.detail.height - 44 -44,
