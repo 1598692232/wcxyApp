@@ -292,8 +292,6 @@
     </view>
 </view>
 
-<!-- <input type="text" style="position:fixed;left: 0; bottom: 0;background: #fff;z-index:100000"  bindfocus="inputFocus"/> -->
-
 <view class="comment-block {{ isFocus ? 'comment-block-active' : ''}}">
     <view class="comment-btn-icon">
         <image src="./img/comment-icon.png"></image>

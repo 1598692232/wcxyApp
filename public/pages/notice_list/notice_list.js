@@ -13,7 +13,11 @@ Page({
         isTouchMove: false,
         scrollHeightList: 0,
         projectId: 0,
-        title: ''
+        title: '',
+        page: 1,
+        pageSize: 20,
+        hasMoreData: true,
+        contentlist: [],
     },
 
     onLoad(options) {
@@ -49,6 +53,7 @@ Page({
         let store = wx.getStorageSync('app')
         let reqData = Object.assign({}, {token: store.token},{login_id:store.login_id})
         reqData.project_id = self.data.projectId
+        reqData.pages = self.data.page
         Util.ajax('notice/detail', 'get',reqData).then(data => {
             data.map(item => {
                 item.createtime = Util.getCreateTime(item.created_at)
@@ -57,6 +62,27 @@ Page({
             self.setData({
                 noticeListInfo: data
             })
+
+
+            // var contentlistTem = self.data.contentlist
+            // if (self.data.page == 1) {
+            //     contentlistTem = []
+            //   }
+            //   var contentlist = data
+            //   if (contentlist.length < self.data.pageSize) {
+            //     self.setData({
+            //       contentlist: contentlistTem.concat(contentlist),
+            //       hasMoreData: false
+            //     })
+            //   } else {
+            //     self.setData({
+            //       contentlist: contentlistTem.concat(contentlist),
+            //       hasMoreData: true,
+            //       page: self.data.page + 1
+            //     })
+            //   }
+            // console.log(self.data.contentlist,'contentlist')
+     
             wx.hideLoading()
         }, res => {
             wx.showModal({
@@ -159,5 +185,29 @@ Page({
                 }
             }
         })  
+    },
+    // 页面上拉触底事件的处理函数
+    lower(e){
+        // console.log(e,'eeeee')
+        // wx.showToast({
+        //     icon: 'loading',
+        //     title: '加载更多数据',
+        //     duration: 3000
+        // })
+        // let self = this
+        // if (this.data.hasMoreData) {
+        //     self.initList()
+        //     wx.showToast({
+        //         icon: 'loading',
+        //         title: '加载更多数据',
+        //         duration: 2000
+        //     })
+        // } else {
+        //     wx.showToast({
+        //         icon: 'none',
+        //         title: '没有更多数据',
+        //         duration: 2000
+        //     })
+        // }
     }
 })

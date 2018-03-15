@@ -176,6 +176,11 @@ Page({
         let self = this;
 
         if (e.currentTarget.dataset.type == 'folder') {
+            var selectedVideo = self.data.videoList
+            selectedVideo.selected = false
+            self.setData({
+                selectShareList:[]
+            })
             self.selectFolder(e)
         } else {
 
@@ -261,7 +266,6 @@ Page({
             showShare: false,
             // selectShareList: []
         })
-        // self.data.videoList.map(v=>v.selected=false)
     },
     toCreateShareList(e) {
         let self = this
@@ -281,9 +285,17 @@ Page({
             key: 'share_file',
             data: shareList
         });
-        wx.navigateTo({
-            url: '/pages/share_create/share_create'
-        })
+        if(self.data.selectShareList.length <= 0){
+            wx.showModal({
+                title:'提示',
+                content: '请先选择文件再进行分享',
+                showCancel: false
+            })
+        }else{
+            wx.navigateTo({
+                url: '/pages/share_create/share_create'
+            })
+        }   
     },
     toBack(){
         wx.navigateBack({

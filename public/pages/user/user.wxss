@@ -11,6 +11,7 @@
   /* margin: 20rpx; */
   border-radius: 50%;
   background: #000;
+  border: 2px solid #1166EA;
 }
 
 .userinfo-nickname {
