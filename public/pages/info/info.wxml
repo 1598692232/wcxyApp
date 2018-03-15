@@ -3,7 +3,7 @@
     <view style="width: 100%;height:211px;position:relative;" id="play-body">
         <block wx:if="{{info.file_type == 'video'}}">
             <video id="myVideo" class="info-video" src="{{url}}" enable-danmu controls objectFit="contain" bindplay="listenerPlay"
-            autoplay bindtimeupdate="getVideoTime" bindpause="getVideoTime2" muted="{{true}}" bindfullscreenchange="handleFullScreen">
+            autoplay bindtimeupdate="getVideoTime" bindpause="getVideoTime2" bindfullscreenchange="handleFullScreen">
                 <cover-view class="video-select-btn-p" catchtap="showPSelect" wx:if="{{fullScreen && !videoClicked}}">
                     {{pNo}}P
                 </cover-view>
@@ -99,21 +99,22 @@
             ></canvas> -->
 
             <view class="comment-footer" style="height: 44px">
-                <canvas style="width: 100%; height: 44px; position: absolute; top: 0;left: 0; z-index: 100;"
+                <!-- <canvas style="width: 100%; height: 44px; position: absolute; top: 0;left: 0; z-index: 100;"
                     canvas-id="fourthCanvas" id="fourthCanvas" 
                     disable-scroll="true"
                     bindtouchstart="fourthDrawStart"
                     bindtouchmove="fourthDrawMove"
                     bindtouchend="fourthDrawend"
-                ></canvas>
-                <view class="comment-footer-left" style="line-height: 44px">
+                ></canvas> -->
+                <view class="comment-footer-left" style="line-height: 44px" bindtap="commentBlur">
                     取消
                 </view>
-                <view class="comment-footer-time" style="color:{{needTime ? '#086ac1': ''}};line-height: 44px" wx:if="{{info.file_type != 'image'}}">
+                <view class="comment-footer-time" style="color:{{needTime ? '#086ac1': ''}};line-height: 44px"
+                 wx:if="{{info.file_type != 'image'}}" bindtap="toggelNeedTime">
                     <image class="time-check" src="./img/time_check.png" wx:if="{{needTime}}"></image>
                     {{currentVideoTime}}
                 </view>
-                <view class="comment-footer-right" bindTap="sendComment" style="line-height: 44px">
+                <view class="comment-footer-right" bindtap="sendComment" style="line-height: 44px">
                     发送
                 </view>
             </view>

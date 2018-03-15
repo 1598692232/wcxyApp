@@ -1088,14 +1088,13 @@ Page({
     
     commentBlur() {
         this.data.commentDraw = [];
-        this.videoCtx.play();
+        this.setData({
+            commentTextTemp: this.data.commentText,
+            isFocus: false,
+            commentText: '',
+        });
         setTimeout(() => {
-            this.setData({
-                commentTextTemp: this.data.commentText,
-                isFocus: false,
-                commentText: '',
-            });
-            console.log(this.data.commentText, 'commentText')
+            this.videoCtx.play();
         }, 100);
        
  
