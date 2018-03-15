@@ -17,6 +17,10 @@
     flex: 1;
     height: 100%;
 }
+.section{
+    /* background: #2d303e; */
+    background: #010101;
+}
 .time {
     text-align: center;
     background-color: rgba(0, 0, 0, .5);
@@ -66,7 +70,7 @@
     /*padding: 0 10px ;*/
     box-sizing: border-box;
     /* background: #2a2e3b */
-    background: #383B4A;
+    background: #010101;
     border-top: 1px solid #30333f;
 }
 .list-body-cover{
@@ -239,7 +243,7 @@
     padding: 0px 10px 0 0;
     /* border-bottom: 1px solid #2c2b3b; */
     /* background: #21252d */
-    background: #252525;
+    background: #010101;
     /* transition: all 0.3s linear; */
     overflow:hidden;
     z-index: 100;
@@ -674,6 +678,7 @@
     height: 100%;
     z-index:1;
 }
+
 .send-comment input{
     position: relative;
     width: 100%;
@@ -684,12 +689,10 @@
 }
 
 .comment-footer{
-    /* position: absolute;
-    left: 0;
-    top: 44px; */
+    position: relative;
     width: 100%;
     /* height: 30px; */
-    background: #383b49;
+    background: #2d303e;
     padding: 0 52px;
     z-index:1;
 }
@@ -713,7 +716,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    float: left;
     width: 100%;
     color: #fff;
     font-size: 12px;
@@ -998,7 +1000,7 @@
     width: 100%;
     height: 44px;
     box-shadow: 0 -1px 5px 1px rgba(0,0,0,0.4);
-    background: #30333f;
+    background: #1c1d22;
     overflow: hidden;
     box-sizing: border-box;
     /* padding:0 10px; */
@@ -1025,11 +1027,11 @@
 }
 
 .info-comment-body{
-    position: fixed;
+    /* position: fixed; */
     width: 100%;
     /* bottom: 90px; */
-    top:211px;
-    left: 0;
+    /* top:211px; */
+    /* left: 0; */
     height: 400px;
     background: #2d303e;
     z-index: 100;
@@ -1052,7 +1054,7 @@
     width:100%;
     height:44px;
     box-shadow:0 -1px 5px 1px rgba(0,0,0,0.4);
-    background:#30333f;
+    background: #1c1d22;
     overflow:hidden;
     box-sizing:border-box;    
 }
@@ -1070,12 +1072,13 @@
 }
 
 .comment-block-active{
-    position: absolute;
+    /* position: absolute;
     left: 0;
     top: 299px;
-    z-index:1000;
+    z-index:1000; */
+    position: relative;
     box-shadow:none;
-    background: #2d303e;
+    background: #1c1d22;
     height:200px;
 }
 .comment-block-image-active{
@@ -1086,9 +1089,9 @@
     box-sizing: border-box;
     font-size: 13px;
     color: #fff;
-    height: 100px;
+    height: 200px;
     line-height: 1.5;
-    background: #2d303e;
+    background: #1c1d22;
 }
 
 

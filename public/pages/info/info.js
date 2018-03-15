@@ -1096,10 +1096,13 @@ Page({
             cxtShowBlock: context2
         })
 
-        self.data.cxtShowBlock.clearRect(0, 0, self.data.firstCanvasWidth, self.data.firstCanvasHeight)
-        self.data.cxt.clearRect(0, 0, self.data.firstCanvasWidth, self.data.firstCanvasHeight)
-        self.data.cxtShowBlock.draw();
-        self.data.cxt.draw();
+        if (!self.data.isFocus) {
+            self.data.cxtShowBlock.clearRect(0, 0, self.data.firstCanvasWidth, self.data.firstCanvasHeight)
+            self.data.cxt.clearRect(0, 0, self.data.firstCanvasWidth, self.data.firstCanvasHeight)
+            self.data.cxtShowBlock.draw();
+            self.data.cxt.draw();
+        }
+       
 
         let res = wx.getStorageSync('app')
         // 延时处理拖动不能获取播放时间的问题
@@ -1174,12 +1177,17 @@ Page({
         this.data.commentDraw = [];
         this.setData({
             commentTextTemp: this.data.commentText,
-            isFocus: false,
             commentText: '',
         });
         setTimeout(() => {
             this.videoCtx.play();
         }, 100);
+
+        setTimeout(() => {
+            this.setData({
+                isFocus: false,
+            });
+        }, 1000)
        
  
         // this.data.videoPause = false        
@@ -1329,6 +1337,12 @@ Page({
             wx.showToast({
                 title: '评论成功！！'
             });
+
+         
+            self.data.cxtShowBlock.clearRect(0, 0, self.data.firstCanvasWidth, self.data.firstCanvasHeight)
+            self.data.cxt.clearRect(0, 0, self.data.firstCanvasWidth, self.data.firstCanvasHeight)
+            self.data.cxtShowBlock.draw();
+            self.data.cxt.draw();
 
             let newComment = {
                 content: self.data.commentText,
@@ -1887,17 +1901,19 @@ Page({
     },
 
     inputFocus(e) {
-     
-        this.setData({
-            isFocus: true,
-            textareaH: this.windowHeight- 211 - e.detail.height - 44 -44,
-            commentText: this.data.commentTextTemp
-        });
-
-        if (this.data.info.file_type != 'image') {
-            setTimeout(() => {
-                this.commentFocus();
+        if (!this.data.isFocus) {
+            this.setData({
+                isFocus: true,
+                commentFocus: true,
+                textareaH: this.windowHeight- 211 - e.detail.height - 44 -44,
+                commentText: this.data.commentTextTemp,
             });
+    
+            if (this.data.info.file_type != 'image') {
+                setTimeout(() => {
+                    this.commentFocus();
+                });
+            }
         }
     },
 
