@@ -18,7 +18,8 @@ Page({
 	    scrollHeight: 0,
 	    commentIsFocus: false,
 	    commentList:[],
-	    commentText: '',
+        commentText: '',
+        commentTextTemp: '',
         tx: app.data.staticImg.tx,
         zan: app.data.staticImg.zan,
         zanActive: app.data.staticImg.zanActive,
@@ -1087,10 +1088,17 @@ Page({
     
     commentBlur() {
         this.data.commentDraw = [];
-        this.videoCtx.play()
-        this.setData({
-            isFocus: false
-        });
+        this.videoCtx.play();
+        setTimeout(() => {
+            this.setData({
+                commentTextTemp: this.data.commentText,
+                isFocus: false,
+                commentText: '',
+            });
+            console.log(this.data.commentText, 'commentText')
+        }, 100);
+       
+ 
         // this.data.videoPause = false        
     },
 
@@ -1254,7 +1262,8 @@ Page({
             self.setData({
                 commentList: list,
                 commentText: '',
-                isFocus: false
+                isFocus: false,
+                commentTextTemp: '',
             })
 
             self.data.commentDraw = []
@@ -1792,7 +1801,8 @@ Page({
     inputFocus(e) {
         this.setData({
             isFocus: true,
-            textareaH: this.windowHeight- 211 - e.detail.height - 44 -44
+            textareaH: this.windowHeight- 211 - e.detail.height - 44 -44,
+            commentText: this.data.commentTextTemp
         });
         setTimeout(() => {
             this.commentFocus();
@@ -1801,7 +1811,8 @@ Page({
 
     changeCommentText(e) {
         this.setData({
-            commentText: e.detail.value
+            commentText: e.detail.value,
+            commentTextTemp: e.detail.value
         });
     }
 })
