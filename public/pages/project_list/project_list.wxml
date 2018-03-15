@@ -265,7 +265,7 @@
 				<view class="member-drop-quit" bindtap="toDelProject">删除项目</view>
 			</view>
 			<view wx:else>
-				<view class="member-drop-quit" bindtap="toQuitProject">退出工程</view>
+				<view class="member-drop-quit" bindtap="toQuitProject">退出项目</view>
 			</view>
 	
 		</view>

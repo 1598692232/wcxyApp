@@ -80,7 +80,6 @@ Page({
         Util.ajax('notice', 'get', reqData).then(data => {
             var data0 = data.list?data.list:[]
             data0.map((item,i) => {
-                i++;
         // ----------------------  
         // 在localstorage里
                 function count(){
@@ -97,15 +96,13 @@ Page({
                             })
                         }
                     }else{
-                        if(wx.getStorageSync(store.login_id.toString()).noticeList0.length < i){
-                            var sumData = wx.getStorageSync(store.login_id.toString())
-                            sumData.noticeList0.push({
-                                id: item.project_id,
-                                timestamp:Date.parse(new Date(new Date(new Date().toLocaleDateString()).getTime()))/1000
-                            })
-                            wx.setStorageSync(store.login_id.toString(), sumData)
-                            count()
-                        }
+                        var sumData = wx.getStorageSync(store.login_id.toString())
+                        sumData.noticeList0.push({
+                            id: item.project_id,
+                            timestamp:Date.parse(new Date(new Date(new Date().toLocaleDateString()).getTime()))/1000
+                        })
+                        wx.setStorageSync(store.login_id.toString(), sumData)
+                        count()
                     }
                 }
                 count()
@@ -116,7 +113,7 @@ Page({
                 notice_count:data.notice_count,
                 project_name: data.project_name
             })
-            wx.hideLoading()   
+            wx.hideLoading()
         }, res => {
             wx.showModal({
                 title: '提示',
@@ -147,6 +144,7 @@ Page({
         var userItem = sumData.noticeList0.find((v) => {
             return v.id == e.currentTarget.dataset.id
         })
+        console.log(userItem,'userItem')
         userItem.timestamp = timestamp
         wx.setStorageSync(store.login_id.toString(), sumData)
         // ----------------------
