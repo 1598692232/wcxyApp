@@ -11,6 +11,8 @@ const STAUS = {
     4: '意见搜集完成',
 };
 
+const PRE_PAGE = 10;
+
 let au = 'http://video2.uxinyue.com/Act-mp3/1f6f3a2140554129a7f1172c09768602/4d4dad12059b518d5bfdadabcdf6344f-bdd71a93b57eb975c8251bb5227d59d1.mp3?OSSAccessKeyId=LTAILWCfmthKUqkk&Expires=1520911637&Signature=Wi3KemVcK2arECDsn4u9J2FmCOA%3D'
 Page({
 
@@ -127,7 +129,8 @@ Page({
         review: 1,
         share_all_version: 1,
         needTime: true,
-        isIOS: true
+        isIOS: true,
+        commentPage: 1,
     },
 
     statusChange: function(e) {
@@ -422,8 +425,17 @@ Page({
                 // console.log(self.data.versions)
 
                 wx.setNavigationBarTitle({ title: data.name })   
-            })
-            self.getCommentList(Object.assign({}, reqData, {project_id: self.data.project_id}))
+            });
+
+            self.setData({
+                commentList: []
+            });
+
+            self.getCommentList(Object.assign({}, reqData, {
+                project_id: self.data.project_id, 
+                pre_page: PRE_PAGE,
+                page: 1
+            }))
         })
     },
  
@@ -480,28 +492,69 @@ Page({
         })
     },
 
+    getMoreComment() {
+        let self = this;
+        let store = wx.getStorageSync('app');
+
+        let params = Object.assign({}, store, {
+            doc_id: self.data.doc_id,
+            project_id: self.data.project_id,
+            show_completed: 1,
+            project_id: self.data.project_id, 
+            pre_page: PRE_PAGE,
+            page: self.data.commentPage
+        });
+
+        self.getCommentList(params);
+    },
+
+    onUnload() {
+        clearInterval(this.data.getTimer)
+    },
+
     getCommentList(reqData){
         let self = this
-        clearInterval(self.data.getTimer);
-
+      
         let intervalGetCommentList = () => {
             self.data.getTimer = setInterval(() => {
-                getList()
+                reqData.pre_page = 5;
+                reqData.page = 1;
+                getList(reqData, false, (list) => {
+                    let newList = [];
+                    let issetCommentId = [];
+
+                    self.data.commentList.forEach(item => {
+                        issetCommentId.push(item.id);
+                    })
+
+                    list.forEach(item => {
+                        if (!issetCommentId.includes(item.id)) {
+                            newList.push(item)
+                        }
+                    })
+
+                    self.setData({
+                        commentList: newList.concat(self.data.commentList)
+                    })
+                });
             }, 5000)
         }
 
-        let getList = () => {
+        let getList = (reqData, doCommentAjaxing,fn ) => {
             // listenerSuccess()
-            self.data.commentNotice = false
+            // self.data.commentNotice = false
             return Util.ajax('comment', 'get', reqData, 1).then(json => {
-                self.data.commentNotice = true
+                if (doCommentAjaxing) {
+                    this.commentAjaxing = false;
+                }
+                // self.data.commentNotice = true
                 if (self.data.prevCommentList != json.list) {
                     self.data.prevCommentList = json.list
                 } else {
                     return;
                 }  
 
-                let appStore = wx.getStorageSync('app')
+                let appStore = wx.getStorageSync('app');
                 json.list.map(item => {
                     item.comment_time = Util.timeToMinAndSec(item.media_time)
                     // item.media_time = parseInt(item.media_time)
@@ -519,13 +572,14 @@ Page({
                     } else {
                         item.delColor = '#ddd'
                     }
-                })
-                
-                self.setData({
-                    commentList: json.list,
-                })
+                });
+
+                fn(json.list); 
             }, res => {
-                self.data.commentNotice = true
+                if (doCommentAjaxing) {
+                    this.commentAjaxing = false;
+                }
+                // self.data.commentNotice = true
                 // wx.showModal({
                 //     title: '提示',
                 //     content: '获取评论数据失败！',
@@ -534,8 +588,28 @@ Page({
             })
         }
 
-        intervalGetCommentList()
-        getList()
+        // 轮询请求评论
+        clearInterval(self.data.getTimer);
+        intervalGetCommentList();
+
+        // 正常请求评论
+        if (this.commentAjaxing || this.commentGeted) {
+            return;
+        }
+        this.commentAjaxing = true
+
+        getList(reqData, true, (list) => {
+            let commentList = self.data.commentList.concat(list);
+
+            if (list.length < PRE_PAGE) {
+                self.commentGeted = true;
+            }
+
+            self.setData({
+                commentList,
+                commentPage: list.length < PRE_PAGE ? self.data.commentPage : ++self.data.commentPage 
+            })
+        });
     },
 
     changeStatus(review, reviewText) {
@@ -583,7 +657,9 @@ Page({
             // doc_id: e.currentTarget.dataset.id,
             doc_id: id,
             project_id: this.data.project_id,
-            show_completed: 1
+            show_completed: 1,
+            pre_page: PRE_PAGE,
+            page: 1
         })
        
         self.getVideoInfo(store.host, reqData, (data) => {
@@ -643,7 +719,11 @@ Page({
                 self.data.videoPause = false           
             }, 300)
             wx.setNavigationBarTitle({ title: data.name })
-        })
+        });
+
+        self.setData({
+            commentList: []
+        });
 
         self.getCommentList(reqData)
     },

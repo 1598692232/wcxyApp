@@ -178,7 +178,7 @@
 
 
   <!-- bindscrolltolower="loadMore" -->
-  <scroll-view scroll-y="true" style="height: {{scrollHeight}}px" class="list-body" wx:if="{{!isFocus}}">
+  <scroll-view scroll-y="true" lower-threshold="{{100}}" bindscrolltolower="getMoreComment" style="height: {{scrollHeight}}px" class="list-body" wx:if="{{!isFocus}}">
    
     <view wx:if="{{commentList.length > 0}}">
             <view class="list-body-cover" wx:if="{{isFocus}}"></view>
