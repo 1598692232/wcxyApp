@@ -509,7 +509,7 @@ Page({
             reqUrl = 'sharefileinfo';
             params.share_code = wx.getStorageSync('share_code');
         }
-        
+
         Util.ajax(reqUrl, 'get', params).then(json => {
             self.setData({
                 info: json,
@@ -1242,11 +1242,11 @@ Page({
             }
         }, 100);
 
-        setTimeout(() => {
+        // setTimeout(() => {
             this.setData({
                 isFocus: false,
             });
-        }, 1000)
+        // }, 1000)
  
         // this.data.videoPause = false        
     },
