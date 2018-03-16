@@ -63,9 +63,7 @@
     height: 100%;
 }
 .list-body{
-    position: absolute;
-    bottom: 44px;
-    left: 0;
+    position: relative;
     overflow: hidden;
     /*padding: 0 10px ;*/
     box-sizing: border-box;

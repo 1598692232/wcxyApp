@@ -97,7 +97,7 @@
     <view wx:if="{{commentList.length > 0}}">
             <view class="list-body-cover" wx:if="{{isFocus}}"></view>
     <!-- 评论 -->
-    <view class="comment-body" wx:for="{{commentList}}" wx:key="index">
+    <view class="comment-body" wx:for="{{commentList}}" wx:key="index" style="background: {{commentActiveIndex == item.id ? '#1E1F23' : ''}}">
         <!-- 评论区 -->
         <view class="comment-master {{item.delTranstion}}" bindtouchstart="delTouchStart" bindtouchmove="delTouchMove"  
         bindtouchend="delTouchEnd" style="transform: translateX({{item.translateX}}px);"  

@@ -508,6 +508,7 @@ Page({
             self.setData({
                 info: json,
             })
+            console.log(self.data.info)
             if (fn != undefined) {
                 fn(json)
             }
