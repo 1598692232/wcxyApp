@@ -503,8 +503,14 @@ Page({
     getVideoInfo(host, reqData, fn) {
         let self = this
         wx.showLoading()
+        let reqUrl = 'file/info';
+        let params = reqData;
+        if (self.data.share) {
+            reqUrl = 'sharefileinfo';
+            params.share_code = wx.getStorageSync('share_code');
+        }
         
-        Util.ajax('file/info', 'get', reqData).then(json => {
+        Util.ajax(reqUrl, 'get', params).then(json => {
             self.setData({
                 info: json,
             })
@@ -578,7 +584,7 @@ Page({
                 reqData.share_code = wx.getStorageSync('share_code');
                 reqUrl = 'sharecomment'
             }
-            
+
             return Util.ajax(reqUrl, 'get', reqData, 1).then(json => {
                 if (doCommentAjaxing) {
                     this.commentAjaxing = false;
