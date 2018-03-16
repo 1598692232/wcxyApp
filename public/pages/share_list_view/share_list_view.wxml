@@ -7,10 +7,10 @@
             <view class="list-info">
                 <view class="share-list-name">{{sharename}}</view>
                 <view class="share-list-info">
-                    <view>查看数：{{viewCount}}</view>
-                    <view>包含{{fileCount}}个文件</view>
-                    <view>有效期：{{deadline}}</view>
-                    <view>分享者：{{realname}}</view>
+                    <view>查看数：<text>{{viewCount}}</text></view>
+                    <view>包含 <text>{{fileCount}}</text> 个文件</view>
+                    <view>有效期：<text>{{deadline}}</text></view>
+                    <view>分享者：<text>{{realname}}</text></view>
                 </view>
                 <text selectable="true" hidden>密码:{{password}}</text>                
             </view>
