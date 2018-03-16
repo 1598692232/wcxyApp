@@ -44,6 +44,7 @@ Page({
                 code: options.code,
                 password: options.password
             });
+            wx.setStorageSync('share_code', options.code)
             this.initList(params);
         } else {
             let scene = decodeURIComponent(options.scene).split('=');

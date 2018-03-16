@@ -572,7 +572,14 @@ Page({
         let getList = (reqData, doCommentAjaxing,fn ) => {
             // listenerSuccess()
             // self.data.commentNotice = false
-            return Util.ajax('comment', 'get', reqData, 1).then(json => {
+
+            let reqUrl = 'comment';
+            if (self.data.share) {
+                reqData.share_code = wx.getStorageSync('share_code');
+                reqUrl = 'sharecomment'
+            }
+            
+            return Util.ajax(reqUrl, 'get', reqData, 1).then(json => {
                 if (doCommentAjaxing) {
                     this.commentAjaxing = false;
                 }
