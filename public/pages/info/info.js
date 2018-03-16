@@ -1201,6 +1201,9 @@ Page({
 
             if (this.data.info.file_type == 'audio') {
                 this.audioCtx.play();
+                this.setData({
+                    audioPause: false
+                })
             }
         }, 100);
 
@@ -1360,6 +1363,13 @@ Page({
                 self.data.cxt.draw();
             }
 
+            if (self.data.info.file_type = "audio") {
+                self.audioCtx.play();
+                self.setData({
+                    audioPause: false
+                })
+            }
+
             wx.showToast({
                 title: '评论成功！！'
             });
@@ -1396,13 +1406,23 @@ Page({
                 content: '发表评论失败！',
                 showCancel: false,
             })
+
+            if (self.data.info.file_type = "audio") {
+                self.audioCtx.play();
+                self.setData({
+                    audioPause: false
+                })
+            }
         }).then((res) => {
             if (self.data.info.file_type == 'video') {
                 self.videoCtx.play()
                 self.data.videoPause = false   
             }
             if (self.data.info.file_type == 'audio') {
-                self.audioCtx.play()
+                self.audioCtx.play();
+                self.setData({
+                    audioPause: false
+                })
             }    
             self.data.sendComment = false
         })
@@ -1494,7 +1514,11 @@ Page({
         let self = this
         if (e.currentTarget.dataset.time < 0 ) return;
         // this.audioCtx.pause();
+        this.setData({
+            audioPause: false
+        })
         this.audioCtx.seek(e.currentTarget.dataset.time);
+        this.audioCtx.play();
      },
 
      toPosition(e) {
@@ -1846,7 +1870,8 @@ Page({
         this.setData({
             audioProgress: e.detail.currentTime / this.data.audioTime,
             audioProgressNum: e.detail.currentTime / this.data.audioTime * this.data.audioProgressMaxWidth,
-            audioCurrentTimeText: Util.formatVideoTime(e.detail.currentTime)
+            audioCurrentTimeText: Util.formatVideoTime(e.detail.currentTime),
+            currentVideoTime: Util.formatVideoTime(e.detail.currentTime) 
         })
     },
 
@@ -1890,7 +1915,8 @@ Page({
         this.audioCtx.seek(currentTime);
         this.audioCtx.play();
         this.setData({
-            audioPause: false
+            audioPause: false,
+            currentVideoTime: Util.formatVideoTime(currentTime) 
         });
     },
 
@@ -1980,7 +2006,6 @@ Page({
 
                 this.setData({
                     audioPause: true,
-                    currentVideoTime: Util.formatVideoTime(this.data.focusTime) 
                 })
             }
         }
