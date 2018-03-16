@@ -1001,8 +1001,10 @@ Page({
                 drawObj = JSON.parse(JSON.stringify( this.data.pen))
                 break;
         }
-  
-        this.data.commentDraw.push(drawObj)
+
+        this.drawBackCount = 0;
+
+        this.data.commentDraw.push(drawObj);
         this.data.commentDraw.forEach((item, key) => {             
             this.drawAll(item, false)    
         })
@@ -2050,5 +2052,5 @@ Page({
         this.data.cxtShowBlock.draw();
 
     }
-    
+
 })
