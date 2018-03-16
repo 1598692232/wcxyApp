@@ -1,6 +1,7 @@
 let Util = require('../../utils/util.js')
 const app = getApp()
 
+const PRE_PAGE = 10;
 Page({
     data: {
         noticeListInfo: [],
@@ -48,53 +49,88 @@ Page({
 
     //初始化列表页
     initList() {
+        // Util.ajax('notice/detail', 'get',reqData).then(data => {
+        //     data.list.map(item => {
+        //         item.createtime = Util.getCreateTime(item.created_at)
+        //         item.avatar = item.avatar == '' ? self.data.tx : item.avatar
+        //         item.isproject = item.content_id.toString().substr(0,1)==='P'?true:false
+        //     })
+        //     // self.setData({
+        //     //     noticeListInfo: data.list
+        //     // })
+        //     var contentlistTem = self.data.noticeListInfo
+        //     if (self.data.page == 1) {
+        //         contentlistTem = []
+        //     }
+        //     var noticeListInfo = data.list
+        //     if (noticeListInfo.length < self.data.pageSize) {
+        //         self.setData({
+        //             noticeListInfo: contentlistTem.concat(noticeListInfo),
+        //             hasMoreData: false
+        //         })
+        //     } else {
+        //         self.setData({
+        //             noticeListInfo: contentlistTem.concat(noticeListInfo),
+        //             hasMoreData: true,
+        //             page: self.data.page + 1
+        //         })     
+        //     }
+        //     wx.hideLoading()
+        // }, res => {
+        //     wx.showModal({
+        //         title: '提示',
+        //         content: '获取消息通知失败,请重新登录！！',
+        //         showCancel: false,
+        //         success: function(res) {
+        //             if (res.confirm) {
+        //                 wx.navigateTo({url: '/pages/signin/signin?login_out=2'})
+        //             }
+        //         }
+        //     })
+        // })
+
         let self = this
-        let store = wx.getStorageSync('app')
-        let reqData = Object.assign({}, {token: store.token},{login_id:store.login_id})
-        reqData.project_id = self.data.projectId
-        reqData.page = self.data.page
-        reqData.pre_page = 10
-        Util.ajax('notice/detail', 'get',reqData).then(data => {
-            data.list.map(item => {
-                item.createtime = Util.getCreateTime(item.created_at)
-                item.avatar = item.avatar == '' ? self.data.tx : item.avatar
-                item.isproject = item.content_id.toString().substr(0,1)==='P'?true:false
-            })
-            // self.setData({
-            //     noticeListInfo: data.list
-            // })
-
-            var contentlistTem = self.data.noticeListInfo
-            if (self.data.page == 1) {
-                contentlistTem = []
-            }
-            var noticeListInfo = data.list
-
-            if (noticeListInfo.length < self.data.pageSize) {
-                self.setData({
-                    noticeListInfo: contentlistTem.concat(noticeListInfo),
-                    hasMoreData: false
+        let getList = (reqData,doCommentAjaxing,fn)=>{
+            return Util.ajax('notice/detail', 'get',reqData).then(data => {
+                if (doCommentAjaxing) {
+                    this.commentAjaxing = false;
+                }
+                data.list.map(item => {
+                    item.createtime = Util.getCreateTime(item.created_at)
+                    item.avatar = item.avatar == '' ? self.data.tx : item.avatar
+                    item.isproject = item.content_id.toString().substr(0,1)==='P'?true:false
                 })
-            } else {
-                self.setData({
-                    noticeListInfo: contentlistTem.concat(noticeListInfo),
-                    hasMoreData: true,
-                    page: self.data.page + 1
-                })     
-            }
-            wx.hideLoading()
-        }, res => {
-            wx.showModal({
-                title: '提示',
-                content: '获取消息通知失败,请重新登录！！',
-                showCancel: false,
-                success: function(res) {
-                    if (res.confirm) {
-                        wx.navigateTo({url: '/pages/signin/signin?login_out=2'})
-                    }
+                fn(data.list); 
+                wx.hideLoading()
+            }, res => {
+                if (doCommentAjaxing) {
+                    this.commentAjaxing = false;
                 }
             })
-        })
+        }
+        if (this.commentAjaxing || this.commentGeted) { 
+            return;
+        }
+        this.commentAjaxing = true
+        let store = wx.getStorageSync('app')
+        let reqData = Object.assign({}, {token: store.token},{login_id:store.login_id},{
+            project_id:self.data.projectId,
+            page: self.data.page,
+            pre_page: 10
+        })  
+        getList(reqData, true, (list) => {
+            let noticeListInfo = self.data.noticeListInfo.concat(list);
+            if (list.length < PRE_PAGE) {
+                self.commentGeted = true;
+                self.setData({
+                    hasMoreData: false
+                })
+            }
+            self.setData({
+                noticeListInfo,
+                page: list.length < PRE_PAGE ? self.data.page : ++self.data.page
+            })
+        });
     },
 
     //手指触摸动作开始 记录起点X坐标
@@ -196,20 +232,19 @@ Page({
     // 页面上拉触底事件的处理函数
     lower(e){
         let self = this
-        if (this.data.hasMoreData) {
-            self.initList()
-            wx.showToast({
-                icon: 'loading',
-                title: '加载更多数据',
-                duration: 2000
-            })
-        } else {
-            wx.showToast({
-                icon: 'success',
-                title: '加载完数据',
-                duration: 2000
-            })
-        }
+        let store = wx.getStorageSync('app')
+        let params = Object.assign({}, {token: store.token},{login_id:store.login_id},{
+            project_id: self.data.projectId,
+            page: self.data.page,
+            pre_page: PRE_PAGE
+        })
+        // if (self.data.hasMoreData) {
+        //     wx.showToast({
+        //         icon: 'loading',
+        //         duration: 1500
+        //     })
+        // }
+        self.initList(params);
     },
     //跳转到播放页面的评论页
     toCommentInfo(e) {

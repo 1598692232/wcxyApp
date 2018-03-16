@@ -1,19 +1,26 @@
 <view class="share-list-box" style="height:100%">
-    <scroll-view style="height:{{scrollHeight}}px;" scroll-y>
-        <view class="share-list" wx:for="{{shareList}}" wx:key="index" data-code="{{item.code}}" data-password="{{item.password}}" data-id="{{item.id}}" bindtap="toShareInfo">
-            <view class="pic">
-                <image src="{{item.image}}"></image>
-            </view>
-            <view class="info">
-                <view class="share-list-name">{{item.name}}</view>
-                <view class="share-list-info">
-                    <view><image src="{{item.avatar}}"></image></view>
-                    <view class="text">{{item.createtime}}</view>
+    <scroll-view style="height:{{scrollHeight}}px;" scroll-y bindscrolltolower="lower" lower-threshold="{{800}}">
+        <block wx:if="{{shareList.length>0}}">
+            <view class="share-list" wx:for="{{shareList}}" wx:key="index" data-code="{{item.code}}" data-password="{{item.password}}" data-id="{{item.id}}" bindtap="toShareInfo">
+                <view class="pic">
+                    <image src="{{item.image}}"></image>
+                </view>
+                <view class="info">
+                    <view class="share-list-name">{{item.name}}</view>
+                    <view class="share-list-info">
+                        <view><image src="{{item.avatar}}"></image></view>
+                        <view class="text">{{item.createtime}}</view>
+                    </view>
+                </view>
+                <view class="number">
+                    包含<text>{{item.number}}</text>个文件
                 </view>
             </view>
-            <view class="number">
-                包含<text>{{item.number}}</text>个文件
-            </view>
-        </view>
+            <view wx:if="{{!hasMoreData}}" style="font-size:12px;line-height: 28px;color: #9B9B9B;text-align:center;">已加载完全部数据</view>
+        </block>
+        <view wx:else class="empty-notice">
+            <image src="./img/link.png"></image>
+            还未创建链接，快去试试吧
+        </view>      
     </scroll-view>
 </view>

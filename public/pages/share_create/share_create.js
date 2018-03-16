@@ -81,7 +81,7 @@ Page({
             project_id: wx.getStorageSync('project_id')
         })
         self.setData({
-            txList: [{name:'1月之前的后期素材',time:'1天前',num:7},{name:'1月之前的后期素材',time:'1天前',num:7}],
+            // txList: [{name:'1月之前的后期素材',time:'1天前',num:7},{name:'1月之前的后期素材',time:'1天前',num:7}],
             // createShareList: [{img:'',name:'月之前的后期素材.mp4'},{img:'',name:'月之前的后期素材.mp4'},{img:'',name:'月之前的后期素材.mp4'},{img:'',name:'月之前的后期素材.mp4'},],
         })
     },
@@ -154,7 +154,7 @@ Page({
         Util.ajax('sharelink', 'post', params).then((data) => {
             wx.setStorageSync('share_created', 1);
             wx.redirectTo({
-                url: '/pages/share_list_view/share_list_view?code=' + data.code + '&password=' + data.password
+                url: '/pages/share_list_view/share_list_view?code=' + data.code + '&password=' + data.password + '&name=' + params.name 
             })
         }, (res) => {
             wx.showModal({
