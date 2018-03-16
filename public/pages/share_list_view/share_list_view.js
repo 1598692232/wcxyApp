@@ -221,7 +221,7 @@ Page({
         }
         let url = '/pages/info/info?&name=' 
             + name + '&id=' + id 
-            + '&username=' + username
+            + '&username=' + username + '&share=1'
             + '&project_id=' + this.data.projectId + '&review=' + this.data.review + '&share_all_version=' + this.data.review;
         wx.navigateTo({
             url: url,

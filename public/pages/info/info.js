@@ -131,7 +131,8 @@ Page({
         needTime: true,
         isIOS: true,
         commentPage: 1,
-        adjustPosition: false
+        adjustPosition: false,
+        share: null
     },
 
     statusChange: function(e) {
@@ -194,7 +195,11 @@ Page({
     onLoad(options) {
         this.data.options = options
         let self = this;
-        console.log(options, 'options');
+        if (options.share) {
+            self.setData({
+                share: parseInt(options.share) == 1 ? true : false
+            })
+        }
 
         if (options.review != undefined && options.share_all_version != undefined ) {
             self.setData({
@@ -1531,6 +1536,14 @@ Page({
 	 },
 
     onShareAppMessage () {
+        if (!this.data.share) {
+            wx.showModal({
+                title: '提示',
+                content: '该视频不可转发，您可以从创建分享中添加该视频',
+                showCancel: false,
+            });
+            return;
+        }
         //  self.data.shareCode = scene[1]
         let url = '/pages/info/info?id=' + this.data.doc_id + '&project_id=' + this.data.project_id
 
