@@ -153,22 +153,22 @@ Page({
         })
     },
 
-    changeBtn(e) {
+    // changeBtn(e) {
     
-        this.setData({
-            commentText: e.detail.value
-        });
+    //     this.setData({
+    //         commentText: e.detail.value
+    //     });
         
-        if (e.detail.value != '' || this.data.commentDraw.length != 0) {
-            this.setData({
-                sendCommentBtnStyle: '#1125e5'
-            })
-        } else {
-            this.setData({
-                sendCommentBtnStyle: ''
-            })
-        }
-    },
+    //     if (e.detail.value != '' || this.data.commentDraw.length != 0) {
+    //         this.setData({
+    //             sendCommentBtnStyle: '#1125e5'
+    //         })
+    //     } else {
+    //         this.setData({
+    //             sendCommentBtnStyle: ''
+    //         })
+    //     }
+    // },
 
     firstCanvasTouchstart() {
         if (this.data.cavansShow && !this.data.isFocus) {
@@ -1508,15 +1508,15 @@ Page({
         }, floatTime)
  	
        
-        this.data.commentList.map(item => {
-            item.timeBackground = '#535353';
-        })
+        // this.data.commentList.map(item => {
+        //     item.timeBackground = '#535353';
+        // })
 
-        this.data.commentList[e.currentTarget.dataset.index].timeBackground = '#1125e5';
+        // this.data.commentList[e.currentTarget.dataset.index].timeBackground = '#1125e5';
 
-        this.setData({
-            commentList: this.data.commentList
-        })
+        // this.setData({
+        //     commentList: this.data.commentList
+        // })
 
  		// this.videoCtx.seek(time)
         // this.videoCtx.pause()
@@ -1996,14 +1996,14 @@ Page({
                 isFocus: true,
                 textareaH: this.windowHeight- 211 - e.detail.height - 44 -44,
                 commentText: this.data.commentTextTemp,
-                // adjustPosition: true
+                adjustPosition: false
             });
            
-            setTimeout(() => {
-                this.setData({
-                    adjustPosition: true
-                })
-            })
+            // setTimeout(() => {
+            //     this.setData({
+            //         adjustPosition: true
+            //     })
+            // })
            
     
             if (this.data.info.file_type == 'video') {
@@ -2024,6 +2024,11 @@ Page({
     },
 
     changeCommentText(e) {
+        if (!this.data.adjustPosition) {
+            this.setData({
+                adjustPosition: true
+            })
+        }
         this.setData({
             commentText: e.detail.value,
             commentTextTemp: e.detail.value
