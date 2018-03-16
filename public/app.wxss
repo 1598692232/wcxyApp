@@ -20,7 +20,7 @@ view{
   box-sizing: border-box;
 }
 page {
-  background-color: #16171c
+  background-color: #010101;
 }
 .empty-project{
     line-height: 200px;

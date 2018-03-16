@@ -23,7 +23,7 @@
     "navigationBarBackgroundColor": "#252525",
     "navigationBarTitleText": "XINYUE新阅",
     "navigationBarTextStyle":"#fff",
-    "backgroundColor": "#383B4A"
+    "backgroundColor": "#010101"
   },
   "tabBar": {
     "list": [{

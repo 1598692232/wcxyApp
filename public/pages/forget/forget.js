@@ -11,7 +11,7 @@ Page({
 		emailFocus: false,
 		hiddenEmailClear: true,
 		scrollHeight: 0,
-		sendEmail: false
+		// sendEmail: false
 	},
 
 	onLoad(options) {
@@ -40,30 +40,30 @@ Page({
 		}
 		let store = wx.getStorageSync('app')
 
-		if(this.data.sendEmail) return
-		this.data.sendEmail = true
+		// if(this.data.sendEmail) return
+		// this.data.sendEmail = true
 		let self = this
 
-		Util.ajax('sendvalidate', 'post', {
+		Util.ajax('self_invite', 'post', {
 			sessionid: store.sessionid,
-			email: e.detail.value.email
+			email: e.detail.value.email,
+			type: 1
 		}).then(json => {
-			wx.setStorage({
-				key: 'forget_email',
-				data: e.detail.value.email
-			})
-			wx.navigateTo({
-				url: '/pages/forget_next/forget_next'
-			})
+			console.log(json,'json')
+			// wx.setStorage({
+			// 	key: 'forget_email',
+			// 	data: e.detail.value.email
+			// })
 		}, res => {
 			wx.showModal({
 				title: '提示',
 				content: res.data.msg,
 				showCancel: false
 			})
-		}).then(() => {
-			self.data.sendEmail = false
 		})
+		// .then(() => {
+		// 	self.data.sendEmail = false
+		// })
 	},
 
 	clearInput(e) {
