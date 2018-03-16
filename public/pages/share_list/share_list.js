@@ -1,5 +1,6 @@
 let Util = require('../../utils/util.js')
 const app = getApp()
+const PRE_PAGE = 10;
 
 Page({
     data: {
@@ -7,6 +8,9 @@ Page({
         shareList: [],
         projectID: 0,
         tx: app.data.staticImg.manager,
+        page: 1,
+        pageSize: 10,
+        hasMoreData: true
     },
     onLoad(options) {
         let self = this;
@@ -21,39 +25,90 @@ Page({
         })
     },
     onShow() {
+        let store = wx.getStorageSync('app')
+        if (store.token == '') {
+            wx.navigateTo({
+                url: '/pages/signin/signin'
+            })
+        } else {
+            let self = this
+            wx.showLoading()
+            self.getShareList()
+        }  
+
+        // let self = this
+        // let store = wx.getStorageSync('app')
+        // let reqData = Object.assign({}, {token: store.token},{login_id:store.login_id})
+        // reqData.project_id = self.data.projectID
+        // reqData.page = self.data.page
+        // reqData.pre_page = PRE_PAGE
+        // wx.showLoading()
+        // self.getShareList(reqData)
+    },
+    getShareList(){
         let self = this
         let store = wx.getStorageSync('app')
         let reqData = Object.assign({}, {token: store.token},{login_id:store.login_id})
         reqData.project_id = self.data.projectID
-        wx.showLoading()
-        Util.ajax('sharelink/list', 'get',reqData).then(data => {
-            data.list.map(item => {
-                item.avatar = item.avatar == '' ? self.data.tx : item.avatar
-                item.createtime = Util.getCreateTime(item.created_at)
-                item.image = item.share_img
-                item.number = item.files_count
-            })
-            self.setData({
-                shareList: data.list
-            })
-            wx.hideLoading()
-        }, res => {
-            wx.showModal({
-                title: '提示',
-                content: res.data.msg,
-                showCancel: false,
-                success: function(res) {
-                    if (res.confirm) {
-                        wx.navigateTo({url: '/pages/signin/signin?login_out=2'})
-                    }
+        reqData.page = self.data.page
+        reqData.pre_page = PRE_PAGE
+        let getList = (reqData,doCommentAjaxing,fn)=>{
+            return Util.ajax('sharelink/list', 'get',reqData).then(data => {
+                if (doCommentAjaxing) {
+                    this.commentAjaxing = false;
+                }
+                data.list.map(item => {
+                    item.avatar = item.avatar == '' ? self.data.tx : item.avatar
+                    item.createtime = Util.getCreateTime(item.created_at)
+                    item.image = item.share_img
+                    item.number = item.files_count
+                })
+                // self.setData({
+                //     shareList: data.list
+                // })
+                fn(data.list); 
+                wx.hideLoading()
+                
+            }, res => {
+                if (doCommentAjaxing) {
+                    this.commentAjaxing = false;
                 }
             })
-        })
+        }
+        if (this.commentAjaxing || this.commentGeted) { 
+            return;
+        }
+        this.commentAjaxing = true
+        getList(reqData, true, (list) => {
+            let shareList = self.data.shareList.concat(list);
+            if (list.length < PRE_PAGE) {
+                self.commentGeted = true;
+                self.setData({
+                    hasMoreData: false
+                })
+            }
+            self.setData({
+                shareList,
+                page: list.length < PRE_PAGE ? self.data.page : ++self.data.page
+            })
+        });
     },
     toShareInfo(e){
         wx.navigateTo({
             url: '/pages/share_list_view/share_list_view?code=' + e.currentTarget.dataset.code 
             + '&password=' + e.currentTarget.dataset.password + '&id=' + e.currentTarget.dataset.id
         })
-    }
+    },
+     // 页面上拉触底事件的处理函数
+     lower(){
+        let self = this
+        let store = wx.getStorageSync('app')
+        let params = Object.assign({}, {token: store.token},{login_id:store.login_id},{
+            project_id: self.data.projectId,
+            page: self.data.page,
+            pre_page: PRE_PAGE
+        })
+        console.log(self.data.page,'self.data.page')
+        self.getShareList(params);
+    },
 })

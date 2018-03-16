@@ -64,3 +64,15 @@
 .number text{
     color: #fff;
 }
+.empty-notice{
+    font-size: 13px;
+    color: #323546;
+    text-align: center;
+    opacity: 0.6;
+}
+.empty-notice image{
+    display:block;
+    width:70px;
+    height:75px;
+    margin: 200px auto 14px;
+}

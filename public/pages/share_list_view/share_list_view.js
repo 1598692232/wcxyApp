@@ -17,10 +17,15 @@ Page({
         shareName: '',
         manager: app.data.staticImg.manager,
         review: 0,
-        share_all_version: 0
+        share_all_version: 0,
+        realname: '',
+        sharename: ''
     },
     onLoad(options) {
-		let self = this;
+        let self = this;
+        self.setData({
+            sharename: options.name
+        })
         Util.getSystemInfo().then(result => {
             self.setData({
                 scrollHeight: result.windowHeight,
@@ -66,9 +71,21 @@ Page({
                 });
                 wx.setNavigationBarTitle({title: data.share_name})
             }, res => {
-                if (res.data.status == -4) {
+                if (res.data.status == -4) {    
                     self.setData({
                         passwordModal: true,
+                    })
+                    wx.getClipboardData({
+                        success: function(res){
+                            if(res.data.toString().length>4){
+                                var data2 = res.data.slice(3)     
+                            }else{
+                                var data2 = res.data
+                            }
+                            wx.setClipboardData({
+                                data: data2
+                            })
+                        }
                     })
                 } 
             })
@@ -83,11 +100,22 @@ Page({
             project_id: wx.getStorageSync('project_id')
         })
         self.setData({
-            txList: [{name:'1月之前的后期素材',time:'1天前',num:7},{name:'1月之前的后期素材',time:'1天前',num:7}]
+            realname :store.realname
         })
     },
 
     enterShareLink(e) {
+        // wx.setClipboardData({
+        //     data: '密码:' + self.data.password,
+        //     success: function(res) {
+
+        //     } 
+        // }); 
+        // wx.getClipboardData({
+        //     success: function(res){
+        //         console.log(res.data,'data')
+        //     }
+        // })
         let params = {
             share_code: this.data.code,
             password: this.data.password

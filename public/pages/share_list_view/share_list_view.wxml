@@ -5,13 +5,14 @@
                 <image src="{{qrCode}}" data-src="{{qrCode}}"></image>
             </view>
             <view class="list-info">
-                <view class="share-list-name">新建链接</view>
+                <view class="share-list-name">{{sharename}}</view>
                 <view class="share-list-info">
                     <view>查看数：{{viewCount}}</view>
                     <view>包含{{fileCount}}个文件</view>
                     <view>有效期：{{deadline}}</view>
-                    <view selectable="true">密码: {{password}}</view>
+                    <view>分享者：{{realname}}</view>
                 </view>
+                <text selectable="true" hidden>密码:{{password}}</text>                
             </view>
         </view>
         <view catchtap="copyTBL">
