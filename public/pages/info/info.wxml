@@ -97,9 +97,12 @@
     <view wx:if="{{commentList.length > 0}}">
             <view class="list-body-cover" wx:if="{{isFocus}}"></view>
     <!-- 评论 -->
-    <view class="comment-body" wx:for="{{commentList}}" wx:key="index" style="background-color:{{item.background}}" >
+    <view class="comment-body" wx:for="{{commentList}}" wx:key="index"  
+        style="background:{{item.timeBackground == '#1125e5' ? '#1E1F23' : ''}}">
         <!-- 评论区 -->
-        <view class="comment-master {{item.delTranstion}}" bindtouchstart="delTouchStart" bindtouchmove="delTouchMove"  bindtouchend="delTouchEnd" style="transform: translateX({{item.translateX}}px);" data-index="{{index}}">
+        <view class="comment-master {{item.delTranstion}}" bindtouchstart="delTouchStart" bindtouchmove="delTouchMove"  
+        bindtouchend="delTouchEnd" style="transform: translateX({{item.translateX}}px);"  
+        data-index="{{index}}">
           <view class="comment-tou">
             <image src="{{item.avatar}}"></image>
           </view>
@@ -228,7 +231,7 @@
                 <view class="comment-footer-left" bindtap="commentBlur">
                     取消
                 </view>
-                <view class="comment-footer-time" style="color:{{needTime ? '#086ac1': ''}}"
+                <view class="comment-footer-time" style="color:{{needTime ? '#117AEA;': ''}}"
                     wx:if="{{info.file_type != 'image'}}" bindtap="toggelNeedTime">
                     <image class="time-check" src="./img/time_check.png" wx:if="{{needTime}}"></image>
                     {{currentVideoTime}}
@@ -247,31 +250,38 @@
                         bindtouchend="thirdDrawend"
                 ></canvas> -->
                 <view class="label-body">  
-                    <view class="label-type">
-                        <view class="label-img" wx:for="{{drawType}}" wx:key="index" bindtap="selectDrawType" data-key="{{index}}" id="draw-control{{index}}" >
-                                <image src="{{item.activeImg}}" mode="aspectFit" wx:if="{{drawTypeActive == item.name}}"></image>  
-                                <image src="{{item.img}}" mode="aspectFit" wx:else></image>         
-                        </view>  
+                    <!-- 标记方式 -->
+                    <view class="label-img" style="width: {{drawWidth / 9}}px" wx:for="{{drawType}}" 
+                    wx:key="unique" bindtap="selectDrawType" data-key="{{index}}" id="draw-control{{index}}" >
+                        <image src="{{item.activeImg}}" mode="aspectFit" wx:if="{{drawTypeActive == item.name}}"></image>  
+                        <image src="{{item.img}}" mode="aspectFit" wx:else></image>         
+                    </view>  
+
+                    <!-- 标记撤销/恢复 -->
+                    <view class="back-go-li" style="width: {{drawWidth / 9}}px" 
+                    wx:for="{{drawGoBack}}" wx:key="index"
+                    bindtap="goOrBackDraw" data-type="{{item}}">
+                        <image src="./img/{{item}}.png" mode="aspectFit" ></image>
                     </view>
         
                     <!-- noSelectColors -->
-                    <view class="label-color">
-                        <view class="label-color-li"  wx:for="{{colors}}" wx:key="index" data-key="{{index}}"  
-                        catchtap="selectColor" id="draw-control{{index + 6}}">
-                            <view class="label-color-block-select">
-                                <block wx:if="{{item == colorActive}}">
-                                    <view class="label-color-select active" style="background-color:{{item}}; box-shadow: 0 0 3px {{item}};">
-                                    </view>
-                                </block>
-                                <block wx:else>
-                                    <view class="label-color-select" style="background-color:{{item}}">
-                                    </view>
-                                </block>
-                                
-                            </view>
+                    <!-- 标记颜色 -->
+                    <view class="label-color-li" style="width: {{drawWidth / 9}}px" wx:for="{{colors}}" wx:key="unique" data-key="{{index}}"  
+                    catchtap="selectColor" id="draw-control{{index + 6}}">
+                        <view class="label-color-block-select">
+                            <block wx:if="{{item == colorActive}}">
+                                <view class="label-color-select active" style="background-color:{{item}}; box-shadow: 0 0 3px {{item}};">
+                                </view>
+                            </block>
+                            <block wx:else>
+                                <view class="label-color-select" style="background-color:{{item}}">
+                                </view>
+                            </block>
+                            
                         </view>
                     </view>
                 </view>
+
             </view>
     
             <!-- wx:if="{{!isIOS}}" -->

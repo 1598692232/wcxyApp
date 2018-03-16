@@ -65,7 +65,7 @@ Page({
         colorBlockAnimation: {},
         drawType:  [{name: 'rect', img: './img/kuang.png', activeImg: './img/kuang-active.png'}, 
                     {name: 'arrow', img: './img/jiantou.png', activeImg: './img/jiantou-active.png'},
-                    {name: 'line', img: './img/line.png', activeImg: './img/line-active.png'},
+                    // {name: 'line', img: './img/line.png', activeImg: './img/line-active.png'},
                     {name: 'pen', img: './img/huabi.png', activeImg: './img/huabi-active.png'}],
         drawTypeActive: 'rect',
         cxt: '',
@@ -77,6 +77,7 @@ Page({
         line: {tool: 'line', color: '', x1: '', y1:'', x2: '', y2: '', size: 3}, 
         pen: {tool: 'pen', color: '', xs: '', ys:'', size: 3},
         commentDraw: [],
+        commentDrawTemp: [],
         firstCanvasWidth: '',
         firstCanvasHeight: '',
         cavansShow: false,
@@ -132,7 +133,8 @@ Page({
         isIOS: true,
         commentPage: 1,
         adjustPosition: false,
-        share: null
+        share: null,
+        drawGoBack: ['back', 'go']
     },
 
     statusChange: function(e) {
@@ -186,6 +188,9 @@ Page({
             });
             self.windowWidth = res.windowWidth;
             self.windowHeight = res.windowHeight;
+            self.setData({
+                drawWidth: res.windowWidth
+            });
         })
         
         this.videoCtx = wx.createVideoContext('myVideo');
@@ -195,13 +200,14 @@ Page({
     onLoad(options) {
         this.data.options = options;
 
+        // 隐藏转发
+        wx.hideShareMenu();
+
         let self = this;
         if (options.share) {
             self.setData({
                 share: parseInt(options.share) == 1 ? true : false
             })
-        } else {
-            wx.hideShareMenu()
         }
 
         if (options.review != undefined && options.share_all_version != undefined ) {
@@ -995,12 +1001,17 @@ Page({
                 drawObj = JSON.parse(JSON.stringify( this.data.pen))
                 break;
         }
+  
         this.data.commentDraw.push(drawObj)
         this.data.commentDraw.forEach((item, key) => {             
             this.drawAll(item, false)    
         })
-
         this.data.cxtShowBlock.draw();
+
+        this.data.cxt.clearRect(0, 0, this.data.firstCanvasWidth, this.data.firstCanvasHeight);
+        this.data.cxt.draw()
+
+        this.data.commentDrawTemp = JSON.parse(JSON.stringify(this.data.commentDraw));
 
         if (this.data.commentDraw) {
             this.setData({
@@ -1306,7 +1317,7 @@ Page({
         if (self.data.sendComment) return
         self.data.sendComment = true
 
-        if (self.data.info.file_type != 'image') {
+        if (self.data.info.file_type == 'video') {
 
             self.data.commentDraw.forEach((item, key) => {
                 switch(item.tool) {
@@ -1362,7 +1373,6 @@ Page({
 
             if (self.data.info.file_type == 'video') {
                 self.data.cxtShowBlock.clearRect(0, 0, self.data.firstCanvasWidth, self.data.firstCanvasHeight);
-
                 self.data.cxtShowBlock.clearRect(0, 0, self.data.firstCanvasWidth, self.data.firstCanvasHeight)
                 self.data.cxt.clearRect(0, 0, self.data.firstCanvasWidth, self.data.firstCanvasHeight)
                 self.data.cxtShowBlock.draw();
@@ -1483,8 +1493,6 @@ Page({
                 
         }, 50)
 
-  
-        
         // if (this.data.isFocus) return
 
         // 模拟时间点击
@@ -1499,13 +1507,11 @@ Page({
  	
        
         this.data.commentList.map(item => {
-            // item.background = ''
-            item.timeBackground = '#535353'
-            // item.nameColor = ''
+            item.timeBackground = '#535353';
         })
-        // this.data.commentList[e.currentTarget.dataset.index].background = '#535353'
-        this.data.commentList[e.currentTarget.dataset.index].timeBackground = '#1125e5'
-        // this.data.commentList[e.currentTarget.dataset.index].nameColor = '#c6c6d0'
+
+        this.data.commentList[e.currentTarget.dataset.index].timeBackground = '#1125e5';
+
         this.setData({
             commentList: this.data.commentList
         })
@@ -1981,6 +1987,9 @@ Page({
 
     inputFocus(e) {
         if (!this.data.isFocus) {
+
+            this.drawBackCount = 0;
+
             this.setData({
                 isFocus: true,
                 textareaH: this.windowHeight- 211 - e.detail.height - 44 -44,
@@ -2017,5 +2026,29 @@ Page({
             commentText: e.detail.value,
             commentTextTemp: e.detail.value
         });
+    },
+
+    goOrBackDraw(e) {
+  
+        if (e.currentTarget.dataset.type == "back") {
+            if (this.data.commentDraw.length == 0) return;
+            this.data.commentDraw.pop();
+            this.drawBackCount++;
+        } else {
+            if(this.drawBackCount == 0) return;
+            let l = this.data.commentDrawTemp.length;
+            this.data.commentDraw.push(this.data.commentDrawTemp[l -  this.drawBackCount]);
+            this.drawBackCount--;
+        }
+        
+        this.data.cxtShowBlock.clearRect(0, 0, this.data.firstCanvasWidth, this.data.firstCanvasHeight);
+        this.data.cxtShowBlock.draw();
+        
+        this.data.commentDraw.forEach((item, key) => {             
+            this.drawAll(item, false)    
+        })
+        this.data.cxtShowBlock.draw();
+
     }
+    
 })
