@@ -1,6 +1,9 @@
-<view class="login-form" scroll-y style="height: {{scrollHeight}}px">
+<view class="login-form" style="height:100%;">
     <view class="logo">
         <image src="./img/logo.png" mode="aspectFit"></image>
+    </view>
+    <view class="title">
+        -<text>视频影音连接者</text>-
     </view>
     <form bindsubmit="handleNext">
         <view class="login-input-body">
@@ -11,4 +14,5 @@
         </view>
         <button form-type="submit" class="login-btn" cursor-spacing="20">注册邮件</button>
     </form>
+    <view class="xinyue">www.xinyue.io</view>
 </view>
