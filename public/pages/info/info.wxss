@@ -700,6 +700,7 @@
     background: #010101;
     padding: 0 52px;
     z-index:1;
+    height:50px;
 }
 
 .comment-footer-left{

@@ -414,6 +414,12 @@ Page({
                     }, 100);
                 }
 
+                if (data.file_type == 'image') {
+                    self.setData({
+                        needTime: false
+                    })
+                }
+
                 self.setData(info);
                 if(data.file_type == 'audio') {
                     setTimeout(() => {
