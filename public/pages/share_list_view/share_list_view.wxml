@@ -1,8 +1,8 @@
 <view class="shareListView" style="height:{{scrollHeight}}px;">
     <view class="share-list-view-info">
-        <view class="share-list-top">
+        <view class="share-list-top clearfix">
             <view class="wx-logo" bindtap="toBigWXLogo">
-                <image src="{{qrCode}}" data-src="{{qrCode}}"></image>
+                <image src="{{qrCode}}" data-src="{{qrCode}}" mode="aspectFit"></image>
             </view>
             <view class="list-info">
                 <view class="share-list-name">{{sharename}}</view>
