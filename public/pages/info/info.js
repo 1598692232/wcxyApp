@@ -116,7 +116,7 @@ Page({
         author: '许巍',
         src: au,
 
-        audioPause: true,
+        audioPause: false,
         audioProgress: 0,
         audioProgressMaxWidth: 0,
         audioProgressNum: 0,
@@ -238,22 +238,7 @@ Page({
             data: ''
         });
 
-        setTimeout(() => {
-            wx.createSelectorQuery().select('#info-audio-progress').fields({
-                dataset: true,
-                size: true,
-                scrollOffset: true,
-                properties: ['scrollX', 'scrollY']
-            }, function(res){
-                if (!res) return;
-                self.setData({
-                    audioProgressMaxWidth: res.width * 0.9,
-                });
-            }).exec(function (res) {
-                
-            })
 
-        }, 100)
      
 
         if (self.data.options.scene) {
@@ -424,9 +409,32 @@ Page({
 
                 if(data.file_type == 'audio') {
                     info = Object.assign({}, info, {audioTime: data.time, url:  data.resolution[0].src});
+                    setTimeout(() => {
+                        self.audioCtx.play()
+                    }, 100);
                 }
 
                 self.setData(info);
+                if(data.file_type == 'audio') {
+                    setTimeout(() => {
+                        wx.createSelectorQuery().select('#info-audio-progress').fields({
+                            dataset: true,
+                            size: true,
+                            scrollOffset: true,
+                            properties: ['scrollX', 'scrollY']
+                        }, function(res){
+                            console.log(res)
+                            if (!res) return;
+                            self.setData({
+                                audioProgressMaxWidth: res.width * 0.9,
+                            });
+                        }).exec(function (res) {
+                            
+                        })
+                    }, 50);
+                }
+
+               
 
                 // console.log(self.data.versions)
 
@@ -1187,7 +1195,13 @@ Page({
             adjustPosition: false
         });
         setTimeout(() => {
-            this.videoCtx.play();
+            if (this.data.info.file_type == 'video') {
+                this.videoCtx.play();
+            }
+
+            if (this.data.info.file_type == 'audio') {
+                this.audioCtx.play();
+            }
         }, 100);
 
         setTimeout(() => {
@@ -1337,19 +1351,18 @@ Page({
         Util.ajax('comment', 'post', reqData).then(json => {
             let list = self.data.commentList
 
-            if (self.data.info.file_type != 'image') {
+            if (self.data.info.file_type == 'video') {
+                self.data.cxtShowBlock.clearRect(0, 0, self.data.firstCanvasWidth, self.data.firstCanvasHeight);
+
                 self.data.cxtShowBlock.clearRect(0, 0, self.data.firstCanvasWidth, self.data.firstCanvasHeight)
+                self.data.cxt.clearRect(0, 0, self.data.firstCanvasWidth, self.data.firstCanvasHeight)
+                self.data.cxtShowBlock.draw();
+                self.data.cxt.draw();
             }
 
             wx.showToast({
                 title: '评论成功！！'
             });
-
-         
-            self.data.cxtShowBlock.clearRect(0, 0, self.data.firstCanvasWidth, self.data.firstCanvasHeight)
-            self.data.cxt.clearRect(0, 0, self.data.firstCanvasWidth, self.data.firstCanvasHeight)
-            self.data.cxtShowBlock.draw();
-            self.data.cxt.draw();
 
             let newComment = {
                 content: self.data.commentText,
@@ -1384,8 +1397,13 @@ Page({
                 showCancel: false,
             })
         }).then((res) => {
-            self.videoCtx.play()
-            self.data.videoPause = false            
+            if (self.data.info.file_type == 'video') {
+                self.videoCtx.play()
+                self.data.videoPause = false   
+            }
+            if (self.data.info.file_type == 'audio') {
+                self.audioCtx.play()
+            }    
             self.data.sendComment = false
         })
 
@@ -1470,7 +1488,24 @@ Page({
  		// this.videoCtx.seek(time)
         // this.videoCtx.pause()
         self.data.videoPause = true        
-	 },
+     },
+     
+     toAudioPostion(e) {
+        let self = this
+        if (e.currentTarget.dataset.time < 0 ) return;
+        // this.audioCtx.pause();
+        this.audioCtx.seek(e.currentTarget.dataset.time);
+     },
+
+     toPosition(e) {
+        if (this.data.info.file_type == 'video') {
+            this.toVideoPosition(e);
+        } else if(this.data.info.file_type == 'audio'){
+            this.toAudioPostion(e);
+        } else {
+            return;
+        }
+     },
 
     // 获取播放时间
     getVideoTime(e) {
@@ -1933,10 +1968,20 @@ Page({
             })
            
     
-            if (this.data.info.file_type != 'image') {
+            if (this.data.info.file_type == 'video') {
                 setTimeout(() => {
                     this.commentFocus();
                 });
+            }
+
+            if (this.data.info.file_type == 'audio') {
+                this.audioCtx.pause();
+                this.data.focusTime = this.data.audioProgress * this.data.audioTime;
+
+                this.setData({
+                    audioPause: true,
+                    currentVideoTime: Util.formatVideoTime(this.data.focusTime) 
+                })
             }
         }
     },
