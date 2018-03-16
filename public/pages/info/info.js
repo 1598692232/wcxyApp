@@ -26,7 +26,7 @@ Page({
         zan: app.data.staticImg.zan,
         zanActive: app.data.staticImg.zanActive,
         page: 1,
-        videoTime: '',
+        videoTime: 0,
         focusTime: 0,
         url: '',
         name: '',
@@ -56,7 +56,7 @@ Page({
         sendComment: false,
         delComment: false,
         isFocus: false,
-        videoCurrentTimeInt: new Date().getTime(),
+        videoCurrentTimeInt: 0,
 
         colorActive: '#E74A3C',
         colors: ['#E74A3C', '#E67422', '#1ABCA1', '#34A3DB'],
@@ -423,7 +423,6 @@ Page({
                             scrollOffset: true,
                             properties: ['scrollX', 'scrollY']
                         }, function(res){
-                            console.log(res)
                             if (!res) return;
                             self.setData({
                                 audioProgressMaxWidth: res.width * 0.9,
@@ -489,7 +488,7 @@ Page({
     getVideoInfo(host, reqData, fn) {
         let self = this
         wx.showLoading()
-
+        
         Util.ajax('file/info', 'get', reqData).then(json => {
             self.setData({
                 info: json,
@@ -1110,7 +1109,7 @@ Page({
             cxtShowBlock: context2
         })
 
-        if (!self.data.isFocus) {
+        if (self.data.isFocus) {
             self.data.cxtShowBlock.clearRect(0, 0, self.data.firstCanvasWidth, self.data.firstCanvasHeight)
             self.data.cxt.clearRect(0, 0, self.data.firstCanvasWidth, self.data.firstCanvasHeight)
             self.data.cxtShowBlock.draw();
@@ -1212,7 +1211,6 @@ Page({
                 isFocus: false,
             });
         }, 1000)
-       
  
         // this.data.videoPause = false        
     },
@@ -1226,7 +1224,6 @@ Page({
 	// 发送评论
     sendComment(e) {
         let self = this
-
         let res = wx.getStorageSync('app')
         let pids = wx.getStorageSync('project_ids')
         
@@ -1363,7 +1360,7 @@ Page({
                 self.data.cxt.draw();
             }
 
-            if (self.data.info.file_type = "audio") {
+            if (self.data.info.file_type == "audio") {
                 self.audioCtx.play();
                 self.setData({
                     audioPause: false
@@ -1431,7 +1428,6 @@ Page({
 
 	 //跳到指定时间播放
 	 toVideoPosition(e) {
-
         let self = this
         if (e.currentTarget.dataset.time < 0 ) return;
 
@@ -1533,9 +1529,10 @@ Page({
 
     // 获取播放时间
     getVideoTime(e) {
-        if (this.data.videoTime != parseInt(e.detail.currentTime)) {
+        if (this.data.videoTime != parseInt(e.detail.currentTime) && this.data.videoTime != 0) {
             this.data.videoCurrentTimeInt = new Date().getTime();
         }
+      
         this.data.videoTime = parseInt(e.detail.currentTime);
         this.setData({
             currentVideoTime: Util.formatVideoTime(this.data.videoTime)
@@ -1552,7 +1549,10 @@ Page({
 
     listenerPlay(e) {
         this.ms = new Date().getTime();
-
+        //开始播放时记录当前时间戳
+        if (this.data.videoCurrentTimeInt == 0) {
+            this.data.videoCurrentTimeInt = new Date().getTime();
+        }
         this.data.videoPause = false
     },
 
