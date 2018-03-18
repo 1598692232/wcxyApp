@@ -6,7 +6,7 @@
 .pl-list{
 	width: 100%;
 	box-sizing:border-box;
-	background: #383B4A;
+	background: #010101;
 }
 .pl-body{
 	width:100%;
@@ -51,6 +51,7 @@
 	height:92px;
 	border-radius: 4px;
 	overflow: hidden;
+	background: #181d28;
 	/* background: #30343f; */
 	/* background: #21212d; */
 	/* background: #252525; */
@@ -271,7 +272,7 @@
 }
 .join-member-list{
 	height: 56px;
-	border-bottom: 1px solid #2F3344;
+	/* border-bottom: 1px solid #2F3344; */
 	display: flex;
 	position: relative;
 	flex-wrap: nowrap;
@@ -279,7 +280,7 @@
 	/* height: 81px; */
 	justify-content: center;
 	align-items: center;
-	background: #383B4A;
+	background: #171d29;
 }
 .join-member-intro{
 	position: absolute;
@@ -307,10 +308,10 @@
 	font-size: 12px;
 }
 .join-member-li{
-	width: 40px;
-	height: 40px;
-	border-radius: 50%;
-	border: 5px solid #383B4A;
+	width: 30px;
+	height: 30px;
+	
+	/* border: 5px solid #383B4A; */
 	position: relative;
 	overflow: hidden;
 	margin-left: -14px;
@@ -321,8 +322,9 @@
 	background: #0345C7;
 	color: #fff;
 	text-align: center;
-	line-height: 30px;
+	line-height: 28px;
 	font-size: 24px;
+	border-radius: 50%;
 }
 .join-member-tx{
 	/* border: 2px solid #fff; */
@@ -378,12 +380,12 @@
 .member-drop-list-show{
 	width: 100%;
 	height: 436px;
-	background: #383B4A;
+	background: #171d29;
 	position: relative;
 }
 .member-drop-add{
 	height: 80px;
-	border-bottom: 1px solid #2F3344;
+	border-bottom: 1px solid #14161a;
 	font-size: 15px;
 	color: #9B9B9B;
 	letter-spacing: 1.29px;
@@ -430,7 +432,7 @@
 .join-member-drop{
 	width: 100%;
 	height: auto;
-	background: #383B4A;
+	/* background: #383B4A; */
 }
 .join-member-drop-li{
 	padding: 12px 0 0;
@@ -450,7 +452,7 @@
 .join-member-drop-li .list{
 	padding-bottom: 12px;
 	flex-grow: 1;
-	border-bottom: 1px solid #2F3344;
+	border-bottom: 1px solid #14161a;
 	text-align: left;
 }
 .join-member-drop-li .list .join-member-name{
