@@ -44,7 +44,7 @@
     }],
     "backgroundColor": "#303340",
     "color": "#9B9B9B",
-    "selectedColor": "#0046db"
+    "selectedColor": "#71A9FF"
   },
   "networkTimeout": {
     "request": 5000,

@@ -1,23 +1,27 @@
 .notice-tips{
     height: 48px;
-    background: #202330;
+    /* background: #202330; */
+    background: #171D29;
     line-height: 48px;
     text-align: center;
 }
 .notice-tips-text{
     font-size: 16px;
     color: #FFFFFF;
+    letter-spacing: 0.81px;
 }
 .empty-notice{
     font-size: 13px;
-    color: #323546;
     text-align: center;
+    color: #323546;
+    letter-spacing: -0.6px;
 }
 .empty-notice image{
     display:block;
     width:70px;
     height:75px;
-    margin: 200px auto 14px;
+    margin: 183px auto 6px;
+    opacity: 0.6;
 }
 
 
@@ -32,7 +36,8 @@
     box-sizing: border-box;
     padding: 15px 12px;
     width: 100%;
-    border-bottom: 1px solid #2F3344;
+    /* border-bottom: 1px solid #2F3344; */
+    border-bottom: 1px solid rgb(16, 18, 20);
     display: flex;
     position: relative;
 }
@@ -68,7 +73,7 @@
 .item-title{
     display: block;
     line-height: 28px;
-    font-size:14px;
+    font-size:15px;
     color:#fff;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -76,7 +81,7 @@
 }
 .item-comment{
     display: block;
-    font-size: 12px;
+    font-size: 13px;
     color: #9B9B9B;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -84,18 +89,18 @@
 }
 
 .item-number-box{
-    min-width: 14px;
-    height: 14px;
-    border-radius: 7px;
+    min-width: 18px;
+    height: 18px;
+    border-radius: 9px;
     background: #F84B30;
     position: absolute;
     right: 20px;
-    top: 34px;
+    top: 29px;
 }
 .item-number{
     color: #fff;
-    font-size: 10px;
-    line-height: 14px;
+    font-size: 11px;
+    line-height: 18px;
     text-align: center;
     padding: 0 4px;
     box-sizing: content-box;

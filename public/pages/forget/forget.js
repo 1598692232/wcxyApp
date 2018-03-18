@@ -49,17 +49,33 @@ Page({
 			email: e.detail.value.email,
 			type: 1
 		}).then(json => {
-			console.log(json,'json')
+			// console.log(json,'json')
 			// wx.setStorage({
 			// 	key: 'forget_email',
 			// 	data: e.detail.value.email
 			// })
-		}, res => {
 			wx.showModal({
 				title: '提示',
-				content: res.data.msg,
-				showCancel: false
+				content: '重置密码邮件已经发送成功！请进入邮箱点击修改',
+				showCancel: false,
+				success: function(res) {
+					if (res.confirm) {
+						console.log('用户点击确定')
+						wx.redirectTo({
+							url: '/pages/signin/signin'
+						})
+					}
+				  }
 			})
+			
+		}, res => {
+			if(res.data.status!==1){
+				wx.showModal({
+					title: '提示',
+					content: res.data.msg,
+					showCancel: false
+				})
+			}
 		})
 		// .then(() => {
 		// 	self.data.sendEmail = false

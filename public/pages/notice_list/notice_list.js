@@ -213,6 +213,9 @@ Page({
             content: '确定要清空全部消息，这是一个不可逆的操作!!!',
             success: function(res) {
                 if(res.confirm){
+                    wx.showLoading({
+                        title: '正在删除...'
+                    })
                     let store = wx.getStorageSync('app')
                     let reqData = Object.assign({}, {token: store.token},{login_id:store.login_id})
                     reqData.notice_ids = self.data.noticeListInfo.map(v=>v.id).toString()

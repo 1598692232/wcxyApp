@@ -1,6 +1,7 @@
 .notice-tips{
     height: 48px;
-    background: #202330;
+    /* background: #202330; */
+    background: #171D29;
     line-height: 48px;
     text-align: center;
 }
@@ -10,14 +11,16 @@
 }
 .empty-notice{
     font-size: 13px;
-    color: #323546;
     text-align: center;
+    color: #323546;
+    letter-spacing: -0.6px;
 }
 .empty-notice image{
     display:block;
     width:70px;
     height:75px;
-    margin: 200px auto 14px;
+    margin: 183px auto 6px;
+    opacity: 0.6;
 }
 
 .item-system{
@@ -25,7 +28,8 @@
     width: 100%;
     height: 74px;
     padding: 0 12px;
-    border-bottom: 1px solid #2F3344;
+    /* border-bottom: 1px solid #2F3344; */
+    border-bottom: 1px solid rgb(16, 18, 20);
     display: flex;
     justify-content: space-between;
     line-height: 74px;
