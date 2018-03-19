@@ -1,6 +1,6 @@
 .share-list-box{
     width: 100%;
-    background: #383B4A;
+    background: #14161a;
     position: relative;
 }
 .share-list{
