@@ -4,7 +4,7 @@
 			<image src="./img/logo.png" mode="aspectFit"></image>
 		</view>
 		<view class="title">
-			-<text>视频影音连接者</text>-
+			-<text>影音制作链接者</text>-
 		</view>
 		<form bindsubmit="handleNext">
 			<view class="login-input-body">

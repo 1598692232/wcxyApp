@@ -144,7 +144,6 @@ Page({
         var userItem = sumData.noticeList0.find((v) => {
             return v.id == e.currentTarget.dataset.id
         })
-        console.log(userItem,'userItem')
         userItem.timestamp = timestamp
         wx.setStorageSync(store.login_id.toString(), sumData)
         // ----------------------

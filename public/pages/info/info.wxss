@@ -286,6 +286,7 @@
     text-align: center;
     line-height:150px;
     flex-direction: column;
+    opacity: 0.6;
 }
 
 .sofa image{
@@ -964,6 +965,10 @@
     height: 211px;
     justify-content: center;
     align-items: center;
+}
+.info-pic image{
+    width: 100%;
+    height: 211px;
 }
 
 .push-comment-input {
