@@ -51,7 +51,7 @@
             </view>
         </block>
       
-        <view class="info-pic"  wx:if="{{info.file_type == 'image'}}"> 
+        <view class="info-pic"  wx:if="{{info.file_type == 'image'}}" style="height:{{videoHeight}}px"> 
             <image src="{{info.cover_img[0]}}" mode="aspectFit"></image>
         </view>
     </view>
@@ -59,7 +59,7 @@
     <block wx:if="{{info.file_type == 'video'}}">
     <!--  wx:if="{{isFocus || cavansShow}}" -->
     <canvas style="width: 100%; height: {{firstCanvasHeight}}px; position: fixed; top: 0;left: 0;z-index: 100"
-    canvas-id="firstCanvas" id="firstCanvas" wx:if="{{true}}" bindtouchstart="firstCanvasTouchstart"></canvas>
+    canvas-id="firstCanvas" id="firstCanvas" wx:if="{{isFocus}}" bindtouchstart="firstCanvasTouchstart"></canvas>
         <!--  wx:if="{{isFocus}}" -->
         <canvas style="width: 100%; height: {{firstCanvasHeight}}px; position: fixed; top: 0;left: 0;z-index: 200" 
                 id="secondCanvas" canvas-id="secondCanvas"
@@ -68,7 +68,7 @@
                 bindtouchmove="drawMove"
                 bindtouchend="drawend"
                 disable-scroll="true"
-                wx:if="{{true}}"
+                wx:if="{{isFocus}}"
                 ></canvas>
             <!-- catchtap="catap" -->
         <!-- 画图控制器 -->
@@ -163,14 +163,14 @@
 
   </scroll-view>
 <!-- wx:if="{{!isFocus && !isIOS}}" -->
-  <view class="info-footer-comment-btn" bindtap="inputFocus" wx:if="{{!isFocus && !isIOS}}">
+  <view class="info-footer-comment-btn" bindtap="inputFocus" wx:if="{{!isFocus}}">
       <view class="info-footer-comment-btn-body">
             <!-- <view class="comment-btn-icon">
                 <image src="./img/comment-icon.png"></image>
             </view> -->
             <view class="comment-btn-text">发表评论</view>
       </view>
-      <view class="comment-comment-count">
+      <view class="comment-comment-count" wx:if="{{!isFocus}}">
         {{commentCount > 99 ? '99+' : commentCount}}
     </view>
   </view>
@@ -301,7 +301,7 @@
             </view>
     
             <!-- wx:if="{{!isIOS}}" -->
-            <view class="push-comment send-comment" style="height: {{commentBodyH}}px;" wx:if="{{!isIOS}}">
+            <view class="push-comment send-comment" style="height: {{commentBodyH}}px;">
                 <!-- <canvas style="width: 100%; height: 44px; position: absolute; top: 0p;left: 0; z-index: 100;"
                     canvas-id="fiveCanvas" id="fiveCanvas" 
                     disable-scroll="true"
@@ -324,13 +324,13 @@
         
     </block>
 
-    <view class="comment-block {{ isFocus ? 'comment-block-active' : ''}} {{ isFocus && info.file_type == 'image' ? 'comment-block-image-active' : ''}}" 
+    <!-- <view class="comment-block {{ isFocus ? 'comment-block-active' : ''}} {{ isFocus && info.file_type == 'image' ? 'comment-block-image-active' : ''}}" 
         wx:if="{{isIOS}}">
-        <view class="comment-block-body">
+        <view class="comment-block-body"> -->
             <!-- <view class="comment-btn-icon" wx:if="{{!isFocus}}">
                 <image src="./img/comment-icon.png"></image>
             </view> -->
-            <textarea value="{{commentText}}" show-confirm-bar="{{false}}"
+            <!-- <textarea value="{{commentText}}" show-confirm-bar="{{false}}"
                 cursor-spacing="5" bindinput="changeCommentText" bindfocus="inputFocus" adjust-position="{{adjustPosition}}"
                 placeholder="发表评论..." placeholder-style="font-size: 13px;" cursor-spacing="{{10}}"></textarea>
         </view>
@@ -338,7 +338,7 @@
             {{commentCount > 99 ? '99+' : commentCount}}
         </view>
         
-    </view>
+    </view> -->
 
    
 
