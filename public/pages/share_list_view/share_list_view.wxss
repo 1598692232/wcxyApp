@@ -95,7 +95,8 @@
     height: 310px;
     /* height: auto; */
     padding-bottom: 12px;
-    border-bottom: 2px solid #545D72;
+    /* border-bottom: 2px solid #545D72; */
+    border-bottom: 1px solid #1F2737;
 }
 .share-list-video:last-child{
     border-bottom: none;
@@ -107,7 +108,8 @@
     white-space: nowrap;
     line-height: 20px;
     padding: 22px 8px 8px;
-    font-size: 17px;
+    font-size: 14px;
+    font-weight: 500;
     color: #FFFFFF;
     letter-spacing: -0.29px;
 }
@@ -153,8 +155,8 @@
 
 .info-audio{
     position: relative;
-    width: 100%;
-    height: 211px;
+    /* width: 100%; */
+    /* height: 211px; */
     background: #30343f;
     overflow: hidden;
 }

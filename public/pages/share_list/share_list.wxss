@@ -1,6 +1,7 @@
 .share-list-box{
     width: 100%;
-    background: #14161a;
+    /* background: #14161a; */
+    background: #010101;
     position: relative;
 }
 .share-list{
@@ -9,6 +10,9 @@
     padding: 0 10px;
     position: relative;
     border-bottom: 1px solid #14161A;
+}
+.share-list:last-child{
+    border-bottom: none;
 }
 .share-list .pic{
     width: 58px;
