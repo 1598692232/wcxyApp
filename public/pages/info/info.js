@@ -444,6 +444,7 @@ Page({
                     versions: data.versions,
                     ps: data.resolution,
                     visibleStatusText: data.review == 0 ? '审核' :STAUS[data.review],
+                    statusActive: data.review,
                     // versionNo: 1,
                     // visibleVersion: 0,
                     username: data.realname,
@@ -724,7 +725,8 @@ Page({
             });
 
             self.setData({
-                visibleStatusText: reviewText
+                visibleStatusText: reviewText,
+                statusActive: review
             });
         }, () => {
             wx.showToast({
@@ -1069,8 +1071,14 @@ Page({
         }
 
         this.drawBackCount = 0;
+        let commentDraw = this.data.commentDraw;
 
-        this.data.commentDraw.push(drawObj);
+        commentDraw.push(drawObj);
+
+        this.setData({
+            commentDraw
+        });
+        
         this.data.commentDraw.forEach((item, key) => {             
             this.drawAll(item, false)    
         })
@@ -2132,17 +2140,23 @@ Page({
     },
 
     goOrBackDraw(e) {
+
+        let commentDraw = this.data.commentDraw;
   
         if (e.currentTarget.dataset.type == "back") {
             if (this.data.commentDraw.length == 0) return;
-            this.data.commentDraw.pop();
+            commentDraw.pop();
             this.drawBackCount++;
         } else {
             if(this.drawBackCount == 0) return;
             let l = this.data.commentDrawTemp.length;
-            this.data.commentDraw.push(this.data.commentDrawTemp[l -  this.drawBackCount]);
+            commentDraw.push(this.data.commentDrawTemp[l -  this.drawBackCount]);
             this.drawBackCount--;
         }
+       
+        this.setData({
+            commentDraw
+        });
         
         this.data.cxtShowBlock.clearRect(0, 0, this.data.firstCanvasWidth, this.data.firstCanvasHeight);
         this.data.cxtShowBlock.draw();

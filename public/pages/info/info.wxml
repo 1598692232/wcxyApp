@@ -252,7 +252,7 @@
                     <image class="time-check" src="./img/time_check.png" wx:if="{{needTime}}"></image>
                     {{currentVideoTime}}
                 </view>
-                <view class="comment-footer-right" bindtap="sendComment">
+                <view class="comment-footer-right" bindtap="sendComment" style="color:{{commentText.length > 0 || commentDraw.length > 0 ? '#117AEA' : ''}}">
                     发送
                 </view>
             </view>
@@ -361,7 +361,7 @@
         <scroll-view class="version-p-list" scroll-y style="max-height:210px;overflow:auto;">
           <view class="version-p-li" wx:for="{{statusList}}" wx:key="index" bindtap="handleChangeStatus"  data-index="{{index}}" 
           style="border-bottom:{{index == statusList.length -1 ? '0' : ''}}">
-            <view class="version-name status-name">{{item}} </view>
+            <view class="version-name status-name" style="color: {{ statusActive == index ? '#1144d5' : ''}}">{{item}} </view>
           </view>
         </scroll-view>
     </view>
