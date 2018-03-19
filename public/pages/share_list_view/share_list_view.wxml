@@ -24,7 +24,7 @@
         </view>
     </view>
     <view class="share-list-view-video">
-        <view class="share-list-video" wx:for="{{shareList}}" wx:key="{{index}}">
+        <view class="share-list-video" wx:for="{{shareList}}" wx:key="{{index}}" style="height:{{videoHeight+100}}px">
             <view class="name">{{item.name}} </view>
             <block wx:if="{{item.file_type == 'video'}}">
                 <video src="{{item.url}}" poster="{{item.cover_img[0]}}"
@@ -35,7 +35,7 @@
             <block wx:if="{{item.file_type == 'audio'}}">
                 <audio src="{{item.url}}"
                 controls loop style="display: none" id="audio{{item.id}}"></audio>
-                <view class="info-audio">
+                <view class="info-audio" style="width:{{videoWidth}}px;height:{{videoHeight}}px;">
                     <view class="info-audio-icon">
                         <image src="./img/mp3.png" mode="aspectFit"></image>
                     </view>
@@ -54,11 +54,11 @@
            
             <block wx:if="{{item.file_type != 'image' && item.file_type != 'video' && item.file_type != 'audio' }}">
                 <block wx:if="{{item.ext == 'zip' || item.ext == 'dmg' || item.ext == 'rar'}}">
-                    <view class="info-ext"> 
+                    <view class="info-ext" style="width:{{videoWidth}}px;height:{{videoHeight}}px;"> 
                         <image src="./img/compress.png" mode="aspectFit"></image>
                     </view>
                 </block>
-                <view class="info-ext" wx:else>
+                <view class="info-ext" wx:else style="width:{{videoWidth}}px;height:{{videoHeight}}px;">
                     <image src="./img/file.png" mode="aspectFit" class="info-ext-bg"></image>
                     <view class="info-ext-text">{{item.ext}}</view>
                 </view>
