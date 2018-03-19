@@ -1315,11 +1315,11 @@ Page({
             }
         }, 100);
 
-        // setTimeout(() => {
+        setTimeout(() => {
             this.setData({
                 isFocus: false,
             });
-        // }, 1000)
+        }, 800)
  
         // this.data.videoPause = false        
     },
@@ -1499,9 +1499,14 @@ Page({
             self.setData({
                 commentList: list,
                 commentText: '',
-                isFocus: false,
                 commentTextTemp: '',
             })
+
+            setTimeout(() => {
+                this.setData({
+                    isFocus: false,
+                });
+            }, 800)
 
             self.data.commentDraw = []
 
@@ -1514,9 +1519,12 @@ Page({
 
             if (self.data.info.file_type = "audio") {
                 self.audioCtx.play();
-                self.setData({
-                    audioPause: false
-                })
+
+                setTimeout(() => {
+                    self.setData({
+                        isFocus: false,
+                    });
+                }, 800);
             }
         }).then((res) => {
             if (self.data.info.file_type == 'video') {
