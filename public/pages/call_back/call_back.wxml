@@ -42,7 +42,7 @@
 
 	</scroll-view>
 
-	  <view class="push-comment">
+	  <view class="push-comment callback-comment">
 	   <form bindsubmit="sendComment">
 	      <view class="push-comment-input clearfix">
 			  <input placeholder="回复评论..."  cursor-spacing="20" name="commentText" value="{{commentText}}" style="color:#fff"/>

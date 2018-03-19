@@ -592,6 +592,9 @@ Page({
     onUnload() {
         clearInterval(this.data.getTimer)
     },
+    onHide() {
+        clearInterval(this.data.getTimer)
+    },
 
     getCommentList(reqData){
         let self = this
@@ -1669,10 +1672,10 @@ Page({
             })
 
         } else { 
-            wx.navigateTo({
-              url: `/pages/call_back/call_back?commentId=${e.currentTarget.dataset.index}
-              &docId=${this.data.info.id}&projectId=${this.data.project_id}&avatar=${e.currentTarget.dataset.avatar}`
-            })
+            let url = `/pages/call_back/call_back?commentId=${e.currentTarget.dataset.index}
+            &docId=${this.data.info.id}&projectId=${this.data.project_id}&avatar=${e.currentTarget.dataset.avatar}`;
+            console.log(url)
+            wx.navigateTo({ url })
         }
 	 	
 	 },

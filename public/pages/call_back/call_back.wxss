@@ -141,7 +141,7 @@
     display: inline-block;
     width: 100%;
     font-size: 13px;
-    color: #666;
+    color: #fff;
     line-height: 20px;
 }
 .back-zan text{
@@ -167,6 +167,14 @@
 }
 .del-transtion{
    transition: all 0.3s linear
+}
+
+.callback-comment{
+    background: #171d29;
+}
+
+.push-comment-input input{
+    padding: 0 10px;
 }
 
 
