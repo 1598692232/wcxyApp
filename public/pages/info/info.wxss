@@ -366,7 +366,7 @@
     animation: selectAni 0.3s cubic-bezier(0.23, 1, 0.32, 1) 0ms forwards;
 }
 .select-ani-one {
-    transform-origin: 2% -5%;
+    transform-origin: 30% -5%;
 }
 .select-ani-two {
     transform-origin: 30% -5%;

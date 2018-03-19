@@ -406,7 +406,7 @@ Page({
                     ps: data.resolution,
                     visibleStatusText: data.review == 0 ? '审核' :STAUS[data.review],
                     // versionNo: 1,
-                    visibleVersion: 0,
+                    // visibleVersion: 0,
                     username: data.realname,
                     createTime: Util.getCreateTime(data.created_at)
                 }
@@ -447,10 +447,6 @@ Page({
                         })
                     }, 50);
                 }
-
-               
-
-                // console.log(self.data.versions)
 
                 wx.setNavigationBarTitle({ title: data.name })   
             });
@@ -501,20 +497,30 @@ Page({
     },
 
     getVideoInfo(host, reqData, fn) {
+        
         let self = this
         wx.showLoading()
         let reqUrl = 'file/info';
         let params = reqData;
+
         if (self.data.share) {
             reqUrl = 'sharefileinfo';
             params.share_code = wx.getStorageSync('share_code');
         }
 
         Util.ajax(reqUrl, 'get', params).then(json => {
+            let versionNo = 0;
+            json.versions.forEach((item, k) => {
+                if (item.id == json.id) {
+                    versionNo = k ;
+                }
+            });
+
             self.setData({
                 info: json,
+                visibleVersionNo: versionNo
             })
-            console.log(self.data.info)
+
             if (fn != undefined) {
                 fn(json)
             }
@@ -671,7 +677,7 @@ Page({
                 title: '修改成功！',
                 icon: 'success'
             });
-            // console.log(statusList[statusVal[0]], 'ppp')
+
             self.setData({
                 visibleStatusText: reviewText
             });
@@ -682,7 +688,7 @@ Page({
         });
     },
 
-    changeVersion(id) {
+    changeVersion(e) {
         let self = this;
 
         // if (self.data.versionVal[0] == self.data.visibleVersionNo) {
@@ -690,14 +696,19 @@ Page({
         //     return;
         // }
 
+        self.commentGeted = false;
+
         self.setData({
             cavansShow: false
         });
 
+        self.data.doc_id = e.currentTarget.dataset.id;
+       
+
         let store = wx.getStorageSync('app')
 	    let reqData = Object.assign({}, store, {
-            // doc_id: e.currentTarget.dataset.id,
-            doc_id: id,
+            doc_id:  self.data.doc_id,
+            // doc_id: id,
             project_id: this.data.project_id,
             show_completed: 1,
             pre_page: PRE_PAGE,
@@ -735,21 +746,15 @@ Page({
                 }
             })
 
-            let versionNo = 0;
-            data.versions.forEach((item, k) => {
-                if (item.id == data.id) {
-                    versionNo = k ;
-                }
-            });
-
             self.setData({
                 versions: data.versions,
                 ps: data.resolution,
                 // versionNo: e.currentTarget.dataset.index,
                 // versionNo: self.data.versionActive.version_no,
-                visibleVersionNo: versionNo,
+                // visibleVersionNo: versionNo,
                 username: data.realname,
-                createTime: Util.getCreateTime(data.created_at)
+                createTime: Util.getCreateTime(data.created_at),
+                versionActive:data.id
             });
 
             self.toggleSelect(null, false, 'versionSelectShow', 'animationSelect2');
@@ -761,6 +766,7 @@ Page({
                 self.data.videoPause = false           
             }, 300)
             wx.setNavigationBarTitle({ title: data.name })
+
         });
 
         self.setData({
@@ -1786,25 +1792,31 @@ Page({
 
     selectVersionAndP(e) {
         let self = this
-        if (e.currentTarget.dataset.id == 'version-select') {
-            self.setData({
-                versionSelect: true
-            })
-        } else {
-            this.setData({
-                PSelect: true
-            })    
-        }
+       
         
         let $ = wx.createSelectorQuery()
 
         $.select(`#${e.currentTarget.dataset.id}`).boundingClientRect()
         $.selectViewport().scrollOffset()
         $.exec(function(res){
+
             self.setData({
-                arrowX:e.currentTarget.dataset.id == 'version-select' ? 10 : res[0].left + 10,
+                arrowX:e.currentTarget.dataset.id == 'version-select' ?  res[0].left + 10 : 10 ,
                 selectY: res[0].top + 50,
             })     
+
+            setTimeout(() => {
+                if (e.currentTarget.dataset.id == 'version-select') {
+                    self.setData({
+                        versionSelect: true
+                    })
+                } else {
+                    this.setData({
+                        PSelect: true
+                    })    
+                }
+            }, 100)
+           
         })
 
     },
