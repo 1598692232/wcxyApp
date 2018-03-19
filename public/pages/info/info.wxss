@@ -111,7 +111,7 @@
     /*width: 100%;*/
     margin-left: 10px;
     box-sizing: border-box;
-    border-bottom: 1px solid #14161A;
+    /* border-bottom: 1px solid #14161A; */
     padding-bottom: 10px;
 }
 .comment-header{
@@ -184,14 +184,15 @@
     font-size: 13px;
     color: #666;
     line-height: 40px;
-    border-bottom:1px solid #14161a;
+    /* border-bottom:1px solid #14161a; */
     border-top:1px solid #14161a;
 }
 .back-body{
     width: 100%;
     position: relative;
     padding: 10px 0 10px 30px;
-    border-bottom:1px solid rgba(0,0,0,.2);
+    border-top: 1px solid #14161a;
+    /* border-bottom:1px solid rgba(0,0,0,.2); */
 }
 .back-tou{
     position: absolute;
@@ -371,6 +372,9 @@
 }
 .select-ani-two {
     transform-origin: 30% -5%;
+}
+.select-ani-three{
+    transform-origin: 3% -5%;
 }
 @keyframes selectAni{
     0% {

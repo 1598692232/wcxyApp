@@ -96,12 +96,21 @@ Page({
         videoPause: false,
 
 
-        statusList: ['移除标签','审核通过','进行中','待审核','意见搜集完成'],
+        // statusList: [
+        //     {showText:'移除标签', finalText: '审核'},
+        //     {showText:'审核通过', finalText: '审核通过'},
+        //     {showText:'进行中', finalText: '进行中'},
+        //     {showText:'待审核', finalText: '待审核'},
+        //     {showText:'意见搜集完成', finalText: '意见搜集完成'}
+        // ],
+        statusList:['移除标签', '审核通过', '进行中', '待审核', '意见搜集完成'],
         statusVal: [0],
         statusActive: '',
         animationSelect: null,
         statusSelectShow: false,
         visibleStatusText:'审核',
+
+        
 
         // versionsList: [1,2,3],
         versionVal: [0],
@@ -131,6 +140,7 @@ Page({
         drawGoBack: ['back', 'go'],
         videoHeight: 0,
         commentCount: 0,
+        statusSelect: false
     },
 
     statusChange: function(e) {
@@ -796,7 +806,7 @@ Page({
                 versionActive:data.id
             });
 
-            self.toggleSelect(null, false, 'versionSelectShow', 'animationSelect2');
+            // self.toggleSelect(null, false, 'versionSelectShow', 'animationSelect2');
 
             setTimeout(() => {
                 // self.videoCtx.seek(self.data.videoTime)
@@ -1854,9 +1864,12 @@ Page({
                         versionSelect: true
                     })
                 } else {
-                    this.setData({
-                        PSelect: true
-                    })    
+                    self.setData({
+                        statusSelect: true
+                    }) 
+                    // this.setData({
+                    //     PSelect: true
+                    // })    
                 }
             }, 100)
            
@@ -1868,6 +1881,7 @@ Page({
         this.setData({
             PSelect: false,
             versionSelect: false,
+            statusSelect: false
         })
     },
 
@@ -1996,6 +2010,15 @@ Page({
             audioPause: false,
             currentVideoTime: Util.formatVideoTime(currentTime) 
         });
+    },
+
+    handleChangeStatus(e) {
+        let index = e.currentTarget.dataset.index
+        if (index == 0) {
+            this.changeStatus(0, '审核');
+       } else {
+            this.changeStatus(index, this.data.statusList[index]);
+       }
     },
 
     showSelectStatus() {

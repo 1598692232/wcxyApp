@@ -9,7 +9,7 @@ Page({
         callList: [],
         commentIsFocus: false,
         commentText: '',
-        tx: app.data.staticImg.tx,
+        tx: app.data.staticImg.manager,
         zan: app.data.staticImg.zan,
         zanActive: app.data.staticImg.zanActive,
         currentComment: '',

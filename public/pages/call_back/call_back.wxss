@@ -32,10 +32,9 @@
     height: 100%;
 }
 .comment-master-text{
-    /*width: 100%;*/
     margin-left: 10px;
     box-sizing: border-box;
-    border-bottom: 1px solid rgba(0,0,0,.2);
+    /* border-bottom:1px solid #14161a; */
     padding-bottom: 10px;
 }
 .comment-header{
@@ -109,7 +108,8 @@
     width: 100%;
     position: relative;
     padding : 10px 0 10px 30px;
-    border-bottom:1px solid rgba(0,0,0,.2);
+    border-top: 1px solid #14161a;
+    /* border-bottom:1px solid rgba(0,0,0,.2); */
 }
 .back-tou{
     position: absolute;
