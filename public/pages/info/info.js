@@ -20,7 +20,7 @@ Page({
 	    scrollHeight: 0,
 	    commentIsFocus: false,
 	    commentList:[],
-        commentText: '',
+        commentText: '发表评论...',
         commentTextTemp: '',
         tx: app.data.staticImg.tx,
         zan: app.data.staticImg.zan,
@@ -497,7 +497,7 @@ Page({
     },
 
     getVideoInfo(host, reqData, fn) {
-        
+
         let self = this
         wx.showLoading()
         let reqUrl = 'file/info';
@@ -1232,7 +1232,7 @@ Page({
         this.data.commentDraw = [];
         this.setData({
             commentTextTemp: this.data.commentText,
-            commentText: '',
+            commentText: '发表评论...',
             adjustPosition: false
         });
         setTimeout(() => {

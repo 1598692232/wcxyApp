@@ -69,7 +69,7 @@
     box-sizing: border-box;
     /* background: #2a2e3b */
     background: #010101;
-    border-top: 1px solid #30333f;
+    border-top: 1px solid #14161a;
 }
 .list-body-cover{
     position: absolute;
@@ -247,7 +247,7 @@
     padding: 0px 12px 0 0;
     /* border-bottom: 1px solid #2c2b3b; */
     /* background: #21252d */
-    background: #010101;
+    background: #121212;
     /* transition: all 0.3s linear; */
     overflow:hidden;
     z-index: 100;
@@ -1079,7 +1079,8 @@
     padding-left: 30px;
     /* padding-top: 7px; */
     height: 30px;
-    color: #fff;
+    color: #80838e;
+    font-size: 13px;
 }
 
 .comment-block-active{
