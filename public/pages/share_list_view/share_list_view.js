@@ -18,7 +18,6 @@ Page({
         manager: app.data.staticImg.manager,
         review: 0,
         share_all_version: 0,
-        realname: '',
         sharename: ''
     },
     onLoad(options) {
@@ -68,7 +67,8 @@ Page({
                     passwordModal: false,
                     shareName: data.share_name,
                     review: data.review,
-                    share_all_version: data.share_all_version
+                    share_all_version: data.share_all_version,
+                    people: data.share_people
                 });
                 wx.setNavigationBarTitle({title: data.share_name})
             }, res => {
@@ -99,9 +99,6 @@ Page({
         let store = wx.getStorageSync('app')
         let reqData = Object.assign({}, store, {
             project_id: wx.getStorageSync('project_id')
-        })
-        self.setData({
-            realname :store.realname
         })
     },
 
@@ -150,7 +147,8 @@ Page({
                 passwordModal: false,
                 shareName: data.share_name,
                 review: data.review,
-                share_all_version: data.share_all_version
+                share_all_version: data.share_all_version,
+                people: data.share_people
             });
             wx.setNavigationBarTitle({title: data.share_name})
         }, res => {
