@@ -104,7 +104,7 @@
 									<text>{{item.project_file.time}}</text>
 								</view> -->
 								
-								<image class="pl-img" src="{{item.cover_img[0]}}" mode="aspectFill" lazy-load="{{true}}" wx:if="{{item.cover_img.length > 0}}"></image>
+								<image class="pl-img" src="{{item.cover_img[0]}}" mode="aspectFit" lazy-load="{{true}}" wx:if="{{item.cover_img.length > 0}}"></image>
 								<view class="pl-img2" > 
 									<block  wx:if="{{item.file_type == 'audio'}}">
 										<image src="./img/mp3.png"  mode="aspectFit"  alt=""></image>
@@ -165,7 +165,7 @@
 								<!-- <view class="pl-timer">
 									<text>{{item.project_file.time}}</text>
 								</view> -->
-								<image class="pl-img" src="{{item.cover_img[0]}}" mode="aspectFill" lazy-load="{{true}}" wx:if="{{item.cover_img.length > 0}}"></image>
+								<image class="pl-img" src="{{item.cover_img[0]}}" mode="scaleToFill" lazy-load="{{true}}" wx:if="{{item.cover_img.length > 0}}"></image>
 								<view class="pl-img2" > 
 									<block  wx:if="{{item.file_type == 'audio'}}">
 										<image src="./img/mp3.png"  mode="aspectFit"  alt=""></image>

@@ -2029,7 +2029,7 @@ Page({
                 this.setData({
                     adjustPosition: true
                 })
-            }, 100)
+            }, 500)
            
     
             if (this.data.info.file_type == 'video') {
