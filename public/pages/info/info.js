@@ -416,7 +416,7 @@ Page({
                 videoHeight: videoH,
                 firstCanvasWidth: res.windowWidth,
                 firstCanvasHeight: videoH,
-                scrollHeight: res.windowHeight - videoH - 60 - 44,
+                scrollHeight: res.windowHeight - videoH - 60 - 64,
                 commentBodyH: res.windowHeight - videoH - 88,
                 selectWidth: res.windowWidth - 20
             });
