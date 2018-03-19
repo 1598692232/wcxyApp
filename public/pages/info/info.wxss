@@ -687,16 +687,16 @@
     background: #010101;
     padding: 0 52px;
     z-index:1;
-    height:50px;
+    height:45px;
 }
 
 .comment-footer-left{
     position: absolute;
     left: 0;
     top: 0;
-    height: 50px;
+    height: 45px;
     width: 52px;
-    line-height: 50px;
+    line-height: 45px;
     /* text-align: center; */
     color: #fff;
     font-size: 14px;
@@ -706,7 +706,7 @@
 }
 
 .comment-footer-time{
-    height: 50px;
+    height: 45px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -714,7 +714,7 @@
     color: #fff;
     font-size: 14px;
     text-align: center;
-    line-height: 50px;
+    line-height: 45px;
 }
 
 .comment-footer-right{
@@ -730,6 +730,7 @@
     opacity: 0.6;
     box-sizing: border-box;
     padding-right: 12px;
+    color: #117AEA;
 }
 
 .label-color-li{

@@ -134,7 +134,8 @@ Page({
         commentPage: 1,
         adjustPosition: false,
         share: null,
-        drawGoBack: ['back', 'go']
+        drawGoBack: ['back', 'go'],
+        videoHeight: 0
     },
 
     statusChange: function(e) {
@@ -189,8 +190,12 @@ Page({
             self.windowWidth = res.windowWidth;
             self.windowHeight = res.windowHeight;
             self.setData({
-                drawWidth: res.windowWidth
+                drawWidth: res.windowWidth,
+                videoHeight: res.windowWidth * (9 / 16),
+                firstCanvasWidth: res.windowWidth,
+                firstCanvasHeight: res.windowWidth * (9 / 16),
             });
+            console.log(self.data.videoHeight, 'videoHeight');
         })
         
         this.videoCtx = wx.createVideoContext('myVideo');
@@ -218,21 +223,27 @@ Page({
         }
 
 
-        wx.createSelectorQuery().select('#play-body').fields({
-            dataset: true,
-            size: true,
-            scrollOffset: true,
-            properties: ['scrollX', 'scrollY']
-            }, function(res){
-                if (!res) return;
-                self.setData({
-                    firstCanvasWidth: res.width,
-                    firstCanvasHeight: res.height,
-                    doc_id: options.id,
-                    project_id: options.project_id
-                })
-         
-        }).exec()
+        self.setData({
+            doc_id: options.id,
+            project_id: options.project_id
+        })
+
+        // wx.createSelectorQuery().select('#play-body').fields({
+        //     dataset: true,
+        //     size: true,
+        //     scrollOffset: true,
+        //     properties: ['scrollX', 'scrollY']
+        //     }, function(res){
+        //         if (!res) return;
+        //         self.setData({
+        //             // firstCanvasWidth: res.width,
+        //             // firstCanvasHeight: res.height,
+        //             doc_id: options.id,
+        //             project_id: options.project_id
+        //         })
+        // }).exec()
+
+        console.log(self.data.firstCanvasHeight, 'firstCanvasWidth')
 
 
     },
@@ -336,27 +347,27 @@ Page({
        
     },
 
-    setScrollHeight(wh) {
-        let self = this;
-        let topNodes = ['#myVideo', '.send-comment', '.video-info'];
-        let topHeight = 0;
-        topNodes.forEach((item, k) => {
-            wx.createSelectorQuery().select(item).fields({
-                dataset: true,
-                size: true,
-                scrollOffset: true,
-                properties: ['scrollX', 'scrollY']
-            }, function(res){
-                if (!res) return;
-                topHeight += res.height;
-                if (k == topNodes.length - 1) {
-                    self.setData({
-                        scrollHeight: wh - 211 - 60 - 44,
-                    })     
-                }
-            }).exec();
-        });
-    },
+    // setScrollHeight(wh) {
+    //     let self = this;
+    //     let topNodes = ['#myVideo', '.send-comment', '.video-info'];
+    //     let topHeight = 0;
+    //     topNodes.forEach((item, k) => {
+    //         wx.createSelectorQuery().select(item).fields({
+    //             dataset: true,
+    //             size: true,
+    //             scrollOffset: true,
+    //             properties: ['scrollX', 'scrollY']
+    //         }, function(res){
+    //             if (!res) return;
+    //             topHeight += res.height;
+    //             if (k == topNodes.length - 1) {
+    //                 self.setData({
+    //                     scrollHeight: wh - 211 - 60 - 44,
+    //                 })     
+    //             }
+    //         }).exec();
+    //     });
+    // },
 
     infoInit() {
         let self = this
@@ -365,16 +376,44 @@ Page({
             let topHeight = 0;
             // self.setScrollHeight(res.windowHeight);
 
-            self.setData({
-                scrollHeight: res.windowHeight - 211 - 60 - 44,
-                commentBodyH: res.windowHeight - 211
-            })    
+            // wx.createSelectorQuery().select('#').fields({
+            //     dataset: true,
+            //     size: true,
+            //     scrollOffset: true,
+            //     properties: ['scrollX', 'scrollY']
+            // }, function(res){
+            //     if (!res) return;
+            //     topHeight += res.height;
+            //     if (k == topNodes.length - 1) {
+            //         self.setData({
+            //             scrollHeight: wh - self.data.firstCanvasHeight - 60,
+            //         })     
+            //     }
+            // }).exec();
+            if (!res) {
+                wx.showModal({
+                    title: '提示',
+                    content: '未获取到当前设备信息'
+                })
+                return;
+            };
 
             self.setData({
+                isIOS: res.system.indexOf('iOS') > -1 ? true : false
+            });
+            self.windowWidth = res.windowWidth;
+            self.windowHeight = res.windowHeight;
+            let videoH =  res.windowWidth * (9 / 16);
+            self.setData({
                 scrollHeightAll: res.windowHeight,
-                // scrollHeight: res.windowHeight - 345,
+                drawWidth: res.windowWidth,
+                videoHeight: videoH,
+                firstCanvasWidth: res.windowWidth,
+                firstCanvasHeight: videoH,
+                scrollHeight: res.windowHeight - videoH - 60 - 44,
+                commentBodyH: res.windowHeight - videoH - 88,
                 selectWidth: res.windowWidth - 20
-            })
+            });
 
             let store = wx.getStorageSync('app')
 
@@ -592,6 +631,7 @@ Page({
             }
 
             return Util.ajax(reqUrl, 'get', reqData, 1).then(json => {
+                console.log(json, 'json')
                 if (doCommentAjaxing) {
                     this.commentAjaxing = false;
                 }
@@ -1230,6 +1270,10 @@ Page({
     
     commentBlur() {
         this.data.commentDraw = [];
+
+        this.data.cxtShowBlock.clearRect(0, 0, this.data.firstCanvasWidth, this.data.firstCanvasHeight);
+        this.data.cxtShowBlock.draw();
+
         this.setData({
             commentTextTemp: this.data.commentText,
             commentText: '发表评论...',
@@ -2020,7 +2064,7 @@ Page({
 
             this.setData({
                 isFocus: true,
-                textareaH: this.windowHeight- 211 - e.detail.height - 44 -44,
+                textareaH: this.windowHeight- this.data.firstCanvasHeight - e.detail.height - 44 -44,
                 commentText: this.data.commentTextTemp,
                 // adjustPosition: false
             });
