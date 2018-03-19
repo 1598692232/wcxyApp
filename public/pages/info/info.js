@@ -200,7 +200,6 @@ Page({
                 firstCanvasWidth: res.windowWidth,
                 firstCanvasHeight: res.windowWidth * (9 / 16),
             });
-            console.log(self.data.videoHeight, 'videoHeight');
         })
         
         this.videoCtx = wx.createVideoContext('myVideo');
@@ -211,7 +210,7 @@ Page({
         this.data.options = options;
 
         // 隐藏转发
-        wx.hideShareMenu();
+        // wx.hideShareMenu();
 
         let self = this;
         if (options.share) {
@@ -248,23 +247,19 @@ Page({
         //         })
         // }).exec()
 
-        console.log(self.data.firstCanvasHeight, 'firstCanvasWidth')
-
-
     },
 
-    onShow() {
-        let self = this
-        let scene = []
-        let opt = {}
+    onShow() {        
+        let self = this;
+        let scene = [];
+        let opt = {};
+        self.commentAjaxing = false;
+        self.commentGeted = false;
         wx.showLoading()
         wx.setStorage({
             key: 'info_data',
             data: ''
         });
-
-
-     
 
         if (self.data.options.scene) {
             scene = decodeURIComponent(self.data.options.scene).split('=')
@@ -562,7 +557,8 @@ Page({
 
             self.setData({
                 info: json,
-                visibleVersionNo: versionNo
+                visibleVersionNo: versionNo,
+                doc_id: json.id
             })
 
             if (fn != undefined) {
@@ -599,7 +595,7 @@ Page({
 
     getCommentList(reqData){
         let self = this
-      
+
         let intervalGetCommentList = () => {
             self.data.getTimer = setInterval(() => {
                 reqData.pre_page = 5;
@@ -636,7 +632,6 @@ Page({
             }
 
             return Util.ajax(reqUrl, 'get', reqData, 1).then(json => {
-                console.log(json, 'json')
                 if (doCommentAjaxing) {
                     this.commentAjaxing = false;
                 }
@@ -646,7 +641,6 @@ Page({
                 } else {
                     return;
                 }  
-
                 self.setData({
                     commentCount: json.total
                 })
@@ -684,7 +678,6 @@ Page({
                 // })
             })
         }
-
         // 轮询请求评论
         clearInterval(self.data.getTimer);
         intervalGetCommentList();
@@ -803,7 +796,8 @@ Page({
                 // visibleVersionNo: versionNo,
                 username: data.realname,
                 createTime: Util.getCreateTime(data.created_at),
-                versionActive:data.id
+                versionActive:data.id,
+                
             });
 
             // self.toggleSelect(null, false, 'versionSelectShow', 'animationSelect2');
@@ -1649,7 +1643,7 @@ Page({
     //  跳转回复页面
 	 toBackPage(e) {
 	 	// let commentCurrent = JSON.stringify(this.data.commentList[e.currentTarget.dataset.index])
-        let res = wx.getStorageSync('app')
+        let res = wx.getStorageSync('app');
         let self = this
         if (res.token == '') {
             let infoData = {
@@ -1675,28 +1669,35 @@ Page({
             })
 
         } else { 
-
             wx.navigateTo({
               url: `/pages/call_back/call_back?commentId=${e.currentTarget.dataset.index}
-              &docId=${this.data.doc_id}&projectId=${this.data.project_id}&avatar=${e.currentTarget.dataset.avatar}`
+              &docId=${this.data.info.id}&projectId=${this.data.project_id}&avatar=${e.currentTarget.dataset.avatar}`
             })
         }
 	 	
 	 },
 
-    onShareAppMessage () {
-        //  self.data.shareCode = scene[1]
-        let url = '/pages/info/info?id=' + this.data.doc_id + '&project_id=' + this.data.project_id
+    // onShareAppMessage () {
+    //     //  self.data.shareCode = scene[1]
+    //     let url = '/pages/info/info?id=' + this.data.doc_id + '&project_id=' + this.data.project_id
 
-        if (this.data.shareCode ) {
-            url = '/pages/info/info?scene=' + this.data.options.scene
-        }
+    //     if (this.data.shareCode ) {
+    //         url = '/pages/info/info?scene=' + this.data.options.scene
+    //     }
+	//     return {
+	//         title: this.data.info.name,
+	//         path: url,
+	//         imageUrl: this.data.info.cover_img[0]
+	//     }
+    // },
+    
+    onShareAppMessage: function () {
 	    return {
-	        title: this.data.info.name,
-	        path: url,
-	        imageUrl: this.data.info.cover_img[0]
+	        title: '影音制作链接者',
+	        path: '/pages/list/list',
+            imageUrl: './img/xy2.jpg'
 	    }
-	},
+    },
 
     // 删除评论 start
     delTouchStart(e) {

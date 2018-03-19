@@ -23,6 +23,7 @@ Page({
     },
 
    onLoad(options) {
+       console.log(options, 'options')
         let self = this
         wx.showLoading()
         self.setData({
