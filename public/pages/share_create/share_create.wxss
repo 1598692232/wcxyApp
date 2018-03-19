@@ -65,7 +65,7 @@
     height: 58px;
 }
 .btn{
-    border-top: 1px solid #2F3344;    
+    border-top: 1px solid #14161A;    
 }
 .row-wrapper{
     width: 100%;

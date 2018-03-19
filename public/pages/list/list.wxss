@@ -29,8 +29,7 @@
     box-sizing: border-box;
     width: 100%;
     padding: 15px 12px;
-    /* border-bottom: 1px solid #2F3344; */
-    border-bottom: 1px solid rgb(16, 18, 20);
+    border-bottom: 1px solid #14161A;
     display: flex;
 }
 .item-left{

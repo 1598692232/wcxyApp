@@ -36,8 +36,7 @@
 .item{
     box-sizing: border-box;
     width: 100%;
-    /* border-bottom: 1px solid #2F3344; */
-    border-bottom: 1px solid rgb(16, 18, 20);
+    border-bottom: 1px solid #14161A;
     display: flex;
     justify-content: space-between;
     position: relative;
@@ -125,8 +124,7 @@
     text-align: center;
     font-size: 13px;
     color: #FFFFFF;
-    /* border-top: 1px solid #2F3344; */
-    border-bottom: 1px solid rgb(16, 18, 20);
+    border-top: 1px solid #14161A;
 }
 
 
