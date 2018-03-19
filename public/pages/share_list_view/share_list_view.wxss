@@ -93,21 +93,27 @@
 .share-list-video{
     width: 100%;
     height: 310px;
+    /* height: auto; */
     padding-bottom: 12px;
+    border-bottom: 2px solid #545D72;
+}
+.share-list-video:last-child{
+    border-bottom: none;
 }
 .share-list-video .name{
     width: 100%;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    font-size: 14px;
-    color: #9B9B9B;
     line-height: 20px;
     padding: 22px 8px 8px;
+    font-size: 17px;
+    color: #FFFFFF;
+    letter-spacing: -0.29px;
 }
 .share-list-video video{
     width: 100%;
-    height: 210px;
+    /* height: 210px; */
     /* background: #383B4A; */
 }
 .share-list-video .info{
@@ -247,14 +253,14 @@
 .info-pic{
     display: flex;
     width: 100%;
-    height: 211px;
+    /* height: 211px; */
     justify-content: center;
     align-items: center;
     background: #30343f;
     overflow: hidden;
 }
 .info-pic image{
-    height: 100%;
+    /* height: 100%; */
 }
 
 .info-ext{
@@ -264,7 +270,8 @@
     align-items: center;
     width: 100%;
     height: 210px;
-    background: #30343f;
+    /* background: #30343f; */
+    background: #171D29;
 }
 
 .info-ext image{

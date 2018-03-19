@@ -4,6 +4,8 @@ const app = getApp()
 Page({
     data: {
         scrollHeight: 0,
+        videoWidth: 0,
+        videoHeight: 0,
         shareList: [1, 2,3],
         videoPause: false,
         qrCode: null,
@@ -28,8 +30,9 @@ Page({
         Util.getSystemInfo().then(result => {
             self.setData({
                 scrollHeight: result.windowHeight,
-            })
-           
+                videoWidth: Math.round(result.windowWidth),
+                videoHeight: Math.round(result.windowWidth*9/16)
+            })  
         });
 
         if (options.password != undefined) {

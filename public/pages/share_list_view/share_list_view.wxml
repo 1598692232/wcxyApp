@@ -29,6 +29,7 @@
             <block wx:if="{{item.file_type == 'video'}}">
                 <video src="{{item.url}}" poster="{{item.cover_img[0]}}"
                     objectFit="contain" controls bindpause="getVideoTime2"
+                    style="width:{{videoWidth}}px;height:{{videoHeight}}px;"
                 ></video>
             </block>
             <block wx:if="{{item.file_type == 'audio'}}">
@@ -36,7 +37,7 @@
                 controls loop style="display: none" id="audio{{item.id}}"></audio>
                 <view class="info-audio">
                     <view class="info-audio-icon">
-                        <image src="./img/mp3.png" mode="aspectFit" ></image>
+                        <image src="./img/mp3.png" mode="aspectFit"></image>
                     </view>
                     <view class="info-audio-cover" bindtap="playOrPauseAudio" data-id="{{item.id}}">
                         <image src="./img/play2.png" mode="aspectFit" wx:if="{{item.audioPause}}"></image>
@@ -46,7 +47,7 @@
             </block>
             <block wx:if="{{item.file_type == 'image'}}">
                 <view class="info-pic"> 
-                    <image src="{{item.cover_img[0]}}" mode="aspectFill"></image>
+                    <image src="{{item.cover_img[0]}}" mode="aspectFill" style="width:{{videoWidth}}px;height:{{videoHeight}}px;"></image>
                 </view>
             </block>
 
