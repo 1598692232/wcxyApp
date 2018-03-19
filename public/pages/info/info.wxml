@@ -74,6 +74,15 @@
         <!-- 画图控制器 -->
     </block>
 
+    <!-- 
+          <view class="select-version-p" bindtap="selectVersionAndP" id="version-select" data-id="version-select">
+              <image src="./img/bg1.png" mode="scaleToFill"></image>
+              <text>v{{versionNo}}版本</text>
+          </view>
+
+
+     -->
+
 
     <view class="video-info" style="height: 60px;" wx:if="{{!isFocus}}">
         <view class="video-make clearfix" wx:if="{{!isFocus}}">
@@ -81,7 +90,10 @@
                 <view class="video-make-status">{{visibleStatusText}}</view>
                 <view class="video-make-arrow"></view>
             </view>
-            <view class="video-make-li" wx:if="{{share_all_version == 1}}" bindtap="showSelectVersion" data-show="{{true}}" data-field="versionSelectShow" data-animation="animationSelect2">
+            <!-- showSelectVersion -->
+            <view class="video-make-li" wx:if="{{share_all_version == 1}}" bindtap="selectVersionAndP" data-show="{{true}}" data-field="versionSelectShow" data-animation="animationSelect2"
+            id="version-select" data-id="version-select"
+            >
                 <view class="video-make-status">V{{visibleVersionNo + 1}}版本</view>
                 <view class="video-make-arrow"></view>
             </view>
