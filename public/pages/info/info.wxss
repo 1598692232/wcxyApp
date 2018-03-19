@@ -404,6 +404,9 @@
     text-align: center;
     font-size: 15px;
 }
+.status-name{
+    line-height: 30px;
+}
 .video-name{
     text-align: center;
     font-size: 12px;
