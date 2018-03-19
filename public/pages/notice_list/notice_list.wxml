@@ -1,4 +1,4 @@
-<view style="height: 100%;background: #383B4A;"> 
+<view style="height: 100%;"> 
         <scroll-view style="height:{{scrollHeightList}}px;" scroll-y bindscrolltolower="lower" lower-threshold="{{800}}">
            <view class="notice-tips">
              <view class="notice-tips-text">

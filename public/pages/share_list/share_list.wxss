@@ -8,7 +8,7 @@
     display: flex;
     padding: 0 10px;
     position: relative;
-    border-bottom: 1px solid #2F3344;
+    border-bottom: 1px solid #14161A;
 }
 .share-list .pic{
     width: 58px;

@@ -2,7 +2,7 @@
     box-sizing: border-box;
     /* background: #383b4b; */
     /* background: #000; */
-    background:#383B4A;
+    /* background:#383B4A; */
 }
 .list-tabs {
     display: flex;
@@ -29,7 +29,7 @@
     box-sizing: border-box;
     width: 100%;
     padding: 15px 12px;
-    border-bottom: 1px solid #2F3344;
+    border-bottom: 1px solid #14161A;
     display: flex;
 }
 .item-left{
@@ -79,11 +79,11 @@
     width: 100%;
     padding:9px 12px;
     text-align: center;
-    background-color: #383B4A;
+    background-color: #171D29;
 }
 .search-projects-body{
     width:100%;
-    background: #202330;
+    background: #263044;
     border-radius: 100px;
     height: 30px;
     box-sizing: border-box;
@@ -94,9 +94,10 @@
     line-height: 30px;
     height: 30px;
     border-radius: 100px;
-    font-size:12px;
+    font-size:13px;
     box-sizing: border-box;
     text-align:left;
+    color: #ACACAC;
 }
 
 .search-input{
@@ -129,14 +130,16 @@
 }
 .empty-project2{
     font-size: 13px;
-    color: #323546;
     text-align: center;
+    color: #323546;
+    letter-spacing: -0.6px;
 }
 .empty-project2 image{
     display:block;
     width:70px;
     height:75px;
-    margin: 160px auto 14px;
+    margin: 183px auto 6px;
+    opacity: 0.6;
 }
 
 
@@ -145,20 +148,23 @@
     /* border-bottom: 1px solid #202330; */
     text-align: center;
     height: 34px;
-    line-height: 34px;
+    
     font-weight: bold;
-    margin-bottom:4px;
+    background: #263044;
 }
 .swiper-tab-item{
     display: inline-block;
     width: 50%;
-    color: #9B9B9B;
+    height: 34px;
+    line-height: 34px;
+    /* color: #9B9B9B; */
     font-size: 15px;
-    background:#383B4A;
-    border: 1px solid #202330;
+    /* background:#383B4A; */
+    /* border: 1px solid #202330; */
     box-sizing: border-box;
+    color: #FFFFFF;
+    letter-spacing: -0.3px;
 }
 .active{
-    color:#fff;
-    background: #202330;
+    background: #1166EA;
 }

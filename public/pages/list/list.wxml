@@ -1,4 +1,4 @@
-<view style="height: 100%;background: #383B4A;"> 
+<view style="height: 100%;"> 
    <view class="search-projects">
       <view class="search-projects-body" bindtap="searchFocus">
          <view class="search-input" animation="{{animationData}}">
