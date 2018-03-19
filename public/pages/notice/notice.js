@@ -49,7 +49,7 @@ Page({
         //获取当前时间戳  
         var timestamp = Date.parse(new Date());  
         timestamp = timestamp / 1000;  
-        console.log("当前时间戳为：" + timestamp);
+        // console.log("当前时间戳为：" + timestamp);
 
         // 获得最小的
         // var sumData22 = wx.getStorageSync(store.login_id.toString())

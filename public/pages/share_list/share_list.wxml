@@ -16,7 +16,7 @@
                     包含<text>{{item.number}}</text>个文件
                 </view>
             </view>
-            <view wx:if="{{!hasMoreData}}" style="font-size:12px;line-height: 28px;color: #9B9B9B;text-align:center;">已加载完全部数据</view>
+            <!-- <view wx:if="{{!hasMoreData}}" style="font-size:12px;line-height: 28px;color: #9B9B9B;text-align:center;">已加载完全部数据</view> -->
         </block>
         <view wx:else class="empty-notice">
             <image src="./img/link.png"></image>

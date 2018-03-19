@@ -10,7 +10,7 @@
                     <view>查看数：<text>{{viewCount}}</text></view>
                     <view>包含 <text>{{fileCount}}</text> 个文件</view>
                     <view>有效期：<text>{{deadline}}</text></view>
-                    <view>分享者：<text>{{realname}}</text></view>
+                    <view>分享者：<text>{{people}}</text></view>
                 </view>
                 <text selectable="true" hidden>密码:{{password}}</text>                
             </view>
@@ -18,7 +18,8 @@
         <view catchtap="copyTBL">
             <button class="share-list-copyBtn" bindtap="toCopyAndTransmit" open-type="share" data-password="123456789">
                 <image src="./img/share.png"></image>
-                复制密码并转发
+                <text wx:if="{{password}}">复制密码并转发</text>
+                <text wx:else>转发</text>
             </button>
         </view>
     </view>
