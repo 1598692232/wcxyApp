@@ -25,7 +25,7 @@
      
 
         <block wx:if="{{info.file_type == 'audio'}}">
-            <audio src="{{url}}" id="myAudio"
+            <audio src="{{url}}" id="myAudio" bindplay="audioStartPlay"
             controls loop style="display: none" bindtimeupdate="audioUpdate"></audio>
             <view class="info-audio">
                 <view class="info-audio-icon">

@@ -120,7 +120,7 @@ Page({
         visibleVersionNo: 0,
         currentVideoTime: '00:00',
 
-        audioPause: false,
+        audioPause: true,
         audioProgress: 0,
         audioProgressMaxWidth: 0,
         audioProgressNum: 0,
@@ -280,6 +280,12 @@ Page({
             })
             self.infoInit()
         }
+    },
+
+    audioStartPlay(e) {
+        this.setData({
+            audioPause: false,
+        })
     },
 
     enterShareLink(e){
