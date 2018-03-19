@@ -23,8 +23,8 @@
             <block wx:if="{{myProjectList.length > 0}}">
               <view class="item clearfix" wx:for="{{myProjectList}}" wx:key="index" bindtap="toProject" data-id="{{item.id}}" data-name="{{item.name}}" data-type="{{item.type}}">
                 <view class="item-left">
-                  <view wx:if="{{item.src}}">
-                      <img src="{{item.src}}"/>
+                  <view wx:if="{{item.project_img != ''}}">
+                      <image src="{{item.project_img}}" mode="aspectFill"></image>
                   </view>
                   <view wx:else>
                     <view class="item-left-text">{{item.first_name}}</view>
