@@ -13,7 +13,6 @@ const STAUS = {
 
 const PRE_PAGE = 10;
 
-let au = 'http://video2.uxinyue.com/Act-mp3/1f6f3a2140554129a7f1172c09768602/4d4dad12059b518d5bfdadabcdf6344f-bdd71a93b57eb975c8251bb5227d59d1.mp3?OSSAccessKeyId=LTAILWCfmthKUqkk&Expires=1520911637&Signature=Wi3KemVcK2arECDsn4u9J2FmCOA%3D'
 Page({
 
     data: {
@@ -22,7 +21,7 @@ Page({
 	    commentList:[],
         commentText: '发表评论...',
         commentTextTemp: '',
-        tx: app.data.staticImg.tx,
+        tx: app.data.staticImg.manager,
         zan: app.data.staticImg.zan,
         zanActive: app.data.staticImg.zanActive,
         page: 1,
@@ -112,11 +111,6 @@ Page({
         visibleVersionNo: 0,
         currentVideoTime: '00:00',
 
-        poster: 'http://y.gtimg.cn/music/photo_new/T002R300x300M000003rsKF44GyaSk.jpg?max_age=2592000',
-        name: '此时此刻',
-        author: '许巍',
-        src: au,
-
         audioPause: false,
         audioProgress: 0,
         audioProgressMaxWidth: 0,
@@ -135,7 +129,8 @@ Page({
         adjustPosition: false,
         share: null,
         drawGoBack: ['back', 'go'],
-        videoHeight: 0
+        videoHeight: 0,
+        commentCount: 0,
     },
 
     statusChange: function(e) {
@@ -641,6 +636,10 @@ Page({
                 } else {
                     return;
                 }  
+
+                self.setData({
+                    commentCount: json.total
+                })
 
                 let appStore = wx.getStorageSync('app');
                 json.list.map(item => {

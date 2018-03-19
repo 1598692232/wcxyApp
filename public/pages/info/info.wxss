@@ -290,8 +290,8 @@
 }
 
 .sofa image{
-    width: 100px;
-    height: 100px;
+    width: 80px;
+    height: 80px;
     font-size: 13px;
 }
 
@@ -684,7 +684,7 @@
     position: relative;
     width: 100%;
     /* height: 30px; */
-    background: #010101;
+    background: #171d29;
     padding: 0 52px;
     z-index:1;
     height:45px;
@@ -721,9 +721,9 @@
     position: absolute;
     right: 0;
     top: 0;
-    height: 50px;
+    height: 45px;
     width: 52px;
-    line-height: 50px;
+    line-height: 45px;
     text-align: right;
     color: #fff;
     font-size: 14px;
@@ -996,20 +996,21 @@
     left: 0;
     bottom: 0;
     width: 100%;
-    height: 54px;
+    height: 74px;
     /* box-shadow: 0 -1px 5px 1px rgba(0,0,0,0.4); */
     background: #010101;
     overflow: hidden;
     box-sizing: border-box;
-    padding: 12px;
+    padding: 20px 50px 20px 12px;
 }
 
 .info-footer-comment-btn-body{
     position: relative;
-    height:30px;
+    height:34px;
     width: 100%;
     background: #292A2F;
-    border-radius:15px;
+    padding-left: 10px;
+    border-radius:17px;
     box-sizing: border-box;
 }
 .comment-btn-icon{
@@ -1030,7 +1031,7 @@
 .comment-btn-text{
     float: left;
     font-size: 13px;
-    line-height: 30px;
+    line-height: 34px;
     color: #787e8e;
 }
 
@@ -1060,18 +1061,18 @@
     left:0;
     bottom:0;
     width:100%;
-    height:54px;
-    padding:12px;
+    height:74px;
+    padding:20px 50px 20px 12px;
     /* box-shadow:0 -1px 5px 1px rgba(0,0,0,0.4); */
     background: #010101;
     overflow:hidden;
-    box-sizing:border-box;    
+    box-sizing:border-box;  
 }
 .comment-block-body{
     position: relative;
     background: #292A2F;
     width: 100%;
-    height: 30px;
+    height: 34px;
     border-radius:15px;
     box-sizing: border-box;
 }
@@ -1082,11 +1083,12 @@
     /* display: flex;
     justify-content: center;
     align-items: center; */
-    padding-left: 30px;
+    padding-left: 10px;
     /* padding-top: 7px; */
     height: 30px;
     color: #80838e;
     font-size: 13px;
+    box-sizing: border-box;
 }
 
 .comment-block-active{
@@ -1114,6 +1116,20 @@
     height: 200px;
     line-height: 1.5;
     background: #010101;
+}
+
+.comment-comment-count{
+    position: absolute;
+    right: 10px;
+    top: 20px;
+    height: 34px;
+    width: 34px;
+    background: #292A2F;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 34px;
+    color: #9b9b9b;
+    font-size: 12px;
 }
 
 
