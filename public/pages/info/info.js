@@ -19,7 +19,7 @@ Page({
 	    scrollHeight: 0,
 	    commentIsFocus: false,
 	    commentList:[],
-        commentText: '发表评论...',
+        commentText: '',
         commentTextTemp: '',
         tx: app.data.staticImg.manager,
         zan: app.data.staticImg.zan,
@@ -416,7 +416,7 @@ Page({
                 videoHeight: videoH,
                 firstCanvasWidth: res.windowWidth,
                 firstCanvasHeight: videoH,
-                scrollHeight: res.windowHeight - videoH - 60 - 64,
+                scrollHeight: res.windowHeight - videoH - 60 - 74,
                 commentBodyH: res.windowHeight - videoH - 88,
                 selectWidth: res.windowWidth - 20
             });
@@ -1299,7 +1299,7 @@ Page({
 
         this.setData({
             commentTextTemp: this.data.commentText,
-            commentText: '发表评论...',
+            commentText: '',
             adjustPosition: false
         });
         setTimeout(() => {
@@ -1655,6 +1655,15 @@ Page({
 
     getVideoTime2(e) {
         this.data.videoPause = true;
+        this.setData({
+            isFocus: true
+        });
+
+        setTimeout(() => {
+            this.setData({
+                adjustPosition: true
+            })
+        }, 500)
         // let ms = new Date().getMilliseconds() / 1000;
         // this.data.videoTime = this.data.videoTime + ms; 
         // console.log(this.data.videoTime , 'this.data.videoTime ')
