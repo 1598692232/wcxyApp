@@ -2022,14 +2022,14 @@ Page({
                 isFocus: true,
                 textareaH: this.windowHeight- 211 - e.detail.height - 44 -44,
                 commentText: this.data.commentTextTemp,
-                adjustPosition: false
+                // adjustPosition: false
             });
            
-            // setTimeout(() => {
-            //     this.setData({
-            //         adjustPosition: true
-            //     })
-            // })
+            setTimeout(() => {
+                this.setData({
+                    adjustPosition: true
+                })
+            }, 100)
            
     
             if (this.data.info.file_type == 'video') {
