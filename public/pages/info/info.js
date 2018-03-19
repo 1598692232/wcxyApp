@@ -1291,8 +1291,11 @@ Page({
     commentBlur() {
         this.data.commentDraw = [];
 
-        this.data.cxtShowBlock.clearRect(0, 0, this.data.firstCanvasWidth, this.data.firstCanvasHeight);
-        this.data.cxtShowBlock.draw();
+        if (this.data.cxtShowBlock) {
+            this.data.cxtShowBlock.clearRect(0, 0, this.data.firstCanvasWidth, this.data.firstCanvasHeight);
+            this.data.cxtShowBlock.draw();
+        }
+     
 
         this.setData({
             commentTextTemp: this.data.commentText,
@@ -1688,7 +1691,7 @@ Page({
         } else { 
             let url = `/pages/call_back/call_back?commentId=${e.currentTarget.dataset.index}
             &docId=${this.data.info.id}&projectId=${this.data.project_id}&avatar=${e.currentTarget.dataset.avatar}`;
-            console.log(url)
+            // console.log(url)
             wx.navigateTo({ url })
         }
 	 	
