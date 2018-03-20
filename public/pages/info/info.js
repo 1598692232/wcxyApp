@@ -1247,7 +1247,7 @@ Page({
                 self.videoCtx.pause()
                 let ct1 = new Date().getTime();
                 let ms = ct1 - self.data.videoCurrentTimeInt;
-                self.data.focusTime = self.data.videoTime + parseInt(ms) / 1000 - 0.5;
+                self.data.focusTime = self.data.videoTime + parseInt(ms) / 1000 - 1.5;
                 self.videoCtx.seek(self.data.focusTime)
                 self.data.videoPause = true
             }, 500)
