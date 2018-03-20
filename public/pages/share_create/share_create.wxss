@@ -200,3 +200,11 @@
     z-index: 1;
     font-size: 12px;
 }
+.from-info{
+    width: 20%;
+    float:right;
+    text-align: right
+}
+.from-info-parent{
+    display: block
+}

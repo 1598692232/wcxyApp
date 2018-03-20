@@ -2034,13 +2034,16 @@ Page({
         if (this.data.audioPause) {
             this.audioCtx.play();
             this.setData({
-                audioPause: false
+                audioPause: false,
+                isFocus: false
             });
         } else {
             this.audioCtx.pause();
             this.setData({
-                audioPause: true
+                audioPause: true,
+                isFocus: true
             });
+            this.data.focusTime = this.data.audioProgress * this.data.audioTime;
         }
     },
 
@@ -2243,7 +2246,6 @@ Page({
     },
 
     createShare(){
-        console.log(this.data.info, 'this.data.info')
         wx.setStorage({
             key: 'share_file',
             data: [this.data.info]
