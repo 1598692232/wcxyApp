@@ -220,11 +220,19 @@ Page({
                     let reqData = Object.assign({}, {token: store.token},{login_id:store.login_id})
                     reqData.notice_ids = self.data.noticeListInfo.map(v=>v.id).toString()
                     Util.ajax('notices', 'delete',reqData).then(data => {
+                        
+                        
                     }, res => {
-                        self.initList() 
+                        // self.onShow() 
+                        self.setData({
+                            noticeListInfo: []
+                        })
+                        console.log(self.data.noticeListInfo,'noticeListInfo')
                         wx.showToast({
                             title: '清空成功'
-                        })                     
+                        }) 
+                        // console.log(res,'res')    
+                        wx.navigateBack()               
                     })
                 } else if (res.cancel) {
                     console.log('用户点击取消')
