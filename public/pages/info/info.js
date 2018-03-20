@@ -737,8 +737,10 @@ Page({
                 statusActive: review
             });
         }, () => {
-            wx.showToast({
-                title: '修改失败！'
+            wx.showModal({
+                title: '提示',
+                content: '修改失败！',
+                showCancel: false
             });
         });
     },
@@ -1292,7 +1294,7 @@ Page({
     
     commentBlur() {
         this.data.commentDraw = [];
-
+        this.commentClick = false
         if (this.data.cxtShowBlock) {
             this.data.cxtShowBlock.clearRect(0, 0, this.data.firstCanvasWidth, this.data.firstCanvasHeight);
             this.data.cxtShowBlock.draw();
@@ -1335,6 +1337,7 @@ Page({
 	// 发送评论
     sendComment(e) {
         let self = this
+        this.commentClick = false
         let res = wx.getStorageSync('app')
         let pids = wx.getStorageSync('project_ids')
         
@@ -1625,7 +1628,8 @@ Page({
      },
      
      toAudioPostion(e) {
-        let self = this
+        let self = this;
+        this.commentClick = true
         if (e.currentTarget.dataset.time < 0 ) return;
         // this.audioCtx.pause();
         this.setData({
