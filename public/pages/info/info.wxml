@@ -89,7 +89,7 @@
             <!-- showSelectStatus -->
             <view class="video-make-li" wx:if="{{review == 1}}" bindtap="selectVersionAndP" data-show="{{true}}" data-field="statusSelectShow" data-animation="animationSelect"
             id="status-select" data-id="status-select">
-                <view class="video-make-status">{{visibleStatusText}}</view>
+                <view class="video-make-status" style="color: {{statusActive == 0 ? '#fff' : statusColors[statusActive]}}">{{visibleStatusText}}</view>
                 <view class="video-make-arrow"></view>
             </view>
             <!-- showSelectVersion -->
