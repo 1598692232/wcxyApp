@@ -256,6 +256,7 @@ Page({
         let opt = {};
         self.commentAjaxing = false;
         self.commentGeted = false;
+        self.commentClick = false;
         wx.showLoading()
         wx.setStorage({
             key: 'info_data',
@@ -1548,11 +1549,13 @@ Page({
 	 toVideoPosition(e) {
         let self = this
         if (e.currentTarget.dataset.time < 0 ) return;
+        this.commentClick = true
 
         this.setData({
             cavansShow: true,
             commentActiveIndex: e.currentTarget.dataset.id
         })
+      
         setTimeout(() => {
 
             let context = wx.createCanvasContext('secondCanvas')
@@ -1656,9 +1659,12 @@ Page({
 
     getVideoTime2(e) {
         this.data.videoPause = true;
-        this.setData({
-            isFocus: true
-        });
+        if (!this.commentClick) {
+            this.setData({
+                isFocus: true
+            });
+        }
+       
 
         setTimeout(() => {
             this.setData({
@@ -1671,6 +1677,7 @@ Page({
     },
 
     listenerPlay(e) {
+        this.commentClick = false;
         this.ms = new Date().getTime();
         //开始播放时记录当前时间戳
         if (this.data.videoCurrentTimeInt == 0) {
