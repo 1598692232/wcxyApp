@@ -6,6 +6,7 @@ Page({
         scrollHeight: 0,
         videoWidth: 0,
         videoHeight: 0,
+        videoBoxHeight: 0,
         shareList: [1, 2,3],
         videoPause: false,
         qrCode: null,
@@ -20,18 +21,16 @@ Page({
         manager: app.data.staticImg.manager,
         review: 0,
         share_all_version: 0,
-        sharename: ''
+        pc_link:''
     },
     onLoad(options) {
         let self = this;
-        self.setData({
-            sharename: options.name
-        })
         Util.getSystemInfo().then(result => {
             self.setData({
                 scrollHeight: result.windowHeight,
-                videoWidth: Math.round(result.windowWidth),
-                videoHeight: Math.round(result.windowWidth*9/16)
+                videoWidth: Math.round(result.windowWidth)-28,
+                videoHeight: Math.round(result.windowWidth*9/16),
+                videoBoxHeight: Math.round(result.windowWidth*9/16)+60
             })  
         });
 
@@ -55,6 +54,7 @@ Page({
             })
             Util.ajax('sharefilelist', 'get', {share_code: scene[1]}).then(data => {
                 data.list.forEach(item => {
+                    item.comment_count = item.comment_count>99?99:item.comment_count
                     item.create_at_text = Util.getCreateTime(item.create_at)
                     if (item.file_type == "audio") {
                         item.audioPause = true
@@ -71,7 +71,8 @@ Page({
                     shareName: data.share_name,
                     review: data.review,
                     share_all_version: data.share_all_version,
-                    people: data.share_people
+                    people: data.share_people,
+                    pc_link: data.pc_link
                 });
                 wx.setNavigationBarTitle({title: data.share_name})
             }, res => {
@@ -82,7 +83,7 @@ Page({
                     wx.getClipboardData({
                         success: function(res){
                             if(res.data.toString().length>4){
-                                var data2 = res.data.slice(3)     
+                                var data2 = res.data.slice(-4)     
                             }else{
                                 var data2 = res.data
                             }
@@ -151,7 +152,8 @@ Page({
                 shareName: data.share_name,
                 review: data.review,
                 share_all_version: data.share_all_version,
-                people: data.share_people
+                people: data.share_people,
+                pc_link: data.pc_link
             });
             wx.setNavigationBarTitle({title: data.share_name})
         }, res => {
@@ -221,7 +223,7 @@ Page({
     copyTBL:function(e){  
         var self=this;
         wx.setClipboardData({
-            data: '密码:' + self.data.password,
+            data: '链接:' + self.data.pc_link +"\n"+ '密码:' + self.data.password,
             success: function(res) {
             // self.setData({copyTip:true}),  
                 // wx.showModal({
