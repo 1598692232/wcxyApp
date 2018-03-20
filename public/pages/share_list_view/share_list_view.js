@@ -8,7 +8,6 @@ Page({
         videoHeight: 0,
         videoBoxHeight: 0,
         shareList: [1, 2,3],
-        videoPause: false,
         qrCode: null,
         projectId: null,
         deadline: null,
@@ -21,7 +20,8 @@ Page({
         manager: app.data.staticImg.manager,
         review: 0,
         share_all_version: 0,
-        pc_link:''
+        pc_link:'',
+        currentPlayId: null
     },
     onLoad(options) {
         let self = this;
@@ -169,11 +169,31 @@ Page({
         });
     },
     //视频播放
-    listenerPlay(e) {
-        this.data.videoPause = false
-    },
-    getVideoTime2(e) {
-        this.data.videoPause = true
+    changeCurrentPlayId(e) {
+        this.data.currentPlayId = e.currentTarget.dataset.id;
+        let type = e.currentTarget.dataset.type;
+        let shareList = this.data.shareList;
+
+        if (type == 'video') {
+            shareList.forEach((item, key) => {
+                if (item.file_type == 'audio') {
+                    item.audioPause = true
+                }
+            });
+            this.setData({shareList})
+        }
+
+        this.data.shareList.forEach((item, key) => {
+            if (item.file_type == 'video' && item.id != this.data.currentPlayId) {
+                let videoCtx = wx.createVideoContext('media' + item.id);
+                videoCtx.pause();
+            }
+
+            if (item.file_type == 'audio' && item.id != this.data.currentPlayId) {
+                let audioCtx = wx.createAudioContext('media' + item.id);
+                audioCtx.pause();
+            }
+        })
     },
     //点击微信图标放大
     toBigWXLogo(e) {
@@ -271,10 +291,10 @@ Page({
 
         let currentAudio = this.data.shareList.filter(item => item.id == id)[0];
         if (!currentAudio.audioCtx) {
-            currentAudio.audioCtx = wx.createAudioContext('audio' + id);
+            currentAudio.audioCtx = wx.createAudioContext('media' + id);
         }
         
-        currentAudio.audioCtx = wx.createAudioContext('audio' + id);
+        currentAudio.audioCtx = wx.createAudioContext('media' + id);
         if (currentAudio.audioPause) {
             currentAudio.audioCtx.play()
         } else {

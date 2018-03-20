@@ -28,15 +28,15 @@
             
             <block wx:if="{{item.file_type == 'video'}}">
                 <view class="list" style="width:{{videoWidth}}px;height:{{videoHeight}}px;overflow:hidden;">
-                    <video src="{{item.url}}" poster="{{item.cover_img[0]}}"
-                    objectFit="contain" controls bindpause="getVideoTime2" 
+                    <video src="{{item.url}}" poster="{{item.cover_img[0]}}" data-id="{{item.id}}" id="media{{item.id}}"
+                    objectFit="contain" controls bindplay="changeCurrentPlayId" data-type="{{item.file_type}}"
                     style="width:{{videoWidth}}px;height:{{videoHeight}}px;"
                     ></video>
                 </view>
             </block>
             <block wx:if="{{item.file_type == 'audio'}}">
-                <audio src="{{item.url}}"
-                controls loop style="display: none" id="audio{{item.id}}"></audio>
+                <audio src="{{item.url}}"  data-id="{{item.id}}" bindplay="changeCurrentPlayId" data-type="{{item.file_type}}"
+                controls loop style="display: none" id="media{{item.id}}"></audio>
                 <view class="info-audio list" style="width:{{videoWidth}}px;height:{{videoHeight}}px;">
                     <view class="info-audio-icon">
                         <image src="./img/mp3.png" mode="aspectFit"></image>

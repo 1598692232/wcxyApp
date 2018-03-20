@@ -1575,9 +1575,9 @@ Page({
 
         if (e.currentTarget.dataset.time < 0 ) return;
         this.commentClick = true
-        
-        this.videoCtx.seek(e.currentTarget.dataset.time);
         this.videoCtx.pause();
+        this.videoCtx.seek(e.currentTarget.dataset.time);
+      
 
         this.setData({
             cavansShow: true,
@@ -1696,10 +1696,8 @@ Page({
             this.setData({
                 isFocus: true
             });
+            this.commentFocus()
         }
-
-        this.commentFocus()
-       
 
         setTimeout(() => {
             this.setData({
