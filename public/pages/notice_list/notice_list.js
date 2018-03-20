@@ -17,7 +17,8 @@ Page({
         title: '',
         page: 1,
         pageSize: 10,
-        hasMoreData: true
+        hasMoreData: true,
+        isDelAll: false
     },
 
     onLoad(options) {
@@ -221,18 +222,21 @@ Page({
                     reqData.notice_ids = self.data.noticeListInfo.map(v=>v.id).toString()
                     Util.ajax('notices', 'delete',reqData).then(data => {
                         
-                        
                     }, res => {
                         // self.onShow() 
                         self.setData({
-                            noticeListInfo: []
+                            noticeListInfo: [],
+                            isDelAll: true
                         })
-                        console.log(self.data.noticeListInfo,'noticeListInfo')
                         wx.showToast({
-                            title: '清空成功'
-                        }) 
-                        // console.log(res,'res')    
-                        wx.navigateBack()               
+                            title: '清空成功',
+                            success: function(res) {
+                                // wx.switchTab({
+                                //     url: '/pages/notice/notice?isDelAll='+ self.data.isDelAll
+                                // }) 
+                                wx.navigateBack()                                
+                            }
+                        })     
                     })
                 } else if (res.cancel) {
                     console.log('用户点击取消')
