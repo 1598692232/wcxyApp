@@ -31,6 +31,9 @@ Page({
             })
         } else {
             let self = this
+            self.setData({
+                noticeList: []
+            })
             self.initList()
         }
         

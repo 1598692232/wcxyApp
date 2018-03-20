@@ -37,7 +37,7 @@ Page({
         let dateTime1 = obj1.dateTime;
         let timestr = dateTimeArray1[0][dateTime1[0]] + '-' + dateTimeArray1[1][dateTime1[1]] + '-' + dateTimeArray1[2][dateTime1[2]] + ' ' + dateTimeArray1[3][dateTime1[3]] + ':' + dateTimeArray1[4][dateTime1[4]];
         let timeInt = (new Date(Date.parse(timestr.replace(/-/g,"/")))).getTime() / 1000;
-console.log(wx.getStorageSync('share_file'), 'share_file')
+
         this.setData({
             dateTimeArray1: obj1.dateTimeArray,
             dateTime1: obj1.dateTime,
@@ -146,7 +146,8 @@ console.log(wx.getStorageSync('share_file'), 'share_file')
             show_all_version: this.data.showAllVersions ? 1 : 0,
             download: this.data.enableDownloading ? 1 : 0,
             switch_password: this.data.requirePassword ? 1: 0,
-            deadline: this.data.deadline ? this.data.shareTimelimit : this.data.deadline
+            deadline: this.data.deadline ? this.data.shareTimelimit : this.data.deadline,
+            file_type: 0
         }
         
         params = Object.assign({}, wx.getStorageSync('app'), params);

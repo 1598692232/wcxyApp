@@ -24,6 +24,7 @@ Page({
         tx: app.data.staticImg.manager,
         zan: app.data.staticImg.zan,
         zanActive: app.data.staticImg.zanActive,
+        shareCreateImg: app.data.staticImg.share,
         page: 1,
         videoTime: 0,
         focusTime: 0,

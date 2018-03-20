@@ -20,6 +20,10 @@
                 </cover-view>
     
                 <cover-view class="cover-focus" wx:if="{{isFocus}}" bindtap="commentBlur"></cover-view>  
+
+                <cover-view class="info-share" bindtap="createShare" wx:if="{{!share && !isFocus}}" >
+                    <cover-image src="./img/share.png" mode="aspectFit" ></cover-image>
+                </cover-view>
             </video>
         </block>
      
@@ -55,6 +59,8 @@
             <image src="{{info.cover_img[0]}}" mode="aspectFit"></image>
         </view>
     </view>
+
+
 
     <block wx:if="{{info.file_type == 'video'}}">
     <!--  wx:if="{{isFocus || cavansShow}}" -->
@@ -382,9 +388,7 @@
     </view> -->
 </view>
 
-<view class="info-share" bindtap="createShare" wx:if="{{!share && !isFocus}}">
-    <image src="./img/share.png" mode="aspectFit" ></image>
-</view>
+
 
 
 
