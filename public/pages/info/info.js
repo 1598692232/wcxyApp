@@ -142,7 +142,8 @@ Page({
         drawGoBack: ['back', 'go'],
         videoHeight: 0,
         commentCount: 0,
-        statusSelect: false
+        statusSelect: false,
+        loading: true
     },
 
     statusChange: function(e) {
@@ -210,7 +211,7 @@ Page({
 
     onLoad(options) {
         this.data.options = options;
-
+        // self.shareClick = false;
         // 隐藏转发
         // wx.hideShareMenu();
 
@@ -251,6 +252,12 @@ Page({
 
     },
 
+    onHide() {
+        this.setData({
+            isFocus: false //处理分享回退之后的评论框出来的bug
+        })
+    },
+
     onShow() {        
         let self = this;
         let scene = [];
@@ -258,6 +265,11 @@ Page({
         self.commentAjaxing = false;
         self.commentGeted = false;
         self.commentClick = false;
+        self.setData({
+            isFocus: false,
+            loading: true
+        })
+
         wx.showLoading()
         wx.setStorage({
             key: 'info_data',
@@ -433,6 +445,10 @@ Page({
             })
 
             self.getVideoInfo(store.host, reqData, (data) => {
+                self.setData({
+                    loading: false
+                })
+            
                 data.versions.forEach((item, index)=> {
                     if (index == 0) {
                         item.activeVersion = true
@@ -457,7 +473,7 @@ Page({
                     // versionNo: 1,
                     // visibleVersion: 0,
                     username: data.realname,
-                    createTime: Util.getCreateTime(data.created_at)
+                    createTime: Util.getCreateTime(data.created_at),
                 }
 
              
@@ -477,6 +493,8 @@ Page({
                         needTime: false
                     })
                 }
+
+
 
                 self.setData(info);
                 if(data.file_type == 'audio') {
@@ -1234,8 +1252,8 @@ Page({
         });
 
         let handlePauseVideoTime = () => {
-            self.videoCtx.play()
-            setTimeout(() => {
+            // self.videoCtx.play()
+            // setTimeout(() => {
                 // self.videoCtx.pause();
                 // let ct = new Date().getTime();
                 // let vt1 = self.data.videoTime;
@@ -1250,10 +1268,11 @@ Page({
                 self.videoCtx.pause()
                 let ct1 = new Date().getTime();
                 let ms = ct1 - self.data.videoCurrentTimeInt;
-                self.data.focusTime = self.data.videoTime + parseInt(ms) / 1000 - 1.5;
+                // - 0.5
+                self.data.focusTime = self.data.videoTime + parseInt(ms) / 1000 ;
                 self.videoCtx.seek(self.data.focusTime)
                 self.data.videoPause = true
-            }, 500)
+            // }, 500)
         }
 
         // setTimeout(() => {
@@ -1272,6 +1291,7 @@ Page({
                 let ms = ct1 - self.data.videoCurrentTimeInt;
                 self.videoCtx.pause();
                 self.data.focusTime =  self.data.videoTime + parseInt(ms) / 1000;
+                // console.log(self.data.videoTime, self.data.focusTime, parseInt(ms), 9999)
                 self.data.videoPause = true  
             // }, 100)
            
@@ -1670,6 +1690,8 @@ Page({
                 isFocus: true
             });
         }
+
+        this.commentFocus()
        
 
         setTimeout(() => {
@@ -1677,6 +1699,7 @@ Page({
                 adjustPosition: true
             })
         }, 500)
+        
         // let ms = new Date().getMilliseconds() / 1000;
         // this.data.videoTime = this.data.videoTime + ms; 
         // console.log(this.data.videoTime , 'this.data.videoTime ')
@@ -1690,6 +1713,9 @@ Page({
             this.data.videoCurrentTimeInt = new Date().getTime();
         }
         this.data.videoPause = false
+        this.setData({
+            isFocus: false
+        })
     },
 
     //  跳转回复页面

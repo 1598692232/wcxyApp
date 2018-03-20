@@ -1,5 +1,5 @@
 <!-- scrollHeightAll -->
-<view style="background: #010101">
+<view style="background: #010101" wx:if="{{!loading}}">
 <view class="section tc"  wx:if="{{!passwordModal}}">
     <view style="width: 100%;height:{{videoHeight}}px;position:relative;" id="play-body">
         <block wx:if="{{info.file_type == 'video'}}">
@@ -234,7 +234,7 @@
 
 <!-- {{ isFocus ? 'comment-block-active' : ''}}  -->
 
-    <block wx:if="{{isFocus}}">
+    <block wx:if="{{isFocus && !loading}}">
         <!-- commentBodyH -->
         <view class="info-comment-body" style="height:{{info.file_type == 'video' ? 90 : 45}}px">
                 <!-- <canvas style="width: 100%; height: 300px; position: fixed; top: 211px;left: 0; z-index: 1000;background: rgba(255,255,255,0.5)"
