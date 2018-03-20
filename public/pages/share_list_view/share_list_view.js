@@ -55,6 +55,7 @@ Page({
             self.setData({
                 code: scene[1],
             })
+
             Util.ajax('sharefilelist', 'get', params).then(data => {
                 data.list.forEach(item => {
                     item.comment_count = item.comment_count>99?99:item.comment_count

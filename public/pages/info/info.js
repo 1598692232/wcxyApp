@@ -1548,6 +1548,7 @@ Page({
 	 //跳到指定时间播放
 	 toVideoPosition(e) {
         let self = this
+
         if (e.currentTarget.dataset.time < 0 ) return;
         this.commentClick = true
 
@@ -1583,10 +1584,10 @@ Page({
                 setTimeout(() => {
                     this.data.cxtShowBlock.clearRect(0, 0, this.data.firstCanvasWidth, this.data.firstCanvasHeight)
                     this.data.cxtShowBlock.draw()
-                    
+
                     if (this.data.commentList[e.currentTarget.dataset.index].label != "") {
                         let draw = JSON.parse(this.data.commentList[e.currentTarget.dataset.index].label)
-                        draw.forEach((item, key) => {             
+                        draw.forEach((item, key) => {      
                             this.drawAll(item, true)    
                         })
                         this.data.cxtShowBlock.draw()

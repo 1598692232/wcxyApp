@@ -59,7 +59,7 @@
     <block wx:if="{{info.file_type == 'video'}}">
     <!--  wx:if="{{isFocus || cavansShow}}" -->
     <canvas style="width: 100%; height: {{firstCanvasHeight}}px; position: fixed; top: 0;left: 0;z-index: 100"
-    canvas-id="firstCanvas" id="firstCanvas" wx:if="{{isFocus}}" bindtouchstart="firstCanvasTouchstart"></canvas>
+    canvas-id="firstCanvas" id="firstCanvas" wx:if="{{isFocus || cavansShow}}" bindtouchstart="firstCanvasTouchstart"></canvas>
         <!--  wx:if="{{isFocus}}" -->
         <canvas style="width: 100%; height: {{firstCanvasHeight}}px; position: fixed; top: 0;left: 0;z-index: 200" 
                 id="secondCanvas" canvas-id="secondCanvas"
