@@ -20,16 +20,16 @@
 			"current": -1,
 			"list": []
 		},
-		"game": {
-			"current": -1,
-			"list": []
-		},
 		"plugin": {
 			"current": -1,
 			"list": []
 		},
+		"game": {
+			"current": -1,
+			"list": []
+		},
 		"miniprogram": {
-			"current": 10,
+			"current": -1,
 			"list": [
 				{
 					"id": 0,
