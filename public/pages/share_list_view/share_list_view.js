@@ -222,8 +222,10 @@ Page({
 
     copyTBL:function(e){  
         var self=this;
+        var copypass = self.data.password?'密码:':''
+        var more = self.data.password?"\n":""
         wx.setClipboardData({
-            data: '链接:' + self.data.pc_link +"\n"+ '密码:' + self.data.password,
+            data: '链接:' + self.data.pc_link + more + copypass + self.data.password,
             success: function(res) {
             // self.setData({copyTip:true}),  
                 // wx.showModal({

@@ -29,7 +29,8 @@ Page({
         title: '',
         projectID: 0,
         focus: false,
-        inputValue: ''
+        inputValue: '',
+        isInvite: false
 	},
 
 	onLoad(options) {
@@ -396,13 +397,30 @@ Page({
                 duration: 3000
             })
         }else{
-            Util.ajax('invite', 'post',reqData).then(data => {
-                wx.showToast({
-                    title: '邮件发送成功'
+            if(self.data.isInvite===false){
+                Util.ajax('invite', 'post',reqData).then(data => {
+                    wx.showToast({
+                        title: '邮件发送成功',
+                        icon: 'success'
+                    }) 
+                    self.setData({
+                        isInvite: true
+                    })
+                    let t = setInterval(()=>{
+                        self.setData({
+                            isInvite: false
+                        })
+                        clearInterval(t)
+                    },15000)
+                }, res => {
+                    console.log(res,'res')
                 })
-            }, res => {
-                console.log(res,'res')
-            })
+            }else{
+                wx.showToast({
+                    title: '邮件已经发送',
+                    icon: 'success'
+                })
+            }         
         } 
     }
 
