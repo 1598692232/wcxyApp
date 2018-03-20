@@ -84,7 +84,7 @@
 				data-id="{{item.id}}" data-username="{{item.user_info.realname}}" 
 				data-create-time="{{item.created_time}}" data-type="{{item.type}}" data-cover-img="{{item.cover_img[0]}}" 
 				data-index="{{index}}"  data-selected="item.selected">
-					<view class="pl-img-body">
+					<view class="pl-img-body" style="background: {{item.type == 'folder' ? 'transparent' : ''}}">
 						<block wx:if="{{item.type == 'folder'}}">
 							<view class="pl-img pl-floder">
 								<image  src="./img/floder2.png" mode="aspectFit" lazy-load="{{true}}" ></image>								
@@ -149,7 +149,7 @@
 				data-id="{{item.id}}" data-username="{{item.user_info.realname}}"  data-fileType="{{item.file_type}}"
 				data-create-time="{{item.created_time}}" data-type="{{item.type}}" data-cover-img="{{item.cover_img[0]}}" 
 				data-index="{{index}}">  
-					<view class="pl-img-body">
+					<view class="pl-img-body" style="background: {{item.type == 'folder' ? 'transparent' : ''}}">
 						<block wx:if="{{item.type == 'folder'}}">
 							<view class="pl-img pl-floder">
 								<image  src="./img/floder2.png" mode="aspectFit" lazy-load="{{true}}" ></image>								

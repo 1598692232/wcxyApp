@@ -47,10 +47,11 @@
 .pl-img-body{
 	position: relative;
 	float: left;
-	width:120px;
-	height:92px;
+	width: 120px;
+	height: 92px;
 	border-radius: 4px;
 	overflow: hidden;
+	background: #171d29;
 	/* background: #181d28; */
 	/* background: #30343f; */
 	/* background: #21212d; */
