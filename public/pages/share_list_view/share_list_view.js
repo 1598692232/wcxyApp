@@ -49,10 +49,13 @@ Page({
             this.initList(params);
         } else {
             let scene = decodeURIComponent(options.scene).split('=');
+            let params = wx.getStorageSync('app');
+            delete params.code;
+            params = Object.assign({}, params, {share_code: scene[1]});
             self.setData({
                 code: scene[1],
             })
-            Util.ajax('sharefilelist', 'get', {share_code: scene[1]}).then(data => {
+            Util.ajax('sharefilelist', 'get', params).then(data => {
                 data.list.forEach(item => {
                     item.comment_count = item.comment_count>99?99:item.comment_count
                     item.create_at_text = Util.getCreateTime(item.create_at)
