@@ -1575,6 +1575,9 @@ Page({
 
         if (e.currentTarget.dataset.time < 0 ) return;
         this.commentClick = true
+        
+        this.videoCtx.seek(e.currentTarget.dataset.time);
+        this.videoCtx.pause();
 
         this.setData({
             cavansShow: true,
@@ -1623,14 +1626,17 @@ Page({
         // if (this.data.isFocus) return
 
         // 模拟时间点击
-        let time = e.currentTarget.dataset.time;
-        let timeInt = parseInt(time);
-        let floatTime = time - timeInt + 0.5;
-        this.videoCtx.seek(timeInt);
+        // let time = e.currentTarget.dataset.time;
+        // let timeInt = parseInt(time);
+        // let floatTime = time - timeInt + 0.5;
+     
 
-        setTimeout(() => {
-            this.videoCtx.pause()
-        }, floatTime)
+
+       
+
+        // setTimeout(() => {
+        //     this.videoCtx.pause()
+        // }, floatTime)
  	
        
         // this.data.commentList.map(item => {
@@ -1661,6 +1667,7 @@ Page({
      },
 
      toPosition(e) {
+         console.log(e, 'eee')
         if (this.data.info.file_type == 'video') {
             this.toVideoPosition(e);
         } else if(this.data.info.file_type == 'audio'){

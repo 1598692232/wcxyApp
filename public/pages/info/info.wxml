@@ -125,7 +125,7 @@
           <view class="comment-tou">
             <image src="{{item.avatar}}"></image>
           </view>
-          <view class="comment-master-text" data-time="{{item.media_time}}" data-index="{{index}}" data-id="{{item.id}}"  catchtap="toPosition">
+          <view class="comment-master-text" data-time="{{item.media_time}}" data-index="{{index}}" data-id="{{item.id}}"  bindtap="toPosition">
               <view class="comment-header clearfix">
                   <text class="comment-name" style="color: {{item.nameColor ? item.nameColor : ''}}">{{item.realname}}</text>
                   <text class="comment-timer" style="background: {{commentActiveIndex == item.id ? '#1125e5' : '#535353'}}" wx:if="{{item.media_time >= 0}}">{{item.comment_time}}</text>
