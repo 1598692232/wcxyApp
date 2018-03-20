@@ -13,8 +13,7 @@ Page({
     },
 
     onLoad() {
-        let self = this
-        wx.showLoading()
+        let self = this 
         Util.getSystemInfo().then(res => {
             self.setData({
                 scrollHeight: res.windowHeight,
@@ -34,6 +33,7 @@ Page({
             self.setData({
                 noticeList: []
             })
+            wx.showLoading()
             self.initList()
         }
         

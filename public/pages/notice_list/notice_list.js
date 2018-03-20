@@ -23,7 +23,7 @@ Page({
 
     onLoad(options) {
         let self = this
-        wx.showLoading()
+        
         self.setData({
             title: options.project_name,
             projectId: options.project_id
@@ -38,6 +38,7 @@ Page({
     },
     onShow() {
         let store = wx.getStorageSync('app')
+        wx.showLoading()
         if (store.token == '') {
             wx.navigateTo({
                 url: '/pages/signin/signin'
