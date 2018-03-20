@@ -104,6 +104,7 @@ Page({
         //     {showText:'意见搜集完成', finalText: '意见搜集完成'}
         // ],
         statusList:['移除标签', '审核通过', '进行中', '待审核', '意见搜集完成'],
+        statusColors:['#010101', '#2ae8cb', '#42c0ff', '#ff7f36', '#d3b520'],
         statusVal: [0],
         statusActive: '',
         animationSelect: null,

@@ -361,7 +361,8 @@
         <scroll-view class="version-p-list" scroll-y style="max-height:210px;overflow:auto;">
           <view class="version-p-li" wx:for="{{statusList}}" wx:key="index" bindtap="handleChangeStatus"  data-index="{{index}}" 
           style="border-bottom:{{index == statusList.length -1 ? '0' : ''}}">
-            <view class="version-name status-name" style="color: {{ statusActive == index ? '#1144d5' : ''}}">{{item}} </view>
+          <!--  statusActive == index ? '#1144d5' : '' -->
+            <view class="version-name status-name" style="color: {{statusColors[index]}}">{{item}} </view>
           </view>
         </scroll-view>
     </view>
