@@ -48,6 +48,9 @@ Page({
     },
 
     onShow() {
+        this.setData({
+            focus: false
+        });
         let shareCreated = wx.getStorageSync('share_created');
         if (shareCreated == 1) {
             wx.navigateBack();
