@@ -16,9 +16,14 @@ Page({
         enableDownloading: true,
         requirePassword: true,
         deadline: false,
+        frominfo: false,
     },
     onLoad(options) {
-
+        if (options.frominfo == 1){
+            this.setData({
+                frominfo: true
+            })
+        }
 		let self = this;
         Util.getSystemInfo().then(result => {
             self.setData({

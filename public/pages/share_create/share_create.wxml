@@ -116,7 +116,7 @@
     </view>
 
     <view class="bottom-btn">
-        <view bindtap="toCloseShareList">上一步</view>
+        <view bindtap="toCloseShareList" wx:if="{{!frominfo}}">上一步</view>
         <view bindtap="toShareListView">保存</view>
     </view>
 </view>

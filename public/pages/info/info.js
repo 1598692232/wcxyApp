@@ -2216,7 +2216,7 @@ Page({
             data: [this.data.info]
         });
         wx.navigateTo({
-            url: '/pages/share_create/share_create'
+            url: '/pages/share_create/share_create?frominfo=1'
         })
     }
 
