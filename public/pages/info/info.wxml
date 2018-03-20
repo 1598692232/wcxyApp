@@ -382,6 +382,9 @@
     </view> -->
 </view>
 
+<view class="info-share" bindtap="createShare" wx:if="{{!share && !isFocus}}">
+    <image src="./img/share.png" mode="aspectFit" ></image>
+</view>
 
 
 

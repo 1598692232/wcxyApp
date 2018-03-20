@@ -7,7 +7,7 @@
         <view class="create-share-list-top" style="width: {{(createShareList.length * 100 + 10)}}px">
             <view class="create-share-list" wx:for="{{createShareList}}" wx:key="index">
                 <view class="share-pic">
-                    <block wx:if="{{item.type == 'file'}}">
+                    <block wx:if="{{item.type == 'file' || item.file_type == 'video' || item.file_type == 'audio' || item.file_type == 'image'}}">
                         <block wx:if="{{item.cover_img.length > 0}}">
                             <image src="{{item.cover_img[0]}}" ></image>
                         </block>

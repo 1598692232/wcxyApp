@@ -37,7 +37,7 @@ Page({
         let dateTime1 = obj1.dateTime;
         let timestr = dateTimeArray1[0][dateTime1[0]] + '-' + dateTimeArray1[1][dateTime1[1]] + '-' + dateTimeArray1[2][dateTime1[2]] + ' ' + dateTimeArray1[3][dateTime1[3]] + ':' + dateTimeArray1[4][dateTime1[4]];
         let timeInt = (new Date(Date.parse(timestr.replace(/-/g,"/")))).getTime() / 1000;
-
+console.log(wx.getStorageSync('share_file'), 'share_file')
         this.setData({
             dateTimeArray1: obj1.dateTimeArray,
             dateTime1: obj1.dateTime,

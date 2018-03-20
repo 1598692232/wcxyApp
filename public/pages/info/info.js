@@ -2206,6 +2206,17 @@ Page({
         })
         this.data.cxtShowBlock.draw();
 
+    },
+
+    createShare(){
+        console.log(this.data.info, 'this.data.info')
+        wx.setStorage({
+            key: 'share_file',
+            data: [this.data.info]
+        });
+        wx.navigateTo({
+            url: '/pages/share_create/share_create'
+        })
     }
 
 })
