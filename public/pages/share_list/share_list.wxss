@@ -22,11 +22,26 @@
     justify-content: center;
     align-items: center;
 }
+.share-list .pic .pic-content{
+    width: 58px;
+    height: 44px;
+    border-radius: 4px;
+    background: #1166EA;
+    color: #fff;
+    font-size: 20px;
+    line-height: 44px;
+    text-align: center;
+}
+.share-list .pic .pic-content text{
+    width: 58px;
+    height: 44px;
+    border-radius: 4px;
+    background: #1166EA; 
+}
 .share-list .pic image{
     width: 58px;
     height: 44px;
     border-radius: 4px;
-    background: #000;
 }
 .share-list .info{
     display: flex;

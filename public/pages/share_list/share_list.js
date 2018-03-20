@@ -62,6 +62,7 @@ Page({
                     item.createtime = Util.getCreateTime(item.created_at)
                     item.image = item.share_img
                     item.number = item.files_count
+                    item.firstname = item.name.slice(0,1)
                 })
                 // self.setData({
                 //     shareList: data.list
@@ -108,7 +109,7 @@ Page({
             page: self.data.page,
             pre_page: PRE_PAGE
         })
-        console.log(self.data.page,'self.data.page')
+
         self.getShareList(params);
     },
 })

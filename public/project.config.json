@@ -98,10 +98,11 @@
 					"query": ""
 				},
 				{
-					"id": -1,
+					"id": 10,
 					"name": "share_list_view",
 					"pathName": "pages/share_list_view/share_list_view",
-					"query": "code=af4b5f2642cd894b&password=jvv1"
+					"query": "code=b80d387c5342941a&password=gb0f",
+					"scene": "1011"
 				},
 				{
 					"id": 11,

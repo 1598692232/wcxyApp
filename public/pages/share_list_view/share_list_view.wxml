@@ -5,7 +5,7 @@
                 <image src="{{qrCode}}" data-src="{{qrCode}}" mode="aspectFit"></image>
             </view>
             <view class="list-info">
-                <view class="share-list-name">{{sharename}}</view>
+                <view class="share-list-name">{{shareName}}</view>
                 <view class="share-list-info">
                     <view>查看数：<text>{{viewCount}}</text></view>
                     <view>包含 <text>{{fileCount}}</text> 个文件</view>
@@ -18,24 +18,26 @@
         <view catchtap="copyTBL">
             <button class="share-list-copyBtn" bindtap="toCopyAndTransmit" open-type="share" data-password="123456789">
                 <image src="./img/share.png"></image>
-                <text wx:if="{{password}}">复制密码并转发</text>
-                <text wx:else>转发</text>
+                <text wx:if="{{password}}">复制链接及密码并转发</text>
+                <text wx:else>复制链接并转发</text>
             </button>
         </view>
     </view>
     <view class="share-list-view-video">
-        <view class="share-list-video" wx:for="{{shareList}}" wx:key="{{index}}" style="height:{{videoHeight+100}}px">
-            <view class="name">{{item.name}} </view>
+        <view class="share-list-video" wx:for="{{shareList}}" wx:key="{{index}}" style="height:{{videoBoxHeight}}px">
+            
             <block wx:if="{{item.file_type == 'video'}}">
-                <video src="{{item.url}}" poster="{{item.cover_img[0]}}"
-                    objectFit="contain" controls bindpause="getVideoTime2"
+                <view class="list" style="width:{{videoWidth}}px;height:{{videoHeight}}px;overflow:hidden;">
+                    <video src="{{item.url}}" poster="{{item.cover_img[0]}}"
+                    objectFit="contain" controls bindpause="getVideoTime2" 
                     style="width:{{videoWidth}}px;height:{{videoHeight}}px;"
-                ></video>
+                    ></video>
+                </view>
             </block>
             <block wx:if="{{item.file_type == 'audio'}}">
                 <audio src="{{item.url}}"
                 controls loop style="display: none" id="audio{{item.id}}"></audio>
-                <view class="info-audio" style="width:{{videoWidth}}px;height:{{videoHeight}}px;">
+                <view class="info-audio list" style="width:{{videoWidth}}px;height:{{videoHeight}}px;">
                     <view class="info-audio-icon">
                         <image src="./img/mp3.png" mode="aspectFit"></image>
                     </view>
@@ -46,32 +48,37 @@
                 </view>
             </block>
             <block wx:if="{{item.file_type == 'image'}}">
-                <view class="info-pic"> 
-                    <image src="{{item.cover_img[0]}}" mode="aspectFill" style="width:{{videoWidth}}px;height:{{videoHeight}}px;"></image>
+                <view class="info-pic list" style="width:{{videoWidth}}px;height:{{videoHeight}}px;"> 
+                    <image src="{{item.cover_img[0]}}" mode="aspectFill"></image>
                 </view>
             </block>
-
            
             <block wx:if="{{item.file_type != 'image' && item.file_type != 'video' && item.file_type != 'audio' }}">
                 <block wx:if="{{item.ext == 'zip' || item.ext == 'dmg' || item.ext == 'rar'}}">
-                    <view class="info-ext" style="width:{{videoWidth}}px;height:{{videoHeight}}px;"> 
+                    <view class="info-ext list" style="width:{{videoWidth}}px;height:{{videoHeight}}px;"> 
                         <image src="./img/compress.png" mode="aspectFit"></image>
                     </view>
                 </block>
-                <view class="info-ext" wx:else style="width:{{videoWidth}}px;height:{{videoHeight}}px;">
+                <view class="info-ext list" wx:else style="width:{{videoWidth}}px;height:{{videoHeight}}px;">
                     <image src="./img/file.png" mode="aspectFit" class="info-ext-bg"></image>
                     <view class="info-ext-text">{{item.ext}}</view>
                 </view>
             </block>
         
-            <view class="info">
-                <view class="avatar">
-                    <image src="{{item.user_info.avatar == '' ? manager : item.user_info.avatar}}"></image>
-                    <text>{{item.create_at_text}}</text>
+            <view class="info"  bindtap="toShareInfo" data-name="{{item.name}}" 
+            data-username="{{item.user_info.realname}}" data-id="{{item.id}}"
+            data-filetype="{{item.file_type}}">
+                <view class="info-left">
+                    <view class="avatar">
+                        <image src="{{item.user_info.avatar == '' ? manager : item.user_info.avatar}}"></image>
+                        <!-- <text>{{item.create_at_text}}</text> -->
+                    </view>
+                    <view class="info-name">
+                        <view class="name">{{item.name}} </view>
+                        <view class="count">{{item.visit_count}}次播放</view>
+                    </view>  
                 </view>
-                <view class="comment" bindtap="toShareInfo" data-name="{{item.name}}" 
-                data-username="{{item.user_info.realname}}" data-id="{{item.id}}"
-                data-filetype="{{item.file_type}}">
+                <view class="comment">
                     <image src="./img/comment.png"></image>
                     <text>{{item.comment_count}}</text>
                 </view>

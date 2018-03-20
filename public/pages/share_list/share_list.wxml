@@ -3,7 +3,12 @@
         <block wx:if="{{shareList.length>0}}">
             <view class="share-list" wx:for="{{shareList}}" wx:key="index" data-code="{{item.code}}" data-password="{{item.password}}" data-id="{{item.id}}" bindtap="toShareInfo">
                 <view class="pic">
-                    <image src="{{item.image}}"></image>
+                    <view class="pic-content" wx:if="{{item.image}}">
+                        <image src="{{item.image}}"></image>
+                    </view>
+                    <view class="pic-content" wx:else>
+                        <text>{{item.firstname}}</text>
+                    </view>
                 </view>
                 <view class="info">
                     <view class="share-list-name">{{item.name}}</view>

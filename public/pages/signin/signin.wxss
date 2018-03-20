@@ -76,6 +76,7 @@
 	font-size: 12px;
 	color: #A6A7AD;
 	letter-spacing: 0.86px;
+	width: 80%;
 }
 
 .forget-text{
