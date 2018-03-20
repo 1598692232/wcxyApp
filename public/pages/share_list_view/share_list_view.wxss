@@ -164,9 +164,9 @@
     margin-top: 8px;
 }
 .share-list-video .info .comment image{
-    width: 20px;
-    height: 20px;
-    margin:-3px 5px -2px;
+    width: 16px;
+    height: 16px;
+    margin:0 5px;
 }
 .share-list-video .info .comment text{
     line-height: 20px;

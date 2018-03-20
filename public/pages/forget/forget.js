@@ -59,11 +59,14 @@ Page({
 				content: '重置密码邮件已经发送成功！请进入邮箱点击修改',
 				showCancel: false,
 				success: function(res) {
+					// if (res.confirm) {
+					// 	console.log('用户点击确定')
+					// 	wx.redirectTo({
+					// 		url: '/pages/signin/signin'
+					// 	})		
+					// }
 					if (res.confirm) {
-						console.log('用户点击确定')
-						wx.redirectTo({
-							url: '/pages/signin/signin'
-						})
+						wx.navigateBack()
 					}
 				  }
 			})
