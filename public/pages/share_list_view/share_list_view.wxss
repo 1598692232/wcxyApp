@@ -97,7 +97,7 @@
     padding-bottom: 12px;
     /* border-bottom: 2px solid #545D72; */
     border-bottom: 1px solid #1F2737;
-    min-height: 200px;
+    min-height: 220px;
 }
 .share-list-video:last-child{
     border-bottom: none;

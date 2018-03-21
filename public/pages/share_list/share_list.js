@@ -68,7 +68,6 @@ Page({
                 //     shareList: data.list
                 // })
                 fn(data.list); 
-                wx.hideLoading()
                 
             }, res => {
                 if (doCommentAjaxing) {
@@ -76,6 +75,7 @@ Page({
                 }
             })
         }
+        wx.hideLoading()
         if (this.commentAjaxing || this.commentGeted) { 
             return;
         }
@@ -93,6 +93,7 @@ Page({
                 page: list.length < PRE_PAGE ? self.data.page : ++self.data.page
             })
         });
+        
     },
     toShareInfo(e){
         wx.navigateTo({

@@ -12,7 +12,7 @@
             focus="{{emailFocus}}" bindinput="handleInput" bindfocus="handleFocus" data-name="email" bindblur="handleBlur"/>
             <image class="login-input-clear" src="{{clear}}" catchtap="clearInput" hidden="{{hiddenEmailClear}}" data-name="email"></image>
         </view>
-        <button form-type="submit" class="login-btn" cursor-spacing="20">注册邮件</button>
+        <button form-type="submit" class="login-btn" cursor-spacing="20">立即注册</button>
     </form>
     <view class="xinyue">www.xinyue.io</view>
 </view>

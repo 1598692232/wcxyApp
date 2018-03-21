@@ -30,7 +30,8 @@ Page({
         projectID: 0,
         focus: false,
         inputValue: '',
-        isInvite: false
+        isInvite: false,
+        againInput: false
 	},
 
 	onLoad(options) {
@@ -391,18 +392,28 @@ Page({
         reqData.project_id = self.data.projectID
         reqData.emails = self.data.inputValue
         if(self.isEmail(self.data.inputValue)===false){
-            wx.showToast({
-                title: '邮箱格式不正确',
-                image: './img/error.png',
-                duration: 3000
+            // wx.showToast({
+            //     title: '邮箱格式不正确',
+            //     image: './img/error.png',
+            //     duration: 2000
+            // })
+            wx.showModal({
+                title:'提示',
+                content: '邮箱格式不正确',
+                showCancel: false
             })
         }else{
             if(self.data.isInvite===false){
                 Util.ajax('invite', 'post',reqData).then(data => {
-                    wx.showToast({
-                        title: '邮件发送成功',
-                        icon: 'success'
-                    }) 
+                    // wx.showToast({
+                    //     title: '邮件发送成功',
+                    //     icon: 'success'
+                    // }) 
+                    wx.showModal({
+                        title:'提示',
+                        content: '邮件发送成功',
+                        showCancel: false
+                    })
                     self.setData({
                         isInvite: true
                     })
@@ -413,12 +424,33 @@ Page({
                         clearInterval(t)
                     },15000)
                 }, res => {
-                    console.log(res,'res')
+                    // console.log(res,'res')
+                    // wx.showToast({
+                    //     title: res.data.msg,
+                    //     image: './img/error.png',
+                    //     duration: 2000
+                    // })
+                    wx.showModal({
+                        title:'提示',
+                        content: res.data.msg,
+                        showCancel: false,
+                        success: function(){
+                            self.setData({
+                                focus: true,
+                                againInput: true
+                            })
+                        }
+                    })
                 })
             }else{
-                wx.showToast({
-                    title: '邮件已经发送',
-                    icon: 'success'
+                // wx.showToast({
+                //     title: '邮件已经发送',
+                //     icon: 'success'
+                // })
+                wx.showModal({
+                    title:'提示',
+                    content: '邮件已经发送,请勿频繁操作!',
+                    showCancel: false
                 })
             }         
         } 
