@@ -1253,7 +1253,7 @@ Page({
             cavansShow: false
         });
 
-        self.data.videoPause = true 
+        self.data.videoPause = true;
 
         let ct1 = new Date().getTime();
         let ms = ct1 - self.data.videoCurrentTimeInt;
