@@ -252,11 +252,18 @@ Page({
 
     },
 
-    onHide() {
-        this.setData({
-            isFocus: false //处理分享回退之后的评论框出来的bug
-        })
-    },
+    // onHide() {
+    //     this.setData({
+    //         isFocus: false //处理分享回退之后的评论框出来的bug
+    //     });
+     
+    //     console.log(2222)
+     
+       
+    // },
+    // onUnload() {
+    //     console.log(666)
+    // },
 
     onShow() {        
         let self = this;
@@ -264,7 +271,12 @@ Page({
         let opt = {};
         self.commentAjaxing = false;
         self.commentGeted = false;
-        self.commentClick = false;
+        self.commentClick = true;
+        self.footerClick = false;
+
+        if (this.videoCtx) {
+            this.videoCtx.play();
+        }
         self.setData({
             isFocus: false,
             loading: true
@@ -1219,98 +1231,54 @@ Page({
     },
 
  	// 评论输入框聚焦
-	commentFocus(e) {
+	commentFocus(isNativePause) {
+    
         let self = this;
+        this.data.commentDraw = [];
 
-        // self.setData({
-        //     infoHeight: self.data.scrollHeightAll - e.detail.height - 211
-        // });
+        if (self.data.info.file_type == 'video') {
 
-        let context = wx.createCanvasContext('secondCanvas')
-        let context2 = wx.createCanvasContext('firstCanvas')
+            let context = wx.createCanvasContext('secondCanvas')
+            let context2 = wx.createCanvasContext('firstCanvas')
 
-        self.setData({
-            cxt: context,
-            cxtShowBlock: context2
-        })
-
-        if (self.data.isFocus) {
+            self.setData({
+                cxt: context,
+                cxtShowBlock: context2
+            })
             self.data.cxtShowBlock.clearRect(0, 0, self.data.firstCanvasWidth, self.data.firstCanvasHeight)
             self.data.cxt.clearRect(0, 0, self.data.firstCanvasWidth, self.data.firstCanvasHeight)
             self.data.cxtShowBlock.draw();
             self.data.cxt.draw();
         }
-       
 
         let res = wx.getStorageSync('app')
-        // 延时处理拖动不能获取播放时间的问题
-        // self.videoCtx.play()
+
         self.setData({
-            muted: true,
-            // isFocus: true,
+            // muted: true,
+            isFocus: true,
             cavansShow: false
         });
 
-        let handlePauseVideoTime = () => {
-            // self.videoCtx.play()
-            // setTimeout(() => {
-                // self.videoCtx.pause();
-                // let ct = new Date().getTime();
-                // let vt1 = self.data.videoTime;
-                // let ms = ((ct - this.ms) % 1000) / 1000;
-                // let vt2= self.data.videoTime + ms - 0.25; 
-                // self.data.videoTime = parseInt(vt2) > parseInt(vt1) ? vt1 + 0.5 : vt2;
-                // self.data.focusTime = self.data.videoTime;
-                // console.log(self.data.focusTime, 'self.data.focusTime')
-                // self.videoCtx.seek(self.data.focusTime)
-                // self.data.videoPause = true
-
-                self.videoCtx.pause()
-                let ct1 = new Date().getTime();
-                let ms = ct1 - self.data.videoCurrentTimeInt;
-                // - 0.5
-                self.data.focusTime = self.data.videoTime + parseInt(ms) / 1000 ;
-                self.videoCtx.seek(self.data.focusTime)
-                self.data.videoPause = true
-            // }, 500)
-        }
-
-        // setTimeout(() => {
-        //     self.initDrawControlPosiotion()
-        // }, 100)
-        
-        // self.setData({
-        //     muted: false
-        // })
-
-        if (self.data.videoPause) {
-            handlePauseVideoTime()
-        } else {
-            // setTimeout(() => {
-                let ct1 = new Date().getTime();
-                let ms = ct1 - self.data.videoCurrentTimeInt;
-                self.videoCtx.pause();
-                self.data.focusTime =  self.data.videoTime + parseInt(ms) / 1000;
-                // console.log(self.data.videoTime, self.data.focusTime, parseInt(ms), 9999)
-                self.data.videoPause = true  
-            // }, 100)
-           
-            //这里时间不够准确所以加个延时，将暂停借口移到最上方
-            // setTimeout(() => {
-            //     let ct = new Date().getTime();
-            //     // let ms = ((ct - this.ms) % 1000) / 1000;
-            //     let ms = new Date().getMilliseconds() / 1000;
-            //     let vt1 = this.data.videoTime;
-            //     let vt2 = this.data.videoTime + ms; 
-            //     self.data.videoTime = parseInt(vt2) > parseInt(vt1) ? vt1 + 0.5 : vt2;
-            //     self.data.focusTime =  self.data.videoTime;
-            //     self.data.videoPause = true    
-            // }, 100)
-                    
+        if (!isNativePause) {
+            self.videoCtx.pause();
+            self.data.focusTime =  self.data.videoTime;
+            // console.log( self.data.videoTime,  self.data.focusTime , ms, 'msmsms')
+            self.data.videoPause = true 
         }
         
-        // 为了防止暂停播放会+1秒
-        // self.data.videoTime = ''
+
+        // if (!isNativePause) {
+        //     let ct1 = new Date().getTime();
+        //     let ms = ct1 - self.data.videoCurrentTimeInt;
+        //     this.footerClick = true;
+        //     self.videoCtx.pause();
+        //     self.data.focusTime =  self.data.videoTime;
+        //     console.log( self.data.videoTime,  self.data.focusTime , ms, 'msmsms')
+        //     self.data.videoPause = true 
+        // } else {
+        //     console.log( self.data.videoTime, ' self.data.videoTime')
+        //     self.data.focusTime =  self.data.videoTime;
+        // }
     },
     
     commentBlur() {
@@ -1667,10 +1635,18 @@ Page({
      },
 
      toPosition(e) {
-         console.log(e, 'eee')
+         this.data.videoCurrentTimeInt = new Date().getTime();
         if (this.data.info.file_type == 'video') {
+            this.setData({
+                currentVideoTime: Util.formatVideoTime(e.currentTarget.dataset.time),
+                videoTime: e.currentTarget.dataset.time
+            })
             this.toVideoPosition(e);
         } else if(this.data.info.file_type == 'audio'){
+            this.setData({
+                currentVideoTime: Util.formatVideoTime(e.currentTarget.dataset.time),
+                videoTime: e.currentTarget.dataset.time
+            })
             this.toAudioPostion(e);
         } else {
             return;
@@ -1679,6 +1655,7 @@ Page({
 
     // 获取播放时间
     getVideoTime(e) {
+        console.log(e, 99999)
         if (this.data.videoTime != parseInt(e.detail.currentTime) && this.data.videoTime != 0) {
             this.data.videoCurrentTimeInt = new Date().getTime();
         }
@@ -1692,18 +1669,30 @@ Page({
 
     getVideoTime2(e) {
         this.data.videoPause = true;
-        if (!this.commentClick) {
-            this.setData({
-                isFocus: true
-            });
-            this.commentFocus()
-        }
-
+        this.data.focusTime = this.data.videoTime;
         setTimeout(() => {
             this.setData({
                 adjustPosition: true
             })
         }, 500)
+      
+        if (!this.commentClick && this.data.info.time - this.data.videoTime >= 1) {
+            this.commentFocus(true)
+            // this.setData({
+            //     isFocus: true
+            // });
+            // this.data.commentDraw = []
+        }
+
+
+        // if (!this.commentClick && this.data.info.time - this.data.videoTime >= 1) {
+        //     this.setData({
+        //         isFocus: true
+        //     });
+        //     this.commentFocus(true)
+        // }
+
+      
         
         // let ms = new Date().getMilliseconds() / 1000;
         // this.data.videoTime = this.data.videoTime + ms; 
@@ -1725,7 +1714,17 @@ Page({
 
     //  跳转回复页面
 	 toBackPage(e) {
-	 	// let commentCurrent = JSON.stringify(this.data.commentList[e.currentTarget.dataset.index])
+         // let commentCurrent = JSON.stringify(this.data.commentList[e.currentTarget.dataset.index])
+         
+         this.commetClick = true;
+         if (this.data.info.file_type == 'video') {
+             this.videoCtx.pause()
+         }
+         if (this.data.info.file_type == 'audio') {
+             this.audioCtx.pause()
+         }
+
+         
         let res = wx.getStorageSync('app');
         let self = this
         if (res.token == '') {
@@ -2046,6 +2045,7 @@ Page({
     },
 
     audioUpdate(e) {
+        console.log(e, 'popp')
         this.setData({
             audioProgress: e.detail.currentTime / this.data.audioTime,
             audioProgressNum: e.detail.currentTime / this.data.audioTime * this.data.audioProgressMaxWidth,
@@ -2187,7 +2187,7 @@ Page({
     
             if (this.data.info.file_type == 'video') {
                 setTimeout(() => {
-                    this.commentFocus();
+                    this.commentFocus(false);
                 });
             }
 
@@ -2244,6 +2244,13 @@ Page({
     },
 
     createShare(){
+        this.commetClick = true;
+        if (this.data.info.file_type == 'video') {
+            this.videoCtx.pause()
+        }
+        if (this.data.info.file_type == 'audio') {
+            this.audioCtx.pause()
+        }
         wx.setStorage({
             key: 'share_file',
             data: [this.data.info]
