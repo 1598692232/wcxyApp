@@ -120,7 +120,7 @@
     <view class="comment-body" wx:for="{{commentList}}" wx:key="index" style="background: {{commentActiveIndex == item.id ? '#1E1F23' : ''}}">
         <!-- 评论区 -->
         <view class="comment-master {{item.delTranstion}}" bindtouchstart="delTouchStart" bindtouchmove="delTouchMove"  
-        bindtouchend="delTouchEnd" style="transform: translateX({{item.translateX}}px);"  
+        bindtouchend="delTouchEnd" style="transform: translateX({{item.translateX}}px);border-top: {{index == 0 ? 0 : ''}} "  
         data-index="{{index}}">
           <view class="comment-tou">
             <image src="{{item.avatar}}"></image>

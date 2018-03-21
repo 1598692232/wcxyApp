@@ -20,7 +20,7 @@
   ],
   "window":{
     "backgroundTextStyle":"dark",
-    "navigationBarBackgroundColor": "#252525",
+    "navigationBarBackgroundColor": "#010101",
     "navigationBarTitleText": "XINYUE新阅",
     "navigationBarTextStyle":"#fff",
     "backgroundColor": "#010101"
@@ -42,7 +42,7 @@
       "selectedIconPath": "./img/user_selected.png",
       "text": "我的"
     }],
-    "backgroundColor": "#303340",
+    "backgroundColor": "#161515",
     "color": "#9B9B9B",
     "selectedColor": "#71A9FF"
   },

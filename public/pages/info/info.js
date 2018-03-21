@@ -260,7 +260,6 @@ Page({
         self.commentAjaxing = false;
         self.commentGeted = false;
         self.commentClick = true;
-        self.footerClick = false;
 
         if (this.videoCtx) {
             this.videoCtx.play();
