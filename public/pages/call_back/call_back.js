@@ -23,7 +23,7 @@ Page({
     },
 
    onLoad(options) {
-       console.log(options, 'options')
+    //    console.log(options, 'options')
         let self = this
         wx.showLoading()
         self.setData({
@@ -123,6 +123,8 @@ Page({
                 callList: list,
                 commentText: ''
             })
+
+            wx.setNavigationBarTitle({title: `${list.length}条回复`})
         }, res => {
             wx.showModal({
                 title: '提示',
