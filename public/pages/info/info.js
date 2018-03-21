@@ -1262,7 +1262,7 @@ Page({
             self.videoCtx.pause();
         }
 
-        ms = (ms / 1000) < 0.5 ? (ms / 1000) : 0.5;
+        ms = (ms / 1000) <= 0.5 ? (ms / 1000) : 0.75;
         self.data.focusTime =  self.data.videoTime + ms + 0.5;
     },
     
