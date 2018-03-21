@@ -181,6 +181,7 @@ Page({
 
     firstCanvasTouchstart() {
         if (this.data.cavansShow && !this.data.isFocus) {
+            this.data.videoCurrentTimeInt = new Date().getTime();
             this.setData({
                 cavansShow: false
             })
@@ -251,19 +252,6 @@ Page({
         // }).exec()
 
     },
-
-    // onHide() {
-    //     this.setData({
-    //         isFocus: false //处理分享回退之后的评论框出来的bug
-    //     });
-     
-    //     console.log(2222)
-     
-       
-    // },
-    // onUnload() {
-    //     console.log(666)
-    // },
 
     onShow() {        
         let self = this;
@@ -1015,7 +1003,6 @@ Page({
         }
     },
 
-
     //画画开始
     drawStart(e) {     
         if (!this.data.isFocus) return
@@ -1119,6 +1106,7 @@ Page({
         this.setData({
             commentDraw
         });
+        this.initTypeDrawObj();
         
         this.data.commentDraw.forEach((item, key) => {             
             this.drawAll(item, false)    
@@ -1144,9 +1132,15 @@ Page({
     },
     // 画画结束
 
+    initTypeDrawObj() {
+        this.data.rect = {tool: 'rect', color: '', x: '', y:'', w: '', h: '', size: 3};
+        this.data.arrow = {tool: 'arrow', color: '', x1: '', y1:'', x2: '', y2: '', size: 3};
+        this.data.line = {tool: 'line', color: '', x1: '', y1:'', x2: '', y2: '', size: 3};
+        this.data.pen = {tool: 'pen', color: '', xs: '', ys:'', size: 3};
+    },
+
     // 画所有标记
     drawAll(item, isColor) {
-
         if (item.tool == 'arrow') {
             this.data.cxtShowBlock.setLineWidth(0)
         } else {
@@ -1232,9 +1226,10 @@ Page({
 
  	// 评论输入框聚焦
 	commentFocus(isNativePause) {
-    
         let self = this;
+
         this.data.commentDraw = [];
+        this.data.commentDrawTemp = [];
 
         if (self.data.info.file_type == 'video') {
 
@@ -1259,30 +1254,22 @@ Page({
             cavansShow: false
         });
 
+        self.data.videoPause = true 
+
+        let ct1 = new Date().getTime();
+        let ms = ct1 - self.data.videoCurrentTimeInt;
+
         if (!isNativePause) {
             self.videoCtx.pause();
-            self.data.focusTime =  self.data.videoTime;
-            // console.log( self.data.videoTime,  self.data.focusTime , ms, 'msmsms')
-            self.data.videoPause = true 
         }
-        
 
-        // if (!isNativePause) {
-        //     let ct1 = new Date().getTime();
-        //     let ms = ct1 - self.data.videoCurrentTimeInt;
-        //     this.footerClick = true;
-        //     self.videoCtx.pause();
-        //     self.data.focusTime =  self.data.videoTime;
-        //     console.log( self.data.videoTime,  self.data.focusTime , ms, 'msmsms')
-        //     self.data.videoPause = true 
-        // } else {
-        //     console.log( self.data.videoTime, ' self.data.videoTime')
-        //     self.data.focusTime =  self.data.videoTime;
-        // }
+        ms = (ms / 1000) < 0.5 ? (ms / 1000) : 0.5;
+        self.data.focusTime =  self.data.videoTime + ms + 0.5;
     },
     
     commentBlur() {
         this.data.commentDraw = [];
+        this.data.commentDrawTemp = [];
         this.commentClick = false
         if (this.data.cxtShowBlock) {
             this.data.cxtShowBlock.clearRect(0, 0, this.data.firstCanvasWidth, this.data.firstCanvasHeight);
@@ -1495,6 +1482,8 @@ Page({
                 commentText: '',
                 commentTextTemp: '',
                 isFocus: false,
+                commentDraw: [],
+                commentDrawTemp: []
             })
 
             // setTimeout(() => {
@@ -1503,7 +1492,8 @@ Page({
             //     });
             // }, 800)
 
-            self.data.commentDraw = []
+            // self.data.commentDraw = [];
+            // self.data.commentDrawTemp = [];
 
         }, res => {
             wx.showModal({
@@ -1655,8 +1645,8 @@ Page({
 
     // 获取播放时间
     getVideoTime(e) {
-        console.log(e, 99999)
-        if (this.data.videoTime != parseInt(e.detail.currentTime) && this.data.videoTime != 0) {
+        // && this.data.videoTime != 0
+        if (this.data.videoTime != parseInt(e.detail.currentTime)) {
             this.data.videoCurrentTimeInt = new Date().getTime();
         }
       
@@ -1665,7 +1655,6 @@ Page({
             currentVideoTime: Util.formatVideoTime(this.data.videoTime)
         });
     },
-
 
     getVideoTime2(e) {
         this.data.videoPause = true;
@@ -2045,7 +2034,6 @@ Page({
     },
 
     audioUpdate(e) {
-        console.log(e, 'popp')
         this.setData({
             audioProgress: e.detail.currentTime / this.data.audioTime,
             audioProgressNum: e.detail.currentTime / this.data.audioTime * this.data.audioProgressMaxWidth,
