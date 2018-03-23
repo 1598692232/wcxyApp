@@ -180,14 +180,15 @@ Page({
     // },
 
     firstCanvasTouchstart() {
-        if (this.data.cavansShow && !this.data.isFocus) {
-            this.data.videoCurrentTimeInt = new Date().getTime();
-            this.setData({
-                cavansShow: false
-            })
-            this.videoCtx.play()
-            this.data.videoPause = false   
-        }
+        // this.data.cavansShow
+        // if (!this.data.isFocus && this.commentClick) {
+        //     this.data.videoCurrentTimeInt = new Date().getTime();
+        //     this.setData({
+        //         cavansShow: false
+        //     })
+        //     this.videoCtx.play()
+        //     this.data.videoPause = false   
+        // }
     },
 
     onReady: function (res) {
@@ -1004,7 +1005,16 @@ Page({
 
     //画画开始
     drawStart(e) {     
-        if (!this.data.isFocus) return
+        if (!this.data.isFocus) {
+            this.data.videoCurrentTimeInt = new Date().getTime();
+            this.setData({
+                cavansShow: false
+            })
+            this.videoCtx.play()
+            this.data.videoPause = false  
+            return
+        }
+        
         this.data.cxt.setLineWidth(1)
         this.data.originPoint.x = e.touches[0].x
         this.data.originPoint.y = e.touches[0].y
@@ -1533,8 +1543,7 @@ Page({
         if (e.currentTarget.dataset.time < 0 ) return;
         this.commentClick = true
         this.videoCtx.pause();
-        this.videoCtx.seek(e.currentTarget.dataset.time);
-      
+        this.videoCtx.seek(e.currentTarget.dataset.time);    
 
         this.setData({
             cavansShow: true,
@@ -1624,6 +1633,7 @@ Page({
      },
 
      toPosition(e) {
+       
          this.data.videoCurrentTimeInt = new Date().getTime();
         if (this.data.info.file_type == 'video') {
             this.setData({

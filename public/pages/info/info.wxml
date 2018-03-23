@@ -4,7 +4,7 @@
     <view style="width: 100%;height:{{videoHeight}}px;position:relative;" id="play-body">
         <block wx:if="{{info.file_type == 'video'}}">
             <video id="myVideo" class="info-video" src="{{url}}" enable-danmu controls objectFit="contain" bindplay="listenerPlay"
-            autoplay bindtimeupdate="getVideoTime" bindpause="getVideoTime2" bindfullscreenchange="handleFullScreen" controls="{{!isFocus}}">
+            autoplay bindtimeupdate="getVideoTime" bindpause="getVideoTime2" bindfullscreenchange="handleFullScreen" controls="{{isFocus ? false : true}}">
                 <cover-view class="video-select-btn-p" catchtap="showPSelect" wx:if="{{fullScreen && !videoClicked}}">
                     {{pNo}}P
                 </cover-view>
@@ -21,7 +21,7 @@
     
                 <cover-view class="cover-focus" wx:if="{{isFocus}}" bindtap="commentBlur"></cover-view>  
 
-                <cover-view class="info-share" bindtap="createShare" wx:if="{{!share && !isFocus}}" >
+                <cover-view class="info-share" bindtap="createShare" wx:if="{{!share && !isFocus && !fullScreen}}" >
                     <cover-image src="./img/share.png" mode="aspectFit" ></cover-image>
                 </cover-view>
             </video>
@@ -64,17 +64,17 @@
 
     <block wx:if="{{info.file_type == 'video'}}">
     <!--  wx:if="{{isFocus || cavansShow}}" -->
-    <canvas style="width: 100%; height: {{firstCanvasHeight}}px; position: fixed; top: 0;left: 0;z-index: 100"
+    <canvas style="width: 100%; height: {{firstCanvasHeight}}px; position: fixed; top: 0;left: 0;z-index: 10000"
     canvas-id="firstCanvas" id="firstCanvas" wx:if="{{isFocus || cavansShow}}" bindtouchstart="firstCanvasTouchstart"></canvas>
         <!--  wx:if="{{isFocus}}" -->
-        <canvas style="width: 100%; height: {{firstCanvasHeight}}px; position: fixed; top: 0;left: 0;z-index: 200" 
+        <canvas style="width: 100%; height: {{firstCanvasHeight}}px; position: fixed; top: 0;left: 0;z-index: 20000" 
                 id="secondCanvas" canvas-id="secondCanvas"
                 canvas-id="secondCanvas"
                 bindtouchstart="drawStart"
                 bindtouchmove="drawMove"
                 bindtouchend="drawend"
                 disable-scroll="true"
-                wx:if="{{isFocus}}"
+                wx:if="{{isFocus || cavansShow}}"
                 ></canvas>
             <!-- catchtap="catap" -->
         <!-- 画图控制器 -->
