@@ -213,7 +213,7 @@
 						<image src="./img/invite.png"></image>
 					</view>
 					<view class="text">
-						<input placeholder="请输入邮箱添加项目成员" focus="{{focus}}" bindinput="bindKeyInput" placeholder-style="color: #fff" value="{{againInput?'':value}}"/>	
+						<input placeholder="请输入邮箱添加项目成员" focus="{{focus}}" bindinput="bindKeyInput" value="{{againInput?'':value}}"/>	
 					</view>
 					<view class="btn" wx:if="{{inputValue}}" bindtap="invite">邀请</view>
 				</view>

@@ -56,7 +56,8 @@ Page({
                 code: scene[1],
             })
 
-            Util.ajax('sharefilelist', 'get', params).then(data => {
+            // 分享页面的请求
+            Util.ajax('sharefilelist', 'get', params).then(data => {          
                 data.list.forEach(item => {
                     item.comment_count = item.comment_count>99?99:item.comment_count
                     item.create_at_text = Util.getCreateTime(item.create_at)
@@ -67,7 +68,7 @@ Page({
                 self.setData({
                     shareList: data.list,
                     qrCode: data.qr_code,
-                    deadline: data.deadline,
+                    deadline: data.deadline.toString().length>4?Util.getTimeDate(data.deadline):data.deadline,
                     fileCount: data.file_count,
                     viewCount: data.view_count,
                     projectId: data.project_id,
@@ -97,6 +98,11 @@ Page({
                         }
                     })
                 } 
+                wx.showModal({
+                    title: '提示',
+                    content: res.data.msg,
+                    showCancel: false
+                });
             })
         }
     },
@@ -140,6 +146,7 @@ Page({
         // console.log(params, 'params')
         Util.ajax('sharefilelist', 'get', params).then(data => {
             data.list.forEach(item => {
+                item.comment_count = item.comment_count>99?99:item.comment_count
                 item.create_at_text = Util.getCreateTime(item.create_at)
                 if (item.file_type == "audio") {
                     item.audioPause = true
@@ -148,7 +155,7 @@ Page({
             self.setData({
                 shareList: data.list,
                 qrCode: data.qr_code,
-                deadline: data.deadline,
+                deadline: data.deadline.toString().length>4?Util.getTimeDate(data.deadline):data.deadline,
                 fileCount: data.file_count,
                 viewCount: data.view_count,
                 projectId: data.project_id,
