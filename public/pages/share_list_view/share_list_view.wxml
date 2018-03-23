@@ -9,7 +9,7 @@
                 <view class="share-list-info">
                     <view>查看数：<text>{{viewCount}}</text></view>
                     <view>包含 <text>{{fileCount}}</text> 个文件</view>
-                    <view>有效期：<text>{{deadline}}</text></view>
+                    <view class="deadline"><text class="deadline-title">有效期：</text><text class="deadline-text">{{deadline}}</text></view>
                     <view>分享者：<text>{{people}}</text></view>
                 </view>
                 <text selectable="true" hidden>密码:{{password}}</text>                
