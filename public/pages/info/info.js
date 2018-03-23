@@ -1763,7 +1763,7 @@ Page({
     
     onShareAppMessage: function () {
 	    return {
-	        title: '影音制作链接者',
+	        title: '影音制作连接者',
 	        path: '/pages/list/list',
             imageUrl: './img/xy2.jpg'
 	    }
