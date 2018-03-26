@@ -231,6 +231,7 @@ Page({
         return {
           title: this.data.shareName,
           path: '/pages/share_list_view/share_list_view?scene=' + codeUrl,
+          imageUrl: './img/xinyue_share.png',
           success: function(res) {
             // 转发成功
             // wx.showModal({
