@@ -21,7 +21,8 @@ Page({
         review: 0,
         share_all_version: 0,
         pc_link:'',
-        currentPlayId: null
+        currentPlayId: null,
+        templateShow: false,
     },
     onLoad(options) {
         let self = this;
@@ -52,6 +53,7 @@ Page({
             let params = wx.getStorageSync('app');
             delete params.code;
             params = Object.assign({}, params, {share_code: scene[1]});
+            wx.setStorageSync('share_code', scene[1])
             self.setData({
                 code: scene[1],
             })
@@ -113,6 +115,28 @@ Page({
         let store = wx.getStorageSync('app')
         let reqData = Object.assign({}, store, {
             project_id: wx.getStorageSync('project_id')
+        })
+        this.setData({
+            templateShow: true
+        })
+    },
+
+    onHide() {
+        this.data.shareList.forEach((item, key) => {
+            if (item.file_type == 'video') {
+                let videoCtx = wx.createVideoContext('media' + item.id);
+                videoCtx.pause();
+            }
+
+            if (item.file_type == 'audio') {
+                let audioCtx = wx.createAudioContext('media' + item.id);
+                audioCtx.pause();
+                item.audioPause = true
+            }
+        })
+        this.setData({
+            templateShow: false,
+            shareList: this.data.shareList
         })
     },
 
