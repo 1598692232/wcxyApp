@@ -251,9 +251,12 @@ Page({
             // 来自页面内转发按钮
         }
         // let passwordUrl = this.data.password == '' ?  '&password=""' :  ''
-        let codeUrl = encodeURIComponent('code=' + this.data.code)
+        let codeUrl = encodeURIComponent('code=' + this.data.code);
+        let store = wx.getStorageSync('app');
+        let projectName = wx.getStorageSync('project_name');
+
         return {
-          title: this.data.shareName,
+          title: `${store.realname}分享了${projectName}的项目`,
           path: '/pages/share_list_view/share_list_view?scene=' + codeUrl,
           imageUrl: './img/xinyue_share.png',
           success: function(res) {
