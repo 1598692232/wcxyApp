@@ -1273,7 +1273,7 @@ Page({
         }
 
         ms = (ms / 1000) <= 0.5 ? (ms / 1000) : 0.5;
-        self.data.focusTime =  self.data.videoTime + ms + 0.5;
+        self.data.focusTime =  self.data.videoTime + ms + 0.49;
     },
     
     commentBlur() {
@@ -1668,6 +1668,7 @@ Page({
     getVideoTime2(e) {
         this.data.videoPause = true;
         this.data.focusTime = this.data.videoTime;
+        if (this.data.fullScreen) return; 
         setTimeout(() => {
             this.setData({
                 adjustPosition: true
