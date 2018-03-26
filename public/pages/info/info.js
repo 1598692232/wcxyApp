@@ -595,7 +595,7 @@ Page({
         }, res => {
             wx.showModal({
                 title: '提示',
-                content: '获取视频数据失败！',
+                content: '获取数据失败！',
                 showCancel: ''
             })
         })
