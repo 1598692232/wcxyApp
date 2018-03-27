@@ -81,6 +81,7 @@ Page({
         }
 
         Util.ajax('notice', 'get', reqData).then(data => {
+            var num
             var data0 = data.list?data.list:[]
             data0.map((item,i) => {
         // ----------------------  
@@ -95,6 +96,7 @@ Page({
                             item.notice_content.forEach((v)=> {
                                 if(v.created_at > thisItemData.timestamp){
                                     item.count += 1
+                                    num = item.count
                                 }
                             })
                         }
@@ -116,6 +118,15 @@ Page({
                 notice_count:data.notice_count,
                 project_name: data.project_name
             })
+            if(num>0){
+                wx.showTabBarRedDot({
+                    index: 1,
+                })
+            }else{
+                wx.hideTabBarRedDot({
+                    index: 1,
+                })
+            }  
             wx.hideLoading()
         }, res => {
             wx.showModal({
