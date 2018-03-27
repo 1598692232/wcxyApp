@@ -63,6 +63,7 @@ Page({
         } 
     },
     onShow() {
+        this.hasRedDots()
         let store = wx.getStorageSync('app')
 
         if (store.token == '') {
@@ -297,5 +298,45 @@ Page({
 	        path: '/pages/list/list',
             imageUrl: './img/xy2.jpg'
 	    }
+    },
+    hasRedDots() {
+        let store = wx.getStorageSync('app')
+        //获取当天零点的时间戳 
+        const start = new Date(new Date(new Date().toLocaleDateString()).getTime());
+        var timestampday = Date.parse(start); 
+        timestampday = timestampday / 1000; 
+        let reqData = Object.assign({}, {token: store.token},{login_id:store.login_id})
+        reqData.new_time = timestampday
+        var noticeList0 = []
+        Util.ajax('notice', 'get', reqData).then(data => {
+            var num
+            var data0 = data.list?data.list:[]
+            data0.map((item,i) => {
+                item.count = 0
+                    var thisItemData = wx.getStorageSync(store.login_id.toString()).noticeList0.find((v) => {
+                        return v.id == item.project_id
+                    })
+                    if(thisItemData){
+                        if(thisItemData.timestamp){
+                            item.notice_content.forEach((v)=> {
+                                if(v.created_at > thisItemData.timestamp){
+                                    item.count += 1
+                                    num = item.count
+                                }
+                            })
+                        }
+                    }
+            })
+            // console.log(num,'num')
+            if(num>0){
+                wx.showTabBarRedDot({
+                    index: 1,
+                })
+            }else{
+                wx.hideTabBarRedDot({
+                    index: 1,
+                })
+            }  
+        }, res => {}) 
     }
 })
