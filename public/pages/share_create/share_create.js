@@ -61,6 +61,11 @@ Page({
             wx.navigateBack();
             return;
         }
+        let store = wx.getStorageSync('app');
+        let projectName = wx.getStorageSync('project_name');
+        this.setData({
+            name: `${store.realname}分享的${projectName}的项目 （${this.data.createShareList.length}）`
+        })
     },
 
     // 时间选择器
@@ -82,17 +87,17 @@ Page({
         });
     },
     
-    onShow() {
-        let self = this
-        let store = wx.getStorageSync('app')
-        let reqData = Object.assign({}, store, {
-            project_id: wx.getStorageSync('project_id')
-        })
-        self.setData({
-            // txList: [{name:'1月之前的后期素材',time:'1天前',num:7},{name:'1月之前的后期素材',time:'1天前',num:7}],
-            // createShareList: [{img:'',name:'月之前的后期素材.mp4'},{img:'',name:'月之前的后期素材.mp4'},{img:'',name:'月之前的后期素材.mp4'},{img:'',name:'月之前的后期素材.mp4'},],
-        })
-    },
+    // onShow() {
+    //     let self = this
+    //     let store = wx.getStorageSync('app')
+    //     let reqData = Object.assign({}, store, {
+    //         project_id: wx.getStorageSync('project_id')
+    //     })
+    //     self.setData({
+    //         // txList: [{name:'1月之前的后期素材',time:'1天前',num:7},{name:'1月之前的后期素材',time:'1天前',num:7}],
+    //         // createShareList: [{img:'',name:'月之前的后期素材.mp4'},{img:'',name:'月之前的后期素材.mp4'},{img:'',name:'月之前的后期素材.mp4'},{img:'',name:'月之前的后期素材.mp4'},],
+    //     })
+    // },
     // 链接名称
     bindKeyInput(e) {
         this.setData({

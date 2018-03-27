@@ -9,7 +9,7 @@
                 <view class="share-pic">
                     <block wx:if="{{item.type == 'file' || item.file_type == 'video' || item.file_type == 'audio' || item.file_type == 'image'}}">
                         <block wx:if="{{item.cover_img.length > 0}}">
-                            <image src="{{item.cover_img[0]}}" ></image>
+                            <image src="{{item.cover_img[0]}}"  mode="aspectFit"></image>
                         </block>
                         <block wx:if="{{item.file_type == 'audio'}}">
                             <view class="share-file-icon">
