@@ -595,9 +595,15 @@ Page({
         }, res => {
             wx.showModal({
                 title: '提示',
-                content: '获取数据失败！',
-                showCancel: ''
+                content: '获取数据失败,请重新登录！',
+                showCancel: false,
+                success: function(res) {
+                    if (res.confirm) {
+                        wx.navigateTo({url: '/pages/signin/signin'})
+                    }
+                }
             })
+
         })
     },
 
@@ -758,8 +764,13 @@ Page({
         }, () => {
             wx.showModal({
                 title: '提示',
-                content: '修改失败！',
-                showCancel: false
+                content: '修改失败，请重新登录！',
+                // showCancel: false,
+                success: function(res) {
+                    if (res.confirm) {
+                        wx.navigateTo({url: '/pages/signin/signin'})
+                    }
+                }
             });
         });
     },
@@ -1507,8 +1518,13 @@ Page({
         }, res => {
             wx.showModal({
                 title: '提示',
-                content: '发表评论失败！',
-                showCancel: false,
+                content: '发表评论失败，请重新登录！',
+                // showCancel: false,
+                success: function(res) {
+                    if (res.confirm) {
+                        wx.navigateTo({url: '/pages/signin/signin'})
+                    }
+                }
             })
 
             if (self.data.info.file_type = "audio") {
@@ -1916,8 +1932,13 @@ Page({
         }, res => {
             wx.showModal({
                 title: '提示',
-                content: '删除评论失败！',
-                showCancel: false,
+                content: '删除评论失败，请重新登录！',
+                // showCancel: false,
+                success: function(res) {
+                    if (res.confirm) {
+                        wx.navigateTo({url: '/pages/signin/signin'})
+                    }
+                }
             })
         }).then(() => {
             self.data.delComment = false
