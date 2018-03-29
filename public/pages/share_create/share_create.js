@@ -64,7 +64,7 @@ Page({
         let store = wx.getStorageSync('app');
         let projectName = wx.getStorageSync('project_name');
         this.setData({
-            name: `${store.realname}分享的${projectName}的项目`
+            name: `${store.realname}分享的${projectName} (${this.data.createShareList.length})`
         })
     },
 
