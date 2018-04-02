@@ -27,47 +27,113 @@
         <view class="share-list-video" wx:for="{{shareList}}" wx:key="{{index}}" style="height:{{videoBoxHeight}}px">
             
             <block wx:if="{{item.file_type == 'video'}}">
-                <view class="list" style="width:{{videoWidth}}px;height:{{videoHeight}}px;overflow:hidden;">
-                    <video src="{{item.url}}" data-id="{{item.id}}" id="media{{item.id}}"
-                    objectFit="contain" controls bindplay="changeCurrentPlayId" data-type="{{item.file_type}}"
-                    style="width:{{videoWidth}}px;height:{{videoHeight}}px;"
-                    ></video>
+                <view class="list info-ext" style="width:{{videoWidth}}px;height:{{videoHeight}}px;overflow:hidden;">
+                    <view wx:if="{{item.doc_status===1}}">
+                        <video src="{{item.url}}" data-id="{{item.id}}" id="media{{item.id}}"
+                        objectFit="contain" controls bindplay="changeCurrentPlayId" data-type="{{item.file_type}}"
+                        style="width:{{videoWidth}}px;height:{{videoHeight}}px;"
+                        ></video>
+                    </view>
+                    <view wx:else>
+                        <image src="./img/file.png" mode="aspectFit" class="info-ext-bg"></image>
+                        <view class="info-ext-text">{{item.ext}}</view>
+                        <view class="red">
+                            <image src="./img/red.svg"></image>
+                        </view>
+                        <view class="empty_text">
+                            <text>该文件已被删除</text>
+                        </view>
+                    </view>
                 </view>
             </block>
             <block wx:if="{{item.file_type == 'audio'}}">
                 <audio src="{{item.url}}"  data-id="{{item.id}}" bindplay="changeCurrentPlayId" data-type="{{item.file_type}}"
                 controls loop style="display: none" id="media{{item.id}}"></audio>
-                <view class="info-audio list" style="width:{{videoWidth}}px;height:{{videoHeight}}px;">
+                <view class="info-audio info-ext list" style="width:{{videoWidth}}px;height:{{videoHeight}}px;">
                     <view class="info-audio-icon">
-                        <image src="./img/mp3.png" mode="aspectFit"></image>
+                        <view wx:if="{{item.doc_status===1}}">
+                            <image src="./img/mp3.png" mode="aspectFit"></image>                            
+                        </view>
+                        <view wx:else>
+                            <image src="./img/file.png" mode="aspectFit" class="info-ext-bg"></image>
+                            <view class="info-ext-text">{{item.ext}}</view>
+                            <view class="red">
+                                <image src="./img/red.svg"></image>
+                            </view>
+                            <view class="empty_text">
+                                <text>该文件已被删除</text>
+                            </view>
+                        </view>
                     </view>
                     <view class="info-audio-cover" bindtap="playOrPauseAudio" data-id="{{item.id}}">
-                        <image src="./img/play2.png" mode="aspectFit" wx:if="{{item.audioPause}}"></image>
-                        <image src="./img/pause2.png" mode="aspectFit" wx:else></image>
+                        <block wx:if="{{item.doc_status===1}}">
+                            <image src="./img/play2.png" mode="aspectFit" wx:if="{{item.audioPause}}"></image>
+                            <image src="./img/pause2.png" mode="aspectFit" wx:else></image>
+                        </block>
+                        <view wx:else>
+                            <image src="./img/file.png" mode="aspectFit" class="info-ext-bg"></image>
+                            <view class="info-ext-text">{{item.ext}}</view>
+                            <view class="red">
+                                <image src="./img/red.svg"></image>
+                            </view>
+                            <view class="empty_text">
+                                <text>该文件已被删除</text>
+                            </view>
+                        </view>
                     </view>
                 </view>
             </block>
             <block wx:if="{{item.file_type == 'image'}}">
-                <view class="info-pic list" style="width:{{videoWidth}}px;height:{{videoHeight}}px;"> 
-                    <image src="{{item.cover_img[0]}}" mode="aspectFill"></image>
+                <view class="info-pic info-ext list" style="width:{{videoWidth}}px;height:{{videoHeight}}px;"> 
+                    <view wx:if="{{item.doc_status===1}}">
+                        <image src="{{item.cover_img[0]}}" mode="aspectFill"></image>
+                    </view>
+                    <view wx:else>
+                        <image src="./img/file.png" mode="aspectFit" class="info-ext-bg"></image>
+                        <view class="info-ext-text">{{item.ext}}</view>
+                        <view class="red">
+                            <image src="./img/red.svg"></image>
+                        </view>
+                        <view class="empty_text">
+                            <text>该文件已被删除</text>
+                        </view>
+                    </view>
                 </view>
             </block>
            
             <block wx:if="{{item.file_type != 'image' && item.file_type != 'video' && item.file_type != 'audio' }}">
                 <block wx:if="{{item.ext == 'zip' || item.ext == 'dmg' || item.ext == 'rar'}}">
                     <view class="info-ext list" style="width:{{videoWidth}}px;height:{{videoHeight}}px;"> 
-                        <image src="./img/compress.png" mode="aspectFit"></image>
+                        <view wx:if="{{item.doc_status===1}}">
+                            <image src="./img/compress.png" mode="aspectFit"></image>
+                        </view>
+                        <view wx:else>
+                            <image src="./img/file.png" mode="aspectFit" class="info-ext-bg"></image>
+                            <view class="info-ext-text">{{item.ext}}</view>
+                            <view class="red">
+                                <image src="./img/red.svg"></image>
+                            </view>
+                            <view class="empty_text">
+                                <text>该文件已被删除</text>
+                            </view>
+                        </view>
                     </view>
                 </block>
                 <view class="info-ext list" wx:else style="width:{{videoWidth}}px;height:{{videoHeight}}px;">
                     <image src="./img/file.png" mode="aspectFit" class="info-ext-bg"></image>
                     <view class="info-ext-text">{{item.ext}}</view>
+                    <view wx:if="{{item.doc_status===0}}" class="red">
+                        <image src="./img/red.svg"></image>
+                    </view>
+                    <view wx:if="{{item.doc_status===0}}" class="empty_text">
+                        <text>该文件已被删除</text>
+                    </view>
                 </view>
             </block>
-        
+
             <view class="info"  bindtap="toShareInfo" data-name="{{item.name}}" 
             data-username="{{item.user_info.realname}}" data-id="{{item.id}}"
-            data-filetype="{{item.file_type}}">
+            data-filetype="{{item.file_type}}" data-status="{{item.doc_status}}">
                 <view class="info-left">
                     <view class="avatar">
                         <image src="{{item.user_info.avatar == '' ? manager : item.user_info.avatar}}"></image>
@@ -75,12 +141,12 @@
                     </view>
                     <view class="info-name">
                         <view class="name">{{item.name}} </view>
-                        <view class="count">{{item.visit_count}}次播放</view>
+                        <view class="count">{{item.visit_count?item.visit_count:0}}次播放</view>
                     </view>  
                 </view>
                 <view class="comment">
                     <image src="./img/comment.png"></image>
-                    <text>{{item.comment_count}}</text>
+                    <text>{{item.comment_count?item.comment_count:0}}</text>
                 </view>
                 <!-- <view class="play-num">{{item.view_count}}次播放</view> -->
             </view>

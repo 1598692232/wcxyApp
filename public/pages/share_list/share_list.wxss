@@ -43,6 +43,36 @@
     height: 44px;
     border-radius: 4px;
 }
+
+.share-list .empty_pic{
+    width: 58px;
+    height: 80px;
+    margin-right: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.share-list .empty_pic .pic-content{
+    width: 58px;
+    height: 44px;
+    border-radius: 4px;
+    background:#171D29!important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.share-list .empty_pic .pic-content .red{
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+}
+.share-list .empty_pic .red image{
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+
 .share-list .info{
     display: flex;
     height: 100%;

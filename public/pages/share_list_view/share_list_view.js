@@ -303,7 +303,15 @@ Page({
     },
 
     toShareInfo(e) {
-        let { id, name, username, filetype } = e.currentTarget.dataset;
+        let { id, name, username, filetype ,status } = e.currentTarget.dataset;
+        if(status===0){
+            wx.showModal({
+                title: '提示',
+                content: '当前文件已被删除',
+                showCancel: false
+            });
+            return;
+        }
         if (!['video', 'audio', 'image'].includes(filetype)) {
             wx.showModal({
                 title: '提示',

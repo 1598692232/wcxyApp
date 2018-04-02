@@ -96,6 +96,15 @@ Page({
         
     },
     toShareInfo(e){
+        let count = e.currentTarget.dataset.count
+        if(count === 0){
+            wx.showModal({
+                title: '提示',
+                content: '该链接文件已全部被移除！',
+                showCancel: false
+            });
+            return;
+        }
         wx.navigateTo({
             url: '/pages/share_list_view/share_list_view?code=' + e.currentTarget.dataset.code 
             + '&password=' + e.currentTarget.dataset.password + '&id=' + e.currentTarget.dataset.id

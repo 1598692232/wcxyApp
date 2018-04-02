@@ -1,15 +1,27 @@
 <view class="share-list-box" style="height:100%">
     <scroll-view style="height:{{scrollHeight}}px;" scroll-y bindscrolltolower="lower" lower-threshold="{{800}}">
         <block wx:if="{{shareList.length>0}}">
-            <view class="share-list" wx:for="{{shareList}}" wx:key="index" data-code="{{item.code}}" data-password="{{item.password}}" data-id="{{item.id}}" bindtap="toShareInfo">
-                <view class="pic">
-                    <view class="pic-content" wx:if="{{item.image}}">
-                        <image src="{{item.image}}"></image>
+            <view class="share-list" wx:for="{{shareList}}" wx:key="index" data-code="{{item.code}}" data-password="{{item.password}}" data-id="{{item.id}}" data-count="{{item.files_count}}" bindtap="toShareInfo">
+                <block wx:if="{{item.files_count !== 0}}">
+                    <view class="pic"> 
+                        <view class="pic-content" wx:if="{{item.image}}">
+                            <image src="{{item.image}}"></image>
+                        </view>
+                        <view class="pic-content" wx:else>
+                            <text>{{item.firstname}}</text>
+                        </view>
                     </view>
-                    <view class="pic-content" wx:else>
-                        <text>{{item.firstname}}</text>
+                </block>
+                <block wx:if="{{item.files_count === 0}}">
+                    <view class="pic empty_pic"> 
+                        <view class="pic-content">
+                            <view class="red">
+                                <image src="./img/red.svg"></image>
+                            </view>
+                        </view>
                     </view>
-                </view>
+                </block>
+                
                 <view class="info">
                     <view class="share-list-name">{{item.name}}</view>
                     <view class="share-list-info">
