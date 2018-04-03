@@ -100,11 +100,11 @@ Page({
                         }
                     })
                 } 
-                wx.showModal({
-                    title: '提示',
-                    content: res.data.msg,
-                    showCancel: false
-                });
+                // wx.showModal({
+                //     title: '提示',
+                //     content: res.data.msg,
+                //     showCancel: false
+                // });
             })
         }
     },
