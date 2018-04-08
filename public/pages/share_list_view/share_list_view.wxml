@@ -29,7 +29,7 @@
             <block wx:if="{{item.file_type == 'video'}}">
                 <view class="list info-ext" style="width:{{videoWidth}}px;height:{{videoHeight}}px;overflow:hidden;">
                     <view wx:if="{{item.doc_status===1}}">
-                        <video src="{{item.url}}" data-id="{{item.id}}" id="media{{item.id}}"
+                        <video src="{{item.url}}" data-id="{{item.id}}" id="media{{item.id}}" poster="{{item.cover_img[0]}}"
                         objectFit="contain" controls bindplay="changeCurrentPlayId" data-type="{{item.file_type}}"
                         style="width:{{videoWidth}}px;height:{{videoHeight}}px;"
                         ></video>
