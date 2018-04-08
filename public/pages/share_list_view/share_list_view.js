@@ -256,7 +256,7 @@ Page({
         let projectName = wx.getStorageSync('project_name');
 
         return {
-          title: `${store.realname}分享的${projectName}的项目 （${this.data.shareList.length}）`,
+          title: this.data.shareName,
           path: '/pages/share_list_view/share_list_view?scene=' + codeUrl,
           imageUrl: './img/xinyue_share.png',
           success: function(res) {
