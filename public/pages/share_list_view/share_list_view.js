@@ -67,8 +67,10 @@ Page({
                         item.audioPause = true
                     }
                 });
+
+                self.shareList = data.list;
                 self.setData({
-                    shareList: data.list,
+                    shareList: data.list.length > 3 ? data.list.slice(0, 3) : data.list,
                     qrCode: data.qr_code,
                     deadline: data.deadline.toString().length>4?Util.getTimeDate(data.deadline):data.deadline,
                     fileCount: data.file_count,
@@ -111,6 +113,7 @@ Page({
     
     onShow() {
         let self = this
+        self.pageCount = 1;
         // 获取参与成员头像姓名
         let store = wx.getStorageSync('app')
         let reqData = Object.assign({}, store, {
@@ -168,7 +171,9 @@ Page({
     initList(params) {
         let self = this;
         // console.log(params, 'params')
-        Util.ajax('sharefilelist', 'get', params).then(data => {
+        Util.ajax('sharefilelist', 'get', params, false, () => {
+            self.initList(params)
+        }).then(data => {
             data.list.forEach(item => {
                 item.comment_count = item.comment_count>99?99:item.comment_count
                 item.create_at_text = Util.getCreateTime(item.create_at)
@@ -176,8 +181,9 @@ Page({
                     item.audioPause = true
                 }
             });
+            self.shareList = data.list;
             self.setData({
-                shareList: data.list,
+                shareList: data.list.length > 3 ? data.list.slice(0, 3) : data.list,
                 qrCode: data.qr_code,
                 deadline: data.deadline.toString().length>4?Util.getTimeDate(data.deadline):data.deadline,
                 fileCount: data.file_count,
@@ -354,5 +360,19 @@ Page({
         this.setData({
             shareList: this.data.shareList
         });
+    },
+
+    onPageScroll(e) {   
+        // 将分享列表进行分页处理    
+        let page = Math.ceil(e.scrollTop / this.data.scrollHeight) + 1;
+        if (page == this.pageCount || this.data.shareList.length == this.shareList.length) return;
+        let list = this.data.shareList;
+        let pushArgs = this.shareList.slice(this.pageCount * 3, (this.pageCount + 1) * 3);
+        list = list.concat(pushArgs);
+        this.setData({
+            shareList: list
+        });
+        this.pageCount++;
     }
+
 })

@@ -61,7 +61,7 @@ const timeToMinAndSec = time => {
     }
 }
 
-const ajax = (url, type, data, failHide) => {
+const ajax = (url, type, data, failHide, failClick) => {
     let hosts = wx.getStorageSync('app').host;  
     let host = (!hosts || hosts == '') ? 'https://www.uxinyue.com' : hosts;
 
@@ -88,7 +88,12 @@ const ajax = (url, type, data, failHide) => {
                 wx.showModal({
                     title: '提示',
                     content: '网络请求失败',
-                    cancelShow: false
+                    showCancel: false,
+                    success(res) {
+                        if (res.confirm) {
+                            failClick()
+                        } 
+                    }
                 })
             }
         })
