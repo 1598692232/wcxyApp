@@ -1,0 +1,10 @@
+<view class="empower" style="height: 100%;">
+    <view class="logo">
+        <!-- <image src="./img/logo.png" mode="aspectFit"></image> -->
+    </view>
+    <view class="title">
+        -<text>影音制作连接者</text>-
+    </view>
+
+    <view class="xinyue">www.xinyue.io</view>
+</view>

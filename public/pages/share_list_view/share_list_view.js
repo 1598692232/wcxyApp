@@ -23,9 +23,37 @@ Page({
         pc_link:'',
         currentPlayId: null,
         templateShow: false,
+        needNickName: true
     },
     onLoad(options) {
         let self = this;
+        wx.getUserInfo({
+            success: function(res) {
+                var userInfo = res.userInfo
+                var nickName = userInfo.nickName
+                var avatarUrl = userInfo.avatarUrl
+
+                let stores = wx.getStorageSync('app')
+                let newStorage2 = Object.assign({}, stores)
+                newStorage2.nickName = nickName
+                newStorage2.avatarUrl = avatarUrl
+                wx.setStorageSync('app', newStorage2)
+                self.setData({
+                    needNickName: false
+                })
+            },
+            fail: function() {
+                wx.showModal({
+                    title: '警告',
+                    content: '您点击了拒绝授权，将无法正常使用。请删除小程序重新进入，再次点击授权。',
+                    success: function (res) {
+                      if (res.confirm) {
+                        console.log('用户点击确定')
+                      }
+                    }
+                })
+            }
+        })
         Util.getSystemInfo().then(result => {
             self.setData({
                 scrollHeight: result.windowHeight,
@@ -106,7 +134,7 @@ Page({
                 //     showCancel: false
                 // });
             })
-        }
+        }   
     },
     
     onShow() {
@@ -156,7 +184,21 @@ Page({
             share_code: this.data.code,
             password: this.data.password
         }
-        this.initList(params)
+        let store = wx.getStorageSync('app')
+        let nickName = store.nickName
+        if(nickName){
+            this.initList(params)
+        }else{
+            wx.showModal({
+                title: '警告',
+                content: '您点击了拒绝授权，将无法正常使用。请删除小程序重新进入，再次点击授权。',
+                success: function (res) {
+                  if (res.confirm) {
+                    console.log('用户点击确定')
+                  }
+                }
+            })
+        }
     },
 
     inputPassword(e) {

@@ -9,6 +9,7 @@
     "pages/notice_system_info/notice_system_info",
     "pages/user/user",
     "pages/info/info",
+    "pages/empower_phone/empower_phone",
     "pages/logs/logs",
     "pages/call_back/call_back",
     "pages/project_list/project_list",
@@ -16,7 +17,8 @@
     "pages/forget_next/forget_next",
     "pages/share_list/share_list",
     "pages/share_create/share_create",
-    "pages/share_list_view/share_list_view"
+    "pages/share_list_view/share_list_view",
+    "pages/empower_scan/empower_scan"
   ],
   "window":{
     "backgroundTextStyle":"dark",

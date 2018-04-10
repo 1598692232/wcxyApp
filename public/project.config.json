@@ -92,16 +92,17 @@
 					"query": " project_list.js? [sm]:175 /pages/info/info?&name=4d4dad12059b518d5bfdadabcdf6344f-bf6a56af153ea7d2fae8eab30447309c&id=3022&username=stone&project_id=P231520389602"
 				},
 				{
-					"id": -1,
+					"id": 9,
 					"name": "share_list_view",
 					"pathName": "pages/share_list_view/share_list_view",
-					"query": ""
+					"query": "scene=code%3d087eb884a3c4fb87",
+					"scene": "1011"
 				},
 				{
 					"id": 10,
 					"name": "share_list_view",
 					"pathName": "pages/share_list_view/share_list_view",
-					"query": "code= 89fda82881abf167&password= ru6b",
+					"query": "scene=code%3d4e53b0e762d2b990&password%3dnksq",
 					"scene": "1011"
 				},
 				{
@@ -123,6 +124,27 @@
 					"name": "back-call",
 					"pathName": "pages/call_back/call_back",
 					"query": "commentId=4410&docId=3133&projectId=P2101520413594&avatar=data:image/png;base64,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"
+				},
+				{
+					"id": 14,
+					"name": "empower",
+					"pathName": "pages/empower_phone/empower_phone",
+					"query": "",
+					"scene": "1011"
+				},
+				{
+					"id": 15,
+					"name": "share_list_view_host",
+					"pathName": "pages/share_list_view/share_list_view",
+					"query": "scene=code%3d11bf3ae6d235f1db&password%3dbsj3",
+					"scene": "1011"
+				},
+				{
+					"id": -1,
+					"name": "share_list_view_host1",
+					"pathName": "pages/empower_phone/empower_phone",
+					"query": "scene=code%3d11bf3ae6d235f1db&password%3dbsj3",
+					"scene": "1011"
 				}
 			]
 		}

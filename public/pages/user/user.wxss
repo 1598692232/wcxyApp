@@ -21,6 +21,7 @@
 .userinfo-nickname {
   color: #fff;
   margin-top: 30rpx;
+  font-size: 14px;
 }
 
 .usermotto {
@@ -35,7 +36,8 @@
   width: 300px;
   height: 44px;
   background: #0345C7;
-  border-radius: 100px;
+  /* border-radius: 100px; */
+  border-radius: 6px;
   color: #fff;
   font-size: 17px;
   letter-spacing: 0.86px;

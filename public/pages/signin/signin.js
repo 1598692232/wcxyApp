@@ -24,7 +24,7 @@ Page({
         codeWidth: '',
         sessionid: '',
         loginOut: ''
-	},
+    },
 
 	onLoad(options) {
         let self = this
@@ -86,6 +86,54 @@ Page({
         let store = wx.getStorageSync('app')
         Util.ajax('init', 'get', {code: store.code}).then((json) => {
 
+            // wx.getSetting({
+            //     success(res) {
+            //         if (!res.authSetting['scope.userInfo']) {
+            //             wx.authorize({
+            //                 scope: 'scope.userInfo',
+            //                 success() {}
+            //             })
+            //         }
+            //     }
+            // })
+            wx.getUserInfo({
+                withCredentials: true,
+                success: function(res) {
+                    var userInfo = res.userInfo
+                    var nickName = userInfo.nickName
+                    var avatarUrl = userInfo.avatarUrl
+                    var gender = userInfo.gender //性别 0：未知、1：男、2：女
+                    var province = userInfo.province
+                    var city = userInfo.city
+                    var country = userInfo.country
+                
+                    let stores = wx.getStorageSync('app')
+                    let newStorage2 = Object.assign({}, stores, json)
+                    newStorage2.nickName = nickName
+                    newStorage2.avatarUrl = avatarUrl
+                    Util.setStorage('app', newStorage2)
+                    if(stores.phone===undefined){
+                        wx.reLaunch({
+                            url: '/pages/empower_phone/empower_phone'
+                        })
+                    } 
+                },
+                fail: function() {
+                    wx.showModal({
+                        title: '警告',
+                        content: '您点击了拒绝授权，将无法正常使用。请删除小程序重新进入，再次点击授权。',
+                        success: function (res) {
+                          if (res.confirm) {
+                            console.log('用户点击确定')
+                          }
+                        }
+                    })
+                    // wx.reLaunch({
+                    //     // url: '/pages/list/list?sessionid=' + sessionid
+                    //     url: '/pages/list/list'
+                    // })
+                }
+            })
             let data = Object.assign({}, store, json)
             if (data.token == '') {
                 //如果没有登录，设置storage
@@ -108,10 +156,16 @@ Page({
                                 key: 'user_info',
                                 data: data
                             })
-                            wx.reLaunch({
-                                // url: '/pages/list/list?sessionid=' + sessionid
-                                url: '/pages/list/list'
-                            })
+                            
+                            let store = wx.getStorageSync('app')
+                            let nickName = store.nickName
+                            if(nickName){
+                                wx.reLaunch({
+                                    // url: '/pages/list/list?sessionid=' + sessionid
+                                    url: '/pages/list/list'
+                                })
+                            }
+                            
                             self.hasRedDots()
                         }, () => {
                             wx.showModal({
@@ -206,10 +260,24 @@ Page({
 
             Util.ajax('user/info', 'get', json).then(json => {
                 Util.setStorage('user_info', json)
-                wx.reLaunch({
-                    // url: '/pages/list/list?id=' + newStorage.login_id
-                    url: '/pages/list/list'
-                })
+                let store = wx.getStorageSync('app')
+                let nickName = store.nickName
+                if(nickName){
+                    wx.reLaunch({
+                        // url: '/pages/list/list?id=' + newStorage.login_id
+                        url: '/pages/list/list'
+                    })
+                }else{
+                    wx.showModal({
+                        title: '警告',
+                        content: '您点击了拒绝授权，将无法正常使用。请删除小程序重新进入，再次点击授权。',
+                        success: function (res) {
+                          if (res.confirm) {
+                            console.log('用户点击确定')
+                          }
+                        }
+                    })
+                } 
             }, res => {
                 wx.showModal({
                     title: '提示',
