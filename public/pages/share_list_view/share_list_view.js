@@ -54,6 +54,25 @@ Page({
                 })
             }
         })
+        let stores = wx.getStorageSync('empower')
+        if(options.scene&&stores.needregister){
+            let stores = wx.getStorageSync('empower')
+            let store = wx.getStorageSync('app')
+            let reqData = Object.assign({}, {code: store.code},{scene_id: stores.needregister},{nick_name:stores.nickName},{avatar:stores.avatarUrl})
+            Util.ajax('register', 'post', reqData).then(json => {
+                console.log(json,'json')
+                let stores = wx.getStorageSync('empower')
+                let newStorage2 = Object.assign({}, stores)
+                newStorage2.needregister = false
+                wx.setStorageSync('empower', newStorage2)
+            }, res => {
+                wx.showModal({
+                    title: '提示',
+                    content: res.data.msg,
+                    showCancel: false
+                })
+            })
+        }
         Util.getSystemInfo().then(result => {
             self.setData({
                 scrollHeight: result.windowHeight,

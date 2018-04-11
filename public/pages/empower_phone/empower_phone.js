@@ -28,6 +28,7 @@ Page({
         let stores = wx.getStorageSync('empower')
         let newStorage2 = Object.assign({}, stores)
         newStorage2.empower_phone = e.type
+        newStorage2.empowerPhone = e.detail.encryptedData
         console.log(e.type,'999999e.type')
         wx.setStorageSync('empower', newStorage2)
         let shareCode = wx.getStorageSync('share_code')

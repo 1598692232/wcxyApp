@@ -2191,7 +2191,7 @@ Page({
             wx.navigateTo({
                 url: '/pages/empower_phone/empower_phone'
             })
-        } 
+        }
         if (!this.data.isFocus) {
 
             this.drawBackCount = 0;
