@@ -33,7 +33,7 @@
     width: 100%;
   }
   .login-out{
-    width: 300px;
+    width: 320px;
     height: 44px;
     background: #0345C7;
     /* border-radius: 100px; */

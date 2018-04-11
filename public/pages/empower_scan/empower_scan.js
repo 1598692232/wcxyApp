@@ -13,9 +13,14 @@ Page({
             	self.setData({
                     scrollHeight: res.windowHeight
                 })
-                wx.setNavigationBarTitle({title: '授权'})
+                wx.setNavigationBarTitle({title: '扫码登录'})
             }
         })
+    },
+    scanSignin() {
 
-	},
+    },
+    scanQuit() {
+
+    }
 })

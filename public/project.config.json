@@ -145,6 +145,13 @@
 					"pathName": "pages/empower_phone/empower_phone",
 					"query": "scene=code%3d11bf3ae6d235f1db&password%3dbsj3",
 					"scene": "1011"
+				},
+				{
+					"id": -1,
+					"name": "empower_scan",
+					"pathName": "pages/empower_scan/empower_scan",
+					"query": "",
+					"scene": "1011"
 				}
 			]
 		}

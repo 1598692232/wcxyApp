@@ -33,11 +33,11 @@ Page({
                 var nickName = userInfo.nickName
                 var avatarUrl = userInfo.avatarUrl
 
-                let stores = wx.getStorageSync('app')
+                let stores = wx.getStorageSync('empower')
                 let newStorage2 = Object.assign({}, stores)
                 newStorage2.nickName = nickName
                 newStorage2.avatarUrl = avatarUrl
-                wx.setStorageSync('app', newStorage2)
+                wx.setStorageSync('empower', newStorage2)
                 self.setData({
                     needNickName: false
                 })
@@ -184,7 +184,7 @@ Page({
             share_code: this.data.code,
             password: this.data.password
         }
-        let store = wx.getStorageSync('app')
+        let store = wx.getStorageSync('empower')
         let nickName = store.nickName
         if(nickName){
             this.initList(params)

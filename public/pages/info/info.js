@@ -2186,8 +2186,8 @@ Page({
     },
 
     inputFocus(e) {
-        let stores = wx.getStorageSync('app')
-        if(stores.phone===undefined){
+        let stores = wx.getStorageSync('empower')
+        if(stores.empower_phone===undefined){
             wx.navigateTo({
                 url: '/pages/empower_phone/empower_phone'
             })

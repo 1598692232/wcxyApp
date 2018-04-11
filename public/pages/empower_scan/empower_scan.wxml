@@ -1,10 +1,26 @@
-<view class="empower" style="height: 100%;">
-    <view class="logo">
-        <!-- <image src="./img/logo.png" mode="aspectFit"></image> -->
+<view class="empower_scan" style="height: 100%;">
+    <view class="pic">
+        <view class="mobile">
+            <image src="./img/mobile.png" mode="aspectFit"></image>
+            <view class="text">
+                <text>确认登录</text>
+            </view>
+        </view>
+        <view class="to">
+            <image src="./img/to.png" mode="aspectFit"></image>
+        </view>
+        <view class="PC">
+            <image src="./img/PC.png" mode="aspectFit"></image>
+        </view>
     </view>
-    <view class="title">
-        -<text>影音制作连接者</text>-
+    <view class="user-text">
+        <view class="user-text1">新阅小程序登录确认</view>
+        <view class="user-text2">请不要扫描来历不明的小程序码</view>
     </view>
-
-    <view class="xinyue">www.xinyue.io</view>
+    <view class="bottom">
+        <view class="user-control">
+            <view class="login-out" bindtap="scanSignin">确认登录</view>
+        </view>
+        <view class="quit" bindtap="scanQuit">取消</view>
+    </view>
 </view>

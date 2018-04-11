@@ -107,12 +107,13 @@ Page({
                     var city = userInfo.city
                     var country = userInfo.country
                 
-                    let stores = wx.getStorageSync('app')
-                    let newStorage2 = Object.assign({}, stores, json)
+                    let stores = wx.getStorageSync('empower')
+                    let newStorage2 = Object.assign({}, stores)
                     newStorage2.nickName = nickName
                     newStorage2.avatarUrl = avatarUrl
-                    Util.setStorage('app', newStorage2)
-                    if(stores.phone===undefined){
+                    Util.setStorage('empower', newStorage2)
+                    console.log(stores.empower_phone,'stores.phone')
+                    if(stores.empower_phone===undefined){
                         wx.reLaunch({
                             url: '/pages/empower_phone/empower_phone'
                         })
@@ -157,7 +158,7 @@ Page({
                                 data: data
                             })
                             
-                            let store = wx.getStorageSync('app')
+                            let store = wx.getStorageSync('empower')
                             let nickName = store.nickName
                             if(nickName){
                                 wx.reLaunch({
@@ -260,7 +261,7 @@ Page({
 
             Util.ajax('user/info', 'get', json).then(json => {
                 Util.setStorage('user_info', json)
-                let store = wx.getStorageSync('app')
+                let store = wx.getStorageSync('empower')
                 let nickName = store.nickName
                 if(nickName){
                     wx.reLaunch({
