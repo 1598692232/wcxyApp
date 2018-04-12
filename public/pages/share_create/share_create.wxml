@@ -46,7 +46,7 @@
             <view class="row link-name" bindtap="bindButtonTap">
                 <view class="row-wrapper">
                     <view class="left">
-                        <input type="text" placeholder="请输入分享标题" bindinput="bindKeyInput" focus="{{focus}}" value="{{name}}"/>
+                        <input type="text" placeholder="请输入分享标题" bindinput="bindKeyInput" focus="{{focus}}" value="{{defaultName}}"/>
                     </view>
                     <view class="right">
                         <image src="./img/pen.png"></image>

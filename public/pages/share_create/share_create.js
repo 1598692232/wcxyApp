@@ -10,6 +10,7 @@ Page({
         shareListWidth: 0,
         inputValue: '',
         name: '新建链接',
+        defaultName:'',
         focus: false,
         allowApproval: true,
         showAllVersions: true,
@@ -63,8 +64,10 @@ Page({
         }
         let store = wx.getStorageSync('app');
         let projectName = wx.getStorageSync('project_name');
+        let defaultName = `${store.realname}分享的${projectName} (${this.data.createShareList.length})`;
         this.setData({
-            name: `${store.realname}分享的${projectName} (${this.data.createShareList.length})`
+            name: defaultName,
+            defaultName
         })
     },
 
