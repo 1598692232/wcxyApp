@@ -23,9 +23,56 @@ Page({
         pc_link:'',
         currentPlayId: null,
         templateShow: false,
+        needNickName: true
     },
     onLoad(options) {
         let self = this;
+        wx.getUserInfo({
+            success: function(res) {
+                var userInfo = res.userInfo
+                var nickName = userInfo.nickName
+                var avatarUrl = userInfo.avatarUrl
+
+                let stores = wx.getStorageSync('empower')
+                let newStorage2 = Object.assign({}, stores)
+                newStorage2.nickName = nickName
+                newStorage2.avatarUrl = avatarUrl
+                wx.setStorageSync('empower', newStorage2)
+                self.setData({
+                    needNickName: false
+                })
+            },
+            fail: function() {
+                wx.showModal({
+                    title: '警告',
+                    content: '您点击了拒绝授权，将无法正常使用。请删除小程序重新进入，再次点击授权。',
+                    success: function (res) {
+                      if (res.confirm) {
+                        console.log('用户点击确定')
+                      }
+                    }
+                })
+            }
+        })
+        let stores = wx.getStorageSync('empower')
+        if(options.scene&&stores.needregister){
+            let stores = wx.getStorageSync('empower')
+            let store = wx.getStorageSync('app')
+            let reqData = Object.assign({}, {code: store.code},{scene_id: stores.needregister},{nick_name:stores.nickName},{avatar:stores.avatarUrl})
+            Util.ajax('register', 'post', reqData).then(json => {
+                console.log(json,'json')
+                let stores = wx.getStorageSync('empower')
+                let newStorage2 = Object.assign({}, stores)
+                newStorage2.needregister = false
+                wx.setStorageSync('empower', newStorage2)
+            }, res => {
+                wx.showModal({
+                    title: '提示',
+                    content: res.data.msg,
+                    showCancel: false
+                })
+            })
+        }
         Util.getSystemInfo().then(result => {
             self.setData({
                 scrollHeight: result.windowHeight,
@@ -108,7 +155,7 @@ Page({
                 //     showCancel: false
                 // });
             })
-        }
+        }   
     },
     
     onShow() {
@@ -159,7 +206,21 @@ Page({
             share_code: this.data.code,
             password: this.data.password
         }
-        this.initList(params)
+        let store = wx.getStorageSync('empower')
+        let nickName = store.nickName
+        if(nickName){
+            this.initList(params)
+        }else{
+            wx.showModal({
+                title: '警告',
+                content: '您点击了拒绝授权，将无法正常使用。请删除小程序重新进入，再次点击授权。',
+                success: function (res) {
+                  if (res.confirm) {
+                    console.log('用户点击确定')
+                  }
+                }
+            })
+        }
     },
 
     inputPassword(e) {

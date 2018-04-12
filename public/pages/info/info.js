@@ -1384,10 +1384,10 @@ Page({
            return
         } 
 
-        if (pids == undefined || pids.length == 0 || pids.indexOf(self.data.project_id) < 0) {
-            returnTosignin('只有参与该项目的人才能评论', true)
-            return
-        }
+        // if (pids == undefined || pids.length == 0 || pids.indexOf(self.data.project_id) < 0) {
+        //     returnTosignin('只有参与该项目的人才能评论', true)
+        //     return
+        // }
 	 
  		let comList = self.data.commentList
  		let time = self.data.focusTime
@@ -2186,6 +2186,12 @@ Page({
     },
 
     inputFocus(e) {
+        let stores = wx.getStorageSync('empower')
+        if(stores.empower_phone===undefined){
+            wx.navigateTo({
+                url: '/pages/empower_phone/empower_phone'
+            })
+        }
         if (!this.data.isFocus) {
 
             this.drawBackCount = 0;

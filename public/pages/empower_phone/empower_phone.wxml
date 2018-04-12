@@ -1,0 +1,13 @@
+<view class="container" style="min-height: {{scrollHeight}}px">
+    <view class="userinfo">
+        <image class="userinfo-avatar" src="{{avatar}}" background-size="cover"></image>
+        <text class="userinfo-nickname">{{realName}}</text>
+    </view>
+    <view class="user-text">
+        <text>您的账号需要手机号实名认证
+            才能进行下一步操作</text>
+    </view>
+    <view class="user-control">
+        <button class="login-out" open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber">微信一键授权</button>
+    </view>
+  </view>

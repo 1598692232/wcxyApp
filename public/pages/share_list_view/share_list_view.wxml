@@ -166,4 +166,6 @@
         </form>
     </view>
 </view>
+
+<view class="info-password-cover" wx:if="{{needNickName}}"></view>
     
