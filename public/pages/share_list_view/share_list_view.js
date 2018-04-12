@@ -43,14 +43,8 @@ Page({
                 })
             },
             fail: function() {
-                wx.showModal({
-                    title: '警告',
-                    content: '您点击了拒绝授权，将无法正常使用。请删除小程序重新进入，再次点击授权。',
-                    success: function (res) {
-                      if (res.confirm) {
-                        console.log('用户点击确定')
-                      }
-                    }
+                wx.reLaunch({
+                    url: '/pages/empower_tips/empower_tips?tips=0'
                 })
             }
         })
@@ -211,14 +205,8 @@ Page({
         if(nickName){
             this.initList(params)
         }else{
-            wx.showModal({
-                title: '警告',
-                content: '您点击了拒绝授权，将无法正常使用。请删除小程序重新进入，再次点击授权。',
-                success: function (res) {
-                  if (res.confirm) {
-                    console.log('用户点击确定')
-                  }
-                }
+            wx.reLaunch({
+                url: '/pages/empower_tips/empower_tips?tips=0'
             })
         }
     },

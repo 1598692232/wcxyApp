@@ -9,7 +9,6 @@ Page({
         avatar: ''
     },
 	onLoad() {
-        console.log('hahahaha')
         let self = this
         wx.getSystemInfo({
             success(res) {
@@ -20,9 +19,7 @@ Page({
                 })
             }
         })
-        console.log(self.data.realName,'name----')
-        console.log(self.data.avatar,'avtar-----')
-        wx.setNavigationBarTitle({title: '授权'})
+        wx.setNavigationBarTitle({title: '微信授权'})
     },
     getPhoneNumber: function(e) {
         let stores = wx.getStorageSync('empower')

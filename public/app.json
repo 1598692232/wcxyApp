@@ -1,6 +1,6 @@
 {
   "pages":[
-    "pages/signin/signin",
+    "pages/empower_signin/empower_signin",
     "pages/register/register",
     "pages/list/list",
     "pages/notice/notice",
@@ -18,7 +18,8 @@
     "pages/share_list/share_list",
     "pages/share_create/share_create",
     "pages/share_list_view/share_list_view",
-    "pages/empower_scan/empower_scan"
+    "pages/empower_scan/empower_scan",
+    "pages/empower_tips/empower_tips"
   ],
   "window":{
     "backgroundTextStyle":"dark",

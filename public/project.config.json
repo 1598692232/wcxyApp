@@ -29,7 +29,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 15,
+			"current": -1,
 			"list": [
 				{
 					"id": 0,
@@ -151,6 +151,13 @@
 					"name": "empower_scan",
 					"pathName": "pages/empower_scan/empower_scan",
 					"query": "scene=scene%3d1523432686CmJK",
+					"scene": "1011"
+				},
+				{
+					"id": -1,
+					"name": "empower_tips",
+					"pathName": "pages/empower_tips/empower_tips",
+					"query": "",
 					"scene": "1011"
 				}
 			]
