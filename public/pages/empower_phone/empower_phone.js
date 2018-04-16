@@ -8,8 +8,11 @@ Page({
         realName: 'name',
         avatar: ''
     },
-	onLoad() {
+	onLoad(options) {
         let self = this
+        self.setData({
+            isSignin: options.sign?true:false
+        })
         wx.getSystemInfo({
             success(res) {
                 self.setData({
@@ -22,24 +25,37 @@ Page({
         wx.setNavigationBarTitle({title: '微信授权'})
     },
     getPhoneNumber: function(e) {
+        let self = this
         let stores = wx.getStorageSync('empower')
         let newStorage2 = Object.assign({}, stores)
         newStorage2.empower_phone = e.type
         newStorage2.empowerPhone = e.detail.encryptedData
-        console.log(e.type,'999999e.type')
+        // console.log(e.type,'999999e.type')
         wx.setStorageSync('empower', newStorage2)
         let shareCode = wx.getStorageSync('share_code')
         if(shareCode){
             wx.navigateBack()
         }else{
             if(e.detail.encryptedData){
-                wx.switchTab({
-                    url: '/pages/list/list'
-                })
+                if(self.data.isSignin) {
+                    wx.redirectTo({
+                        url: '/pages/empower_scan/empower_scan'
+                    })
+                } else {
+                    wx.switchTab({
+                        url: '/pages/list/list'
+                    })
+                }   
             }else{
-                wx.reLaunch({
-                    url: '/pages/signin/signin'
-                })
+                if (self.data.isSignin){
+                    wx.redirectTo({
+                        url: '/pages/empower_scan/empower_scan'
+                    })
+                } else {
+                    wx.switchTab({
+                        url: '/pages/list/list'
+                    })
+                }  
             }
         }
     },

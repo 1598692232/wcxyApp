@@ -41,32 +41,59 @@ Page({
                 self.setData({
                     needNickName: false
                 })
+
+                let store = wx.getStorageSync('app')
+                let empowers = wx.getStorageSync('empower')
+                let reqData = Object.assign({},{code: store.code},{nick_name: empowers.nickName},{avatar: empowers.avatarUrl})
+                Util.ajax('auth/login', 'post', reqData).then(json => {
+                    // if(json.status == 1){
+                    //     wx.reLaunch({
+                    //         url: '/pages/empower_tips/empower_tips?sign=1'
+                    //     })
+                    // } else {
+                    //     wx.reLaunch({
+                    //         url: '/pages/empower_tips/empower_tips?sign=2'
+                    //     })
+                    // }
+                }, res => {
+                    wx.showModal({
+                        title: '提示',
+                        content: res.data.msg,
+                        showCancel: false
+                    })
+                })
             },
             fail: function() {
                 wx.reLaunch({
-                    url: '/pages/empower_tips/empower_tips?tips=0'
+                    url: '/pages/empower_tips/empower_tips?tips=2'
                 })
             }
         })
-        let stores = wx.getStorageSync('empower')
-        if(options.scene&&stores.needregister){
-            let stores = wx.getStorageSync('empower')
-            let store = wx.getStorageSync('app')
-            let reqData = Object.assign({}, {code: store.code},{scene_id: stores.needregister},{nick_name:stores.nickName},{avatar:stores.avatarUrl})
-            Util.ajax('register', 'post', reqData).then(json => {
-                console.log(json,'json')
-                let stores = wx.getStorageSync('empower')
-                let newStorage2 = Object.assign({}, stores)
-                newStorage2.needregister = false
-                wx.setStorageSync('empower', newStorage2)
-            }, res => {
-                wx.showModal({
-                    title: '提示',
-                    content: res.data.msg,
-                    showCancel: false
-                })
-            })
-        }
+
+
+        // if(options.scene&&wx.getStorageSync('empower').nickName){
+        //     let store = wx.getStorageSync('app')
+        //     let empowers = wx.getStorageSync('empower')
+        //     let scene = decodeURIComponent(options.scene).split('=');
+        //     let reqData = Object.assign({}, {scene_id: scene[1]},{code: store.code},{nick_name: empowers.nickName},{avatar: empowers.avatarUrl})
+        //     Util.ajax('auth/login', 'post', reqData).then(json => {
+        //         if(json.status == 1){
+        //             wx.reLaunch({
+        //                 url: '/pages/empower_tips/empower_tips?sign=1'
+        //             })
+        //         } else {
+        //             wx.reLaunch({
+        //                 url: '/pages/empower_tips/empower_tips?sign=2'
+        //             })
+        //         }
+        //     }, res => {
+        //         wx.showModal({
+        //             title: '提示',
+        //             content: res.data.msg,
+        //             showCancel: false
+        //         })
+        //     })
+        // }
         Util.getSystemInfo().then(result => {
             self.setData({
                 scrollHeight: result.windowHeight,
@@ -75,6 +102,30 @@ Page({
                 videoBoxHeight: Math.round(result.windowWidth*9/16)+60
             })  
         });
+
+
+
+        // let store = wx.getStorageSync('app')
+        // let empowers = wx.getStorageSync('empower')
+        // let scene = decodeURIComponent(options.scene).split('=');
+        // let reqData = Object.assign({}, {scene_id: scene[1]},{code: store.code},{nick_name: empowers.nickName},{avatar: empowers.avatarUrl})
+        // Util.ajax('auth/login', 'post', reqData).then(json => {
+        //     if(json.status == 1){
+        //         wx.reLaunch({
+        //             url: '/pages/empower_tips/empower_tips?sign=1'
+        //         })
+        //     } else {
+        //         wx.reLaunch({
+        //             url: '/pages/empower_tips/empower_tips?sign=2'
+        //         })
+        //     }
+        // }, res => {
+        //     wx.showModal({
+        //         title: '提示',
+        //         content: res.data.msg,
+        //         showCancel: false
+        //     })
+        // })
 
         if (options.password != undefined) {
             let params = {};
@@ -206,7 +257,7 @@ Page({
             this.initList(params)
         }else{
             wx.reLaunch({
-                url: '/pages/empower_tips/empower_tips?tips=0'
+                url: '/pages/empower_tips/empower_tips?tips=2'
             })
         }
     },

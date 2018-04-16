@@ -1,8 +1,52 @@
 
-<view class="container" style="min-height: {{scrollHeight}}px">
-  <view class="userinfo">
+<view class="user_container" style="height: 100%">
+  <view class="user_pic">
       <image class="userinfo-avatar" src="{{avatar}}" background-size="cover"></image>
       <text class="userinfo-nickname">{{realName}}</text>
+  </view>
+  <view class="user_info">
+    <view class="user_info_title">
+      <text class="account_information">账户信息</text>
+    </view>
+    <view class="wrap_box">
+      <view class="wrap">  
+        <view class="top">  
+          <canvas class="cir cir1" canvas-id="canvasArc">  
+          </canvas>  
+          <view class="cc">
+            <view class="count">{{storage_bili}}</view>
+            <view class="bili">{{storage}}GB</view>
+          </view>  
+          <view class="canvas_title">存储使用</view>
+        </view>  
+      </view> 
+      <view class="wrap">  
+        <view class="top">  
+          <canvas class="cir cir2" canvas-id="canvasArc2">  
+          </canvas>  
+          <view class="cc">
+            <view class="count">{{project_count}}</view>
+            <view class="bili">{{project}}</view>
+          </view>  
+          <view class="canvas_title">项目数</view> 
+        </view>  
+      </view> 
+      <view class="wrap">  
+        <view class="top">  
+          <canvas class="cir cir2" canvas-id="canvasArc3">  
+          </canvas>  
+          <view class="cc">
+            <view class="count">{{member_count}}</view>
+            <view class="bili">{{member}}</view>
+          </view>  
+          <view class="canvas_title">成员数</view> 
+        </view>  
+      </view> 
+    </view>
+  </view>
+  <view class="user_info_title">
+    <text class="remaining_time">剩余时间</text>
+    <text class="time">{{end_at}}</text>
   </view>
   <!-- <view class="user-control">
     <button class="login-out" bindtap="loginOut">退出账号</button>

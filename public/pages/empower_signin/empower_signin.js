@@ -61,11 +61,32 @@ Page({
                             newStorage2.avatarUrl = avatarUrl
                             Util.setStorage('empower', newStorage2)
                             console.log(stores.empower_phone,'stores.phone')
+
                             if(stores.empower_phone===undefined){
                                 wx.reLaunch({
                                     url: '/pages/empower_phone/empower_phone'
                                 })
                             } 
+                            let store = wx.getStorageSync('app')
+                            let empowers = wx.getStorageSync('empower')
+                            let reqData = Object.assign({},{code: store.code},{nick_name: nickName},{avatar: avatarUrl})
+                            Util.ajax('auth/login', 'post', reqData).then(json => {
+                                // if(json.status == 1){
+                                //     wx.reLaunch({
+                                //         url: '/pages/empower_tips/empower_tips?sign=1'
+                                //     })
+                                // } else {
+                                //     wx.reLaunch({
+                                //         url: '/pages/empower_tips/empower_tips?sign=2'
+                                //     })
+                                // }
+                            }, res => {
+                                wx.showModal({
+                                    title: '提示',
+                                    content: res.data.msg,
+                                    showCancel: false
+                                })
+                            })
                         },
                         fail: function() {
                             wx.reLaunch({

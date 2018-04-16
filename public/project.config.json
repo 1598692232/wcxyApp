@@ -159,6 +159,13 @@
 					"pathName": "pages/empower_tips/empower_tips",
 					"query": "",
 					"scene": "1011"
+				},
+				{
+					"id": -1,
+					"name": "user",
+					"pathName": "pages/user/user",
+					"query": "scene=code%3d7b3f9ae0a1e0d08c",
+					"scene": "1011"
 				}
 			]
 		}
