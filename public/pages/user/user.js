@@ -137,8 +137,8 @@ Page({
     // 页面显示  
     let self = this
     self.setData({
-      realName: wx.getStorageSync('user_info').realname,
-      avatar:  wx.getStorageSync('user_info').avatar,
+      realName: wx.getStorageSync('user_info').realname?wx.getStorageSync('user_info').realname:wx.getStorageSync('user_info').nickName,
+      avatar:  wx.getStorageSync('user_info').avatar?wx.getStorageSync('user_info').avatar:wx.getStorageSync('user_info').avatarUrl,
     })
   },  
   onHide: function () {  
