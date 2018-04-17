@@ -21,13 +21,28 @@ Page({
         wx.getSystemInfo({
             success(res) {
                 self.setData({
-                    scrollHeight: res.windowHeight ,
-                    realName: wx.getStorageSync('user_info').realname?wx.getStorageSync('user_info').realname:wx.getStorageSync('user_info').nickName,
-                    avatar:  wx.getStorageSync('user_info').avatar?wx.getStorageSync('user_info').avatar:wx.getStorageSync('user_info').avatarUrl,
+                    scrollHeight: res.windowHeight
                 })
             }
         })
         wx.setNavigationBarTitle({title: '微信授权'})
+    },
+    onShow() {
+        let self = this
+        let store = wx.getStorageSync('app')
+        let reqData = Object.assign({},{login_id: store.login_id},{token: store.token})
+        Util.ajax('user/info', 'get', reqData).then(json => {
+            self.setData({
+                realName: json.realname?json.realname:wx.getStorageSync('user_info').nickName,
+                avatar:  json.avatar?json.avatar:wx.getStorageSync('user_info').avatarUrl,
+            })
+        }, res => {
+            wx.showModal({
+                title: '提示',
+                content: res.msg,
+                showCancel: false
+            })
+        }) 
     },
     getPhoneNumber: function(e) {
         let self = this
@@ -48,7 +63,7 @@ Page({
                         url: '/pages/empower_scan/empower_scan'
                     })
                 } else {
-                    wx.switchTab({
+                    wx.reLaunch({
                         url: '/pages/list/list'
                     })
                 }  
@@ -72,7 +87,7 @@ Page({
                         url: '/pages/empower_scan/empower_scan'
                     })
                 } else {
-                    wx.switchTab({
+                    wx.reLaunch({
                         url: '/pages/list/list'
                     })
                 }  

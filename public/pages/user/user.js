@@ -136,10 +136,20 @@ Page({
   onShow: function () {  
     // 页面显示  
     let self = this
-    self.setData({
-      realName: wx.getStorageSync('user_info').realname?wx.getStorageSync('user_info').realname:wx.getStorageSync('user_info').nickName,
-      avatar:  wx.getStorageSync('user_info').avatar?wx.getStorageSync('user_info').avatar:wx.getStorageSync('user_info').avatarUrl,
-    })
+        let store = wx.getStorageSync('app')
+        let reqData = Object.assign({},{login_id: store.login_id},{token: store.token})
+        Util.ajax('user/info', 'get', reqData).then(json => {
+            self.setData({
+                realName: json.realname?json.realname:wx.getStorageSync('user_info').nickName,
+                avatar:  json.avatar?json.avatar:wx.getStorageSync('user_info').avatarUrl,
+            })
+        }, res => {
+            wx.showModal({
+                title: '提示',
+                content: res.msg,
+                showCancel: false
+            })
+        }) 
   },  
   onHide: function () {  
     // 页面隐藏  
