@@ -23,110 +23,78 @@ Page({
         pc_link:'',
         currentPlayId: null,
         templateShow: false,
-        needNickName: true
+        needNickName: false
     },
     onLoad(options) {
         let self = this;
-        wx.getUserInfo({
-            success: function(res) {
-                var userInfo = res.userInfo
-                var nickName = userInfo.nickName
-                var avatarUrl = userInfo.avatarUrl
+        if(options.scene){
+            let store = wx.getStorageSync('app')
+            let empowers = wx.getStorageSync('empower')
+            let reqData = Object.assign({},{code: store.code})
+            Util.ajax('auth/login', 'post', reqData).then(json => {
+                Util.setStorage('user_info', json)
+                let data = Object.assign({}, store, json)
+                if(json.avatar==false) {
+                    self.setData({
+                        needNickName: true
+                    })
+                    wx.getUserInfo({
+                        withCredentials: true,
+                        success: function(res) {
+                            var userInfo = res.userInfo
+                            var nickName = userInfo.nickName
+                            var avatarUrl = userInfo.avatarUrl
+                            var gender = userInfo.gender //性别 0：未知、1：男、2：女
+                        
+                            let stores = wx.getStorageSync('empower')
+                            let newStorage2 = Object.assign({}, stores)
+                            newStorage2.nickName = nickName
+                            newStorage2.avatarUrl = avatarUrl
+                            Util.setStorage('empower', newStorage2)
 
-                let stores = wx.getStorageSync('empower')
-                let newStorage2 = Object.assign({}, stores)
-                newStorage2.nickName = nickName
-                newStorage2.avatarUrl = avatarUrl
-                wx.setStorageSync('empower', newStorage2)
-                self.setData({
-                    needNickName: false
-                })
 
-                let store = wx.getStorageSync('app')
-                let empowers = wx.getStorageSync('empower')
-                let reqData = Object.assign({},{code: store.code},{nick_name: empowers.nickName},{avatar: empowers.avatarUrl})
-                Util.ajax('auth/login', 'post', reqData).then(json => {
-                    // if(json.status == 1){
-                    //     wx.reLaunch({
-                    //         url: '/pages/empower_tips/empower_tips?sign=1'
-                    //     })
-                    // } else {
-                    //     wx.reLaunch({
-                    //         url: '/pages/empower_tips/empower_tips?sign=2'
-                    //     })
-                    // }
-                }, res => {
-                    wx.showModal({
-                        title: '提示',
-                        content: res.data.msg,
-                        showCancel: false
+                            self.setData({
+                                needNickName: false
+                            })
+                            let reqData2 = Object.assign({},{login_id:json.login_id},{token:json.token},{nick_name: nickName},{avatar: avatarUrl})
+                            if(json.avatar==false){
+                                Util.ajax('user/info', 'post', reqData2).then((data) => {
+                                    wx.setStorage({
+                                        key: 'user_info',
+                                        data: data
+                                    })
+                                    let empower = wx.getStorageSync('empower')
+                                    let nickName = empower.nickName
+                                }, () => {
+                                    console.log('222')
+                                    // wx.reLaunch({
+                                    //     url: '/pages/empower_tips/empower_tips?tips=2'
+                                    // })
+                                })
+                            }  
+                        },
+                        fail: function() {
+                            console.log('1111')
+                            wx.reLaunch({
+                                url: '/pages/empower_tips/empower_tips?tips=2'
+                            })
+                        }
+                    })
+                }
+
+                Util.setStorage('app', data).then(() => {
+                    Util.getStorage('app').then((res) => {
+                                       
                     })
                 })
-            },
-            fail: function() {
-                wx.reLaunch({
-                    url: '/pages/empower_tips/empower_tips?tips=2'
+            }, res => {
+                wx.showModal({
+                    title: '提示',
+                    content: res.data.msg,
+                    showCancel: false
                 })
-            }
-        })
-
-
-        // if(options.scene&&wx.getStorageSync('empower').nickName){
-        //     let store = wx.getStorageSync('app')
-        //     let empowers = wx.getStorageSync('empower')
-        //     let scene = decodeURIComponent(options.scene).split('=');
-        //     let reqData = Object.assign({}, {scene_id: scene[1]},{code: store.code},{nick_name: empowers.nickName},{avatar: empowers.avatarUrl})
-        //     Util.ajax('auth/login', 'post', reqData).then(json => {
-        //         if(json.status == 1){
-        //             wx.reLaunch({
-        //                 url: '/pages/empower_tips/empower_tips?sign=1'
-        //             })
-        //         } else {
-        //             wx.reLaunch({
-        //                 url: '/pages/empower_tips/empower_tips?sign=2'
-        //             })
-        //         }
-        //     }, res => {
-        //         wx.showModal({
-        //             title: '提示',
-        //             content: res.data.msg,
-        //             showCancel: false
-        //         })
-        //     })
-        // }
-        Util.getSystemInfo().then(result => {
-            self.setData({
-                scrollHeight: result.windowHeight,
-                videoWidth: Math.round(result.windowWidth)-28,
-                videoHeight: Math.round(result.windowWidth*9/16),
-                videoBoxHeight: Math.round(result.windowWidth*9/16)+60
-            })  
-        });
-
-
-
-        // let store = wx.getStorageSync('app')
-        // let empowers = wx.getStorageSync('empower')
-        // let scene = decodeURIComponent(options.scene).split('=');
-        // let reqData = Object.assign({}, {scene_id: scene[1]},{code: store.code},{nick_name: empowers.nickName},{avatar: empowers.avatarUrl})
-        // Util.ajax('auth/login', 'post', reqData).then(json => {
-        //     if(json.status == 1){
-        //         wx.reLaunch({
-        //             url: '/pages/empower_tips/empower_tips?sign=1'
-        //         })
-        //     } else {
-        //         wx.reLaunch({
-        //             url: '/pages/empower_tips/empower_tips?sign=2'
-        //         })
-        //     }
-        // }, res => {
-        //     wx.showModal({
-        //         title: '提示',
-        //         content: res.data.msg,
-        //         showCancel: false
-        //     })
-        // })
-
+            })
+        }
         if (options.password != undefined) {
             let params = {};
             params = {
@@ -200,7 +168,17 @@ Page({
                 //     showCancel: false
                 // });
             })
-        }   
+        } 
+
+        Util.getSystemInfo().then(result => {
+            self.setData({
+                scrollHeight: result.windowHeight,
+                videoWidth: Math.round(result.windowWidth)-28,
+                videoHeight: Math.round(result.windowWidth*9/16),
+                videoBoxHeight: Math.round(result.windowWidth*9/16)+60
+            })  
+        });
+   
     },
     
     onShow() {
@@ -251,15 +229,9 @@ Page({
             share_code: this.data.code,
             password: this.data.password
         }
-        let store = wx.getStorageSync('empower')
-        let nickName = store.nickName
-        if(nickName){
-            this.initList(params)
-        }else{
-            wx.reLaunch({
-                url: '/pages/empower_tips/empower_tips?tips=2'
-            })
-        }
+        let store = wx.getStorageSync('user_info')
+        let avatar = store.avatar
+        this.initList(params)
     },
 
     inputPassword(e) {

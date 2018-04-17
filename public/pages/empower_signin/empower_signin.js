@@ -6,7 +6,8 @@ Page({
 	data: {
         scrollHeight: 0,
         realName: 'name',
-        avatar: ''
+        avatar: '',
+        toUserInfo: false
     },
 	onLoad() {
         let self = this
@@ -44,59 +45,20 @@ Page({
                   key:"app",
                   data: store,
                   success() {
-                    wx.getUserInfo({
-                        withCredentials: true,
-                        success: function(res) {
-                            var userInfo = res.userInfo
-                            var nickName = userInfo.nickName
-                            var avatarUrl = userInfo.avatarUrl
-                            var gender = userInfo.gender //性别 0：未知、1：男、2：女
-                            var province = userInfo.province
-                            var city = userInfo.city
-                            var country = userInfo.country
-                        
-                            let stores = wx.getStorageSync('empower')
-                            let newStorage2 = Object.assign({}, stores)
-                            newStorage2.nickName = nickName
-                            newStorage2.avatarUrl = avatarUrl
-                            Util.setStorage('empower', newStorage2)
-                            console.log(stores.empower_phone,'stores.phone')
-
-                            if(stores.empower_phone===undefined){
-                                wx.reLaunch({
-                                    url: '/pages/empower_phone/empower_phone'
-                                })
-                            } 
-                            let store = wx.getStorageSync('app')
-                            let empowers = wx.getStorageSync('empower')
-                            let reqData = Object.assign({},{code: store.code},{nick_name: nickName},{avatar: avatarUrl})
-                            Util.ajax('auth/login', 'post', reqData).then(json => {
-                                // if(json.status == 1){
-                                //     wx.reLaunch({
-                                //         url: '/pages/empower_tips/empower_tips?sign=1'
-                                //     })
-                                // } else {
-                                //     wx.reLaunch({
-                                //         url: '/pages/empower_tips/empower_tips?sign=2'
-                                //     })
-                                // }
-                            }, res => {
-                                wx.showModal({
-                                    title: '提示',
-                                    content: res.data.msg,
-                                    showCancel: false
-                                })
-                            })
-                        },
-                        fail: function() {
-                            wx.reLaunch({
-                                url: '/pages/empower_tips/empower_tips?tips=1'
-                            })
-                        }
-                    })
                     self.isLoginforHandle()
                   }
                 }) 
+                wx.checkSession({
+                    success: function(){
+                        console.log('未过期')
+                      //session_key 未过期，并且在本生命周期一直有效
+                    },
+                    fail: function(){
+                        console.log('已经失效')
+                      // session_key 已经失效，需要重新执行登录流程
+                      wx.login() //重新登录
+                    }
+                  })
             } else {
               console.log('获取用户登录态失败！' + res.errMsg)
             }
@@ -108,8 +70,60 @@ Page({
 
         //获取存储的code
         let store = wx.getStorageSync('app')
-        Util.ajax('init', 'get', {code: store.code}).then((json) => {
+        let empowers = wx.getStorageSync('empower')
+        let reqData = Object.assign({},{code: store.code})
+        Util.ajax('auth/login', 'post', reqData).then((json) => {
+            Util.setStorage('user_info', json)
             let data = Object.assign({}, store, json)
+            if(json.avatar==false) {
+                wx.getUserInfo({
+                    withCredentials: true,
+                    success: function(res) {
+                        var userInfo = res.userInfo
+                        var nickName = userInfo.nickName
+                        var avatarUrl = userInfo.avatarUrl
+                    
+                        let stores = wx.getStorageSync('empower')
+                        let newStorage2 = Object.assign({}, stores)
+                        newStorage2.nickName = nickName
+                        newStorage2.avatarUrl = avatarUrl
+                        Util.setStorage('empower', newStorage2)
+                        console.log('wx.getUserInfo')
+                        self.setData({
+                            toUserInfo: true
+                        })
+                        let reqData2 = Object.assign({},{login_id:json.login_id},{token:json.token},{nick_name: nickName},{avatar: avatarUrl})
+                        Util.ajax('user/info', 'post', reqData2).then((data) => {
+                            wx.setStorage({
+                                key: 'user_info',
+                                data: data
+                            })
+                            let empower = wx.getStorageSync('empower')
+                            let nickName = empower.nickName
+                            if(json.phone == false){
+                                wx.reLaunch({
+                                    url: '/pages/empower_phone/empower_phone'
+                                })
+                            }
+                        }, () => {
+                            wx.reLaunch({
+                                url: '/pages/empower_tips/empower_tips?tips=1'
+                            })
+                        })
+                        if(json.phone == false){
+                            console.log('1111')
+                            wx.reLaunch({
+                                url: '/pages/empower_phone/empower_phone'
+                            })
+                        }
+                    },
+                    fail: function() {
+                        wx.reLaunch({
+                            url: '/pages/empower_tips/empower_tips?tips=1'
+                        })
+                    }
+                })
+            }
             if (data.token == '') {
                 //如果没有登录，设置storage
                 // Util.setStorage({
@@ -126,27 +140,43 @@ Page({
 
                 Util.setStorage('app', data).then(() => {
                     Util.getStorage('app').then((res) => {
-                        Util.ajax('user/info', 'get', res.data).then((data) => {
-                            wx.setStorage({
-                                key: 'user_info',
-                                data: data
+                        // console.log(self.data.toUserInfo,'self.data.toUserInfo')
+                        // console.log(json.avatar==false&&self.data.toUserInfo,'json.avatar==false&&self.data.toUserInfo')
+                        // let empowers = wx.getStorageSync('empower')
+                        // let reqData2 = Object.assign({},{login_id:res.data.login_id},{token:res.data.token},{nick_name: empowers.nickName},{avatar: empowers.avatarUrl})
+                        // if(json.avatar==false&&self.data.toUserInfo){
+                            // Util.ajax('user/info', 'post', reqData2).then((data) => {
+                            //     wx.setStorage({
+                            //         key: 'user_info',
+                            //         data: data
+                            //     })
+                            //     let empower = wx.getStorageSync('empower')
+                            //     let nickName = empower.nickName
+                            //     if(json.phone == false){
+                            //         wx.reLaunch({
+                            //             url: '/pages/empower_phone/empower_phone?session_key='+json.session_key
+                            //         })
+                            //     }
+                            // }, () => {
+                            //     wx.reLaunch({
+                            //         url: '/pages/empower_tips/empower_tips?tips=1'
+                            //     })
+                            // })
+                        // }
+                        if(json.phone == false){
+                            wx.reLaunch({
+                                url: '/pages/empower_phone/empower_phone'
                             })
-                            let empower = wx.getStorageSync('empower')
-                            let nickName = empower.nickName
-                            if(nickName){
-                                wx.reLaunch({
-                                    // url: '/pages/list/list?sessionid=' + sessionid
-                                    url: '/pages/list/list'
-                                })
-                            }
-                            self.hasRedDots()
-                        }, () => {
-                            wx.showModal({
-                                title: '提示',
-                                content: '未获取到当前用户信息',
-                                showCancel: false
+                        }
+                        
+                        if(json.avatar&&json.phone){
+                            wx.reLaunch({
+                                // url: '/pages/list/list?sessionid=' + sessionid
+                                url: '/pages/list/list'
                             })
-                        })
+                        }
+                        self.hasRedDots()
+                        
                     })
                 })
 

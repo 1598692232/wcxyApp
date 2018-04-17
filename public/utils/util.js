@@ -73,6 +73,7 @@ const ajax = (url, type, data, failHide, failClick) => {
                 'content-type': 'application/json' // 默认值
             },
             method: type,
+            credentials: 'include',
             success(res){
                 wx.hideLoading()
                 if (parseInt(res.data.status) == 1) {

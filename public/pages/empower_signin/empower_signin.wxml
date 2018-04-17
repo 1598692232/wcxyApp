@@ -5,6 +5,7 @@
         <view class="title">
             -<text>影音制作连接者</text>-
         </view>
+        <view class="tips">欢迎来到新阅！</view>
         <view class="xinyue">www.xinyue.io</view>
         <view class="background">
             <image src="./img/bac.png" mode="aspectFit"></image>

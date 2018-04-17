@@ -51,5 +51,6 @@
     font-size: 14px;
     color: #E7E7E7;
     letter-spacing: 0;
-    text-align: justify;
+    text-align: center;
 }
+

@@ -7,35 +7,7 @@ Page({
         scene: ''
     },
     onShow() {
-        wx.getUserInfo({
-            withCredentials: true,
-            success: function(res) {
-                var userInfo = res.userInfo
-                var nickName = userInfo.nickName
-                var avatarUrl = userInfo.avatarUrl
-                var gender = userInfo.gender //性别 0：未知、1：男、2：女
-                var province = userInfo.province
-                var city = userInfo.city
-                var country = userInfo.country
-            
-                let stores = wx.getStorageSync('empower')
-                let newStorage2 = Object.assign({}, stores)
-                newStorage2.nickName = nickName
-                newStorage2.avatarUrl = avatarUrl
-                Util.setStorage('empower', newStorage2)
-                // console.log(stores.empower_phone,'stores.phone')
-                if(stores.empower_phone===undefined){
-                    wx.reLaunch({
-                        url: '/pages/empower_phone/empower_phone?sign=1'
-                    })
-                } 
-            },
-            fail: function() {
-                wx.reLaunch({
-                    url: '/pages/empower_tips/empower_tips?tips=2'
-                })
-            }
-        })
+       
     },
 
 	onLoad(options) {
@@ -56,8 +28,63 @@ Page({
         let self = this
         let store = wx.getStorageSync('app')
         let empowers = wx.getStorageSync('empower')
-        let reqData = Object.assign({}, {scene_id: self.data.scene},{code: store.code},{nick_name: empowers.nickName},{avatar: empowers.avatarUrl})
+        let reqData = Object.assign({}, {scene_id: '1523938209rTAR'},{code: store.code})
         Util.ajax('auth/login', 'post', reqData).then(json => {
+            if(json.realname == false) {
+                wx.getUserInfo({
+                    withCredentials: true,
+                    success: function(res) {
+                        var userInfo = res.userInfo
+                        var nickName = userInfo.nickName
+                        var avatarUrl = userInfo.avatarUrl
+                        var gender = userInfo.gender //性别 0：未知、1：男、2：女
+                        var province = userInfo.province
+                        var city = userInfo.city
+                        var country = userInfo.country
+                    
+                        let stores = wx.getStorageSync('empower')
+                        let newStorage2 = Object.assign({}, stores)
+                        newStorage2.nickName = nickName
+                        newStorage2.avatarUrl = avatarUrl
+                        Util.setStorage('empower', newStorage2)
+
+                        let reqData2 = Object.assign({},{login_id:json.login_id},{token:json.token},{nick_name: nickName},{avatar: avatarUrl})
+                        Util.ajax('user/info', 'post', reqData2).then((data) => {
+                            wx.setStorage({
+                                key: 'user_info',
+                                data: data
+                            })
+                            let empower = wx.getStorageSync('empower')
+                            let nickName = empower.nickName
+                            if(json.phone == false){
+                                wx.reLaunch({
+                                    url: '/pages/empower_phone/empower_phone?sign=1'
+                                })
+                            }
+                        }, () => {
+                            wx.reLaunch({
+                                url: '/pages/empower_tips/empower_tips?tips=1'
+                            })
+                        })
+                        // console.log(stores.empower_phone,'stores.phone')
+                        if(json.phone == false){
+                            wx.reLaunch({
+                                url: '/pages/empower_phone/empower_phone?sign=1'
+                            })
+                        } 
+                    },
+                    fail: function() {
+                        wx.reLaunch({
+                            url: '/pages/empower_tips/empower_tips?tips=2'
+                        })
+                    }
+                })
+            }
+            if(json.phone == false){
+                wx.reLaunch({
+                    url: '/pages/empower_phone/empower_phone?session_key='+json.session_key
+                })
+            }
             if(json.status == 1){
                 wx.reLaunch({
                     url: '/pages/empower_tips/empower_tips?sign=1'
