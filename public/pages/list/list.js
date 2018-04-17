@@ -66,11 +66,11 @@ Page({
         this.hasRedDots()
         let store = wx.getStorageSync('app')
 
-        if (store.token == '') {
-            wx.navigateTo({
-                url: '/pages/signin/signin'
-            })
-        } else {
+        // if (store.token == '') {
+            // wx.navigateTo({
+            //     url: '/pages/signin/signin'
+            // })
+        // } else {
             // 评论输入框动画注册
             let animation = wx.createAnimation({
                 duration: 300,
@@ -82,7 +82,7 @@ Page({
             self.animation = animation
 
             self.initList()
-        }
+        // }
         
     },
 
@@ -135,16 +135,16 @@ Page({
             wx.hideLoading()
         }, res => {
 
-            wx.showModal({
-                title: '提示',
-                content: '获取我的项目失败,请重新登录！！',
-                showCancel: false,
-                success: function(res) {
-                    if (res.confirm) {
-                        wx.navigateTo({url: '/pages/signin/signin?login_out=1'})
-                    }
-                }
-            })
+            // wx.showModal({
+            //     title: '提示',
+            //     content: '获取我的项目失败,请重新登录！！',
+            //     showCancel: false,
+            //     success: function(res) {
+            //         if (res.confirm) {
+            //             wx.navigateTo({url: '/pages/signin/signin?login_out=1'})
+            //         }
+            //     }
+            // })
         })
 
         Util.ajax('project/join', 'get', store).then(data => {
@@ -160,16 +160,16 @@ Page({
             wx.hideLoading()
         }, (res) => {
 
-            wx.showModal({
-                title: '提示',
-                content: '获取参与项目失败,请重新登录！！',
-                showCancel: false,
-                success: function(res) {
-                    if (res.confirm) {
-                        wx.navigateTo({url: '/pages/signin/signin?login_out=1'})
-                    }
-                }
-            })
+            // wx.showModal({
+            //     title: '提示',
+            //     content: '获取参与项目失败,请重新登录！！',
+            //     showCancel: false,
+            //     success: function(res) {
+            //         if (res.confirm) {
+            //             wx.navigateTo({url: '/pages/signin/signin?login_out=1'})
+            //         }
+            //     }
+            // })
         })
     },
 

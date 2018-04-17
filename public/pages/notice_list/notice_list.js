@@ -39,14 +39,14 @@ Page({
     onShow() {
         let store = wx.getStorageSync('app')
         wx.showLoading()
-        if (store.token == '') {
-            wx.navigateTo({
-                url: '/pages/signin/signin'
-            })
-        } else {
+        // if (store.token == '') {
+        //     wx.navigateTo({
+        //         url: '/pages/signin/signin'
+        //     })
+        // } else {
             let self = this
             self.initList()
-        }  
+        // }  
     },
 
     //初始化列表页

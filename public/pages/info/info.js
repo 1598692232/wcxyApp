@@ -593,16 +593,16 @@ Page({
                 fn(json)
             }
         }, res => {
-            wx.showModal({
-                title: '提示',
-                content: '获取数据失败,请重新登录！',
-                showCancel: false,
-                success: function(res) {
-                    if (res.confirm) {
-                        wx.navigateTo({url: '/pages/signin/signin'})
-                    }
-                }
-            })
+            // wx.showModal({
+            //     title: '提示',
+            //     content: '获取数据失败,请重新登录！',
+            //     showCancel: false,
+            //     success: function(res) {
+            //         if (res.confirm) {
+            //             wx.navigateTo({url: '/pages/signin/signin'})
+            //         }
+            //     }
+            // })
 
         })
     },
@@ -762,16 +762,16 @@ Page({
                 statusActive: review
             });
         }, () => {
-            wx.showModal({
-                title: '提示',
-                content: '修改失败，请重新登录！',
-                // showCancel: false,
-                success: function(res) {
-                    if (res.confirm) {
-                        wx.navigateTo({url: '/pages/signin/signin'})
-                    }
-                }
-            });
+            // wx.showModal({
+            //     title: '提示',
+            //     content: '修改失败，请重新登录！',
+            //     // showCancel: false,
+            //     success: function(res) {
+            //         if (res.confirm) {
+            //             wx.navigateTo({url: '/pages/signin/signin'})
+            //         }
+            //     }
+            // });
         });
     },
 
@@ -1367,15 +1367,15 @@ Page({
                     showCancel: false
                 })
             } else {
-                wx.showModal({
-                    title: '提示',
-                    content: text,
-                    success: function(res) {
-                        if (res.confirm) {
-                            wx.navigateTo({url: '/pages/signin/signin'})
-                        }
-                    }
-                })
+                // wx.showModal({
+                //     title: '提示',
+                //     content: text,
+                //     success: function(res) {
+                //         if (res.confirm) {
+                //             wx.navigateTo({url: '/pages/signin/signin'})
+                //         }
+                //     }
+                // })
             }
         }
 
@@ -1516,16 +1516,16 @@ Page({
             // self.data.commentDrawTemp = [];
 
         }, res => {
-            wx.showModal({
-                title: '提示',
-                content: '发表评论失败，请重新登录！',
-                // showCancel: false,
-                success: function(res) {
-                    if (res.confirm) {
-                        wx.navigateTo({url: '/pages/signin/signin'})
-                    }
-                }
-            })
+            // wx.showModal({
+            //     title: '提示',
+            //     content: '发表评论失败，请重新登录！',
+            //     // showCancel: false,
+            //     success: function(res) {
+            //         if (res.confirm) {
+            //             wx.navigateTo({url: '/pages/signin/signin'})
+            //         }
+            //     }
+            // })
 
             if (self.data.info.file_type = "audio") {
                 self.audioCtx.play();
@@ -1755,15 +1755,15 @@ Page({
 
             wx.setStorageSync('info_data', infoData)
 
-            wx.showModal({
-              title: '提示',
-              content: '评论／回复需登录',
-              success: function(res) {
-                if (res.confirm) {
-                    wx.reLaunch({url: '/pages/signin/signin'})
-                }
-              }
-            })
+            // wx.showModal({
+            //   title: '提示',
+            //   content: '评论／回复需登录',
+            //   success: function(res) {
+            //     if (res.confirm) {
+            //         wx.reLaunch({url: '/pages/signin/signin'})
+            //     }
+            //   }
+            // })
 
         } else { 
             let url = `/pages/call_back/call_back?commentId=${e.currentTarget.dataset.index}
@@ -1930,16 +1930,16 @@ Page({
                 icon: 'success'
             })
         }, res => {
-            wx.showModal({
-                title: '提示',
-                content: '删除评论失败，请重新登录！',
-                // showCancel: false,
-                success: function(res) {
-                    if (res.confirm) {
-                        wx.navigateTo({url: '/pages/signin/signin'})
-                    }
-                }
-            })
+            // wx.showModal({
+            //     title: '提示',
+            //     content: '删除评论失败，请重新登录！',
+            //     // showCancel: false,
+            //     success: function(res) {
+            //         if (res.confirm) {
+            //             wx.navigateTo({url: '/pages/signin/signin'})
+            //         }
+            //     }
+            // })
         }).then(() => {
             self.data.delComment = false
         })

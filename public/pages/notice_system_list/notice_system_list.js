@@ -23,14 +23,14 @@ Page({
     },
     onShow() {
         let store = wx.getStorageSync('app')
-        if (store.token == '') {
-            wx.navigateTo({
-                url: '/pages/signin/signin'
-            })
-        } else {
+        // if (store.token == '') {
+        //     wx.navigateTo({
+        //         url: '/pages/signin/signin'
+        //     })
+        // } else {
             let self = this
             self.initList()
-        }  
+        // }  
     },
 
     //初始化列表页
@@ -49,16 +49,16 @@ Page({
             })
             wx.hideLoading()
         }, res => {
-            wx.showModal({
-                title: '提示',
-                content: '获取消息通知失败,请重新登录！！',
-                showCancel: false,
-                success: function(res) {
-                    if (res.confirm) {
-                        wx.navigateTo({url: '/pages/signin/signin?login_out=2'})
-                    }
-                }
-            })
+            // wx.showModal({
+            //     title: '提示',
+            //     content: '获取消息通知失败,请重新登录！！',
+            //     showCancel: false,
+            //     success: function(res) {
+            //         if (res.confirm) {
+            //             wx.navigateTo({url: '/pages/signin/signin?login_out=2'})
+            //         }
+            //     }
+            // })
         })
     },
 

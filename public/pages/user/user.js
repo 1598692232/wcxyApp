@@ -148,9 +148,9 @@ Page({
     // 页面关闭  
   }, 
 
-  loginOut() {
-      wx.navigateTo({
-        url: '/pages/signin/signin?login_out=1'
-      })
-  }
+  // loginOut() {
+  //     wx.navigateTo({
+  //       url: '/pages/signin/signin?login_out=1'
+  //     })
+  // }
 })

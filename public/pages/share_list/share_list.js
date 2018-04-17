@@ -26,15 +26,15 @@ Page({
     },
     onShow() {
         let store = wx.getStorageSync('app')
-        if (store.token == '') {
-            wx.navigateTo({
-                url: '/pages/signin/signin'
-            })
-        } else {
+        // if (store.token == '') {
+        //     wx.navigateTo({
+        //         url: '/pages/signin/signin'
+        //     })
+        // } else {
             let self = this
             wx.showLoading()
             self.getShareList()
-        }  
+        // }  
 
         // let self = this
         // let store = wx.getStorageSync('app')
