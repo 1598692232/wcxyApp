@@ -53,3 +53,27 @@
     letter-spacing: 0;
     text-align: center;
 }
+
+.backIndex{
+	width: 320px;
+    position: fixed;
+    left: 50%;
+    margin-left: -160px;
+    bottom: 80px;
+}
+.user-control{
+	width: 100%;
+}
+.login-out{
+	width: 320px;
+	height: 44px;
+	margin: 0 auto;
+	background: #0345C7;
+	/* border-radius: 100px; */
+	border-radius: 6px;
+	color: #fff;
+	font-size: 17px;
+	letter-spacing: 0.86px;
+	text-align: center;
+	line-height: 44px;
+}

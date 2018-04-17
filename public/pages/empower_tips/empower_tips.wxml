@@ -8,6 +8,11 @@
     <view class="tips">
         {{content}}
     </view>
+    <view class="backIndex" wx:if="{{backIndex}}">
+        <view class="user-control">
+            <view class="login-out" bindtap="backIndex">返回首页</view>
+        </view>
+    </view>
     <view class="xinyue">www.xinyue.io</view>
     <view class="background">
         <image src="./img/bac.png" mode="aspectFit"></image>

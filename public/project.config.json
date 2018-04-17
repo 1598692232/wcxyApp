@@ -154,10 +154,10 @@
 					"scene": "1011"
 				},
 				{
-					"id": -1,
+					"id": 18,
 					"name": "empower_tips",
 					"pathName": "pages/empower_tips/empower_tips",
-					"query": "",
+					"query": "sign=2",
 					"scene": "1011"
 				},
 				{

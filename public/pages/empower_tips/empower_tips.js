@@ -7,7 +7,8 @@ Page({
         scrollHeight: 0,
         realName: 'name',
         avatar: '',
-        content: ''
+        content: '',
+        backIndex: false
     },
 	onLoad(options) {
         console.log(options,'options')
@@ -31,14 +32,21 @@ Page({
             })
         } else if (options.sign==1) {
             self.setData({
-                content: '恭喜您，登录注册成功！'
+                content: '恭喜您，登录成功！',
+                backIndex: true
             })
         } else if (options.sign ==2) {
             self.setData({
-                content: '登录注册失败，请重新扫码进行登录注册！'
+                content: '登录失败，请重新扫码进行登录！',
+                backIndex: true
             })
         }
-        let title = options.tips?'授权失败':'登录注册'
+        let title = options.tips?'授权失败':'登录'
         wx.setNavigationBarTitle({title: title})
+    },
+    backIndex() {
+        wx.reLaunch({
+            url: '/pages/empower_signin/empower_signin'
+        })
     }
 })

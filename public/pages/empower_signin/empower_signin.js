@@ -83,11 +83,11 @@ Page({
                         var nickName = userInfo.nickName
                         var avatarUrl = userInfo.avatarUrl
                     
-                        let stores = wx.getStorageSync('empower')
+                        let stores = wx.getStorageSync('user_info')
                         let newStorage2 = Object.assign({}, stores)
                         newStorage2.nickName = nickName
                         newStorage2.avatarUrl = avatarUrl
-                        Util.setStorage('empower', newStorage2)
+                        Util.setStorage('user_info', newStorage2)
                         console.log('wx.getUserInfo')
                         self.setData({
                             toUserInfo: true
@@ -98,7 +98,7 @@ Page({
                                 key: 'user_info',
                                 data: data
                             })
-                            let empower = wx.getStorageSync('empower')
+                            let empower = wx.getStorageSync('user_info')
                             let nickName = empower.nickName
                             if(json.phone == false){
                                 wx.reLaunch({

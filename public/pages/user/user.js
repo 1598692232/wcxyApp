@@ -26,9 +26,7 @@ Page({
     wx.getSystemInfo({
       success(res) {
           self.setData({
-              scrollHeight: res.windowHeight ,
-              realName: wx.getStorageSync('user_info').realname,
-              avatar:  wx.getStorageSync('user_info').avatar == '' ? app.data.staticImg.manager : wx.getStorageSync('user_info').avatar,
+              scrollHeight: res.windowHeight 
           })
       }
     });
@@ -137,6 +135,11 @@ Page({
   },  
   onShow: function () {  
     // 页面显示  
+    let self = this
+    self.setData({
+      realName: wx.getStorageSync('user_info').realname,
+      avatar:  wx.getStorageSync('user_info').avatar,
+    })
   },  
   onHide: function () {  
     // 页面隐藏  

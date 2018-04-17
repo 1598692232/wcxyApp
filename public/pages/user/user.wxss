@@ -85,7 +85,7 @@
   text-align: center  
 }  
 .cc{  
-  margin-top: -76px;  
+  margin-top: -70px;  
   text-align: center;
 }  
 .cc .count{

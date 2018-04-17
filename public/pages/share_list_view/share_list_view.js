@@ -29,7 +29,7 @@ Page({
         let self = this;
         if(options.scene){
             let store = wx.getStorageSync('app')
-            let empowers = wx.getStorageSync('empower')
+            let empowers = wx.getStorageSync('user_info')
             let reqData = Object.assign({},{code: store.code})
             Util.ajax('auth/login', 'post', reqData).then(json => {
                 Util.setStorage('user_info', json)
@@ -46,11 +46,11 @@ Page({
                             var avatarUrl = userInfo.avatarUrl
                             var gender = userInfo.gender //性别 0：未知、1：男、2：女
                         
-                            let stores = wx.getStorageSync('empower')
+                            let stores = wx.getStorageSync('user_info')
                             let newStorage2 = Object.assign({}, stores)
                             newStorage2.nickName = nickName
                             newStorage2.avatarUrl = avatarUrl
-                            Util.setStorage('empower', newStorage2)
+                            Util.setStorage('user_info', newStorage2)
 
 
                             self.setData({
@@ -63,7 +63,7 @@ Page({
                                         key: 'user_info',
                                         data: data
                                     })
-                                    let empower = wx.getStorageSync('empower')
+                                    let empower = wx.getStorageSync('user_info')
                                     let nickName = empower.nickName
                                 }, () => {
                                     console.log('222')

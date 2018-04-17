@@ -27,8 +27,8 @@ Page({
     scanSignin() {
         let self = this
         let store = wx.getStorageSync('app')
-        let empowers = wx.getStorageSync('empower')
-        let reqData = Object.assign({}, {scene_id: '1523938209rTAR'},{code: store.code})
+        let empowers = wx.getStorageSync('user_info')
+        let reqData = Object.assign({}, {scene_id: self.data.scene},{code: store.code})
         Util.ajax('auth/login', 'post', reqData).then(json => {
             if(json.realname == false) {
                 wx.getUserInfo({
@@ -42,11 +42,11 @@ Page({
                         var city = userInfo.city
                         var country = userInfo.country
                     
-                        let stores = wx.getStorageSync('empower')
+                        let stores = wx.getStorageSync('user_info')
                         let newStorage2 = Object.assign({}, stores)
                         newStorage2.nickName = nickName
                         newStorage2.avatarUrl = avatarUrl
-                        Util.setStorage('empower', newStorage2)
+                        Util.setStorage('user_info', newStorage2)
 
                         let reqData2 = Object.assign({},{login_id:json.login_id},{token:json.token},{nick_name: nickName},{avatar: avatarUrl})
                         Util.ajax('user/info', 'post', reqData2).then((data) => {
@@ -54,7 +54,7 @@ Page({
                                 key: 'user_info',
                                 data: data
                             })
-                            let empower = wx.getStorageSync('empower')
+                            let empower = wx.getStorageSync('user_info')
                             let nickName = empower.nickName
                             if(json.phone == false){
                                 wx.reLaunch({
