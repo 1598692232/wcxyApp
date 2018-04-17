@@ -13,7 +13,8 @@ Page({
 	onLoad(options) {
         let self = this
         self.setData({
-            session_key:options.session_key
+            session_key:options.session_key,
+            sharePhone: options.sharePhone
         })
         self.setData({
             isSignin: options.sign?true:false
@@ -53,7 +54,8 @@ Page({
         // console.log(e.type,'999999e.type')
         wx.setStorageSync('empower', newStorage2)
         let shareCode = wx.getStorageSync('share_code')
-        if(shareCode){
+
+        if(self.data.sharePhone==1){
             wx.navigateBack()
         }else{
             if(e.detail.encryptedData){

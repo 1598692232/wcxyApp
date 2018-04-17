@@ -2189,7 +2189,7 @@ Page({
         let stores = wx.getStorageSync('user_info')
         if( stores.phone == false){
             wx.navigateTo({
-                url: '/pages/empower_phone/empower_phone'
+                url: '/pages/empower_phone/empower_phone?sharePhone=1'
             })
         }
         if (!this.data.isFocus) {
