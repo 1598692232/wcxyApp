@@ -31,6 +31,8 @@ Page({
               if (res.code) {
                 let reqData = Object.assign({}, {scene_id: self.data.scene},{code: res.code})
                 Util.ajax('auth/login', 'post', reqData).then(json => {
+                    let data = Object.assign({}, json)
+                    Util.setStorage('app', data)
                     if(json.realname == false) {
                         wx.getUserInfo({
                             withCredentials: true,
@@ -72,7 +74,7 @@ Page({
                             },
                             fail: function() {
                                 wx.reLaunch({
-                                    url: '/pages/empower_tips/empower_tips?tips=2'
+                                    url: '/pages/empower_tips/empower_tips?tips=1'
                                 })
                             }
                         })

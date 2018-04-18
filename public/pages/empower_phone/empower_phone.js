@@ -61,8 +61,11 @@ Page({
             if(e.detail.encryptedData){
                 console.log(self.data.isSignin,'self.data.isSignin')
                 if(self.data.isSignin) {
-                    wx.redirectTo({
-                        url: '/pages/empower_scan/empower_scan'
+                    // wx.redirectTo({
+                    //     url: '/pages/empower_scan/empower_scan'
+                    // })
+                    wx.reLaunch({
+                        url: '/pages/empower_tips/empower_tips?sign=1'
                     })
                 } else {
                     wx.reLaunch({
@@ -85,8 +88,11 @@ Page({
                 }) 
             }else{
                 if (self.data.isSignin){
-                    wx.redirectTo({
-                        url: '/pages/empower_scan/empower_scan'
+                    // wx.redirectTo({
+                    //     url: '/pages/empower_scan/empower_scan'
+                    // })
+                    wx.reLaunch({
+                        url: '/pages/empower_tips/empower_tips?sign=1'
                     })
                 } else {
                     wx.reLaunch({

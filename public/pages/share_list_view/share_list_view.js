@@ -52,7 +52,6 @@ Page({
                             newStorage2.avatarUrl = avatarUrl
                             Util.setStorage('user_info', newStorage2)
 
-
                             self.setData({
                                 needNickName: false
                             })
@@ -65,16 +64,16 @@ Page({
                                     })
                                     let empower = wx.getStorageSync('user_info')
                                     let nickName = empower.nickName
-                                }, () => {
-                                    console.log('222')
-                                    // wx.reLaunch({
-                                    //     url: '/pages/empower_tips/empower_tips?tips=2'
-                                    // })
+                                }, res => {
+                                    wx.showModal({
+                                        title: '提示',
+                                        content: res.data.msg,
+                                        showCancel: false
+                                    })
                                 })
                             }  
                         },
                         fail: function() {
-                            console.log('1111')
                             wx.reLaunch({
                                 url: '/pages/empower_tips/empower_tips?tips=2'
                             })
