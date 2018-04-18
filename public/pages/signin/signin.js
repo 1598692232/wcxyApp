@@ -112,12 +112,12 @@ Page({
                     newStorage2.nickName = nickName
                     newStorage2.avatarUrl = avatarUrl
                     Util.setStorage('empower', newStorage2)
-                    console.log(stores.empower_phone,'stores.phone')
-                    if(stores.empower_phone===undefined){
-                        wx.reLaunch({
-                            url: '/pages/empower_phone/empower_phone'
-                        })
-                    } 
+                    // console.log(stores.empower_phone,'stores.phone')
+                    // if(stores.empower_phone===undefined){
+                    //     wx.reLaunch({
+                    //         url: '/pages/empower_phone/empower_phone'
+                    //     })
+                    // } 
                 },
                 fail: function() {
                     wx.showModal({

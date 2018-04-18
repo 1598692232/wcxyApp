@@ -61,18 +61,14 @@ Page({
                                         wx.reLaunch({
                                             url: '/pages/empower_phone/empower_phone?sign=1'
                                         })
-                                    }
-                                }, () => {
-                                    wx.reLaunch({
-                                        url: '/pages/empower_tips/empower_tips?tips=1'
+                                    } 
+                                }, res => {
+                                    wx.showModal({
+                                        title: '提示',
+                                        content: res.data.msg,
+                                        showCancel: false
                                     })
                                 })
-                                // console.log(stores.empower_phone,'stores.phone')
-                                if(json.phone == false){
-                                    wx.reLaunch({
-                                        url: '/pages/empower_phone/empower_phone?sign=1'
-                                    })
-                                } 
                             },
                             fail: function() {
                                 wx.reLaunch({
@@ -83,9 +79,9 @@ Page({
                     }
                     if(json.phone == false){
                         wx.reLaunch({
-                            url: '/pages/empower_phone/empower_phone?session_key='+json.session_key
+                            url: '/pages/empower_phone/empower_phone?sign=1'
                         })
-                    }
+                    } 
                     if(json.status == 1){
                         wx.reLaunch({
                             url: '/pages/empower_tips/empower_tips?sign=1'

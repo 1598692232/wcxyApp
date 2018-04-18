@@ -67,7 +67,6 @@ Page({
     },
     isLoginforHandle() {
         let self = this
-
         //获取存储的code
         let store = wx.getStorageSync('app')
         let empowers = wx.getStorageSync('empower')
@@ -87,8 +86,7 @@ Page({
                         let newStorage2 = Object.assign({}, stores)
                         newStorage2.nickName = nickName
                         newStorage2.avatarUrl = avatarUrl
-                        Util.setStorage('user_info', newStorage2)
-                        console.log('wx.getUserInfo')
+                        Util.setStorage('user_info', newStorage2)      
                         self.setData({
                             toUserInfo: true
                         })
@@ -105,17 +103,13 @@ Page({
                                     url: '/pages/empower_phone/empower_phone'
                                 })
                             }
-                        }, () => {
-                            wx.reLaunch({
-                                url: '/pages/empower_tips/empower_tips?tips=1'
+                        }, res => {
+                            wx.showModal({
+                                title: '提示',
+                                content: res.data.msg,
+                                showCancel: false
                             })
                         })
-                        if(json.phone == false){
-                            console.log('1111')
-                            wx.reLaunch({
-                                url: '/pages/empower_phone/empower_phone'
-                            })
-                        }
                     },
                     fail: function() {
                         wx.reLaunch({
@@ -124,63 +118,21 @@ Page({
                     }
                 })
             }
-            if (data.token == '') {
-                //如果没有登录，设置storage
-                // Util.setStorage({
-                //     key:"app",
-                //     data: data
-                // })
-                Util.setStorage('app', data)
-
-            } else {
-                // 如果是登录退出操作，则返回
-                if (self.data.loginOut == 1) return
-
-                let sessionid = data.sessionid
-
-                Util.setStorage('app', data).then(() => {
-                    Util.getStorage('app').then((res) => {
-                        // console.log(self.data.toUserInfo,'self.data.toUserInfo')
-                        // console.log(json.avatar==false&&self.data.toUserInfo,'json.avatar==false&&self.data.toUserInfo')
-                        // let empowers = wx.getStorageSync('empower')
-                        // let reqData2 = Object.assign({},{login_id:res.data.login_id},{token:res.data.token},{nick_name: empowers.nickName},{avatar: empowers.avatarUrl})
-                        // if(json.avatar==false&&self.data.toUserInfo){
-                            // Util.ajax('user/info', 'post', reqData2).then((data) => {
-                            //     wx.setStorage({
-                            //         key: 'user_info',
-                            //         data: data
-                            //     })
-                            //     let empower = wx.getStorageSync('empower')
-                            //     let nickName = empower.nickName
-                            //     if(json.phone == false){
-                            //         wx.reLaunch({
-                            //             url: '/pages/empower_phone/empower_phone?session_key='+json.session_key
-                            //         })
-                            //     }
-                            // }, () => {
-                            //     wx.reLaunch({
-                            //         url: '/pages/empower_tips/empower_tips?tips=1'
-                            //     })
-                            // })
-                        // }
-                        if(json.phone == false){
-                            wx.reLaunch({
-                                url: '/pages/empower_phone/empower_phone'
-                            })
-                        }
-                        
-                        if(json.avatar&&json.phone){
-                            wx.reLaunch({
-                                // url: '/pages/list/list?sessionid=' + sessionid
-                                url: '/pages/list/list'
-                            })
-                        }
-                        self.hasRedDots()
-                        
-                    })
+            if(json.phone == false){
+                wx.reLaunch({
+                    url: '/pages/empower_phone/empower_phone'
                 })
-
             }
+            Util.setStorage('app', data).then(() => {
+                Util.getStorage('app').then((res) => {             
+                    if(json.avatar&&json.phone){
+                        wx.reLaunch({
+                            url: '/pages/list/list'
+                        })
+                    }
+                    self.hasRedDots()   
+                })
+            })
 
         }, () => {
             wx.showModal({
