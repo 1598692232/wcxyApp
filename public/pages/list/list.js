@@ -313,7 +313,8 @@ Page({
             var data0 = data.list?data.list:[]
             data0.map((item,i) => {
                 item.count = 0
-                    var thisItemData = wx.getStorageSync(store.login_id.toString()).noticeList0.find((v) => {
+                var arr = wx.getStorageSync(store.login_id.toString()).noticeList0?wx.getStorageSync(store.login_id.toString()).noticeList0:[]
+                    var thisItemData = arr.find((v) => {
                         return v.id == item.project_id
                     })
                     if(thisItemData){

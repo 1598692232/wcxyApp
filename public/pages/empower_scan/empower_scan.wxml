@@ -14,13 +14,14 @@
         </view>
     </view>
     <view class="user-text">
-        <view class="user-text1">新阅小程序登录确认</view>
-        <view class="user-text2">请不要扫描来历不明的小程序码</view>
+        <view class="user-text1">您正在进行扫码登录新阅PC版，</view>
+        <view class="user-text1">如果不是本人操作请点拒绝，以防账号被盗用。</view>
+        <!-- <view class="user-text2">请不要扫描来历不明的小程序码</view> -->
     </view>
     <view class="bottom">
         <view class="user-control">
             <view class="login-out" bindtap="scanSignin">确认登录</view>
         </view>
-        <view class="quit" bindtap="scanQuit">取消</view>
+        <view class="quit" bindtap="scanQuit">拒绝</view>
     </view>
 </view>

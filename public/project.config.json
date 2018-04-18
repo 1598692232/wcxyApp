@@ -29,7 +29,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": -1,
+			"current": 17,
 			"list": [
 				{
 					"id": 0,
@@ -150,7 +150,7 @@
 					"id": 17,
 					"name": "empower_scan",
 					"pathName": "pages/empower_scan/empower_scan",
-					"query": "scene=scene%3d1523950675MIYO",
+					"query": "scene=scene%3d1524045218VJ8W",
 					"scene": "1011"
 				},
 				{

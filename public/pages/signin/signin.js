@@ -135,7 +135,6 @@ Page({
                     // })
                 }
             })
-            console.log(wx.getStorageSync('empower'),'99-----------99')
             let data = Object.assign({}, store, json)
             if (data.token == '') {
                 //如果没有登录，设置storage
