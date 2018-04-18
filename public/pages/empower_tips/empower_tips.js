@@ -5,7 +5,7 @@ const app = getApp()
 Page({
 	data: {
         scrollHeight: 0,
-        realName: 'name',
+        realName: '',
         avatar: '',
         content: '',
         backIndex: false
