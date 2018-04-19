@@ -134,8 +134,7 @@ Page({
                             if(networkType == 'unknown'||networkType == 'none') {
                                 wx.showToast({
                                     title: '当前网络不可用',
-                                    icon: 'none',
-                                    duration: 2000
+                                    icon: 'none'
                                 })
                                 setTimeout(function(){
                                     wx.hideLoading()
@@ -143,8 +142,7 @@ Page({
                             } else if(networkType=='2g') {
                                 wx.showToast({
                                     title: '当前网络质量不佳',
-                                    icon: 'none',
-                                    duration: 2000
+                                    icon: 'none'
                                 })
                                 setTimeout(function(){
                                     wx.hideLoading()
@@ -158,8 +156,7 @@ Page({
                         if(res.networkType == 'unknown'||res.networkType == 'none') {
                             wx.showToast({
                                 title: '当前网络不可用',
-                                icon: 'none',
-                                duration: 2000
+                                icon: 'none'
                             })
                             setTimeout(function(){
                                 wx.hideLoading()
@@ -167,8 +164,7 @@ Page({
                         }else if(res.networkType == '2g') {
                             wx.showToast({
                                 title: '当前网络质量不佳',
-                                icon: 'none',
-                                duration: 2000
+                                icon: 'none'
                             })
                             setTimeout(function(){
                                 wx.hideLoading()

@@ -146,7 +146,7 @@ Page({
         }, res => {
             wx.showModal({
                 title: '提示',
-                content: res.msg,
+                content: res.data.msg,
                 showCancel: false
             })
         }) 
