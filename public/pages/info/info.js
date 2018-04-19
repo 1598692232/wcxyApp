@@ -311,7 +311,7 @@ Page({
     requestLinkShare(times) {
         let self = this
         let hosts =  wx.getStorageSync('app').host;
-        let host = (!hosts || hosts == '') ?  'http://10.255.1.23:8989' : hosts;
+        let host = (!hosts || hosts == '') ?  'https://www.uxinyue.com' : hosts;
 
         return new Promise((resolve, reject) => {
 
@@ -2186,13 +2186,28 @@ Page({
     },
 
     inputFocus(e) {
-        let stores = wx.getStorageSync('user_info')
-        console.log(stores,'hone')
-        if( stores.phone == false){
-            wx.navigateTo({
-                url: '/pages/empower_phone/empower_phone?sharePhone=1'
+        let self = this
+        let store = wx.getStorageSync('app')
+        let reqData = Object.assign({},{login_id: store.login_id},{token: store.token})
+        Util.ajax('user/info', 'get', reqData).then(json => {
+            if(json.phone == false){
+                wx.navigateTo({
+                    url: '/pages/empower_phone/empower_phone?sharePhone=1'
+                })
+            }
+        }, res => {
+            console.log(res,'res')
+            wx.showModal({
+                title: '提示',
+                content: res.data.msg,
+                showCancel: false
             })
-        }
+            if(res.data.status==2){
+                wx.reLaunch({
+                    url: '/pages/share_list_view/share_list_view'
+                })
+            }
+        })
         if (!this.data.isFocus) {
 
             this.drawBackCount = 0;

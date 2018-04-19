@@ -55,7 +55,6 @@ Page({
         wx.setStorageSync('empower', newStorage2)
         let shareCode = wx.getStorageSync('share_code')
 
-        console.log(self.data.sharePhone==1,'e==1')
         if(self.data.sharePhone==1){
             if(e.detail.encryptedData) {
                 let store = wx.getStorageSync('app')
@@ -63,16 +62,19 @@ Page({
                 reqData2.phone = e.detail.encryptedData
                 reqData2.session_key = self.data.session_key
                 reqData2.iv = e.detail.iv
-                console.log(reqData2,'2222222')
                 Util.ajax('edit/phone', 'post', reqData2).then(json => {
                     console.log(json,'000')
                 }, res => {
-                    console.log(res,'res')
                     wx.showModal({
                         title: '提示',
                         content: res.data.msg,
                         showCancel: false
                     })
+                    if(res.data.status==2){
+                        wx.reLaunch({
+                            url: '/pages/empower_signin/empower_signin'
+                        })
+                    }
                 })
                 wx.navigateBack()
             }else{
@@ -86,14 +88,18 @@ Page({
                 reqData.session_key = self.data.session_key
                 reqData.iv = e.detail.iv
                 Util.ajax('edit/phone', 'post', reqData).then(json => {
-                    console.log(json,'000---')
+                    // console.log(json,'000---')
                 }, res => {
-                    console.log(res,'res---')
                     wx.showModal({
                         title: '提示',
                         content: res.data.msg,
                         showCancel: false
                     })
+                    if(res.data.status==2){
+                        wx.reLaunch({
+                            url: '/pages/empower_signin/empower_signin'
+                        })
+                    }
                 }) 
 
                 if(self.data.isSignin) {
