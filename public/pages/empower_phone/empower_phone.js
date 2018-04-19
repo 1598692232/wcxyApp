@@ -55,15 +55,48 @@ Page({
         wx.setStorageSync('empower', newStorage2)
         let shareCode = wx.getStorageSync('share_code')
 
+        console.log(self.data.sharePhone==1,'e==1')
         if(self.data.sharePhone==1){
-            wx.navigateBack()
+            if(e.detail.encryptedData) {
+                let store = wx.getStorageSync('app')
+                let reqData2 = Object.assign({},{login_id: store.login_id},{token: store.token})
+                reqData2.phone = e.detail.encryptedData
+                reqData2.session_key = self.data.session_key
+                reqData2.iv = e.detail.iv
+                console.log(reqData2,'2222222')
+                Util.ajax('edit/phone', 'post', reqData2).then(json => {
+                    console.log(json,'000')
+                }, res => {
+                    console.log(res,'res')
+                    wx.showModal({
+                        title: '提示',
+                        content: res.data.msg,
+                        showCancel: false
+                    })
+                })
+                wx.navigateBack()
+            }else{
+                wx.navigateBack()
+            }  
         }else{
-            if(e.detail.encryptedData){
-                console.log(self.data.isSignin,'self.data.isSignin')
+            if(e.detail.encryptedData){   
+                let store = wx.getStorageSync('app')
+                let reqData = Object.assign({},{login_id: store.login_id},{token: store.token})
+                reqData.phone = e.detail.encryptedData
+                reqData.session_key = self.data.session_key
+                reqData.iv = e.detail.iv
+                Util.ajax('edit/phone', 'post', reqData).then(json => {
+                    console.log(json,'000---')
+                }, res => {
+                    console.log(res,'res---')
+                    wx.showModal({
+                        title: '提示',
+                        content: res.data.msg,
+                        showCancel: false
+                    })
+                }) 
+
                 if(self.data.isSignin) {
-                    // wx.redirectTo({
-                    //     url: '/pages/empower_scan/empower_scan'
-                    // })
                     wx.reLaunch({
                         url: '/pages/empower_tips/empower_tips?sign=1'
                     })
@@ -72,25 +105,8 @@ Page({
                         url: '/pages/list/list'
                     })
                 }  
-                let store = wx.getStorageSync('app')
-                let reqData = Object.assign({},{login_id: store.login_id},{token: store.token})
-                reqData.phone = e.detail.encryptedData
-                reqData.session_key = self.data.session_key
-                reqData.iv = e.detail.iv
-                Util.ajax('edit/phone', 'post', reqData).then(json => {
-                    console.log(json,'000')
-                }, res => {
-                    wx.showModal({
-                        title: '提示',
-                        content: res.data.msg,
-                        showCancel: false
-                    })
-                }) 
             }else{
                 if (self.data.isSignin){
-                    // wx.redirectTo({
-                    //     url: '/pages/empower_scan/empower_scan'
-                    // })
                     wx.reLaunch({
                         url: '/pages/empower_tips/empower_tips?sign=1'
                     })

@@ -48,6 +48,10 @@
     <text class="remaining_time">剩余时间</text>
     <text class="time">{{end_at}}</text>
   </view>
+  <!-- <view class="user_info_title">
+    <text class="remaining_time">切换账号</text>
+    <text class="time">></text>
+  </view> -->
   <!-- <view class="user-control">
     <button class="login-out" bindtap="loginOut">退出账号</button>
   </view> -->

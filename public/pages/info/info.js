@@ -311,7 +311,7 @@ Page({
     requestLinkShare(times) {
         let self = this
         let hosts =  wx.getStorageSync('app').host;
-        let host = (!hosts || hosts == '') ?  'https://www.uxinyue.com' : hosts;
+        let host = (!hosts || hosts == '') ?  'http://10.255.1.23:8989' : hosts;
 
         return new Promise((resolve, reject) => {
 
@@ -2187,6 +2187,7 @@ Page({
 
     inputFocus(e) {
         let stores = wx.getStorageSync('user_info')
+        console.log(stores,'hone')
         if( stores.phone == false){
             wx.navigateTo({
                 url: '/pages/empower_phone/empower_phone?sharePhone=1'
