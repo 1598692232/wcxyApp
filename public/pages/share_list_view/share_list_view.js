@@ -28,71 +28,78 @@ Page({
     onLoad(options) {
         let self = this;
         if(options.scene){
-            let store = wx.getStorageSync('app')
-            let empowers = wx.getStorageSync('user_info')
-            let reqData = Object.assign({},{code: store.code})
-            Util.ajax('auth/login', 'post', reqData).then(json => {
-                Util.setStorage('user_info', json)
-                let data = Object.assign({}, store, json)
-                if(json.avatar==false) {
-                    self.setData({
-                        needNickName: true
-                    })
-                    wx.getUserInfo({
-                        withCredentials: true,
-                        success: function(res) {
-                            var userInfo = res.userInfo
-                            var nickName = userInfo.nickName
-                            var avatarUrl = userInfo.avatarUrl
-                            var gender = userInfo.gender //性别 0：未知、1：男、2：女
-                        
-                            let stores = wx.getStorageSync('user_info')
-                            let newStorage2 = Object.assign({}, stores)
-                            newStorage2.nickName = nickName
-                            newStorage2.avatarUrl = avatarUrl
-                            Util.setStorage('user_info', newStorage2)
-
-                            self.setData({
-                                needNickName: false
-                            })
-                            let reqData2 = Object.assign({},{login_id:json.login_id},{token:json.token},{nick_name: nickName},{avatar: avatarUrl})
-                            if(json.avatar==false){
-                                Util.ajax('user/info', 'post', reqData2).then((data) => {
-                                    wx.setStorage({
-                                        key: 'user_info',
-                                        data: data
-                                    })
-                                    let empower = wx.getStorageSync('user_info')
-                                    let nickName = empower.nickName
-                                }, res => {
-                                    wx.showModal({
-                                        title: '提示',
-                                        content: res.data.msg,
-                                        showCancel: false
-                                    })
+            wx.login({
+                success: function(res) {
+                    if (res.code) {
+                        let store = wx.getStorageSync('app')
+                        let empowers = wx.getStorageSync('user_info')
+                        let reqData = Object.assign({},{code: res.code})
+                        Util.ajax('auth/login', 'post', reqData).then(json => {
+                            Util.setStorage('user_info', json)
+                            let data = Object.assign({}, store, json)
+                            if(json.avatar==false) {
+                                self.setData({
+                                    needNickName: true
                                 })
-                            }  
-                        },
-                        fail: function() {
-                            wx.reLaunch({
-                                url: '/pages/empower_tips/empower_tips?tips=2'
-                            })
-                        }
-                    })
-                }
+                                wx.getUserInfo({
+                                    withCredentials: true,
+                                    success: function(res) {
+                                        var userInfo = res.userInfo
+                                        var nickName = userInfo.nickName
+                                        var avatarUrl = userInfo.avatarUrl?userInfo.avatarUrl:manager
+                                        var gender = userInfo.gender //性别 0：未知、1：男、2：女
+                                    
+                                        let stores = wx.getStorageSync('user_info')
+                                        let newStorage2 = Object.assign({}, stores)
+                                        newStorage2.nickName = nickName
+                                        newStorage2.avatarUrl = avatarUrl
+                                        Util.setStorage('user_info', newStorage2)
 
-                Util.setStorage('app', data).then(() => {
-                    Util.getStorage('app').then((res) => {
-                                       
-                    })
-                })
-            }, res => {
-                wx.showModal({
-                    title: '提示',
-                    content: res.data.msg,
-                    showCancel: false
-                })
+                                        self.setData({
+                                            needNickName: false
+                                        })
+                                        let reqData2 = Object.assign({},{login_id:json.login_id},{token:json.token},{nick_name: nickName},{avatar: avatarUrl})
+                                        if(json.avatar==false){
+                                            Util.ajax('user/info', 'post', reqData2).then((data) => {
+                                                wx.setStorage({
+                                                    key: 'user_info',
+                                                    data: data
+                                                })
+                                                let empower = wx.getStorageSync('user_info')
+                                                let nickName = empower.nickName
+                                            }, res => {
+                                                wx.showModal({
+                                                    title: '提示',
+                                                    content: res.data.msg,
+                                                    showCancel: false
+                                                })
+                                            })
+                                        }  
+                                    },
+                                    fail: function() {
+                                        wx.reLaunch({
+                                            url: '/pages/empower_tips/empower_tips?tips=2'
+                                        })
+                                    }
+                                })
+                            }
+
+                            Util.setStorage('app', data).then(() => {
+                                Util.getStorage('app').then((res) => {
+                                                
+                                })
+                            })
+                        }, res => {
+                            wx.showModal({
+                                title: '提示',
+                                content: res.data.msg,
+                                showCancel: false
+                            })
+                        })
+                    }
+                }
             })
+            
         }
         if (options.password != undefined) {
             let params = {};

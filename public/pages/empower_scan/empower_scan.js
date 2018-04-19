@@ -4,7 +4,8 @@ const app = getApp()
 Page({
 	data: {
         scrollHeight: 0,
-        scene: ''
+        scene: '',
+        manager: app.data.staticImg.manager
     },
     onShow() {
         
@@ -39,7 +40,7 @@ Page({
                             success: function(res) {
                                 var userInfo = res.userInfo
                                 var nickName = userInfo.nickName
-                                var avatarUrl = userInfo.avatarUrl
+                                var avatarUrl = userInfo.avatarUrl?userInfo.avatarUrl:manager
                                 var gender = userInfo.gender //性别 0：未知、1：男、2：女
                                 var province = userInfo.province
                                 var city = userInfo.city

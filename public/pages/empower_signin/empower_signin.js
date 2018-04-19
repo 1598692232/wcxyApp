@@ -7,7 +7,8 @@ Page({
         scrollHeight: 0,
         realName: '',
         avatar: '',
-        toUserInfo: false
+        toUserInfo: false,
+        manager: app.data.staticImg.manager
     },
 	onLoad() {
         let self = this
@@ -80,7 +81,7 @@ Page({
                     success: function(res) {
                         var userInfo = res.userInfo
                         var nickName = userInfo.nickName
-                        var avatarUrl = userInfo.avatarUrl
+                        var avatarUrl = userInfo.avatarUrl?userInfo.avatarUrl:manager
                     
                         let stores = wx.getStorageSync('user_info')
                         let newStorage2 = Object.assign({}, stores)
