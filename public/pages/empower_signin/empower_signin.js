@@ -125,7 +125,57 @@ Page({
                 })
             }
             Util.setStorage('app', data).then(() => {
-                Util.getStorage('app').then((res) => {             
+                Util.getStorage('app').then((res) => { 
+                    wx.getNetworkType({
+                        success: function(res) {
+                            // 返回网络类型, 有效值：
+                            // wifi/2g/3g/4g/unknown(Android下不常见的网络类型)/none(无网络)
+                            var networkType = res.networkType
+                            if(networkType == 'unknown'||networkType == 'none') {
+                                wx.showToast({
+                                    title: '当前网络不可用',
+                                    icon: 'none',
+                                    duration: 2000
+                                })
+                                setTimeout(function(){
+                                    wx.hideLoading()
+                                },2000)
+                            } else if(networkType=='2g') {
+                                wx.showToast({
+                                    title: '当前网络质量不佳',
+                                    icon: 'none',
+                                    duration: 2000
+                                })
+                                setTimeout(function(){
+                                    wx.hideLoading()
+                                },2000)
+                            }
+                          }
+                    })
+                    wx.onNetworkStatusChange(function(res) {
+                        // console.log(res.isConnected,'isConnected')
+                        // console.log(res.networkType,'networkType')
+                        if(res.networkType == 'unknown'||res.networkType == 'none') {
+                            wx.showToast({
+                                title: '当前网络不可用',
+                                icon: 'none',
+                                duration: 2000
+                            })
+                            setTimeout(function(){
+                                wx.hideLoading()
+                            },2000)
+                        }else if(res.networkType == '2g') {
+                            wx.showToast({
+                                title: '当前网络质量不佳',
+                                icon: 'none',
+                                duration: 2000
+                            })
+                            setTimeout(function(){
+                                wx.hideLoading()
+                            },2000)
+                        }  
+                    }) 
+                             
                     if(json.avatar&&json.phone){
                         wx.reLaunch({
                             url: '/pages/list/list'

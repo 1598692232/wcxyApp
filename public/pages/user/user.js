@@ -46,7 +46,7 @@ Page({
           project_count: data.project_max == '无限' ? '无限' : project_count>100?(parseInt(project_count) / 100).toFixed(2) + '倍': project_count + '%',
           member_count: data.member_max == '无限' ? '无限' : member_count>100 ? (parseInt(member_count) / 100).toFixed(2) + '倍': member_count + '%',
           
-          storage: (data.storage / 1024 / 1024 / 1024).toFixed(2) + '/' + (data.storage_max / 1024 / 1024 / 1024).toFixed(1),
+          storage: (data.storage / 1024 / 1024 / 1024).toFixed(1) + '/' + (data.storage_max / 1024 / 1024 / 1024).toFixed(0),
           project: data.project_count + '/' + data.project_max,
           member: data.member_count + '/' + data.member_max
         })
