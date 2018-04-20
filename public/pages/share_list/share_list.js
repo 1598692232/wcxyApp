@@ -11,7 +11,6 @@ Page({
         page: 1,
         pageSize: 10,
         hasMoreData: true,
-        currentTab: 0
     },
     onLoad(options) {
         let self = this;
@@ -106,16 +105,5 @@ Page({
         })
 
         self.getShareList(params);
-    },
-    //点击切换
-    clickTab(e) {
-        let self = this
-        if( self.data.currentTab === e.target.dataset.current ) {  
-            return false;  
-        } else { 
-            self.setData({
-                currentTab: e.target.dataset.current  
-            })
-        } 
     },
 })
