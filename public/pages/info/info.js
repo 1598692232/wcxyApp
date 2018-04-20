@@ -1791,7 +1791,7 @@ Page({
     onShareAppMessage: function () {
 	    return {
 	        title: '影音制作连接者',
-	        path: '/pages/list/list',
+	        path: '/pages/empower_signin/empower_signin',
             imageUrl: './img/xy2.jpg'
 	    }
     },
