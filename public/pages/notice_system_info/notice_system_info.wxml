@@ -1,3 +1,19 @@
 <view class="system_info" style="height:{{scrollHeight}}px">
-    <view class="system_content">{{noticeListInfo}}</view>
+    <!-- <view class="system_content">{{noticeListInfo}}</view> -->
+    <view class="item">
+        <view class="title">
+            新阅web端(版本1.2.2)
+        </view>
+        <view class="content">
+            【账号】当前版本已支持微信授权登录和短信验证码登录、并支持微信扫码一键注册。
+        </view>
+    </view>
+    <view class="item">
+        <view class="title">
+            新阅微信小程序(版本2.1)
+        </view>
+        <view class="content">
+            【新增】添加微信一键授权登录
+        </view>
+    </view>
 </view>
