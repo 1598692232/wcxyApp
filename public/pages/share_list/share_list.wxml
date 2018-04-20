@@ -1,43 +1,93 @@
 <view class="share-list-box" style="height:100%">
-    <scroll-view style="height:{{scrollHeight}}px;" scroll-y bindscrolltolower="lower" lower-threshold="{{800}}">
-        <block wx:if="{{shareList.length>0}}">
-            <view class="share-list" wx:for="{{shareList}}" wx:key="index" data-code="{{item.code}}" data-password="{{item.password}}" data-id="{{item.id}}" data-count="{{item.files_count}}" bindtap="toShareInfo">
-                <block wx:if="{{item.files_count !== 0}}">
-                    <view class="pic"> 
-                        <view class="pic-content" wx:if="{{item.image}}">
-                            <image src="{{item.image}}"></image>
-                        </view>
-                        <view class="pic-content" wx:else>
-                            <text>{{item.firstname}}</text>
-                        </view>
-                    </view>
-                </block>
-                <block wx:if="{{item.files_count === 0}}">
-                    <view class="pic empty_pic"> 
-                        <view class="pic-content">
-                            <view class="red">
-                                <image src="./img/red.svg"></image>
+    <view class="swiper-tab">
+        <view class="swiper-tab-item {{currentTab==0?'active':''}}" data-current="0" catchtap="clickTab">我的分享</view>
+        <view class="swiper-tab-item {{currentTab==1?'active':''}}" data-current="1" catchtap="clickTab">收藏夹</view>
+    </view>
+    <block wx:if="{{currentTab==0}}">
+        <scroll-view style="height:{{scrollHeight}}px;margin-top:34px;" scroll-y bindscrolltolower="lower" lower-threshold="{{800}}">
+                    <block wx:if="{{shareList.length>0}}">
+                        <view class="share-list" wx:for="{{shareList}}" wx:key="index" data-code="{{item.code}}" data-password="{{item.password}}" data-id="{{item.id}}" data-count="{{item.files_count}}" bindtap="toShareInfo">
+                            <block wx:if="{{item.files_count !== 0}}">
+                                <view class="pic"> 
+                                    <view class="pic-content" wx:if="{{item.image}}">
+                                        <image src="{{item.image}}"></image>
+                                    </view>
+                                    <view class="pic-content" wx:else>
+                                        <text>{{item.firstname}}</text>
+                                    </view>
+                                </view>
+                            </block>
+                            <block wx:if="{{item.files_count === 0}}">
+                                <view class="pic empty_pic"> 
+                                    <view class="pic-content">
+                                        <view class="red">
+                                            <image src="./img/red.svg"></image>
+                                        </view>
+                                    </view>
+                                </view>
+                            </block>
+                            
+                            <view class="info">
+                                <view class="share-list-name">{{item.name}}</view>
+                                <view class="share-list-info">
+                                    <view><image src="{{item.avatar}}"></image></view>
+                                    <view class="text">{{item.createtime}}</view>
+                                </view>
+                            </view>
+                            <view class="number">
+                                包含<text>{{item.number}}</text>个文件
                             </view>
                         </view>
+                        <!-- <view wx:if="{{!hasMoreData}}" style="font-size:12px;line-height: 28px;color: #9B9B9B;text-align:center;">已加载完全部数据</view> -->
+                    </block>
+                    <view wx:else class="empty-notice">
+                        <image src="./img/link.png"></image>
+                        还未创建链接，快去试试吧
+                    </view>      
+                </scroll-view>
+    </block>
+    <block wx:else>
+        <scroll-view style="height:{{scrollHeight}}px;margin-top:34px;" scroll-y bindscrolltolower="lower" lower-threshold="{{800}}">
+            <block wx:if="{{shareList.length>0}}">
+                <view class="share-list" wx:for="{{shareList}}" wx:key="index" data-code="{{item.code}}" data-password="{{item.password}}" data-id="{{item.id}}" data-count="{{item.files_count}}" bindtap="toShareInfo">
+                    <block wx:if="{{item.files_count !== 0}}">
+                        <view class="pic"> 
+                            <view class="pic-content" wx:if="{{item.image}}">
+                                <image src="{{item.image}}"></image>
+                            </view>
+                            <view class="pic-content" wx:else>
+                                <text>{{item.firstname}}</text>
+                            </view>
+                        </view>
+                    </block>
+                    <block wx:if="{{item.files_count === 0}}">
+                        <view class="pic empty_pic"> 
+                            <view class="pic-content">
+                                <view class="red">
+                                    <image src="./img/red.svg"></image>
+                                </view>
+                            </view>
+                        </view>
+                    </block>
+                    
+                    <view class="info">
+                        <view class="share-list-name">{{item.name}}</view>
+                        <view class="share-list-info">
+                            <view><image src="{{item.avatar}}"></image></view>
+                            <view class="text">{{item.createtime}}</view>
+                        </view>
                     </view>
-                </block>
-                
-                <view class="info">
-                    <view class="share-list-name">{{item.name}}</view>
-                    <view class="share-list-info">
-                        <view><image src="{{item.avatar}}"></image></view>
-                        <view class="text">{{item.createtime}}</view>
+                    <view class="number">
+                        包含<text>{{item.number}}</text>个文件
                     </view>
                 </view>
-                <view class="number">
-                    包含<text>{{item.number}}</text>个文件
-                </view>
-            </view>
-            <!-- <view wx:if="{{!hasMoreData}}" style="font-size:12px;line-height: 28px;color: #9B9B9B;text-align:center;">已加载完全部数据</view> -->
-        </block>
-        <view wx:else class="empty-notice">
-            <image src="./img/link.png"></image>
-            还未创建链接，快去试试吧
-        </view>      
-    </scroll-view>
+                <!-- <view wx:if="{{!hasMoreData}}" style="font-size:12px;line-height: 28px;color: #9B9B9B;text-align:center;">已加载完全部数据</view> -->
+            </block>
+            <view wx:else class="empty-notice">
+                <image src="./img/link.png"></image>
+                还未收藏任何链接，快去试试吧
+            </view>      
+        </scroll-view>
+    </block>
+    
 </view>

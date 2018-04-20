@@ -10,17 +10,37 @@
                     <view>查看数：<text>{{viewCount}}</text></view>
                     <view>包含 <text>{{fileCount}}</text> 个文件</view>
                     <view class="deadline"><text class="deadline-title">有效期：</text><text class="deadline-text">{{deadline}}</text></view>
-                    <view>密码：<text>{{password}}</text></view>
+                    <view>密码：<text>{{password?password:'无'}}</text></view>
                 </view>
                 <text selectable="true" hidden>密码:{{password}}</text>                
             </view>
         </view>
-        <view catchtap="copyTBL">
-            <button class="share-list-copyBtn" bindtap="toCopyAndTransmit" open-type="share" data-password="123456789">
-                <image src="./img/share.png"></image>
-                <text wx:if="{{password}}">复制链接及密码并转发</text>
-                <text wx:else>复制链接并转发</text>
-            </button>
+        <view class="share_btns">
+            <view class="share_link_btn">
+                <view class="share-list-copyBtn" bindtap="copyTBL" data-password="123456789">
+                    <!-- <image src="./img/share.png"></image> -->
+                    <text wx:if="{{password}}">复制链接及密码</text>
+                    <text wx:else>复制链接</text>
+                </view>
+            </view>
+            <view class="share_btns_text share_link">
+                <button open-type="share">
+                    <image src="./img/share_btn.svg"></image>
+                    <view>转发</view>
+                </button>
+            </view>
+            <view class="share_btns_text collection_link">
+                <view bindtap="toCollect">
+                    <view wx:if="{{collect}}">
+                        <image src="./img/collected.svg"></image>
+                        <view>已收藏</view>
+                    </view>
+                    <view wx:else>
+                        <image src="./img/collection.svg"></image>
+                        <view>收藏</view>
+                    </view>
+                </view>
+            </view>
         </view>
     </view>
     <view class="share-list-view-video">
