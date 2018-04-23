@@ -8,13 +8,15 @@ Page({
         realName: '',
         avatar: '',
         session_key: '',
-        isSignin: true
+        isSignin: true,
+        scanGetPhone: ''
     },
 	onLoad(options) {
         let self = this
         self.setData({
             session_key:options.session_key,
-            sharePhone: options.sharePhone
+            sharePhone: options.sharePhone,
+            scanGetPhone: options.scan
         })
         self.setData({
             isSignin: options.sign?true:false
@@ -32,18 +34,20 @@ Page({
         let self = this
         let store = wx.getStorageSync('app')
         let reqData = Object.assign({},{login_id: store.login_id},{token: store.token})
-        Util.ajax('user/info', 'get', reqData).then(json => {
-            self.setData({
-                realName: json.realname?json.realname:wx.getStorageSync('user_info').nickName,
-                avatar:  json.avatar?json.avatar:wx.getStorageSync('user_info').avatarUrl,
-            })
-        }, res => {
-            wx.showModal({
-                title: '提示',
-                content: res.data.msg,
-                showCancel: false
-            })
-        }) 
+        if(self.data.scanGetPhone!=1){
+            Util.ajax('user/info', 'get', reqData).then(json => {
+                self.setData({
+                    realName: json.realname?json.realname:wx.getStorageSync('user_info').nickName,
+                    avatar:  json.avatar?json.avatar:wx.getStorageSync('user_info').avatarUrl,
+                })
+            }, res => {
+                wx.showModal({
+                    title: '提示',
+                    content: res.data.msg,
+                    showCancel: false
+                })
+            }) 
+        }   
     },
     getPhoneNumber: function(e) {
         let self = this
@@ -80,6 +84,41 @@ Page({
             }else{
                 wx.navigateBack()
             }  
+        }else if(self.data.scanGetPhone==1){
+            if(e.detail.encryptedData) {
+                let store = wx.getStorageSync('app')
+                let reqData2 = Object.assign({},{login_id: store.login_id},{token: store.token})
+                reqData2.phone = e.detail.encryptedData
+                reqData2.session_key = self.data.session_key
+                reqData2.iv = e.detail.iv
+                Util.ajax('edit/phone', 'post', reqData2).then(json => {
+                    console.log(json,'000')
+                   
+                }, res => {
+                    wx.showModal({
+                        title: '提示',
+                        content: res.data.msg,
+                        showCancel: false
+                    })
+                    if(res.data.status==2){
+                        wx.reLaunch({
+                            url: '/pages/empower_signin/empower_signin'
+                        })
+                    }
+                })
+                // wx.navigateBack()
+                wx.reLaunch({
+                    url: '/pages/empower_scan/empower_scan'
+                })
+            }else{
+                // wx.navigateBack()
+                // wx.reLaunch({
+                //     url: '/pages/empower_scan/empower_scan'
+                // })
+                wx.reLaunch({
+                    url: '/pages/empower_tips/empower_tips?sign=2'
+                })
+            }
         }else{
             if(e.detail.encryptedData){   
                 let store = wx.getStorageSync('app')

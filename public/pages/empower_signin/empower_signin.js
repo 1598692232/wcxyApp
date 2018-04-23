@@ -103,6 +103,10 @@ Page({
                                 wx.reLaunch({
                                     url: '/pages/empower_phone/empower_phone'
                                 })
+                            }else{
+                                wx.reLaunch({
+                                    url: '/pages/list/list'
+                                })
                             }
                         }, res => {
                             wx.showModal({

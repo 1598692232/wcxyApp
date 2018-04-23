@@ -1,7 +1,7 @@
 <view class="container" style="min-height: {{scrollHeight}}px">
     <view class="userinfo">
-        <image class="userinfo-avatar" src="{{avatar}}" background-size="cover"></image>
-        <text class="userinfo-nickname">{{realName}}</text>
+        <image class="userinfo-avatar" src="{{scanGetPhone==1?'./img/xinyue.jpg':avatar}}" background-size="cover"></image>
+        <text class="userinfo-nickname">{{scanGetPhone==1?'新阅':realName}}</text>
     </view>
     <view class="user-text">
         <text>您的账号需要手机号实名认证
