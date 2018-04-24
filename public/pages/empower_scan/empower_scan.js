@@ -15,6 +15,48 @@ Page({
                 Util.ajax('auth/login', 'post', reqData).then(json => {
                     let data = Object.assign({}, json)
                     Util.setStorage('app', data)
+                    if(json.realname == false) {
+                        wx.getUserInfo({
+                            withCredentials: true,
+                            success: function(res) {
+                                var userInfo = res.userInfo
+                                var nickName = userInfo.nickName
+                                var avatarUrl = userInfo.avatarUrl?userInfo.avatarUrl:manager
+                            
+                                let stores = wx.getStorageSync('user_info')
+                                let newStorage2 = Object.assign({}, stores)
+                                newStorage2.nickName = nickName
+                                newStorage2.avatarUrl = avatarUrl
+                                Util.setStorage('user_info', newStorage2)
+        
+                                let reqData2 = Object.assign({},{login_id:json.login_id},{token:json.token},{nick_name: nickName},{avatar: avatarUrl})
+                                Util.ajax('user/info', 'post', reqData2).then((data) => {
+                                    wx.setStorage({
+                                        key: 'user_info',
+                                        data: data
+                                    })
+                                    let empower = wx.getStorageSync('user_info')
+                                    let nickName = empower.nickName
+                                    if(json.phone == false){
+                                        wx.reLaunch({
+                                            url: '/pages/empower_phone/empower_phone?scan=1'
+                                        })
+                                    } 
+                                }, res => {
+                                    wx.showModal({
+                                        title: '提示',
+                                        content: res.data.msg,
+                                        showCancel: false
+                                    })
+                                })
+                            },
+                            fail: function() {
+                                wx.reLaunch({
+                                    url: '/pages/empower_tips/empower_tips?tips=1'
+                                })
+                            }
+                        })
+                    }
                     if(json.phone == false){
                         wx.reLaunch({
                             url: '/pages/empower_phone/empower_phone?scan=1'

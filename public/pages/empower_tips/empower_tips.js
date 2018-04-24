@@ -48,5 +48,8 @@ Page({
         wx.reLaunch({
             url: '/pages/empower_signin/empower_signin'
         })
+    },
+    bindgetuserinfo() {
+        
     }
 })
