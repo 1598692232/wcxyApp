@@ -87,7 +87,8 @@
   <view class="systemNotification_box" wx:if="{{!systemNotification}}">
     <view class="systemNotification">
       <view class="title">
-        现在可一键登录新阅账号啦！
+        <image src="./img/top.png"></image>
+        <text>现在可一键登录新阅账号啦!</text>
       </view>
       <view class="content2">
         <view class="item2">
