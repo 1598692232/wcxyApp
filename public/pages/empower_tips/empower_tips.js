@@ -1,4 +1,4 @@
-// let Util = require('../../utils/util.js')
+let Util = require('../../utils/util.js')
 const app = getApp()
 
 
@@ -34,10 +34,15 @@ Page({
                 content: '你拒绝了授权，账号需要实名认证。请再次点击授权。',
                 tips: 1
             })
-        } else if (options.tips==2) {
+        } else if (options.tipss==2) {
             self.setData({
-                content: '你拒绝了授权，项目分享者无法获取您的信息。请再次点击授权。',
-                tips: 2
+                content: '你拒绝了授权，项目分享者无法获取您的信息。请删除小程序，再次点击授权。',
+                // tips: 2
+            })
+        } else if (options.tips==3) {
+            self.setData({
+                content: '你拒绝了授权，账号需要实名认证。请再次点击授权。',
+                tips: 3
             })
         } else if (options.sign==1) {
             self.setData({
@@ -58,7 +63,7 @@ Page({
             url: '/pages/empower_signin/empower_signin'
         })
     },
-    bindgetuserinfo() {
+    userInfoHandler() {
         let self = this
         wx.getUserInfo({
             success: function(res) {
@@ -80,13 +85,18 @@ Page({
                         showCancel: false
                     })
                 })
-                if( self.data.tips==1 ){
+                if( self.data.tips==1){
                     wx.reLaunch({
                         url: '/pages/empower_signin/empower_signin'
                     })
-                }else if( self.data.tips==2 ){
+                }else if( self.data.tipss==2 ){
+                    // wx.reLaunch({
+                    //     url: '/pages/share_list_view/share_list_view'
+                    // })
+                    // wx.navigateBack()
+                }else if( self.data.tips==3 ){
                     wx.reLaunch({
-                        url: '/pages/share_list_view/share_list_view'
+                        url: '/pages/empower_scan/empower_scan'
                     })
                 }
             },

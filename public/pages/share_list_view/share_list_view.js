@@ -78,7 +78,7 @@ Page({
                                     },
                                     fail: function() {
                                         wx.reLaunch({
-                                            url: '/pages/empower_tips/empower_tips?tips=2'
+                                            url: '/pages/empower_tips/empower_tips?tipss=2'
                                         })
                                     }
                                 })

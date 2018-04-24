@@ -52,7 +52,7 @@ Page({
                             },
                             fail: function() {
                                 wx.reLaunch({
-                                    url: '/pages/empower_tips/empower_tips?tips=1'
+                                    url: '/pages/empower_tips/empower_tips?tips=3'
                                 })
                             }
                         })
