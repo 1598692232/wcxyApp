@@ -22,6 +22,10 @@ Page({
         })
     },
     onShow() {
+        wx.setStorage({
+            key:"notification",
+            data:"true"
+        })
         let store = wx.getStorageSync('app')
         // if (store.token == '') {
         //     wx.navigateTo({
@@ -41,7 +45,8 @@ Page({
         reqData.project_id = -1
         wx.showLoading()
         Util.ajax('notice/detail', 'get',reqData).then(data => {
-            data.map(item => {
+            let arr = data?data:[]
+            arr.map(item => {
                 item.createtime = Util.getCreateTimeDate(item.created_at)
             })
             self.setData({

@@ -37,6 +37,9 @@
     font-size: 15px;
     color: #FFFFFF;
 }
+.item-system-left .new{
+    color: red;
+}
 .item-system-right{
     font-size: 11px;
     color: #9B9B9B;

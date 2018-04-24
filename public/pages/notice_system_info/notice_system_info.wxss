@@ -4,3 +4,17 @@
     font-size: 13px;
     padding: 15px;
 }
+.system_info{
+    padding: 20px 12px;
+}
+.system_info .item{
+    font-size: 13px;
+    margin-bottom: 10px;
+    line-height: 18px;
+}
+.system_info .item .title{
+    color: #fff;
+}
+.system_info .item .content{
+    color: #9b9b9b;
+}
