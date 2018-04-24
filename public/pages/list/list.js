@@ -17,7 +17,8 @@ Page({
         hiddenMy: false,
         tabOne: 'background: #0036df;color: #fff;',
         tabTwo: '',
-        currentTab:0
+        currentTab:0,
+        systemNotification: false
     },
 
     onLoad() {
@@ -63,6 +64,9 @@ Page({
         } 
     },
     onShow() {
+        this.setData({
+            systemNotification: wx.getStorageSync('notification')
+        })
         this.hasRedDots()
         let store = wx.getStorageSync('app')
 
@@ -83,6 +87,7 @@ Page({
 
             self.initList()
         // }
+
         
     },
 
@@ -329,7 +334,7 @@ Page({
                     }
             })
             // console.log(num,'num')
-            if(num>0){
+            if(num>0||!this.data.systemNotification){
                 wx.showTabBarRedDot({
                     index: 1,
                 })
@@ -339,5 +344,24 @@ Page({
                 })
             }  
         }, res => {}) 
-    }
+    },
+    // 跳转至系统消息详情
+    toSystemInfo() {
+        wx.setStorage({
+            key:"notification",
+            data:"true"
+        })
+        this.setData({
+            systemNotification: wx.getStorageSync('notification')
+        })
+        wx.navigateTo({
+            url: '/pages/notice_system_info/notice_system_info?t=1'
+        })
+    },
+    // 关闭系统消息的弹窗
+    toKnow() {
+        this.setData({
+            systemNotification: true
+        })
+    },
 })

@@ -23,6 +23,12 @@ Page({
                 scrollHeight: res.windowHeight
             })
         })
+        if(options.t==1){
+            wx.setStorage({
+                key:"notification",
+                data:"true"
+            })
+        }
     },
     onShow() {
         let store = wx.getStorageSync('app')
