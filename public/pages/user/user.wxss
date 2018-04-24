@@ -6,7 +6,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 40px auto 30px;
+  margin: 40px auto 20px;
 }
 
 .userinfo-avatar {
@@ -119,4 +119,41 @@
   color: #9B9B9B;
   letter-spacing: 0;
   float: right;
+}
+
+.remainingTime{
+  margin-bottom: 20px!important;
+}
+/* 新功能红点 */
+.collection{
+  position: relative;
+  margin-bottom: 10px!important;
+}
+.red_dot{
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: red;
+  position: absolute;
+  left: 50px;
+  top: 10px;
+}
+.list_icon{
+  width: 16px;
+  height: 100%;
+  float: right;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.list_icon image{
+  width: 16px;
+  height: 16px;
+}
+
+/* 用户等级 */
+.user_Level{
+  font-size: 14px;
+  color: #9B9B9B;
+  margin-left: 14px;
 }

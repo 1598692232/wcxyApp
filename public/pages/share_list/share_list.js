@@ -10,7 +10,7 @@ Page({
         tx: app.data.staticImg.manager,
         page: 1,
         pageSize: 10,
-        hasMoreData: true
+        hasMoreData: true,
     },
     onLoad(options) {
         let self = this;
@@ -25,25 +25,9 @@ Page({
         })
     },
     onShow() {
-        let store = wx.getStorageSync('app')
-        // if (store.token == '') {
-        //     wx.navigateTo({
-        //         url: '/pages/signin/signin'
-        //     })
-        // } else {
-            let self = this
-            wx.showLoading()
-            self.getShareList()
-        // }  
-
-        // let self = this
-        // let store = wx.getStorageSync('app')
-        // let reqData = Object.assign({}, {token: store.token},{login_id:store.login_id})
-        // reqData.project_id = self.data.projectID
-        // reqData.page = self.data.page
-        // reqData.pre_page = PRE_PAGE
-        // wx.showLoading()
-        // self.getShareList(reqData)
+        let self = this
+        wx.showLoading()
+        self.getShareList()
     },
     getShareList(){
         let self = this

@@ -19,7 +19,8 @@
     "pages/share_create/share_create",
     "pages/share_list_view/share_list_view",
     "pages/empower_scan/empower_scan",
-    "pages/empower_tips/empower_tips"
+    "pages/empower_tips/empower_tips",
+    "pages/collection/collection"
   ],
   "window":{
     "backgroundTextStyle":"dark",

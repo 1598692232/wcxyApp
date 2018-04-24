@@ -23,7 +23,8 @@ Page({
         pc_link:'',
         currentPlayId: null,
         templateShow: false,
-        needNickName: false
+        needNickName: false,
+        collect: false
     },
     onLoad(options) {
         let self = this;
@@ -325,10 +326,6 @@ Page({
             }
         })
     },
-    // 复制链接并分享
-    toCopyAndTransmit(e) {
-
-    },
 
     onShareAppMessage: function (res) {
         if (res.from === 'button') {
@@ -345,24 +342,45 @@ Page({
           imageUrl: './img/xinyue_share.png',
           success: function(res) {
             // 转发成功
-            // wx.showModal({
-            //     title: '提示',  
-            //     content: '转发成功', 
-            //     success: function(res) {  
-            //         if (res.confirm) {  
-            //         console.log('确定')  
-            //         } else if (res.cancel) {  
-            //         console.log('取消')  
-            //         }  
-            //     }
-            // })
+            wx.showToast({
+                title: '转发成功',
+                icon: 'success'
+            })
+            setTimeout(function(){
+                wx.hideLoading()
+            },2000)
           },
           fail: function(res) {
             // 转发失败
           }
         }
     },
-
+    // 收藏
+    toCollect() {
+        let self = this
+        self.setData({
+            collect: !self.data.collect
+        })
+        if(self.data.collect) {
+            wx.showToast({
+                title: '已收藏',
+                icon: 'success'
+            })
+            setTimeout(function(){
+                wx.hideLoading()
+            },2000)
+        } else {
+            wx.showToast({
+                title: '取消收藏',
+                icon: 'success'
+            })
+            setTimeout(function(){
+                wx.hideLoading()
+            },2000)
+        }
+        
+    },
+    // 复制链接
     copyTBL:function(e){  
         var self=this;
         var copypass = self.data.password?'密码:':''
@@ -370,18 +388,14 @@ Page({
         wx.setClipboardData({
             data: '链接:' + self.data.pc_link + more + copypass + self.data.password,
             success: function(res) {
-            // self.setData({copyTip:true}),  
-                // wx.showModal({
-                //     title: '提示', 
-                //     content: '复制成功',  
-                //     success: function(res) {  
-                //         if (res.confirm) {  
-                //         console.log('确定')  
-                //         } else if (res.cancel) {  
-                //         console.log('取消')  
-                //         }  
-                //     }
-                // })
+                self.setData({copyTip:true}),  
+                wx.showToast({
+                    title: '已复制到剪贴板',
+                    icon: 'success'
+                })
+                setTimeout(function(){
+                    wx.hideLoading()
+                },2000)
             } 
         });  
     },

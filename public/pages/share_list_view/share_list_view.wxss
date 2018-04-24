@@ -84,8 +84,13 @@
     display: block;
     float: left;
 }
+.share_btns{
+    display: flex;
+    justify-content: space-between;
+    padding: 0 50px;
+}
 .share-list-copyBtn{
-    width: 249px;
+    width: 175px;
     height: 33px;
     background: #0345C7;
     border-radius: 4px;
@@ -94,6 +99,44 @@
     text-align: center;
     margin: 0 auto 20px;
     font-size: 12px;
+}
+.share_btns .share_btns_text{
+    font-size: 12px;
+    color: #FFFFFF;
+    letter-spacing: 0.61px;
+    text-align: center;
+    line-height: 12px;
+}
+.share_btns .share_btns_text image{
+    width: 18px;
+    height: 18px;
+    margin-bottom: 1px;
+}
+.button-hover {
+    color:#ffffff;
+    background-color:#010101;  
+}
+button {
+    position:relative;
+    display:block;
+    margin-left:auto;
+    margin-right:auto;
+    padding-left:14px;
+    padding-right:14px;
+    box-sizing:border-box;
+    font-size:12px;
+    text-align:center;
+    text-decoration:none;
+    line-height:12px;
+    border-radius:5px;
+    -webkit-tap-highlight-color:transparent;
+    overflow:hidden;
+    color:#ffffff;
+    background-color:#010101;
+}
+    
+.share_btns .collection_link view{
+    width: 38px;
 }
 .share-list-copyBtn image{
     width: 12px;
