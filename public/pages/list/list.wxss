@@ -179,3 +179,71 @@
 .active{
     background: #1166EA;
 }
+
+
+/* 系统消息弹窗 */
+.systemNotification_box{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    background: rgba(0,0,0,0.5);
+}
+.systemNotification{
+    width: 280px;
+    height: 226px;
+    position: absolute;
+    z-index: 16;
+    left: 50%;
+    margin-left: -140px;
+    top: 50%;
+    margin-top: -113px;
+    background: #FFFFFF;
+    border-radius: 4px;
+}
+.systemNotification .title{
+    width: 100%;
+    height: 50px;
+    border-bottom: 1px solid #F1F3F6;
+    font-size: 15px;
+    line-height: 50px;
+    color: #4A4A4A;
+    letter-spacing: 0;
+    text-align: center;
+}
+.systemNotification .content2{
+    font-size: 13px;
+    color: #9B9B9B;
+    letter-spacing: 0;
+    text-align: justify;
+    padding: 10px 12px 22px;
+    line-height: 18px;
+}
+.systemNotification .content2 .item2{
+    margin-bottom: 12px;
+}
+
+.systemNotification .foot{
+    width: 100%;
+    height: 35px;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    border-top: 1px solid #F1F3F6;
+    display: flex;
+}
+.systemNotification .foot .btn{
+    width: 50%;
+    font-size: 15px;
+    letter-spacing: 0;
+    text-align: center;
+    line-height: 35px;
+}
+.systemNotification .foot .more{
+    color: #9B9B9B; 
+    border-right: 1px solid #F1F3F6;
+}
+.systemNotification .foot .know{
+    color: #4BCF39;
+}

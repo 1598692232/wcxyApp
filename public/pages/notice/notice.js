@@ -9,7 +9,8 @@ Page({
         listInfoWidth: 0,
         scrollHeight: 0,
         notice_count: 0,
-        project_name: ''
+        project_name: '',
+        count: true
     },
 
     onLoad() {
@@ -23,13 +24,17 @@ Page({
         })
     },
     onShow() {
+        let self = this
+        // count为true则不显示
+        self.setData({
+            count: wx.getStorageSync('notification')
+        })
         let store = wx.getStorageSync('app')
         // if (store.token == '') {
         //     wx.navigateTo({
         //         url: '/pages/signin/signin'
         //     })
         // } else {
-            let self = this
             self.setData({
                 noticeList: []
             })
@@ -144,6 +149,10 @@ Page({
     },
     //跳转至系统消息
     toNoticeSystemInfo(e) {
+        wx.setStorage({
+            key:"notification",
+            data:"true"
+        })
         wx.navigateTo({
           url: '/pages/notice_system_list/notice_system_list?project_id= -1'
         })
