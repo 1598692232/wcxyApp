@@ -24,7 +24,8 @@ Page({
         currentPlayId: null,
         templateShow: false,
         needNickName: false,
-        collect: false
+        collect: false,
+        isShare: false
     },
     onLoad(options) {
         let self = this;
@@ -100,7 +101,9 @@ Page({
                     }
                 }
             })
-            
+            self.setData({
+                isShare: true
+            })
         }
         if (options.password != undefined) {
             let params = {};
@@ -465,6 +468,12 @@ Page({
             shareList: list
         });
         this.pageCount++;
+    },
+    // 返回首页
+    backIndex() {
+        wx.reLaunch({
+            url: '/pages/empower_signin/empower_signin'
+        })
     }
 
 })

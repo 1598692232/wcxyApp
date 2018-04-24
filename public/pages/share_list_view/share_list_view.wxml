@@ -173,6 +173,15 @@
         </view>
 
     </view>
+    <view class="bottom" wx:if="{{isShare}}">
+        <view class="bottom_logo_box">
+            <image class="bottom_logo" src="./img/logo.png"></image>            
+        </view>
+        <view class="toXinyue" bindtap="backIndex">
+            创建我的视频
+        </view>
+        <image class="bottom_background" src="./img/bottom_bac.png"></image>       
+    </view>
 </view>
 
 <view class="info-password-cover" wx:if="{{passwordModal}}">
