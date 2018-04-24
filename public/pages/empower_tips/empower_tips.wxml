@@ -13,7 +13,7 @@
             <view class="login-out" bindtap="backIndex">返回首页</view>
         </view>
     </view>
-    <view class="backIndex" wx:else>
+    <view class="backIndex" wx:if="{{needEmpower}}">
         <view class="user-control">
             <button class="login-out" open-type="getUserInfo" bindgetuserinfo="userInfoHandler">重新授权</button>
         </view>
