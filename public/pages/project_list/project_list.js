@@ -502,6 +502,7 @@ Page({
                   if (transferStatus) {
                     transferStatus = false
                     clearInterval(interval)
+                    wx.hideLoading()
                   }else{
                     self.getChangeCodeStatus(json.doc_id)
                   }
@@ -510,6 +511,7 @@ Page({
               }
               console.log(self.data)
               self.initList(self.data.projectID, self.data.projectName)
+              wx.hideLoading()
               wx.showToast({
                 title: '文件已上传',
                 icon: 'success',
@@ -528,6 +530,10 @@ Page({
           let file = "";
           let sourceType = ['camera', 'album'];
           console.log(result.tapIndex);
+          wx.showToast({
+            title: '请勿离开',
+            duration: 3000
+          })
           if(result.tapIndex <= 1) {
             wx.chooseImage({
               count: 1,
