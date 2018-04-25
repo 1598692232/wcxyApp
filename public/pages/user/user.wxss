@@ -54,6 +54,10 @@
   margin: 0 0 20px;
   padding: 0 12px;
 }
+.account_info{
+  display: flex;
+  align-items: center;
+}
 .user_info_title .account_information{
   font-size: 14px;
   color: #FFFFFF;
@@ -153,7 +157,13 @@
 
 /* 用户等级 */
 .user_Level{
-  font-size: 14px;
-  color: #9B9B9B;
-  margin-left: 14px;
+  width: 72px;
+  height: 24px;
+  background: #0345C7;
+  border-radius: 100px;
+  margin-left: 4px;
+  font-size: 12px;
+  color: #FFFFFF;
+  line-height: 24px;
+  text-align: center;
 }

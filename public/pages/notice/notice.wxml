@@ -9,7 +9,7 @@
           <!-- 系统消息 -->
               <view class="item clearfix" bindtap="toNoticeSystemInfo">
                 <view class="item-left system-message">
-                  <image src="./img/notice_news.png"></image>
+                  <image src="./img/notice_news.jpg"></image>
                 </view>
                 <view class="item-right">
                   <text class="item-title">{{project_name}}</text>
