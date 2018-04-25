@@ -63,7 +63,7 @@ const timeToMinAndSec = time => {
 
 const ajax = (url, type, data, failHide, failClick) => {
     let hosts = wx.getStorageSync('app').host;  
-    let host = (!hosts || hosts == '') ? 'https://www.uxinyue.com' : hosts;
+    let host = (!hosts || hosts == '') ? 'http://10.255.1.23:8989' : hosts;
 
     return new Promise((resolve, reject) => {
         wx.request({
