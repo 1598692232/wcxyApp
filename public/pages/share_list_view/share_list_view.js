@@ -12,6 +12,7 @@ Page({
         projectId: null,
         deadline: null,
         fileCount: null,
+        collect_status: null,
         viewCount: null,
         enterShareLink: '',
         passwordModal: false,
@@ -151,7 +152,8 @@ Page({
                     review: data.review,
                     share_all_version: data.share_all_version,
                     people: data.share_people,
-                    pc_link: data.pc_link
+                    pc_link: data.pc_link,
+                    collect_status: data.collect_status
                 });
                 wx.setNavigationBarTitle({title: data.share_name})
             }, res => {
@@ -276,7 +278,8 @@ Page({
                 review: data.review,
                 share_all_version: data.share_all_version,
                 people: data.share_people,
-                pc_link: data.pc_link
+                pc_link: data.pc_link,
+                collect_status: data.collect_status
             });
             wx.setNavigationBarTitle({title: data.share_name})
         }, res => {
@@ -361,25 +364,50 @@ Page({
     // 收藏
     toCollect() {
         let self = this
-        self.setData({
-            collect: !self.data.collect
-        })
-        if(self.data.collect) {
-            wx.showToast({
-                title: '已收藏',
-                icon: 'success'
+        console.log(self.data.collect_status,'collect_status')
+        if(!self.data.collect_status) {
+            let store = wx.getStorageSync('app')
+            let reqData = Object.assign({}, {token: store.token},{login_id:store.login_id},{share_code:self.data.code},{collect_status:1})
+            Util.ajax('collect/link', 'post',reqData).then(data => {
+                wx.showToast({
+                    title: '已收藏',
+                    icon: 'success'
+                })
+                setTimeout(function(){
+                    wx.hideLoading()
+                },2000)
+                self.setData({
+                    collect_status: 1
+                })
+            }, res => {
+                wx.showModal({
+                    title:'提示',
+                    content: res.data.msg,
+                    showCancel: false,
+                })
             })
-            setTimeout(function(){
-                wx.hideLoading()
-            },2000)
+ 
         } else {
-            wx.showToast({
-                title: '取消收藏',
-                icon: 'success'
-            })
-            setTimeout(function(){
-                wx.hideLoading()
-            },2000)
+            let store = wx.getStorageSync('app')
+            let reqData = Object.assign({}, {token: store.token},{login_id:store.login_id},{share_code:self.data.code},{collect_status:0})
+            Util.ajax('collect/link', 'post',reqData).then(data => {
+                wx.showToast({
+                    title: '取消收藏',
+                    icon: 'success'
+                })
+                setTimeout(function(){
+                    wx.hideLoading()
+                },2000)
+                self.setData({
+                    collect_status: 0
+                })
+            }, res => {
+                wx.showModal({
+                    title:'提示',
+                    content: res.data.msg,
+                    showCancel: false,
+                })
+            }) 
         }
         
     },

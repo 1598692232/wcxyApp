@@ -25,7 +25,7 @@
                         包含<text>{{item.number}}</text>个文件
                     </view>
                 </view>
-                <view class="del" catchtap="del" data-index="{{index}}" data-id="{{item.id}}">取消收藏</view>                    
+                <view class="del" catchtap="del" data-index="{{index}}" data-id="{{item.id}}" data-code="{{item.code}}">取消收藏</view>                    
             </view>
             <!-- <view wx:if="{{!hasMoreData}}" style="font-size:12px;line-height: 28px;color: #9B9B9B;text-align:center;">已加载完全部数据</view> -->
         </block>

@@ -24,14 +24,16 @@
                 </view>
             </view>
             <view class="share_btns_text share_link">
-                <button open-type="share">
-                    <image src="./img/share_btn.svg"></image>
-                    <view>转发</view>
-                </button>
+                <view class="toshare">
+                    <button open-type="share">
+                        <image src="./img/share_btn.svg"></image>
+                        <view>转发</view>
+                    </button>
+                </view>
             </view>
             <view class="share_btns_text collection_link">
                 <view bindtap="toCollect">
-                    <view wx:if="{{collect}}">
+                    <view wx:if="{{collect_status}}">
                         <image src="./img/collected.svg"></image>
                         <view>已收藏</view>
                     </view>

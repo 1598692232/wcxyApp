@@ -8,7 +8,6 @@ Page({
         projectID: 0,
         tx: app.data.staticImg.manager,
         page: 1,
-        pageSize: 10,
         hasMoreData: true,
         currentTab: 0,
         collectionList: []
@@ -16,8 +15,7 @@ Page({
     onLoad(options) {
         let self = this;
         self.setData({
-            projectID:options.project_id,
-            collectionList: [{id:0},{id:1}]
+            projectID:options.project_id
         })
         Util.getSystemInfo().then(result => {
             self.setData({
@@ -29,17 +27,21 @@ Page({
     onShow() {
         let self = this
         wx.showLoading()
-        self.getCollectionList()
-    },
-    getCollectionList(){
-        let self = this
         let store = wx.getStorageSync('app')
         let reqData = Object.assign({}, {token: store.token},{login_id:store.login_id})
-        reqData.project_id = self.data.projectID
         reqData.page = self.data.page
         reqData.pre_page = PRE_PAGE
+        self.getCollectionList(reqData)
+    },
+    getCollectionList(reqData){
+        let self = this
+        // let store = wx.getStorageSync('app')
+        // let reqData = Object.assign({}, {token: store.token},{login_id:store.login_id})
+        // reqData.page = self.data.page
+        // reqData.pre_page = PRE_PAGE
         let getList = (reqData,doCommentAjaxing,fn)=>{
-            return Util.ajax('sharelink/list', 'get',reqData).then(data => {
+            return Util.ajax('collect/link', 'get',reqData).then(data => {
+                console.log(data,'data')
                 if (doCommentAjaxing) {
                     this.commentAjaxing = false;
                 }
@@ -65,6 +67,8 @@ Page({
         this.commentAjaxing = true
         getList(reqData, true, (list) => {
             let collectionList = self.data.collectionList.concat(list);
+            console.log(list.length,'list.length')
+            console.log(PRE_PAGE,'PRE_PAGE')
             if (list.length < PRE_PAGE) {
                 self.commentGeted = true;
                 self.setData({
@@ -75,8 +79,7 @@ Page({
                 collectionList,
                 page: list.length < PRE_PAGE ? self.data.page : ++self.data.page
             })
-        });
-        
+        });  
     },
     toShareInfo(e){
         let count = e.currentTarget.dataset.count
@@ -98,23 +101,11 @@ Page({
         let self = this
         let store = wx.getStorageSync('app')
         let params = Object.assign({}, {token: store.token},{login_id:store.login_id},{
-            project_id: self.data.projectId,
             page: self.data.page,
             pre_page: PRE_PAGE
         })
 
         self.getCollectionList(params);
-    },
-    //点击切换
-    clickTab(e) {
-        let self = this
-        if( self.data.currentTab === e.target.dataset.current ) {  
-            return false;  
-        } else { 
-            self.setData({
-                currentTab: e.target.dataset.current  
-            })
-        } 
     },
     //手指触摸动作开始 记录起点X坐标
     touchstart: function (e) {
@@ -174,9 +165,8 @@ Page({
             title: '正在取消收藏...'
         })
         let store = wx.getStorageSync('app')
-        let reqData = Object.assign({}, {token: store.token},{login_id:store.login_id})
-        reqData.notice_id = e.currentTarget.dataset.id
-        Util.ajax('notice/cell', 'delete',reqData).then(data => {
+        let reqData = Object.assign({}, {token: store.token},{login_id:store.login_id},{share_code:e.currentTarget.dataset.code},{collect_status:0})
+        Util.ajax('collect/link', 'post',reqData).then(data => {
             self.data.collectionList.splice(e.currentTarget.dataset.index, 1)
             self.setData({
                 collectionList: self.data.collectionList
@@ -186,7 +176,11 @@ Page({
                 title: '已取消收藏'
             })
         }, res => {
-            console.log(res,'res')
-        })
+            wx.showModal({
+                title:'提示',
+                content: res.data.msg,
+                showCancel: false,
+            })
+        }) 
     },
 })
