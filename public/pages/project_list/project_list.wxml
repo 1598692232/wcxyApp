@@ -202,7 +202,6 @@
 		<view class="empty-project" wx:else>
 			暂无媒体，请登录新阅官网进行更多操作
         </view>
-		
 	</scroll-view>
 
 	<view class="member-drop" wx:if="{{showMemberDrop}}">
@@ -273,7 +272,12 @@
 			<image src="./img/jiantou-top.png"></image>
 		</view>
 	</view>
-
+  <view class='upload'>
+    <button class='upload-button' bindtap="uploadFile">
+      <image src='./img/upload.png'></image>
+      上传
+    </button>
+  </view>
 	<view wx:if="{{!showShare}}">
 		<view class="share">
 			<view bindtap="toShareList">
