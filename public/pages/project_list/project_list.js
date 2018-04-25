@@ -2,7 +2,8 @@ let Util = require('../../utils/util.js')
 const app = getApp()
 
 const PIC_TYPE = ['jpg', 'jpeg', 'png', 'gif', 'tiff'];
-
+let topId = 0;
+let transferStatus = false;
 Page({
 	data: {
 		videoImg: app.data.staticImg.videoImg,
@@ -33,9 +34,57 @@ Page({
         isInvite: false,
         againInput: false
 	},
+  setListData(projectId){
+    let self = this
+    let store = wx.getStorageSync('app')
+    let reqData = Object.assign({}, store, {
+      project_id: projectId,
+      doc_id: topId
+    })
 
+    Util.ajax('project/file', 'get', reqData).then(json => {
+      json.list.map(item => {
+        item.created_time = Util.getCreateTime(item.created_at)
+        let sec = item.project_file.time % 60
+        item.project_file.time = Util.timeToMinAndSec(item.project_file.time)
+        item.user_info.avatar = item.user_info.avatar == '' ? self.data.tx : item.user_info.avatar
+        item.size_text = (item.size / Math.pow(1024, 2)).toFixed(2)
+        item.selected = false
+      })
+      self.setData({
+        videoList: json.list
+      })
+    }, res => {
+      wx.showModal({
+        title: '提示',
+        content: '文件获取失败！',
+      })
+    })
+  },
+  initList(projectId, projectName){
+    let self = this
+    wx.showLoading()
+    Util.getSystemInfo().then(result => {
+      self.setData({
+        liWidth: result.windowWidth - 160,
+        query: wx.createSelectorQuery(),
+        scrollHeight: result.windowHeight,
+        scrollNumberHeight: result.windowHeight - 263
+      })
+      wx.setNavigationBarTitle({ title: projectName })
+
+      let wh = result.windowHeight
+      self.setListData(projectId)
+      self.setData({
+        breadcrumbList: [{ id: 0, name: projectName }],
+        scrollHeight: result.windowHeight,
+        scrollNumberHeight: result.windowHeight - 263,
+        breadcrumbWidth: 100
+      });
+    })
+  },
 	onLoad(options) {
-        let self = this;
+        let self = this
         if(options.project_type==='admin'){
             self.setData({
                 isAdmin: true
@@ -47,48 +96,10 @@ Page({
         }
         self.setData({
             title: options.projectName,
-            projectID: options.project_id
+            projectID: options.project_id,
+            projectName: options.projectName
         })
-        wx.showLoading()
-        Util.getSystemInfo().then(result => {
-            self.setData({
-                liWidth: result.windowWidth - 160,
-                query: wx.createSelectorQuery(),
-                scrollHeight: result.windowHeight,
-                scrollNumberHeight: result.windowHeight-263
-            })
-            wx.setNavigationBarTitle({title: options.projectName})
-
-            let wh = result.windowHeight
-            let store = wx.getStorageSync('app')
-            let reqData = Object.assign({}, store, options)
-
-            Util.ajax('project/file', 'get', reqData).then(json => {
-                json.list.map(item => {
-                    item.created_time = Util.getCreateTime(item.created_at)
-                    let sec = item.project_file.time % 60
-                    item.project_file.time = Util.timeToMinAndSec(item.project_file.time)
-                    item.user_info.avatar = item.user_info.avatar == '' ? self.data.tx : item.user_info.avatar
-                    item.size_text = (item.size / Math.pow(1024, 2)).toFixed(2)
-                    item.selected = false
-                });
-
-                self.setData({
-                    videoList: json.list,
-                    breadcrumbList: [{id: 0, name: options.projectName}],
-                    projectName: options.projectName,
-                    scrollHeight: result.windowHeight,
-                    scrollNumberHeight: result.windowHeight-263,
-                    breadcrumbWidth: 100
-                });
-            }, res => {
-                wx.showModal({
-                    title: '提示',
-                    content: '文件获取失败！',
-                })
-            })
-           
-        })
+        self.initList(options.project_id, options.projectName)
     },
     
 
@@ -133,6 +144,7 @@ Page({
     },
 
     selectFolder(e) {
+        topId = e.currentTarget.dataset.id
         let self = this
         let store = wx.getStorageSync('app')
         let reqData = Object.assign({}, store, {
@@ -454,6 +466,106 @@ Page({
                 })
             }         
         } 
-    }
-
+    },
+    uploadOSS(file,uploadType){
+      console.log(file)
+      let self = this
+      let result = false
+      let store = wx.getStorageSync('app')
+      console.log(store)
+      let reqData = Object.assign({}, store, {
+        project_id: wx.getStorageSync('project_id'),
+        top_id: topId,
+        filename: "tmp_" + file.split('_')[1],
+      })
+      wx.showLoading()
+      Util.ajax('createoss', 'post', reqData).then(json => {
+        console.log(json)
+        wx.uploadFile({
+          url: json.host,
+          filePath: file,
+          name: 'file',
+          formData: {
+            "key": json.object_key,
+            "OSSAccessKeyId": json.accessid,
+            "policy": json.policy,
+            "signature": json.signature,
+            'success_action_status': '200',
+          },
+          success: function (uploadReslut) {
+              if (uploadReslut.statusCode != 200) {
+                failc(new Error('上传错误:' + JSON.stringify(res)))
+                return false;
+              }
+              if (uploadType === 'void') {
+                let interval = setInterval(function(){
+                  if (transferStatus) {
+                    transferStatus = false
+                    clearInterval(interval)
+                  }else{
+                    self.getChangeCodeStatus(json.doc_id)
+                  }
+                }, 3000);
+                return true
+              }
+              console.log(self.data)
+              self.initList(self.data.projectID, self.data.projectName)
+              wx.showToast({
+                title: '文件已上传',
+                icon: 'success',
+                duration: 3000
+              })
+              return true
+            }
+        })
+      })
+    },
+    uploadFile() {
+      let self = this
+      wx.showActionSheet({
+        itemList: ['拍照片','相册照片','拍视频','相册视频'],
+        success: function (result) {
+          let file = "";
+          let sourceType = ['camera', 'album'];
+          console.log(result.tapIndex);
+          if(result.tapIndex <= 1) {
+            wx.chooseImage({
+              count: 1,
+              sourceType: [sourceType[result.tapIndex]],
+              success: function (res) {
+                self.uploadOSS(res.tempFilePaths[0], 'image')
+              },
+            })
+          }else{
+            wx.chooseVideo({
+              sourceType: [sourceType[result.tapIndex - 2]],
+              success: function (res) {
+                self.uploadOSS(res.tempFilePath, 'void')
+              },
+              compressed: false
+            })
+          } 
+        }
+      });
+    },
+    getChangeCodeStatus(docId) { //获取媒体转码状态，递归。
+      let self = this
+      let store = wx.getStorageSync('app')
+      console.log(store)
+      let reqData = Object.assign({}, store, {
+        doc_id: docId
+      })
+      Util.ajax('cell/transcode', 'get', reqData).then(json => {
+        console.log(json)
+        if(json.transcode_state != -1){
+          self.initList(self.data.projectID, self.data.projectName)
+          wx.showToast({
+            title: '文件已上传',
+            icon: 'success',
+            duration: 3000
+          })
+        }
+        transferStatus = json.transcode_state != -1
+      })
+    },
 })
