@@ -10,7 +10,9 @@ Page({
         content: '',
         backIndex: false,
         needEmpower: false,
-        tips: ''
+        tips: '',
+        share_code: '',
+        password: ''
     },
 	onLoad(options) {
         console.log(options,'options')
@@ -34,10 +36,12 @@ Page({
                 content: '你拒绝了授权，账号需要实名认证。请再次点击授权。',
                 tips: 1
             })
-        } else if (options.tipss==2) {
+        } else if (options.tips==2) {
             self.setData({
-                content: '你拒绝了授权，项目分享者无法获取您的信息。请删除小程序，再次点击授权。',
-                // tips: 2
+                content: '你拒绝了授权，项目分享者无法获取您的信息。请再次点击授权。',
+                tips: 2,
+                share_code: options.share_code,
+                password: options.password
             })
         } else if (options.tips==3) {
             self.setData({
@@ -89,10 +93,10 @@ Page({
                     wx.reLaunch({
                         url: '/pages/empower_signin/empower_signin'
                     })
-                }else if( self.data.tipss==2 ){
-                    // wx.reLaunch({
-                    //     url: '/pages/share_list_view/share_list_view'
-                    // })
+                }else if( self.data.tips==2 ){
+                    wx.reLaunch({
+                        url: '/pages/share_list_view/share_list_view?code=' + self.data.share_code + '&password=' + self.data.password
+                    })
                     // wx.navigateBack()
                 }else if( self.data.tips==3 ){
                     wx.reLaunch({
