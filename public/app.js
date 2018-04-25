@@ -16,7 +16,7 @@ App({
               // token: '',
               // login_id: '',
               // sessionid: '',
-              host: 'https://www.uxinyue.com',
+              host: 'https://www.uxinyue.com:81',
               // host: 'http://www.uxinyue.com:81',
               // host: 'http://10.255.1.23:8989',
               // host: 'http://106.14.134.19',
