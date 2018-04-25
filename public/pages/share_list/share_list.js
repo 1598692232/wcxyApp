@@ -21,7 +21,7 @@ Page({
             self.setData({
                 scrollHeight: result.windowHeight,
             })
-            wx.setNavigationBarTitle({title: '链接'})
+            wx.setNavigationBarTitle({title: '分享记录'})
         })
     },
     onShow() {
