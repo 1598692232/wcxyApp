@@ -360,8 +360,15 @@ Page({
     },
     // 关闭系统消息的弹窗
     toKnow() {
+        // this.setData({
+        //     systemNotification: true
+        // })
+        wx.setStorage({
+            key:"notification",
+            data:"true"
+        })
         this.setData({
-            systemNotification: true
+            systemNotification: wx.getStorageSync('notification')
         })
     },
 })
