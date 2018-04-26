@@ -13,7 +13,7 @@
                 </view>
                 <view class="item-right">
                   <text class="item-title">{{project_name}}</text>
-                  <text class="item-comment">账号升级(NEW)</text>
+                  <text class="item-comment">系统升级(NEW)</text>
                 </view>
                 <view class="item-number-box" wx:if="{{!count}}">
                     <view class="item-number">1</view>

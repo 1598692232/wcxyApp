@@ -25,7 +25,7 @@
 
                  <view class="item-system" bindtap="toNoticeSystemInfo">
                        <view class="item-system-left">
-                           <text>账号升级</text>
+                           <text>系统升级</text>
                            <text class="new">(NEW)</text>
                        </view>
                        <view class="item-system-right">
