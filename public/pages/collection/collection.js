@@ -67,8 +67,8 @@ Page({
         this.commentAjaxing = true
         getList(reqData, true, (list) => {
             let collectionList = self.data.collectionList.concat(list);
-            console.log(list.length,'list.length')
-            console.log(PRE_PAGE,'PRE_PAGE')
+            // console.log(list.length,'list.length')
+            // console.log(PRE_PAGE,'PRE_PAGE')
             if (list.length < PRE_PAGE) {
                 self.commentGeted = true;
                 self.setData({
