@@ -10,6 +10,7 @@ Page({
         scrollHeight: 0,
         notice_count: 0,
         project_name: '',
+        first_name: '',
         count: true
     },
 
@@ -121,7 +122,8 @@ Page({
             self.setData({
                 noticeList: data.list,
                 notice_count:data.notice_count,
-                project_name: data.project_name
+                project_name: data.project_name,
+                first_name: data.first_name
             })
             if(num>0){
                 wx.showTabBarRedDot({
@@ -172,8 +174,13 @@ Page({
         wx.setStorageSync(store.login_id.toString(), sumData)
         // ----------------------
         let self = this
-        let url = '/pages/notice_list/notice_list?project_id=' + e.currentTarget.dataset.id 
+        let url = ''
+        if(e.currentTarget.dataset.id==-1){
+            url = '/pages/notice_system_list/notice_system_list?project_id= -1'
+        }else{
+            url = '/pages/notice_list/notice_list?project_id=' + e.currentTarget.dataset.id 
         + '&project_name=' + e.currentTarget.dataset.name
+        }
         wx.navigateTo({
             url: url,
         })

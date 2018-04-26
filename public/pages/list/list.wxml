@@ -84,22 +84,24 @@
     <view>{{refreshTime}}</view>
   </view> -->
 
-  <view class="systemNotification_box" wx:if="{{!systemNotification}}">
+  <view class="systemNotification_box" wx:if="{{systemCount&&popupShow}}">
     <view class="systemNotification">
       <view class="title">
         <image src="./img/top.png"></image>
-        <text>现在可一键登录新阅账号啦!</text>
+        <text>{{popupTitle}}</text>
       </view>
-      <view class="content2">
-        <view class="item2">
-          <view class="title2">新阅web端(版本1.2.2)</view>
-          <view class="text2">【账号】当前版本已支持微信授权登录和短信验证码登录、并支持微信扫码一键注册。</view>
-        </view>
-        <view class="item2">
-          <view class="title2">新阅微信小程序(版本2.1)</view>
-          <view class="text2">【新增】添加微信一键授权登录。</view>
+      <view class="content2" wx:if="{{isSystem==1}}">
+        <view class="item2" wx:for="{{noticeListInfo}}" wx:key="{{index}}">
+          <view class="title2">{{item.title1}}</view>
+          <view class="text2" wx:for="{{item.content1}}" wx:key="{{index}}">{{item}}</view>
         </view>
       </view>
+      <view class="content2" wx:if="{{isSystem==2}}">
+          <view class="item2">
+            <view class="title2">{{accountInfo.created_at}}升级为{{accountInfo.vip_name}}</view>
+            <view class="text2" wx:for="{{item.content1}}" wx:key="{{index}}">{{item}}</view>
+          </view>
+        </view>
       <view class="foot">
         <view class="btn more" bindtap="toSystemInfo">了解更多</view>
         <view class="btn know" bindtap="toKnow">我知道了</view>

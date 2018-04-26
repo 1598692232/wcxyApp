@@ -6,7 +6,7 @@
                 </view>
             </view>
            <view class="list-body">
-               <!-- <block wx:if="{{noticeListInfo.length > 0}}">
+               <block wx:if="{{noticeListInfo.length > 0}}">
                  <view class="item-system" wx:key="index" wx:if="{{noticeListInfo.length > 0}}" 
                      wx:for="{{noticeListInfo}}" wx:key="index" data-id="{{item.id}}" data-contentid="{{item.content_id}}"
                      bindtap="toNoticeSystemInfo">
@@ -21,9 +21,9 @@
                  <view class="empty-notice" wx:else>
                    <image src="./img/notice_empty.png"></image>
                    暂时没有任何通知哦
-                 </view> -->
+                 </view>
 
-                 <view class="item-system" bindtap="toNoticeSystemInfo">
+                 <!-- <view class="item-system" bindtap="toNoticeSystemInfo">
                        <view class="item-system-left">
                            <text>系统升级</text>
                            <text class="new">(NEW)</text>
@@ -31,7 +31,7 @@
                        <view class="item-system-right">
                            <text>4月23日</text>
                        </view>
-                    </view>
+                    </view> -->
            </view>
        </scroll-view>
     </view>

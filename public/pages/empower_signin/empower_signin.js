@@ -8,7 +8,8 @@ Page({
         realName: '',
         avatar: '',
         toUserInfo: false,
-        manager: app.data.staticImg.manager
+        manager: app.data.staticImg.manager,
+        popupArr: []
     },
 	onLoad() {
         let self = this
@@ -195,34 +196,69 @@ Page({
 
     },
     hasRedDots() {
+        let self = this
         let store = wx.getStorageSync('app')
         //获取当天零点的时间戳 
         const start = new Date(new Date(new Date().toLocaleDateString()).getTime());
         var timestampday = Date.parse(start); 
         timestampday = timestampday / 1000; 
+        if(!wx.getStorageSync(store.login_id.toString())){
+            wx.setStorageSync(store.login_id.toString(),{
+                noticeList0 :[]
+            })
+        }
         let reqData = Object.assign({}, {token: store.token},{login_id:store.login_id})
         reqData.new_time = timestampday
-        var noticeList0 = []
         Util.ajax('notice', 'get', reqData).then(data => {
             var num
+            var num2
             var data0 = data.list?data.list:[]
             data0.map((item,i) => {
                 item.count = 0
                 var arr = wx.getStorageSync(store.login_id.toString()).noticeList0?wx.getStorageSync(store.login_id.toString()).noticeList0:[]
-                    var thisItemData = arr.find((v) => {
-                        return v.id == item.project_id
-                    })
-                    if(thisItemData){
-                        if(thisItemData.timestamp){
-                            item.notice_content.forEach((v)=> {
-                                if(v.created_at > thisItemData.timestamp){
-                                    item.count += 1
-                                    num = item.count
-                                }
-                            })
-                        }
+                var thisItemData = arr.find((v) => {
+                    return v.id == item.project_id
+                })
+                
+                if(thisItemData){
+                    if(item.project_id==-1&&thisItemData.timestamp){
+                        item.notice_content.forEach((v)=> {
+                            if(v.created_at > thisItemData.timestamp){
+                                item.count += 1
+                                num2 = item.count
+                                self.data.popupArr.push(v)
+                                self.setData({
+                                    systemCount:num2
+                                })
+                            }
+                        })
+                    }else if(thisItemData.timestamp){
+                        item.notice_content.forEach((v)=> {
+                            if(v.created_at > thisItemData.timestamp){
+                                item.count += 1
+                                num = item.count
+                            }
+                        })
                     }
+                }else{
+                    var sumData = wx.getStorageSync(store.login_id.toString())
+                    let newarr = sumData.noticeList0?sumData.noticeList0:[]
+                    newarr.push({
+                        id: item.project_id,
+                        timestamp:Date.parse(new Date(new Date(new Date().toLocaleDateString()).getTime()))/1000
+                    })
+                    wx.setStorageSync(store.login_id.toString(), sumData)
+                }  
             })
+
+            reqData.content_id = self.data.popupArr[0]?self.data.popupArr[0].id:0
+            Util.ajax('content/detail', 'get',reqData).then(data => {
+                self.setData({
+                    noticeListInfo: data.content.list,
+                    popupTitle: data.content_name
+                })
+            }, res => {})
+
             if(num>0){
                 wx.showTabBarRedDot({
                     index: 1,
@@ -233,5 +269,5 @@ Page({
                 })
             }  
         }, res => {}) 
-    }
+    },
 })

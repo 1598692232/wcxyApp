@@ -7,13 +7,13 @@
         </view>
         <view class="list-body">
           <!-- 系统消息 -->
-              <view class="item clearfix" bindtap="toNoticeSystemInfo">
+              <!-- <view class="item clearfix" bindtap="toNoticeSystemInfo">
                 <view class="item-left system-message">
                   <image src="./img/notice_news.jpg"></image>
                 </view>
                 <view class="item-right">
                   <text class="item-title">{{project_name}}</text>
-                  <text class="item-comment">系统升级(NEW)</text>
+                  <text class="item-comment">{{first_name}}</text>
                 </view>
                 <view class="item-number-box" wx:if="{{!count}}">
                     <view class="item-number">1</view>
@@ -24,14 +24,19 @@
                     <view class="item-number" wx:else>99+</view>
                   </view>
                 </block>
-              </view>
+              </view> -->
 
               <!-- 其他消息 -->
             <block wx:if="{{noticeList.length > 0}}">
               <view class="item clearfix" wx:for="{{noticeList}}" wx:key="index" bindtap="toNoticeInfo" wx:if="{{noticeList.length > 0}}"
                 data-id="{{item.project_id}}" data-time="{{item.time}}" data-count="{{item.count}}" data-name="{{item.project_name}}"
                 >
-                <view class="item-left">
+                <block wx:if="{{item.project_id==-1}}">
+                    <view class="item-left system-message">
+                        <image src="./img/notice_news.jpg"></image>
+                      </view>
+                  </block>
+                <view class="item-left" wx:else>
                   <block>
                     <view wx:if="{{item.src}}">
                         <image src="./img/notice_news.png"></image>

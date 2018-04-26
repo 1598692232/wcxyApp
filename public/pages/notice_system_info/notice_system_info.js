@@ -5,18 +5,18 @@ Page({
     data: {
         hideClear: true,
         listInfoWidth: 0,
-        notice_id: 0,
-        noticeListInfo: '',
+        content_id: 0,
+        noticeListInfo: [],
         noticeListInfoNum: 0,
-        noticeListInfoTitle: ''
+        noticeListInfoTitle: '',
+        isSystem: 0
     },
 
     onLoad(options) {
-        console.log(options,'options')
         let self = this
         wx.showLoading()
         self.setData({
-            notice_id:options.notice_id
+            content_id:options.content_id
         })
         Util.getSystemInfo().then(res => {
             self.setData({
@@ -47,15 +47,15 @@ Page({
         let self = this
         let store = wx.getStorageSync('app')
         let reqData = Object.assign({}, {token: store.token},{login_id:store.login_id})
-        reqData.notice_id = self.data.notice_id
+        reqData.content_id = self.data.content_id
         wx.showLoading()
         Util.ajax('content/detail', 'get',reqData).then(data => {
-            console.log(data,'data')
             self.setData({
-                noticeListInfo: data.content,
-                noticeListInfoNum: data.systemNotice_num,
-                noticeListInfoTitle: data.title
+                noticeListInfoTitle: data.content_name,
+                noticeListInfo: data.content.list,
+                isSystem: data.type
             })
+            wx.setNavigationBarTitle({title: self.data.noticeListInfoTitle})
             wx.hideLoading()
         }, res => {
             // wx.showModal({
