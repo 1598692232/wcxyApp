@@ -97,9 +97,14 @@
         </view>
       </view>
       <view class="content2" wx:if="{{isSystem==2}}">
-          <view class="item2">
-            <view class="title2">{{accountInfo.created_at}}升级为{{accountInfo.vip_name}}</view>
-            <view class="text2" wx:for="{{item.content1}}" wx:key="{{index}}">{{item}}</view>
+          <view class="item2 accountUpdate">
+            <view class="title2">您的账户通过系统自动升级为Lv.{{grade}}！</view>
+            <view class="text2">
+              <view>1、新的套餐容量为{{storage_max}}GB；</view>
+              <view>2、{{project_max}}项目数；</view>
+              <view>3、{{member_max}}人员数；</view>
+              <view>4、有效期为{{time_at}}天。</view>
+            </view>
           </view>
         </view>
       <view class="foot">

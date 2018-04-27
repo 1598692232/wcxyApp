@@ -237,7 +237,7 @@
     text-align: justify;
     padding: 10px 12px 35px;
     line-height: 18px;
-    min-height: 140px;
+    min-height: 180px;
 }
 .systemNotification .content2 .item2{
     margin-bottom: 12px;
@@ -268,4 +268,10 @@
 }
 .systemNotification .foot .know{
     color: #0345c7;
+}
+
+.accountUpdate .title2{
+    color: #4A4A4A!important;
+    text-align: center!important;
+    margin-bottom: 5px;
 }

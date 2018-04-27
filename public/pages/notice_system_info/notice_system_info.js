@@ -9,7 +9,13 @@ Page({
         noticeListInfo: [],
         noticeListInfoNum: 0,
         noticeListInfoTitle: '',
-        isSystem: 0
+        isSystem: 0,
+        accountInfo: '',
+        grade: '',
+        storage_max: '',
+        project_max: '',
+        member_max: '',
+        time_at: ''
     },
 
     onLoad(options) {
@@ -50,10 +56,31 @@ Page({
         reqData.content_id = self.data.content_id
         wx.showLoading()
         Util.ajax('content/detail', 'get',reqData).then(data => {
+            let grade = ""
+            switch(data.content.vip_name) {
+                case "一级会员":
+                    grade = 1
+                    break
+                case "二级会员":
+                    grade = 2
+                    break
+                case "三级会员":
+                    grade = 3
+                    break
+                case "四级会员":
+                    grade = 4
+                    break
+            }
             self.setData({
                 noticeListInfoTitle: data.content_name,
                 noticeListInfo: data.content.list,
-                isSystem: data.type
+                isSystem: data.type,
+                accountInfo: data.content,
+                grade: grade,
+                storage_max: data.content.storage_max,
+                project_max: data.content.project_max =="不限制的"?data.content.project_max:data.content.project_max+"个",
+                member_max: data.content.member_max =="不限制的"?data.content.member_max:data.content.member_max+"个",
+                time_at: data.content.time_at
             })
             wx.setNavigationBarTitle({title: self.data.noticeListInfoTitle})
             wx.hideLoading()

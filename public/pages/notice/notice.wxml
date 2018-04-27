@@ -58,10 +58,10 @@
                 </block> 
               </view>
             </block>
-              <!-- <view class="empty-notice" wx:else>
+              <view class="empty-notice" wx:else>
                 <image src="./img/notice_empty.png"></image>
                 暂时没有任何通知哦
-              </view> -->
+              </view>
         </view>
     </scroll-view>
  </view>
