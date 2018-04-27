@@ -173,6 +173,13 @@
 					"pathName": "pages/share_list_view/share_list_view",
 					"query": "scene=code%3d899f152ace6c200d&password%3d9ycm",
 					"scene": "1011"
+				},
+				{
+					"id": -1,
+					"name": "share_list_view_bofang",
+					"pathName": "pages/share_list_view/share_list_view",
+					"query": "scene=code%3d72905721b53864b9",
+					"scene": "1011"
 				}
 			]
 		}

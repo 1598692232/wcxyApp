@@ -26,22 +26,24 @@ Page({
     },
     onShow() {
         let self = this
+        self.setData({
+            collectionList: [],
+            page: 1,
+            hasMoreData: true,
+        })
+        this.commentAjaxing=false
+        this.commentGeted=false
         wx.showLoading()
+        self.getCollectionList()
+    },
+    getCollectionList(){
+        let self = this
         let store = wx.getStorageSync('app')
         let reqData = Object.assign({}, {token: store.token},{login_id:store.login_id})
         reqData.page = self.data.page
         reqData.pre_page = PRE_PAGE
-        self.getCollectionList(reqData)
-    },
-    getCollectionList(reqData){
-        let self = this
-        // let store = wx.getStorageSync('app')
-        // let reqData = Object.assign({}, {token: store.token},{login_id:store.login_id})
-        // reqData.page = self.data.page
-        // reqData.pre_page = PRE_PAGE
         let getList = (reqData,doCommentAjaxing,fn)=>{
             return Util.ajax('collect/link', 'get',reqData).then(data => {
-                console.log(data,'data')
                 if (doCommentAjaxing) {
                     this.commentAjaxing = false;
                 }
@@ -60,7 +62,7 @@ Page({
                 }
             })
         }
-        wx.hideLoading()
+        // wx.hideLoading()
         if (this.commentAjaxing || this.commentGeted) { 
             return;
         }
@@ -99,13 +101,7 @@ Page({
      // 页面上拉触底事件的处理函数
      lower(){
         let self = this
-        let store = wx.getStorageSync('app')
-        let params = Object.assign({}, {token: store.token},{login_id:store.login_id},{
-            page: self.data.page,
-            pre_page: PRE_PAGE
-        })
-
-        self.getCollectionList(params);
+        self.getCollectionList();
     },
     //手指触摸动作开始 记录起点X坐标
     touchstart: function (e) {

@@ -167,8 +167,10 @@
                     </view>  
                 </view>
                 <view class="comment">
-                    <image src="./img/comment.png"></image>
-                    <text>{{item.comment_count?item.comment_count:0}}</text>
+                    <!-- <image src="./img/comment.png"></image> -->
+                    <image src="./img/pen.png"></image>
+                    <text>意见评论</text>
+                    <!-- <text>（{{item.comment_count?item.comment_count:0}}条）</text> -->
                 </view>
                 <!-- <view class="play-num">{{item.view_count}}次播放</view> -->
             </view>

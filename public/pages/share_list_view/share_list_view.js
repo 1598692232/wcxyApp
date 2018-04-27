@@ -364,7 +364,7 @@ Page({
     // 收藏
     toCollect() {
         let self = this
-        console.log(self.data.collect_status,'collect_status')
+        // console.log(self.data.collect_status,'collect_status')
         if(!self.data.collect_status) {
             let store = wx.getStorageSync('app')
             let reqData = Object.assign({}, {token: store.token},{login_id:store.login_id},{share_code:self.data.code},{collect_status:1})
