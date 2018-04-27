@@ -18,7 +18,19 @@ Page({
         tabOne: 'background: #0036df;color: #fff;',
         tabTwo: '',
         currentTab:0,
-        systemNotification: false
+        systemNotification: false,
+        systemCount: 0,
+        popupArr: [],
+        popupTitle: '',
+        noticeListInfo: [],
+        popupShow: true,
+        isSystem: 0,
+        accountInfo: '',
+        grade: '',
+        storage_max: '',
+        project_max: '',
+        member_max: '',
+        time_at: ''
     },
 
     onLoad() {
@@ -305,36 +317,92 @@ Page({
 	    }
     },
     hasRedDots() {
+        let self = this
         let store = wx.getStorageSync('app')
         //获取当天零点的时间戳 
         const start = new Date(new Date(new Date().toLocaleDateString()).getTime());
         var timestampday = Date.parse(start); 
         timestampday = timestampday / 1000; 
+        if(!wx.getStorageSync(store.login_id.toString())){
+            wx.setStorageSync(store.login_id.toString(),{
+                noticeList0 :[]
+            })
+        }
         let reqData = Object.assign({}, {token: store.token},{login_id:store.login_id})
         reqData.new_time = timestampday
-        var noticeList0 = []
         Util.ajax('notice', 'get', reqData).then(data => {
             var num
+            var num2
             var data0 = data.list?data.list:[]
             data0.map((item,i) => {
                 item.count = 0
                 var arr = wx.getStorageSync(store.login_id.toString()).noticeList0?wx.getStorageSync(store.login_id.toString()).noticeList0:[]
-                    var thisItemData = arr.find((v) => {
-                        return v.id == item.project_id
-                    })
-                    if(thisItemData){
-                        if(thisItemData.timestamp){
-                            item.notice_content.forEach((v)=> {
-                                if(v.created_at > thisItemData.timestamp){
-                                    item.count += 1
-                                    num = item.count
-                                }
-                            })
-                        }
+                var thisItemData = arr.find((v) => {
+                    return v.id == item.project_id
+                })
+                
+                if(thisItemData){
+                    if(item.project_id==-1&&thisItemData.timestamp){
+                        item.notice_content.forEach((v)=> {
+                            if(v.created_at > thisItemData.timestamp){
+                                item.count += 1
+                                num2 = item.count
+                                self.data.popupArr.push(v)
+                                self.setData({
+                                    systemCount:num2
+                                })
+                            }
+                        })
+                    }else if(thisItemData.timestamp){
+                        item.notice_content.forEach((v)=> {
+                            if(v.created_at > thisItemData.timestamp){
+                                item.count += 1
+                                num = item.count
+                            }
+                        })
                     }
+                }else{
+                    var sumData = wx.getStorageSync(store.login_id.toString())
+                    let newarr = sumData.noticeList0?sumData.noticeList0:[]
+                    newarr.push({
+                        id: item.project_id,
+                        timestamp:Date.parse(new Date(new Date(new Date().toLocaleDateString()).getTime()))/1000
+                    })
+                    wx.setStorageSync(store.login_id.toString(), sumData)
+                }  
             })
-            // console.log(num,'num')
-            if(num>0||!this.data.systemNotification){
+
+            reqData.content_id = self.data.popupArr[0]?self.data.popupArr[0].id:0
+            Util.ajax('content/detail', 'get',reqData).then(data => {
+                let grade = ""
+                switch(data.content.vip_name) {
+                    case "一级会员":
+                        grade = 1
+                        break
+                    case "二级会员":
+                        grade = 2
+                        break
+                    case "三级会员":
+                        grade = 3
+                        break
+                    case "四级会员":
+                        grade = 4
+                        break
+                }
+                self.setData({
+                    noticeListInfo: data.content.list,
+                    popupTitle: data.content_name,
+                    isSystem: data.type,
+                    accountInfo: data.content,
+                    grade: grade,
+                    storage_max: data.content.storage_max,
+                    project_max: data.content.project_max =="不限制的"?data.content.project_max:data.content.project_max+"个",
+                    member_max: data.content.member_max =="不限制的"?data.content.member_max:data.content.member_max+"个",
+                    time_at: data.content.time_at
+                })
+            }, res => {})
+
+            if(num>0){
                 wx.showTabBarRedDot({
                     index: 1,
                 })
@@ -346,22 +414,41 @@ Page({
         }, res => {}) 
     },
     // 跳转至系统消息详情
-    toSystemInfo() {
-        wx.setStorage({
-            key:"notification",
-            data:"true"
+    toSystemInfo(e) {
+        let self = this
+        var timestamp = Date.parse(new Date());
+        timestamp = timestamp / 1000;
+        // 点击时设置时间戳
+        let store = wx.getStorageSync('app')
+        var sumData = wx.getStorageSync(store.login_id.toString())
+        var userItem = sumData.noticeList0.find((v) => {
+            return v.id == -1
+        })
+        userItem.timestamp = timestamp
+        wx.setStorageSync(store.login_id.toString(), sumData)
+
+        let content_id = self.data.popupArr[0]?self.data.popupArr[0].id:0
+        wx.navigateTo({
+            url: '/pages/notice_system_info/notice_system_info?content_id='+ content_id
         })
         this.setData({
-            systemNotification: wx.getStorageSync('notification')
-        })
-        wx.navigateTo({
-            url: '/pages/notice_system_info/notice_system_info?t=1'
+            popupShow: false
         })
     },
     // 关闭系统消息的弹窗
     toKnow() {
+        var timestamp = Date.parse(new Date());
+        timestamp = timestamp / 1000;
+        // 点击时设置时间戳
+        let store = wx.getStorageSync('app')
+        var sumData = wx.getStorageSync(store.login_id.toString())
+        var userItem = sumData.noticeList0.find((v) => {
+            return v.id == -1
+        })
+        userItem.timestamp = timestamp
+        wx.setStorageSync(store.login_id.toString(), sumData)
         this.setData({
-            systemNotification: true
+            popupShow: false
         })
     },
 })

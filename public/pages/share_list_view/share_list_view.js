@@ -12,6 +12,7 @@ Page({
         projectId: null,
         deadline: null,
         fileCount: null,
+        collect_status: null,
         viewCount: null,
         enterShareLink: '',
         passwordModal: false,
@@ -23,7 +24,9 @@ Page({
         pc_link:'',
         currentPlayId: null,
         templateShow: false,
-        needNickName: false
+        needNickName: false,
+        collect: false,
+        isShare: false
     },
     onLoad(options) {
         let self = this;
@@ -99,7 +102,9 @@ Page({
                     }
                 }
             })
-            
+            self.setData({
+                isShare: true
+            })
         }
         if (options.password != undefined) {
             let params = {};
@@ -147,7 +152,8 @@ Page({
                     review: data.review,
                     share_all_version: data.share_all_version,
                     people: data.share_people,
-                    pc_link: data.pc_link
+                    pc_link: data.pc_link,
+                    collect_status: data.collect_status
                 });
                 wx.setNavigationBarTitle({title: data.share_name})
             }, res => {
@@ -272,7 +278,8 @@ Page({
                 review: data.review,
                 share_all_version: data.share_all_version,
                 people: data.share_people,
-                pc_link: data.pc_link
+                pc_link: data.pc_link,
+                collect_status: data.collect_status
             });
             wx.setNavigationBarTitle({title: data.share_name})
         }, res => {
@@ -325,10 +332,6 @@ Page({
             }
         })
     },
-    // 复制链接并分享
-    toCopyAndTransmit(e) {
-
-    },
 
     onShareAppMessage: function (res) {
         if (res.from === 'button') {
@@ -345,24 +348,70 @@ Page({
           imageUrl: './img/xinyue_share.png',
           success: function(res) {
             // 转发成功
-            // wx.showModal({
-            //     title: '提示',  
-            //     content: '转发成功', 
-            //     success: function(res) {  
-            //         if (res.confirm) {  
-            //         console.log('确定')  
-            //         } else if (res.cancel) {  
-            //         console.log('取消')  
-            //         }  
-            //     }
-            // })
+            wx.showToast({
+                title: '转发成功',
+                icon: 'success'
+            })
+            setTimeout(function(){
+                wx.hideLoading()
+            },2000)
           },
           fail: function(res) {
             // 转发失败
           }
         }
     },
-
+    // 收藏
+    toCollect() {
+        let self = this
+        console.log(self.data.collect_status,'collect_status')
+        if(!self.data.collect_status) {
+            let store = wx.getStorageSync('app')
+            let reqData = Object.assign({}, {token: store.token},{login_id:store.login_id},{share_code:self.data.code},{collect_status:1})
+            Util.ajax('collect/link', 'post',reqData).then(data => {
+                wx.showToast({
+                    title: '已收藏',
+                    icon: 'success'
+                })
+                setTimeout(function(){
+                    wx.hideLoading()
+                },2000)
+                self.setData({
+                    collect_status: 1
+                })
+            }, res => {
+                wx.showModal({
+                    title:'提示',
+                    content: res.data.msg,
+                    showCancel: false,
+                })
+            })
+ 
+        } else {
+            let store = wx.getStorageSync('app')
+            let reqData = Object.assign({}, {token: store.token},{login_id:store.login_id},{share_code:self.data.code},{collect_status:0})
+            Util.ajax('collect/link', 'post',reqData).then(data => {
+                wx.showToast({
+                    title: '取消收藏',
+                    icon: 'success'
+                })
+                setTimeout(function(){
+                    wx.hideLoading()
+                },2000)
+                self.setData({
+                    collect_status: 0
+                })
+            }, res => {
+                wx.showModal({
+                    title:'提示',
+                    content: res.data.msg,
+                    showCancel: false,
+                })
+            }) 
+        }
+        
+    },
+    // 复制链接
     copyTBL:function(e){  
         var self=this;
         var copypass = self.data.password?'密码:':''
@@ -370,18 +419,14 @@ Page({
         wx.setClipboardData({
             data: '链接:' + self.data.pc_link + more + copypass + self.data.password,
             success: function(res) {
-            // self.setData({copyTip:true}),  
-                // wx.showModal({
-                //     title: '提示', 
-                //     content: '复制成功',  
-                //     success: function(res) {  
-                //         if (res.confirm) {  
-                //         console.log('确定')  
-                //         } else if (res.cancel) {  
-                //         console.log('取消')  
-                //         }  
-                //     }
-                // })
+                self.setData({copyTip:true}),  
+                wx.showToast({
+                    title: '已复制到剪贴板',
+                    icon: 'success'
+                })
+                setTimeout(function(){
+                    wx.hideLoading()
+                },2000)
             } 
         });  
     },
@@ -451,6 +496,12 @@ Page({
             shareList: list
         });
         this.pageCount++;
+    },
+    // 返回首页
+    backIndex() {
+        wx.reLaunch({
+            url: '/pages/empower_signin/empower_signin'
+        })
     }
 
 })

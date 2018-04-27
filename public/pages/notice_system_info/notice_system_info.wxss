@@ -18,3 +18,7 @@
 .system_info .item .content{
     color: #9b9b9b;
 }
+.accountUpdata .title{
+    color: #9b9b9b!important;
+    margin-bottom: 10px;
+}

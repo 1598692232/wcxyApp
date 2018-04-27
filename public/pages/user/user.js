@@ -18,7 +18,8 @@ Page({
     member: '',
     storage_jindu: '',
     project_jindu: '',
-    member_jindu: ''
+    member_jindu: '',
+    redDot: false
   },
  
   onLoad() {
@@ -48,7 +49,9 @@ Page({
           
           storage: (data.storage / 1024 / 1024 / 1024).toFixed(1) + '/' + (data.storage_max / 1024 / 1024 / 1024).toFixed(0),
           project: data.project_count + '/' + data.project_max,
-          member: data.member_count + '/' + data.member_max
+          member: data.member_count + '/' + data.member_max,
+
+          userLevel: data.name
         })
         self.onReady()
       }, () => {
@@ -136,31 +139,39 @@ Page({
   onShow: function () {  
     // 页面显示  
     let self = this
-        let store = wx.getStorageSync('app')
-        let reqData = Object.assign({},{login_id: store.login_id},{token: store.token})
-        Util.ajax('user/info', 'get', reqData).then(json => {
-            self.setData({
-                realName: json.realname?json.realname:wx.getStorageSync('user_info').nickName,
-                avatar:  json.avatar?json.avatar:wx.getStorageSync('user_info').avatarUrl,
-            })
-        }, res => {
-            wx.showModal({
-                title: '提示',
-                content: res.data.msg,
-                showCancel: false
-            })
-        }) 
+    let store = wx.getStorageSync('app')
+    let reqData = Object.assign({},{login_id: store.login_id},{token: store.token})
+    Util.ajax('user/info', 'get', reqData).then(json => {
+        self.setData({
+            realName: json.realname?json.realname:wx.getStorageSync('user_info').nickName,
+            avatar:  json.avatar?json.avatar:wx.getStorageSync('user_info').avatarUrl,
+        })
+    }, res => {
+        wx.showModal({
+            title: '提示',
+            content: res.data.msg,
+            showCancel: false
+        })
+    }) 
+    self.setData({
+        redDot: wx.getStorageSync('red_dot')
+    })
   },  
-  onHide: function () {  
-    // 页面隐藏  
-  },  
-  onUnload: function () {  
-    // 页面关闭  
-  }, 
-
   // loginOut() {
   //     wx.navigateTo({
   //       url: '/pages/signin/signin?login_out=1'
   //     })
-  // }
+  // },
+    
+  //跳转至收藏夹
+  toCollection() {
+    let self = this
+    wx.setStorage({
+        key: "red_dot",
+        data: "true"
+    })
+    wx.navigateTo({
+        url: '/pages/collection/collection'
+    })
+  },
 })

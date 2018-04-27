@@ -517,5 +517,27 @@
 .createShare{
 	background: #0345C7;
 }
-
+.upload{
+  position: fixed;
+  bottom: 50px;
+  width:100%;
+  background-color: #010101;
+  height: 50px;
+  z-index:1;
+}
+.upload .upload-button{
+    width:86px;
+    height:34px;
+    background-color:#0345C7;
+    border-radius:100px;
+    font-size:14px;
+    color:#FFF;
+    margin-top: 8px;
+}
+.upload .upload-button image{
+    width:13px;
+    height:15px;
+    display:inline-block;
+    overflow:hidden;
+}
 

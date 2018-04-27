@@ -15,7 +15,7 @@
 				</view>	
 			</view>
 			<view wx:if="{{!showShare}}">
-				<view class="breadcrumb-nav-li" wx:for="{{breadcrumbList}}" wx:key="index"
+				<view classk="breadcrumb-nav-li" wx:for="{{breadcrumbList}}" wx:key="index"
 				data-id="{{item.id}}" bindtap="selectFolder" 
 				style="z-index:{{100 - index}};" >
 					<!-- <image src="{{index == 0 ? './img/bg1.png' : './img/bg2.png'}}" mode="scaleToFill"></image> -->
@@ -202,7 +202,6 @@
 		<view class="empty-project" wx:else>
 			暂无媒体，请登录新阅官网进行更多操作
         </view>
-		
 	</scroll-view>
 
 	<view class="member-drop" wx:if="{{showMemberDrop}}">
@@ -273,11 +272,16 @@
 			<image src="./img/jiantou-top.png"></image>
 		</view>
 	</view>
-
+  <view class='upload'>
+    <button class='upload-button' bindtap="uploadFile">
+      <image src='./img/upload.png'></image>
+      上传
+    </button>
+  </view>
 	<view wx:if="{{!showShare}}">
 		<view class="share">
 			<view bindtap="toShareList">
-				<text wx:if="{{!showBreadcrumb}}">链接</text>
+				<text wx:if="{{!showBreadcrumb}}">分享记录</text>
 			</view>
 			<view bindtap="toCreateShare">创建分享</view>
 		</view>
