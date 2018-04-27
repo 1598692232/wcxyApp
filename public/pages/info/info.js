@@ -311,7 +311,7 @@ Page({
     requestLinkShare(times) {
         let self = this
         let hosts =  wx.getStorageSync('app').host;
-        let host = (!hosts || hosts == '') ?  'http://10.255.1.23:8989' : hosts;
+        let host = (!hosts || hosts == '') ?  'https://www.uxinyue.com' : hosts;
 
         return new Promise((resolve, reject) => {
 
