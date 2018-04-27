@@ -29,6 +29,7 @@ Page({
         isShare: false
     },
     onLoad(options) {
+        console.log(options,'options')
         let self = this;
         if(options.scene){
             wx.login({

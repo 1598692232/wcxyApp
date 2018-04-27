@@ -95,7 +95,7 @@ Page({
                     })
                 }else if( self.data.tips==2 ){
                     wx.reLaunch({
-                        url: '/pages/share_list_view/share_list_view?code=' + self.data.share_code + '&password=' + self.data.password
+                        url: '/pages/share_list_view/share_list_view?scene=' + 'code%3d' + self.data.share_code + '&password%3d' + self.data.password
                     })
                     // wx.navigateBack()
                 }else if( self.data.tips==3 ){

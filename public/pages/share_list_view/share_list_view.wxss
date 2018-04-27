@@ -194,7 +194,7 @@ button {
     margin-left: 11px;
 }
 .share-list-video .name{
-    width: 210px;
+    width: 200px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
