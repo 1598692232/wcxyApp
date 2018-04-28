@@ -60,7 +60,7 @@
   opacity:0.45;
   letter-spacing:-0.26px;
   position:relative;
-  top:-3px;
+  top:1px;
 }
 .setting-project-footer{
   width: 100%;

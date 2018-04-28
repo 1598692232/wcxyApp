@@ -20,23 +20,23 @@
         <block wx:if="{{currentTab==0}}">
           <view class="list-body">          
             <block wx:if="{{myProjectList.length > 0}}">
-              <view class="item clearfix" wx:for="{{myProjectList}}" wx:key="index" bindtap="toProject" data-index="{{index}}" data-id="{{item.id}}" data-name="{{item.name}}" data-type="{{item.type}}">
-                <view class='item-content' style="transform: translateX({{item.translateX}}px);"  data-index="{{index}}" bindtouchstart="recordStart" bindtouchmove="recordMove" bindtouchend="recordEnd" id='{{item.id}}' animation='{{item.animation}}'>
-                  <view class="item-left">
-                    <view wx:if="{{item.project_img != ''}}">
-                        <image src="{{item.project_img}}" mode="aspectFill"></image>
+              <view class="item clearfix" wx:for="{{myProjectList}}" wx:key="index" data-index="{{index}}" data-type="{{item.type}}">
+                <view class='item-content' style="transform: translateX({{item.translateX}}px);"  bindtap="toProject"  data-name="{{item.name}}" data-id="{{item.id}}"  data-index="{{index}}" bindtouchstart="recordStart" bindtouchmove="recordMove" bindtouchend="recordEnd" id='{{item.id}}' animation='{{item.animation}}'>
+                    <view class="item-left">
+                      <view wx:if="{{item.project_img != ''}}">
+                          <image src="{{item.project_img}}" mode="aspectFill"></image>
+                      </view>
+                      <view wx:else>
+                        <view class="item-left-text">{{item.first_name}}</view>
+                      </view>
                     </view>
-                    <view wx:else>
-                      <view class="item-left-text">{{item.first_name}}</view>
+                    <view class="item-right">
+                      <text class="item-title">{{item.name}}</text>
+                      <text class="item-des">包含{{item.file_count}}项，共{{item.storage_size}}M</text>
                     </view>
-                  </view>
-                  <view class="item-right">
-                    <text class="item-title">{{item.name}}</text>
-                    <text class="item-des">包含{{item.file_count}}项，共{{item.storage_size}}M</text>
-                  </view>
                 </view>
                 <view class='item-operate'>
-                  <view class='item-operate-btn' bindtap="toSetting" data-operate='modify' data-id='{{item.id}}'>设置</view>
+                  <view class='item-operate-btn' data-name="{{item.name}}" bindtap="toSetting" data-operate='modify' data-index='{{index}}'>设置</view>
                 </view>
               </view>
             </block>
@@ -50,18 +50,20 @@
           <view class="list-body">
             <block wx:if="{{joinProjectList.length > 0}}">
               <view class="item clearfix" wx:for="{{joinProjectList}}" wx:key="index" bindtap="toProject" data-name="{{item.name}}" data-id="{{item.project_number}}" data-type="{{item.type}}" wx:if="{{joinProjectList.length > 0}}">
-                <view class="item-left">
-                  <view wx:if="{{item.src}}">
-                      <img src="{{item.src}}"/>
+              <view class='item-content'>
+                  <view class="item-left">
+                    <view wx:if="{{item.src}}">
+                        <img src="{{item.src}}"/>
+                    </view>
+                    <view wx:else>
+                      <view class="item-left-text">{{item.first_name}}</view>
+                    </view>
                   </view>
-                  <view wx:else>
-                    <view class="item-left-text">{{item.first_name}}</view>
+                  <view class="item-right">
+                    <text class="item-title">{{item.name}}</text>
+                    <text class="item-des">包含{{item.file_count}}项，共{{item.storage_size}}M</text>
                   </view>
-                </view>
-                <view class="item-right">
-                  <text class="item-title">{{item.name}}</text>
-                  <text class="item-des">包含{{item.file_count}}项，共{{item.storage_size}}M</text>
-                </view>
+               </view>
               </view>
             </block>
               <view class="empty-project2" wx:else>

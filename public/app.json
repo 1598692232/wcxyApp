@@ -20,7 +20,8 @@
     "pages/share_list_view/share_list_view",
     "pages/empower_scan/empower_scan",
     "pages/empower_tips/empower_tips",
-    "pages/collection/collection"
+    "pages/collection/collection",
+    "pages/project_setting/setting"
   ],
   "window": {
     "backgroundTextStyle": "dark",

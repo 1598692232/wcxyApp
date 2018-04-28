@@ -1,5 +1,7 @@
 // pages/project_setting/setting.js
-let Util = require('../../utils/util.js')
+let Util = require('../../utils/util.js');
+const app = getApp();
+
 Page({
 
   /**
@@ -41,6 +43,10 @@ Page({
       wx.getStorage({
         key: 'settingProjectData',
         success: function(res) {
+          if(res.data == undefined || res.data == null) {
+            failc(new Error('系统异常,无法获取数据。'));
+          }
+          console.log(res.data);
           self.setData( {
             settings: res.data,
             projectId: res.data.id
@@ -143,5 +149,8 @@ Page({
     console.log(typeof (e.detail.value) === "boolean");
     this.data.settings[key] = typeof (e.detail.value) === "boolean" ? Number(e.detail.value) : e.detail.value;
     this.setData(this.data.settings);
+  },
+  onCancel: function(e) {
+    wx.navigateBack(1);
   }
 })

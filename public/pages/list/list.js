@@ -481,7 +481,6 @@ Page({
 
           moveX = -100
         }
-
         this.data.myProjectList[e.currentTarget.dataset.index].translateX = moveX
         this.setData({
           myProjectList: this.data.myProjectList,
@@ -533,44 +532,16 @@ Page({
         })
       }, 300)
     },
-
-    showSettingBtn(index, moveX, duration = 370){
-      let detailList = this.data.myProjectList;
-      console.log('index:' + index);
-      console.log('firstIndex:' + firstIndex);
-
-      if (index == -1) {
-        return;
-      }
-      let item = detailList[index];
-      if (firstIndex != index && firstIndex != -1){
-        this.showSettingBtn(firstIndex, 0);
-      }
-      if (moveX < -40) {
-        item.offsetX = -75;
-        firstIndex = index;
-        console.log('set_firstIndex:' + firstIndex);
-      } else {
-        item.offsetX = 0;
-        firstIndex = -1;
-      }
-
-      let animation = wx.createAnimation({ duration: duration });
-      animation.translateX(item.offsetX).step();
-      item.animation = animation.export();
-
-      console.log('end x ', item.offsetX);
-      this.setData({
-        myProjectList: detailList
-      });
+    showSettingBtn(index, moveX, duration = 370) {
+      var animation = wx.createAnimation({ duration: duration });
+      this.data.myProjectList[index].animation = animation;
     },
     toSetting:function (e) {
-      let index = this.getItemIndex(e.currentTarget.dataset.id);
       let url = "/pages/project_setting/setting?operate=" + e.currentTarget.dataset.operate;
-
+      let data = this.data.myProjectList[e.currentTarget.dataset.index];
       wx.setStorage({
         key: 'settingProjectData',
-        data: this.data.myProjectList[index],
+        data: data,
       })
       if (e.currentTarget.dataset.operate == 'modify') {
         url += '&projectId=' + e.currentTarget.dataset.id + '&projectName=' + e.currentTarget.dataset.name  ;

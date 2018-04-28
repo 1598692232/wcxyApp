@@ -86,7 +86,7 @@
     </scroll-view>
   </view>
   <view class='setting-project-footer'>
-    <view class='setting-project-footer-button setting-project-footer-button-left'>取消</view> 
+    <view class='setting-project-footer-button setting-project-footer-button-left' bindtap='onCancel'>取消</view> 
     <view class='setting-project-footer-button setting-project-footer-button-right' bindtap='onSubmit'>保存</view> 
   </view>
 </view>
