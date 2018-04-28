@@ -273,7 +273,7 @@
 		</view>
 	</view>
   <view class='upload'>
-    <button class='upload-button' bindtap="uploadFile">
+    <button class='upload-button' bindtap="uploadFile" wx:if="{{isUpload}}">
       <image src='./img/upload.png'></image>
       上传
     </button>

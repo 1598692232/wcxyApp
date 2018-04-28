@@ -6,6 +6,7 @@ let topId = 0;
 let transferStatus = false;
 Page({
 	data: {
+    isUpload: true,
 		videoImg: app.data.staticImg.videoImg,
         dirImg: app.data.staticImg.dir,
 		sx: app.data.staticImg.sx,
@@ -113,6 +114,7 @@ Page({
             })
             this.setData({
                 showShare: false,
+                isUpload: true,
                 selectShareList: [],
                 videoList: this.data.videoList
             });
@@ -249,7 +251,8 @@ Page({
     toCreateShare(e) {
         let self = this
         self.setData({
-            showShare: true
+            showShare: true,
+            isUpload: false,
         })       
     },
     toSelectShare(e) {
@@ -279,6 +282,7 @@ Page({
         let self = this
         self.setData({
             showShare: false,
+            isUpload: true,
             // selectShareList: []
         })
     },

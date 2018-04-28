@@ -7,7 +7,6 @@
             <image src="{{clearImg}}" class="clear-icon" hidden="{{hideClear}}" catchtap="clearSearch" ></image>
         </view>
       </view>
-        <image class='create' src='./img/add.png' bindtap="toSetting" data-operate='create'></image>
     </view>
 
 
@@ -39,6 +38,7 @@
                   <view class='item-operate-btn' data-name="{{item.name}}" bindtap="toSetting" data-operate='modify' data-index='{{index}}'>设置</view>
                 </view>
               </view>
+              <view class="item clearfix"></view>
             </block>
             <view class="empty-project2" wx:else>
               <image src="./img/project_empty.svg"></image>
@@ -119,7 +119,12 @@
       </view>
     </view>
   </view>
-  
+    <view class='create' wx:if="{{currentTab==0}}">
+    <button class='create_button' bindtap="toSetting" data-operate='create' >
+      <image src='./img/add.png'></image>
+      新建
+    </button>
+  </view>
 </view>
 
 
