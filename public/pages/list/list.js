@@ -1,6 +1,10 @@
 let Util = require('../../utils/util.js')
 const app = getApp()
 
+let recordStartX = 0;
+let recordStartY = 0;
+let currentOffsetX = 0;
+let firstIndex = -1;
 Page({
     data: {
         myProjectList: [],
@@ -18,7 +22,14 @@ Page({
         tabOne: 'background: #0036df;color: #fff;',
         tabTwo: '',
         currentTab:0,
-        systemNotification: false
+        systemNotification: false,
+        scrollY: 0,
+        delTouching: false,
+        tsx: '',
+        tsy: '',
+        tex: '',
+        delTouching: false,
+        showDel: false,
     },
 
     onLoad() {
@@ -215,18 +226,18 @@ Page({
     },
 
     toProject(e) {
-        wx.setStorage({
-            key: 'project_id',
-            data: e.currentTarget.dataset.id
-        })
-        wx.setStorage({
-            key: 'project_name',
-            data: e.currentTarget.dataset.name
-        })
-        wx.navigateTo({
-          url: '/pages/project_list/project_list?project_id=' + e.currentTarget.dataset.id + '&projectName=' + e.currentTarget.dataset.name
-          + '&project_type=' + e.currentTarget.dataset.type
-        })
+      wx.setStorage({
+        key: 'project_id',
+        data: e.currentTarget.dataset.id
+      })
+      wx.setStorage({
+        key: 'project_name',
+        data: e.currentTarget.dataset.name
+      })
+      wx.navigateTo({
+        url: '/pages/project_list/project_list?project_id=' + e.currentTarget.dataset.id + '&projectName=' + e.currentTarget.dataset.name
+        + '&project_type=' + e.currentTarget.dataset.type
+      })
     },
 
     searchFocus(e) {
@@ -363,5 +374,127 @@ Page({
         this.setData({
             systemNotification: true
         })
+    }, 
+    recordStart: function (e) {
+      this.data.myProjectList.map(item => {
+        item.translateX = ''
+        item.delTranstion = ''
+      })
+
+      this.setData({
+        tsx: e.touches[0].clientX,
+        tsy: e.touches[0].clientY,
+        delTouching: true
+      })
     },
+    recordMove: function (e) {
+      let tmx = e.touches[0].clientX
+      let tmy = e.touches[0].clientY
+      let moveX = tmx - this.data.tsx
+      if (!this.data.delTouching || Math.abs(tmy - this.data.tsy) > 5) return
+
+      if (!this.data.showDel) {
+        if (moveX > 0) return
+        if (moveX < -100) {
+
+          moveX = -100
+        }
+
+        this.data.myProjectList[e.currentTarget.dataset.index].translateX = moveX
+        this.setData({
+          myProjectList: this.data.myProjectList,
+          tex: tmx
+        })
+      } else {
+        if (moveX < 0) return
+
+        if (moveX > 100) {
+          moveX = 0
+        }
+
+        this.data.myProjectList[e.currentTarget.dataset.index].translateX = moveX
+        this.setData({
+          myProjectList: this.data.myProjectList,
+          tex: tmx
+        })
+      }
+    },
+    recordEnd: function (e) {
+      if (!this.data.delTouching) return
+
+      this.setData({
+        delTouching: false
+      })
+
+      if (this.data.myProjectList[e.currentTarget.dataset.index].translateX < -15) {
+        this.data.myProjectList[e.currentTarget.dataset.index].translateX = -90
+        this.data.myProjectList[e.currentTarget.dataset.index].delTranstion = 'del-transtion'
+        this.setData({
+          myProjectList: this.data.myProjectList,
+          showDel: true,
+        })
+      } else {
+        this.data.myProjectList[e.currentTarget.dataset.index].translateX = 0
+        this.data.myProjectList[e.currentTarget.dataset.index].delTranstion = 'del-transtion'
+        this.setData({
+          myProjectList: this.data.myProjectList,
+          showDel: false
+        })
+      }
+
+      setTimeout(() => {
+        if (this.data.myProjectList.length == 0 ||
+          this.data.myProjectList[e.currentTarget.dataset.index].delTranstion == undefined) return
+        this.data.myProjectList[e.currentTarget.dataset.index].delTranstion = 0
+        this.setData({
+          myProjectList: this.data.myProjectList,
+        })
+      }, 300)
+    },
+
+    showSettingBtn(index, moveX, duration = 370){
+      let detailList = this.data.myProjectList;
+      console.log('index:' + index);
+      console.log('firstIndex:' + firstIndex);
+      
+      if (index == -1) {
+        return;
+      }
+      let item = detailList[index];
+      if (firstIndex != index && firstIndex != -1){
+        this.showSettingBtn(firstIndex, 0);
+      }
+      if (moveX < -40) {
+        item.offsetX = -75;
+        firstIndex = index;
+        console.log('set_firstIndex:' + firstIndex);
+      } else {
+        item.offsetX = 0;
+        firstIndex = -1;
+      }
+
+      let animation = wx.createAnimation({ duration: duration });
+      animation.translateX(item.offsetX).step();
+      item.animation = animation.export();
+
+      console.log('end x ', item.offsetX);
+      this.setData({
+        myProjectList: detailList
+      });
+    },
+    toSetting:function (e) {
+      let index = this.getItemIndex(e.currentTarget.dataset.id);
+      let url = "/pages/project_setting/setting?operate=" + e.currentTarget.dataset.operate;
+
+      wx.setStorage({
+        key: 'settingProjectData',
+        data: this.data.myProjectList[index],
+      })
+      if (e.currentTarget.dataset.operate == 'modify') {
+        url += '&projectId=' + e.currentTarget.dataset.id + '&projectName=' + e.currentTarget.dataset.name  ;
+      }
+      wx.navigateTo({
+        url: url
+      })
+    }
 })

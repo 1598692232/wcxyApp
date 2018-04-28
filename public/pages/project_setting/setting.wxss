@@ -1,0 +1,92 @@
+/* pages/project_setting/setting.wxss */
+.setting-project-item{
+  width: 100%;
+  height: 56px;
+  background: #171D29;
+  margin-bottom: 10px;
+}
+.setting-project-padding{
+  padding-left: 24rpx;
+}
+.setting-project-input{
+  font-size: 15px;
+  color: #fff;
+  letter-spacing: 0.62px;
+  height: 100%;
+  display:flex;
+}
+.setting-project-input input{
+  width:655rpx;
+  padding-top:18px;
+}
+.edit-icon {
+  display:inline-block;
+  position:relative;
+  top:21px;
+  width: 15px;
+  height: 15px;
+  z-index:100;
+  margin-right: 10rpx;
+}
+.setting-project-title {
+  color: #fff;
+  font-size: 15px;
+  display:flex;
+  height:100%;
+}
+.setting-project-title label {
+  width:79%;
+  height:21px;
+  margin-top: 18px;
+}
+.setting-project-switch {
+  top:-6px;
+  padding-top:11px;
+  margin-left:25rpx;
+}
+.setting-project-list-item {
+  background: #010101;
+  height: 56px;
+  margin-left:24rpx;
+}
+.setting-project-list-title {
+  height: 27px;
+  background: #243044;
+}
+.setting-project-list-title label{
+  font-size: 15px;
+  color: #FFFFFF;
+  width: 100%;
+  opacity:0.45;
+  letter-spacing:-0.26px;
+  position:relative;
+  top:-3px;
+}
+.setting-project-footer{
+  width: 100%;
+  height: 50px;
+  background: #0345C7;
+  position: fixed;
+  bottom: 0px;
+  display:flex;
+}
+.setting-project-footer button{
+  width:75px;
+  height:48px;
+  border : none;
+  border-radius:0;
+  background: none !important;
+  background-color:#0345C7;
+  color:#fff;
+}
+.setting-project-footer-button{
+  width: 148rpx;
+  font-size: 15px;
+  color: #FFFFFF;
+  letter-spacing: -0.26px;
+  padding:15px;
+}
+.setting-project-footer-button-right{
+  margin-left:454rpx;
+  padding-left: 48rpx;
+}

@@ -1,14 +1,13 @@
 <view style="height: 100%;"> 
-   <view class="search-projects">
+   <view class="search-projects flex-wrp">
       <view class="search-projects-body" bindtap="searchFocus">
          <view class="search-input" animation="{{animationData}}">
             <image src="{{searchImg}}" class="search-icon"></image>
             <input bindinput="bindReplaceInput" name="searchText" placeholder="搜索项目" focus="{{searching}}" catchblur="searchBlur" bindinput="searchInput" value="{{searchText}}"/>
-            <image src="{{clearImg}}" class="clear-icon" hidden="{{hideClear}}" catchtap="clearSearch"></image>
+            <image src="{{clearImg}}" class="clear-icon" hidden="{{hideClear}}" catchtap="clearSearch" ></image>
         </view>
-
       </view>
-     
+        <image class='create' src='./img/add.png' bindtap="toSetting" data-operate='create'></image>
     </view>
 
 
@@ -17,22 +16,27 @@
         <view class="swiper-tab-item {{currentTab==1?'active':''}}" data-current="1" catchtap="clickTab">我参与的</view>
     </view>
 
-      <scroll-view style="height:{{scrollHeight}}px;" scroll-y>
+      <scroll-view style="height:{{scrollHeight}}px;" scroll-top="{{scrollY}}" scroll-y>
         <block wx:if="{{currentTab==0}}">
           <view class="list-body">          
             <block wx:if="{{myProjectList.length > 0}}">
-              <view class="item clearfix" wx:for="{{myProjectList}}" wx:key="index" bindtap="toProject" data-id="{{item.id}}" data-name="{{item.name}}" data-type="{{item.type}}">
-                <view class="item-left">
-                  <view wx:if="{{item.project_img != ''}}">
-                      <image src="{{item.project_img}}" mode="aspectFill"></image>
+              <view class="item clearfix" wx:for="{{myProjectList}}" wx:key="index" bindtap="toProject" data-index="{{index}}" data-id="{{item.id}}" data-name="{{item.name}}" data-type="{{item.type}}">
+                <view class='item-content' style="transform: translateX({{item.translateX}}px);"  data-index="{{index}}" bindtouchstart="recordStart" bindtouchmove="recordMove" bindtouchend="recordEnd" id='{{item.id}}' animation='{{item.animation}}'>
+                  <view class="item-left">
+                    <view wx:if="{{item.project_img != ''}}">
+                        <image src="{{item.project_img}}" mode="aspectFill"></image>
+                    </view>
+                    <view wx:else>
+                      <view class="item-left-text">{{item.first_name}}</view>
+                    </view>
                   </view>
-                  <view wx:else>
-                    <view class="item-left-text">{{item.first_name}}</view>
+                  <view class="item-right">
+                    <text class="item-title">{{item.name}}</text>
+                    <text class="item-des">包含{{item.file_count}}项，共{{item.storage_size}}M</text>
                   </view>
                 </view>
-                <view class="item-right">
-                  <text class="item-title">{{item.name}}</text>
-                  <text class="item-des">包含{{item.file_count}}项，共{{item.storage_size}}M</text>
+                <view class='item-operate'>
+                  <view class='item-operate-btn' bindtap="toSetting" data-operate='modify' data-id='{{item.id}}'>设置</view>
                 </view>
               </view>
             </block>

@@ -1,0 +1,92 @@
+<view>
+  <view class='setting-project-item setting-project-padding'>
+    <view class='setting-project-input'>
+      <image src='./img/update.png' class='edit-icon'></image>
+      <input placeholder="请输入项目名称" value='{{settings.name}}' data-name="name" bindblur="changeForm" />
+    </view>
+  </view>
+  <view class=''>
+    <view class='setting-project-item setting-project-padding'>
+      <view class='setting-project-title'>
+        <label>高级设置</label>
+         <switch checked="{{isAdvanced}}" class='setting-project-switch' bindchange='changeAdvanced'></switch>
+      </view>
+    </view>
+    <scroll-view class='setting-project-list' wx:if="{{isAdvanced}}">
+      <view class='setting-project-list-item'>
+        <view class='setting-project-title'>
+          <label>你团队中的任何人都可以看到这个项目</label>
+           <switch checked='{{settings.is_open}}' bindchange='changeForm' data-name="is_open" class='setting-project-switch'></switch>
+        </view>
+      </view>
+      <view class='setting-project-list-item'>
+        <view class='setting-project-title'>
+          <label>接收通知</label>
+           <switch checked='{{settings.is_notice}}' checked='{{settings.is_notice}}' bindchange='changeForm' data-name="is_notice" class='setting-project-switch'></switch>
+        </view>
+      </view>
+      <view class='setting-project-list-title .setting-project-padding'>
+        <label>合作者权限</label>
+      </view>
+      <view class='setting-project-list-item'>
+        <view class='setting-project-title'>
+          <label>可下载媒体</label>
+           <switch checked='{{settings.collaborator_download}}' bindchange='changeForm' data-name="collaborator_download" class='setting-project-switch'></switch>
+        </view>
+      </view>
+      <view class='setting-project-list-item'>
+        <view class='setting-project-title'>
+          <label>可邀请合作者</label>
+           <switch checked='{{settings.collaborator_invite}}' bindchange='changeForm' data-name="collaborator_invite" class='setting-project-switch'></switch>
+        </view>
+      </view>
+      <view class='setting-project-list-title .setting-project-padding'>
+        <label>我的邮件提醒</label>
+      </view>
+      <view class='setting-project-list-item'>
+        <view class='setting-project-title'>
+          <label>新的评论</label>
+           <switch checked='{{settings.my_comment}}' bindchange='changeForm' data-name="my_comment" class='setting-project-switch'></switch>
+        </view>
+      </view>
+      <view class='setting-project-list-item'>
+        <view class='setting-project-title'>
+          <label>新的媒体上传</label>
+           <switch checked='{{settings.my_upload}}' bindchange='changeForm' data-name="my_upload" class='setting-project-switch'></switch>
+        </view>
+      </view>
+      <view class='setting-project-list-item'>
+        <view class='setting-project-title'>
+          <label>新的成员加入</label>
+           <switch checked='{{settings.my_join}}' bindchange='changeForm' data-name="my_join" class='setting-project-switch'></switch>
+        </view>
+      </view>
+      <view class='setting-project-list-title .setting-project-padding'>
+        <label>其他人的邮件提醒</label>
+      </view>
+      <view class='setting-project-list-item'>
+        <view class='setting-project-title'>
+          <label>新的评论</label>
+           <switch checked='{{settings.else_comment}}' bindchange='changeForm' data-name="else_comment" class='setting-project-switch'></switch>
+        </view>
+      </view>
+      <view class='setting-project-list-item'>
+        <view class='setting-project-title'>
+          <label>新的媒体上传</label>
+           <switch checked='{{settings.else_upload}}' bindchange='changeForm' data-name="else_upload" class='setting-project-switch'></switch>
+        </view>
+      </view>
+      <view class='setting-project-list-item'>
+        <view class='setting-project-title'>
+          <label>新的成员加入</label>
+           <switch checked='{{settings.else_join}}' bindchange='changeForm' data-name="else_join" class='setting-project-switch'></switch>
+        </view>
+      </view>
+      <view class='setting-project-list-item'></view>
+    </scroll-view>
+  </view>
+  <view class='setting-project-footer'>
+    <view class='setting-project-footer-button setting-project-footer-button-left'>取消</view> 
+    <view class='setting-project-footer-button setting-project-footer-button-right' bindtap='onSubmit'>保存</view> 
+  </view>
+</view>
