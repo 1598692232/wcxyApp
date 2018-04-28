@@ -84,8 +84,13 @@
     display: block;
     float: left;
 }
+.share_btns{
+    display: flex;
+    justify-content: space-between;
+    padding: 0 50px;
+}
 .share-list-copyBtn{
-    width: 249px;
+    width: 175px;
     height: 33px;
     background: #0345C7;
     border-radius: 4px;
@@ -94,6 +99,51 @@
     text-align: center;
     margin: 0 auto 20px;
     font-size: 12px;
+}
+.share_btns .share_btns_text{
+    font-size: 12px;
+    color: #FFFFFF;
+    letter-spacing: 0.61px;
+    text-align: center;
+    line-height: 12px;
+}
+.share_btns .share_btns_text image{
+    width: 18px;
+    height: 18px;
+    margin-bottom: 1px;
+}
+.button-hover {
+    color:#ffffff;
+    background-color:#010101;  
+}
+button {
+    position:relative;
+    display:block;
+    margin-left:auto;
+    margin-right:auto;
+    padding-left:14px;
+    padding-right:14px;
+    box-sizing:border-box;
+    font-size:12px;
+    text-align:center;
+    text-decoration:none;
+    line-height:12px;
+    border-radius:5px;
+    -webkit-tap-highlight-color:transparent;
+    overflow:hidden;
+    color:#ffffff;
+    background-color:#010101;
+}
+    
+.share_btns .share_link .toshare{
+    width: 38px;
+}
+.share_btns .share_link .toshare button{
+    width: 38px;
+    padding: 0!important;
+}
+.share_btns .collection_link view{
+    width: 38px;
 }
 .share-list-copyBtn image{
     width: 12px;
@@ -144,7 +194,7 @@
     margin-left: 11px;
 }
 .share-list-video .name{
-    width: 240px;
+    width: 200px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -172,16 +222,18 @@
     border-radius: 50%;
 }
 .share-list-video .info .comment{
-    display: flex;
+    /* display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: center; */
     height: 20px;
     margin-top: 8px;
+    color: #9B9B9B;
+    font-size: 11px;
 }
 .share-list-video .info .comment image{
-    width: 16px;
-    height: 16px;
-    margin:0 5px;
+    width: 12px;
+    height: 12px;
+    margin:0 5px 0 0;
 }
 .share-list-video .info .comment text{
     line-height: 20px;
@@ -366,7 +418,7 @@
     border-radius: 0;
     background: #1a3bde;
     color: #fff;
-    line-height: 50px
+    line-height: 50px;
 }
 
 .info-password-title{
@@ -435,4 +487,44 @@
     /* width: 347px!important;
     height: 196px!important;
     border-radius: 4px!important; */
+}
+
+/* 分享页面的底部 */
+.bottom{
+    width: 100%;
+    height: 220px;
+    margin-top: 14px;
+    position: relative;
+}
+.bottom_logo_box{
+    width: 144px;
+    height: 34px;
+    margin: 25px auto 0;
+}
+.bottom_logo{
+    width: 144px;
+    height: 34px;
+}
+.bottom_background{
+    width: 100%;
+    height: 90px;
+    position: absolute;
+    left: 0;
+    top: 74px;
+    z-index: -1;
+}
+
+
+.toXinyue{
+	width: 320px;
+	height: 44px;
+	margin: 35px auto 0;
+	background: #0345C7;
+	/* border-radius: 100px; */
+	border-radius: 6px;
+	color: #fff;
+	font-size: 17px;
+	letter-spacing: 0.86px;
+	text-align: center;
+	line-height: 44px;
 }

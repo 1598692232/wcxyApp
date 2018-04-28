@@ -45,12 +45,12 @@ Page({
         reqData.project_id = -1
         wx.showLoading()
         Util.ajax('notice/detail', 'get',reqData).then(data => {
-            let arr = data?data:[]
+            let arr = data.list?data.list:[]
             arr.map(item => {
                 item.createtime = Util.getCreateTimeDate(item.created_at)
             })
             self.setData({
-                noticeListInfo: data
+                noticeListInfo: arr
             })
             wx.hideLoading()
         }, res => {
@@ -69,7 +69,7 @@ Page({
 
     toNoticeSystemInfo(e) {
         wx.navigateTo({
-          url: '/pages/notice_system_info/notice_system_info?notice_id=' + e.currentTarget.dataset.id
+          url: '/pages/notice_system_info/notice_system_info?content_id=' + e.currentTarget.dataset.contentid
         })
     }
 })

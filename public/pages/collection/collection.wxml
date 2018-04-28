@@ -1,0 +1,37 @@
+<view class="share-list-box" style="height:100%">
+    <scroll-view style="height:{{scrollHeight}}px;" scroll-y bindscrolltolower="lower" lower-threshold="{{800}}">
+        <block wx:if="{{collectionList.length>0}}">
+            <view class="share-list share-list2 {{item.isTouchMove ? 'touch-move-active' : ''}}" wx:for="{{collectionList}}" wx:key="index"
+            data-index="{{index}}" data-code="{{item.code}}" data-password="{{item.password}}" data-id="{{item.id}}" data-count="{{item.files_count}}"
+                bindtap="toShareInfo" bindtouchstart="touchstart" bindtouchmove="touchmove">
+                <view class="item-left-content">
+                    <view class="pic"> 
+                        <view class="pic-content" wx:if="{{item.image}}">
+                            <image src="{{item.image}}"></image>
+                        </view>
+                        <view class="pic-content" wx:else>
+                            <text>{{item.firstname}}</text>
+                        </view>
+                    </view>
+                    
+                    <view class="info">
+                        <view class="share-list-name">{{item.name}}</view>
+                        <view class="share-list-info">
+                            <view><image src="{{item.avatar}}"></image></view>
+                            <view class="text">{{item.createtime}}</view>
+                        </view>
+                    </view>
+                    <view class="number">
+                        包含<text>{{item.number}}</text>个文件
+                    </view>
+                </view>
+                <view class="del" catchtap="del" data-index="{{index}}" data-id="{{item.id}}" data-code="{{item.code}}">取消收藏</view>                    
+            </view>
+            <!-- <view wx:if="{{!hasMoreData}}" style="font-size:12px;line-height: 28px;color: #9B9B9B;text-align:center;">已加载完全部数据</view> -->
+        </block>
+        <view wx:else class="empty-notice">
+            <image src="./img/link.png"></image>
+            还未收藏任何链接，快去试试吧
+        </view>      
+    </scroll-view>           
+</view>

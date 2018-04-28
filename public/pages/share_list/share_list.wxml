@@ -39,5 +39,5 @@
             <image src="./img/link.png"></image>
             还未创建链接，快去试试吧
         </view>      
-    </scroll-view>
+    </scroll-view>  
 </view>

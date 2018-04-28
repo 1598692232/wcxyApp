@@ -281,7 +281,7 @@
 	<view wx:if="{{!showShare}}">
 		<view class="share">
 			<view bindtap="toShareList">
-				<text wx:if="{{!showBreadcrumb}}">链接</text>
+				<text wx:if="{{!showBreadcrumb}}">分享记录</text>
 			</view>
 			<view bindtap="toCreateShare">创建分享</view>
 		</view>
