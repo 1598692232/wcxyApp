@@ -479,7 +479,7 @@ Page({
       let store = wx.getStorageSync('app')
       console.log(store)
       let reqData = Object.assign({}, store, {
-        project_id: wx.getStorageSync('project_id'),
+        project_id: self.data.projectID,
         top_id: topId,
         filename: "tmp_" + file.split('_')[1],
       })
