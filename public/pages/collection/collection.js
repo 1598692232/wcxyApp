@@ -15,7 +15,7 @@ Page({
     onLoad(options) {
         let self = this;
         self.setData({
-            projectID:options.project_id
+            projectID:options.project_id?options.project_id:0
         })
         Util.getSystemInfo().then(result => {
             self.setData({

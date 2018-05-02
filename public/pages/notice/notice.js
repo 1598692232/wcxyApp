@@ -121,9 +121,9 @@ Page({
             })
             self.setData({
                 noticeList: data.list,
-                notice_count:data.notice_count,
-                project_name: data.project_name,
-                first_name: data.first_name
+                notice_count:data.notice_count?data.notice_count:0,
+                project_name: data.project_name?data.project_name:'',
+                first_name: data.first_name?data.first_name:''
             })
             if(num>0){
                 wx.showTabBarRedDot({

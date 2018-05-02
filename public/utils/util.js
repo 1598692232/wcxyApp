@@ -61,9 +61,10 @@ const timeToMinAndSec = time => {
     }
 }
 
+let i=0
 const ajax = (url, type, data, failHide, failClick) => {
     let hosts = wx.getStorageSync('app').host;  
-    let host = (!hosts || hosts == '') ? 'http://www.uxinyue.com:81' : hosts;
+    let host = (!hosts || hosts == '') ? 'https://www.uxinyue.com' : hosts;
 
     return new Promise((resolve, reject) => {
         wx.request({
@@ -83,22 +84,41 @@ const ajax = (url, type, data, failHide, failClick) => {
                 }
             },
             fail(res) {
-                if (failHide) return 
-                let rs = JSON.stringify(res)
+                i++;
+                if(i<=3){
+                    wx.showLoading()
+                    ajax(url, type, data)
+                }else{
+                    wx.showModal({
+                        title: '提示',
+                        content: '网络请求失败',
+                        showCancel: false,
+                        success(res) {
+                            if (res.confirm) {
+                                failClick()
+                                // wx.showLoading()
+                                // ajax(url, type, data)
+                                // wx.hideLoading()
+                            } 
+                        }
+                    })
+                }  
+                // if (failHide) return 
+                // let rs = JSON.stringify(res)
                 wx.hideLoading()
-                wx.showModal({
-                    title: '提示',
-                    content: '网络请求失败',
-                    showCancel: false,
-                    success(res) {
-                        if (res.confirm) {
-                            // failClick()
-                            wx.showLoading()
-                            ajax(url, type, data)
-                            // wx.hideLoading()
-                        } 
-                    }
-                })
+                // wx.showModal({
+                //     title: '提示',
+                //     content: '网络请求失败',
+                //     showCancel: false,
+                //     success(res) {
+                //         if (res.confirm) {
+                //             // failClick()
+                //             wx.showLoading()
+                //             ajax(url, type, data)
+                //             // wx.hideLoading()
+                //         } 
+                //     }
+                // })
             }
         })
     })
