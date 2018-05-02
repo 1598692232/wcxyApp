@@ -79,6 +79,7 @@
 
 		<view class="pl-body" wx:if="{{videoList.length > 0}}">
 			<view wx:if="{{showShare}}">
+				<view class="selectedAll" bindtap="toSelectAll">已选中3个文件，大小1.45GB</view>
 				<view class="pl-li clearfix" wx:for="{{videoList}}" wx:key="index" bindtap="toSelectShare"
 				data-url="{{item.project_file.url}}" data-name="{{item.name}}" 
 				data-id="{{item.id}}" data-username="{{item.user_info.realname}}" 
@@ -132,7 +133,7 @@
 							<text class="pl-create-timer">{{item.created_time}}</text>
 						</view>
 					</view>
-					<view wx:if="{{item.selected}}">
+					<view wx:if="{{item.selected||selectAll}}">
 						<view class="share-btn select-share">
 							<image src="./img/share_selected.png"></image>
 						</view>

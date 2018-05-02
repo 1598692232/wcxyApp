@@ -541,3 +541,9 @@
     overflow:hidden;
 }
 
+/* 全选 */
+.selectedAll{
+	font-size: 12px;
+	color: #FFFFFF;
+	letter-spacing: 0;
+}

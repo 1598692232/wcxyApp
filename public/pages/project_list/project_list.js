@@ -33,7 +33,8 @@ Page({
         focus: false,
         inputValue: '',
         isInvite: false,
-        againInput: false
+        againInput: false,
+        selectAll: false
 	},
   setListData(projectId){
     let self = this
@@ -579,4 +580,22 @@ Page({
         transferStatus = json.transcode_state != -1
       })
     },
+    // 分享全选
+    toSelectAll() {
+        let self = this
+        // 给遍历的数组videoList添加属性selected是否被选中
+        let shareList = [];
+        self.data.videoList.map(v => {
+            v.selected = true
+            shareList.push(v.id)
+        })
+        self.setData({
+            selectShareList: shareList
+        })
+        console.log(self.data.videoList,'self.data.videoList') 
+        console.log(self.data.selectShareList,'self.data.selectsharelist')
+        self.setData({
+            selectAll: true
+        })
+    }
 })
