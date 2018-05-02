@@ -15,7 +15,7 @@
 				</view>	
 			</view>
 			<view wx:if="{{!showShare}}">
-				<view classk="breadcrumb-nav-li" wx:for="{{breadcrumbList}}" wx:key="index"
+				<view class="breadcrumb-nav-li" wx:for="{{breadcrumbList}}" wx:key="index"
 				data-id="{{item.id}}" bindtap="selectFolder" 
 				style="z-index:{{100 - index}};" >
 					<!-- <image src="{{index == 0 ? './img/bg1.png' : './img/bg2.png'}}" mode="scaleToFill"></image> -->

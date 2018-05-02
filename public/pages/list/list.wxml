@@ -20,7 +20,7 @@
           <view class="list-body">          
             <block wx:if="{{myProjectList.length > 0}}">
               <view class="item clearfix" wx:for="{{myProjectList}}" wx:key="index" data-index="{{index}}" data-type="{{item.type}}">
-                <view class='item-content' style="transform: translateX({{item.translateX}}px);"  bindtap="toProject"  data-name="{{item.name}}" data-id="{{item.id}}"  data-index="{{index}}" bindtouchstart="recordStart" bindtouchmove="recordMove" bindtouchend="recordEnd" id='{{item.id}}' animation='{{item.animation}}'>
+                <view class='item-content' style="transform: translateX({{item.translateX}}px);"  bindtap="toProject" data-type="{{item.type}}"  data-name="{{item.name}}" data-id="{{item.id}}"  data-index="{{index}}" bindtouchstart="recordStart" bindtouchmove="recordMove" bindtouchend="recordEnd" id='{{item.id}}' animation='{{item.animation}}'>
                     <view class="item-left">
                       <view wx:if="{{item.project_img != ''}}">
                           <image src="{{item.project_img}}" mode="aspectFill"></image>
