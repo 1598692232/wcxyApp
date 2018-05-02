@@ -164,6 +164,7 @@ Page({
                 item.selected = false                      
             })
 
+            topId = 0
             self.setData({
                 videoList: json.list,
                 breadcrumbList: [].concat([{id: 0, name: self.data.projectName}],json.breadcrumb),
