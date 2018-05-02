@@ -64,9 +64,9 @@ Page({
   },
   onReady: function () {  
     let self = this
-    let oneRad = self.data.storage_jindu
-    let twoRad = self.data.project_jindu=='无限'?1:self.data.project_jindu
-    let threeRad = self.data.member_jindu=='无限'?1:self.data.member_jindu
+    let oneRad = self.data.storage_jindu/100
+    let twoRad = self.data.project_jindu=='无限'?1:self.data.project_jindu/100
+    let threeRad = self.data.member_jindu=='无限'?1:self.data.member_jindu/100
     // 页面渲染完成  
     var cxt_arc = wx.createCanvasContext('canvasArc');//创建并返回绘图上下文context对象。  
     cxt_arc.setLineWidth(1);  
@@ -81,7 +81,7 @@ Page({
     cxt_arc.setLineCap('round')  
     cxt_arc.beginPath();//开始一个新的路径  
     
-    cxt_arc.arc(46, 46, 45, -Math.PI * 1 / 2, -Math.PI * 1 / 2 + 2*Math.PI * oneRad/100, false);  
+    cxt_arc.arc(46, 46, 45, -Math.PI * 1 / 2, -Math.PI * 1 / 2 + 2*Math.PI * oneRad, false);  
     cxt_arc.stroke();//对当前路径进行描边 
     cxt_arc.beginPath();
     
@@ -111,7 +111,7 @@ Page({
     cxt_arc2.setLineCap('round')  
     cxt_arc2.beginPath();//开始一个新的路径  
 
-    cxt_arc2.arc(46, 46, 45, -Math.PI * 1 / 2, -Math.PI * 1 / 2 + 2*Math.PI * twoRad/100, false);  
+    cxt_arc2.arc(46, 46, 45, -Math.PI * 1 / 2, -Math.PI * 1 / 2 + 2*Math.PI * twoRad, false);  
     cxt_arc2.stroke();//对当前路径进行描边  
   
     cxt_arc2.draw();  
@@ -129,7 +129,7 @@ Page({
     cxt_arc3.setStrokeStyle('#0345C7');  
     cxt_arc3.setLineCap('round')  
     cxt_arc3.beginPath();//开始一个新的路径  
-    cxt_arc3.arc(46, 46, 45, -Math.PI * 1 / 2, -Math.PI * 1 / 2 + 2*Math.PI * threeRad/100, false);  
+    cxt_arc3.arc(46, 46, 45, -Math.PI * 1 / 2, -Math.PI * 1 / 2 + 2*Math.PI * threeRad, false);  
     cxt_arc3.stroke();//对当前路径进行描边  
   
     cxt_arc3.draw(); 
