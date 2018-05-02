@@ -28,7 +28,6 @@
 .item{
     box-sizing: border-box;
     width: 100%;
-    border-bottom: 1px solid #14161A;
     flex-direction: row;
     position: relative;
     height:74px;
