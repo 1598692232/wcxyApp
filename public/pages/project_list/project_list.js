@@ -268,6 +268,7 @@ Page({
         // 给遍历的数组videoList添加属性selected是否被选中
         // e.currentTarget.dataset.selected = !e.currentTarget.dataset.selected
         this.setData({
+            selectAll: false,
             videoList:setSelectedVideo(self.data.videoList, e.currentTarget.dataset.id)
         })
         function setSelectedVideo(arr,id){
@@ -611,19 +612,23 @@ Page({
         let shareList = [];
         let newVideoList = [];
         let selectSize = 0
-        self.data.videoList.map(v => {
-            v.selected = !v.selected
-            shareList.push(v.id)
-            newVideoList.push(v)
-            selectSize += v.size
+        self.setData({
+            selectAll: !self.data.selectAll
         })
         self.data.videoList.map(v => {
-            if(v.selected){
+            if(self.data.selectAll){
+                v.selected = true
+                shareList.push(v.id)
+                newVideoList.push(v)
+                selectSize += v.size
                 self.setData({
-                    selectShareList: shareList,
-                    selectAll: true
+                    selectShareList: shareList
                 })
             }else{
+                v.selected = false
+                shareList.push(v.id)
+                newVideoList.push(v)
+                selectSize += v.size
                 self.setData({
                     selectShareList: [],
                     selectAll: false
