@@ -1,4 +1,5 @@
 let Util = require('../../utils/util.js')
+var getSizeFun = require('../../utils/dateTimePicker.js');
 const app = getApp()
 
 const PIC_TYPE = ['jpg', 'jpeg', 'png', 'gif', 'tiff'];
@@ -34,7 +35,9 @@ Page({
         inputValue: '',
         isInvite: false,
         againInput: false,
-        selectAll: false
+        selectAll: false,
+        size: 0,
+        count: 0
 	},
   setListData(projectId){
     let self = this
@@ -106,22 +109,22 @@ Page({
     
 
     onShow() {
+        let self = this
         // 创建分享成功之后返回处理
         let shareCreated = wx.getStorageSync('share_created');
         if (shareCreated == 1) {
             wx.setStorageSync('share_created', 0);
-            this.data.videoList.forEach((item) => {
+            self.data.videoList.forEach((item) => {
                 item.selected = false
             })
-            this.setData({
+            self.setData({
                 showShare: false,
                 isUpload: true,
                 selectShareList: [],
-                videoList: this.data.videoList
+                videoList: self.data.videoList
             });
         }
 
-        let self = this;
         // 获取参与成员头像姓名
         let store = wx.getStorageSync('app')
         let reqData = Object.assign({}, store, {
@@ -260,7 +263,7 @@ Page({
     toSelectShare(e) {
         let self = this
         // 给遍历的数组videoList添加属性selected是否被选中
-        e.currentTarget.dataset.selected = !e.currentTarget.dataset.selected
+        // e.currentTarget.dataset.selected = !e.currentTarget.dataset.selected
         this.setData({
             videoList:setSelectedVideo(self.data.videoList, e.currentTarget.dataset.id)
         })
@@ -269,7 +272,6 @@ Page({
            selectedVideo.selected = !selectedVideo.selected
            return arr
         }
-        // console.log(self.data.videoList.map(v=>v.selected),'---6666')
 
         // 得到选择的数组id
         function deleteArr(arr,index) {
@@ -279,6 +281,16 @@ Page({
         self.setData({
             selectShareList: (self.data.selectShareList.indexOf(e.currentTarget.dataset.id) === -1)?self.data.selectShareList.concat(e.currentTarget.dataset.id):deleteArr(self.data.selectShareList,self.data.selectShareList.findIndex((v)=>{return v === e.currentTarget.dataset.id})),
         }); 
+        let selectSize = 0
+        self.data.videoList.map(v=>{
+            if(v.selected){
+                selectSize += v.size 
+            }
+        })
+        self.setData({
+            count: self.data.selectShareList.length,
+            size: getSizeFun.getSize(selectSize)
+        })
     },
     toCloseCreateShare(e) {
         let self = this
@@ -585,17 +597,31 @@ Page({
         let self = this
         // 给遍历的数组videoList添加属性selected是否被选中
         let shareList = [];
+        let newVideoList = [];
+        let selectSize = 0
         self.data.videoList.map(v => {
-            v.selected = true
+            v.selected = !v.selected
             shareList.push(v.id)
+            newVideoList.push(v)
+            selectSize += v.size
+        })
+        self.data.videoList.map(v => {
+            if(v.selected){
+                self.setData({
+                    selectShareList: shareList,
+                    selectAll: true
+                })
+            }else{
+                self.setData({
+                    selectShareList: [],
+                    selectAll: false
+                })
+            }
         })
         self.setData({
-            selectShareList: shareList
-        })
-        console.log(self.data.videoList,'self.data.videoList') 
-        console.log(self.data.selectShareList,'self.data.selectsharelist')
-        self.setData({
-            selectAll: true
-        })
+            videoList: newVideoList,
+            size: self.data.selectShareList.length?getSizeFun.getSize(selectSize):0,
+            count: self.data.selectShareList.length
+        }) 
     }
 })

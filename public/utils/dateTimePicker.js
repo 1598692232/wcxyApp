@@ -74,7 +74,26 @@ function withData(param){
     dateTime: dateTime
     }
    }
+   function getSize(size) {
+        let kb = 1024;
+        let mb = kb * 1024;
+        let gb = mb * 1024;
+
+        if (size >= gb) {
+            return (size / gb).toFixed(2) + 'GB'
+        } else {
+            let f = size / mb;
+            return f.toFixed(2) + 'MB'
+        } 
+        // else if (size >= kb) {
+        //     let f = size / kb;
+        //     return f.toFixed(2) + 'KB'
+        // } else {
+        //     return size + 'B'
+        // }
+    }
    module.exports = {
     dateTimePicker: dateTimePicker,
-    getMonthDay: getMonthDay
+    getMonthDay: getMonthDay,
+    getSize: getSize
    }
