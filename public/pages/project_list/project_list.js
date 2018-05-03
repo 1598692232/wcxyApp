@@ -121,7 +121,10 @@ Page({
                 showShare: false,
                 isUpload: true,
                 selectShareList: [],
-                videoList: self.data.videoList
+                videoList: self.data.videoList,
+                selectAll: false,
+                size: 0,
+                count: 0
             });
         }
 
@@ -294,10 +297,19 @@ Page({
     },
     toCloseCreateShare(e) {
         let self = this
+        let newVideoList = []
+        self.data.videoList.map(v => {
+            v.selected = false
+            newVideoList.push(v)
+        })
         self.setData({
             showShare: false,
             isUpload: true,
-            // selectShareList: []
+            selectShareList: [],
+            videoList: newVideoList,
+            selectAll: false,
+            size: 0,
+            count: 0
         })
     },
     toCreateShareList(e) {
