@@ -484,81 +484,80 @@ Page({
         filename: "tmp_" + file.split('_')[1],
       })
       wx.showLoading()
-      // Util.ajax('createoss', 'post', reqData).then(json => {
-      //   console.log(json)
-      //   wx.uploadFile({
-      //     url: json.host,
-      //     filePath: file,
-      //     name: 'file',
-      //     formData: {
-      //       "key": json.object_key,
-      //       "OSSAccessKeyId": json.accessid,
-      //       "policy": json.policy,
-      //       "signature": json.signature,
-      //       'success_action_status': '200',
-      //     },
-      //     success: function (uploadReslut) {
-      //         if (uploadReslut.statusCode != 200) {
-      //           failc(new Error('上传错误:' + JSON.stringify(res)))
-      //           return false;
-      //         }
-      //         if (uploadType === 'void') {
-      //           let interval = setInterval(function(){
-      //             if (transferStatus) {
-      //               transferStatus = false
-      //               clearInterval(interval)
-      //               wx.hideLoading()
-      //             }else{
-      //               self.getChangeCodeStatus(json.doc_id)
-      //             }
-      //           }, 3000);
-      //           return true
-      //         }
-      //         console.log(self.data)
-      //         self.initList(self.data.projectID, self.data.projectName)
-      //         wx.hideLoading()
-      //         wx.showToast({
-      //           title: '文件已上传',
-      //           icon: 'success',
-      //           duration: 3000
-      //         })
-      //         return true
-      //       }
-      //   })
-      // })
+       Util.ajax('createoss', 'post', reqData).then(json => {
+         console.log(json)
+         wx.uploadFile({
+           url: json.host,
+           filePath: file,
+           name: 'file',
+           formData: {
+             "key": json.object_key,
+             "OSSAccessKeyId": json.accessid,
+             "policy": json.policy,
+             "signature": json.signature,
+             'success_action_status': '200',
+           },
+           success: function (uploadReslut) {
+               if (uploadReslut.statusCode != 200) {
+                 failc(new Error('上传错误:' + JSON.stringify(res)))
+                 return false;
+               }
+               if (uploadType === 'void') {
+                 let interval = setInterval(function(){
+                   if (transferStatus) {
+                     transferStatus = false
+                     clearInterval(interval)
+                     wx.hideLoading()
+                   }else{
+                     self.getChangeCodeStatus(json.doc_id)
+                   }
+                 }, 3000);
+                 return true
+               }
+               console.log(self.data)
+               self.initList(self.data.projectID, self.data.projectName)
+               wx.hideLoading()
+               wx.showToast({
+                 title: '文件已上传',
+                 icon: 'success',
+                 duration: 3000
+               })
+               return true
+             }
+         })
+       })
     },
     uploadFile() {
-      return null;
-      // let self = this
-      // wx.showActionSheet({
-      //   itemList: ['拍照片','相册照片','拍视频','相册视频'],
-      //   success: function (result) {
-      //     let file = "";
-      //     let sourceType = ['camera', 'album'];
-      //     console.log(result.tapIndex);
-      //     wx.showToast({
-      //       title: '请勿离开',
-      //       duration: 3000
-      //     })
-      //     if(result.tapIndex <= 1) {
-      //       wx.chooseImage({
-      //         count: 1,
-      //         sourceType: [sourceType[result.tapIndex]],
-      //         success: function (res) {
-      //           self.uploadOSS(res.tempFilePaths[0], 'image')
-      //         },
-      //       })
-      //     }else{
-      //       wx.chooseVideo({
-      //         sourceType: [sourceType[result.tapIndex - 2]],
-      //         success: function (res) {
-      //           self.uploadOSS(res.tempFilePath, 'void')
-      //         },
-      //         compressed: false
-      //       })
-      //     } 
-      //   }
-      // });
+       let self = this
+       wx.showActionSheet({
+         itemList: ['拍照片','相册照片','拍视频','相册视频'],
+         success: function (result) {
+           let file = "";
+           let sourceType = ['camera', 'album'];
+           console.log(result.tapIndex);
+           wx.showToast({
+             title: '请勿离开',
+             duration: 3000
+           })
+           if(result.tapIndex <= 1) {
+             wx.chooseImage({
+               count: 1,
+               sourceType: [sourceType[result.tapIndex]],
+               success: function (res) {
+                 self.uploadOSS(res.tempFilePaths[0], 'image')
+               },
+             })
+           }else{
+             wx.chooseVideo({
+               sourceType: [sourceType[result.tapIndex - 2]],
+               success: function (res) {
+                 self.uploadOSS(res.tempFilePath, 'void')
+               },
+               compressed: false
+             })
+           } 
+         }
+       });
     },
     getChangeCodeStatus(docId) { //获取媒体转码状态，递归。
       let self = this

@@ -1,5 +1,5 @@
 <view class="pl-container">
-	<scroll-view  class="breadcrumb-nav" scroll-x wx:if="{{showBreadcrumb}}" style="height: 56px;" scroll-x>
+	<scroll-view  class="breadcrumb-nav" scroll-x wx:if="{{showBreadcrumb}}" style="height: 56px;" >
 		<view  style="width: {{breadcrumbWidth}}px" class="clearfix">
 			<view wx:if="{{showShare}}">
 				<view class="breadcrumb-nav-li" wx:for="{{breadcrumbList}}" wx:key="index"
