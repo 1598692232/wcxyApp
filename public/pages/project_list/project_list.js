@@ -227,14 +227,15 @@ Page({
             //     + e.currentTarget.dataset.name + '&id=' + e.currentTarget.dataset.id 
             //     + '&username=' + e.currentTarget.dataset.username + '&createTime=' + e.currentTarget.dataset.createTime
             //     + '&coverImg=' + e.currentTarget.dataset.coverImg + '&project_id=' + wx.getStorageSync('project_id')
-
-            let url = '/pages/info/info?&name=' 
+            
+            let url = 'name=' 
             + e.currentTarget.dataset.name + '&id=' + e.currentTarget.dataset.id 
             + '&username=' + e.currentTarget.dataset.username
             + '&project_id=' + wx.getStorageSync('project_id')
-            // console.log(url, 'url')
+            let newurl = encodeURIComponent(url)
+            let tourl = '/pages/info/info?scene=' + newurl
             wx.navigateTo({
-                url,
+                url:tourl,
             })
         }
     },

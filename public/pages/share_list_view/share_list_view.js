@@ -449,13 +449,22 @@ Page({
             });
             return;
         }
-        let url = '/pages/info/info?&name=' 
-            + name + '&id=' + id 
-            + '&username=' + username + '&share=1'
-            + '&project_id=' + this.data.projectId + '&review=' + this.data.review + '&share_all_version=' + this.data.review;
+        let url = 'name=' 
+        + name + '&id=' + id 
+        + '&username=' + username + '&share=1'
+        + '&project_id=' + this.data.projectId + '&review=' + this.data.review + '&share_all_version=' + this.data.review;
+        let newurl = encodeURIComponent(url)
+        let tourl = '/pages/info/info?scene=' + newurl
         wx.navigateTo({
-            url: url,
+            url:tourl,
         })
+        // let url = '/pages/info/info?&name=' 
+        //     + name + '&id=' + id 
+        //     + '&username=' + username + '&share=1'
+        //     + '&project_id=' + this.data.projectId + '&review=' + this.data.review + '&share_all_version=' + this.data.review;
+        // wx.navigateTo({
+        //     url: url,
+        // })
     },
 
     playOrPauseAudio(e) {

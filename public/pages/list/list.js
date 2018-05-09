@@ -53,13 +53,24 @@ Page({
             let infoData = wx.getStorageSync('info_data')
             if (infoData != '') {
                 setTimeout(() => {
-                    let url = '/pages/info/info?url=' + infoData.url + '&name='
+                    let url = 'url=' 
+                    + infoData.url + '&name='
                     + infoData.name + '&id=' + infoData.doc_id
                     + '&username=' + infoData.username + '&createTime=' + infoData.createTime
                     + '&coverImg=' + infoData.coverImg + '&project_id=' + infoData.project_id
+                    let newurl = encodeURIComponent(url)
+                    let tourl = '/pages/info/info?scene=' + newurl
                     wx.navigateTo({
-                        url: url
+                        url:tourl,
                     })
+
+                    // let url = '/pages/info/info?url=' + infoData.url + '&name='
+                    // + infoData.name + '&id=' + infoData.doc_id
+                    // + '&username=' + infoData.username + '&createTime=' + infoData.createTime
+                    // + '&coverImg=' + infoData.coverImg + '&project_id=' + infoData.project_id
+                    // wx.navigateTo({
+                    //     url: url
+                    // })
                 }, 1000)
             }
         })

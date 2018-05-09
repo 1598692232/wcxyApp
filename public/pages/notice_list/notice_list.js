@@ -274,9 +274,16 @@ Page({
                     duration: 2000
                 })
             }else{
+                let url = 'project_id=' 
+                + self.data.projectId + '&id=' + e.currentTarget.dataset.contentid
+                let newurl = encodeURIComponent(url)
+                let tourl = '/pages/info/info?scene=' + newurl
                 wx.navigateTo({
-                    url: '/pages/info/info?project_id=' + self.data.projectId + '&id=' + e.currentTarget.dataset.contentid
+                    url:tourl,
                 })
+                // wx.navigateTo({
+                //     url: '/pages/info/info?project_id=' + self.data.projectId + '&id=' + e.currentTarget.dataset.contentid
+                // })
             } 
         }else{
             wx.showModal({

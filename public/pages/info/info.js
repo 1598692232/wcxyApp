@@ -212,29 +212,38 @@ Page({
   	},
 
     onLoad(options) {
-        this.data.options = options;
+        // this.data.options = options;
+        let str = decodeURIComponent(options.scene)
+        let obj = {}
+        str.split('&').forEach((v) => {
+            var o = v.split('=')
+            obj[o[0]] = o[1]
+        })
+        this.data.options = obj
+
+        // console.log(options22,'options22')
         // self.shareClick = false;
         // 隐藏转发
         // wx.hideShareMenu();
 
         let self = this;
-        if (options.share) {
+        if (this.data.options.share) {
             self.setData({
-                share: parseInt(options.share) == 1 ? true : false
+                share: parseInt(this.data.options.share) == 1 ? true : false
             })
         }
 
-        if (options.review != undefined && options.share_all_version != undefined ) {
+        if (this.data.options.review != undefined && this.data.options.share_all_version != undefined ) {
             self.setData({
-                review: parseInt(options.review),
-                share_all_version: parseInt(options.share_all_version)
+                review: parseInt(this.data.options.review),
+                share_all_version: parseInt(this.data.options.share_all_version)
             });
         }
 
 
         self.setData({
-            doc_id: options.id,
-            project_id: options.project_id
+            doc_id: this.data.options.id,
+            project_id: this.data.options.project_id
         })
 
         // wx.createSelectorQuery().select('#play-body').fields({
@@ -796,7 +805,7 @@ Page({
 	    let reqData = Object.assign({}, store, {
             doc_id:  self.data.doc_id,
             // doc_id: id,
-            project_id: this.data.project_id,
+            project_id: self.data.project_id,
             show_completed: 1,
             pre_page: PRE_PAGE,
             page: 1
@@ -2296,6 +2305,7 @@ Page({
             key: 'share_file',
             data: [this.data.info]
         });
+        wx.setStorageSync('share_created', 0);
         wx.navigateTo({
             url: '/pages/share_create/share_create?frominfo=1'
         })
