@@ -90,7 +90,7 @@
     <view>{{refreshTime}}</view>
   </view> -->
 
-  <view class="systemNotification_box" wx:if="{{systemCount&&popupShow}}">
+  <view class="systemNotification_box" wx:if="{{systemCount}}">
     <view class="systemNotification">
       <view class="title">
         <image src="./img/top.png"></image>

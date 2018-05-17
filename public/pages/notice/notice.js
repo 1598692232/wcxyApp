@@ -88,7 +88,9 @@ Page({
 
         Util.ajax('notice', 'get', reqData).then(data => {
             var num
+            var numarr = []
             var data0 = data.list?data.list:[]
+            console.log(data.list,'data.list')
             data0.map((item,i) => {
         // ----------------------  
         // 在localstorage里
@@ -103,6 +105,7 @@ Page({
                                 if(v.created_at > thisItemData.timestamp){
                                     item.count += 1
                                     num = item.count
+                                    numarr.push(1)
                                 }
                             })
                         }
@@ -125,12 +128,17 @@ Page({
                 project_name: data.project_name?data.project_name:'',
                 first_name: data.first_name?data.first_name:''
             })
+            var noticenum = 0
+            numarr.forEach((v,i) => {
+                noticenum += v
+            })
             if(num>0){
-                wx.showTabBarRedDot({
+                wx.setTabBarBadge({
                     index: 1,
+                    text: noticenum.toString()
                 })
             }else{
-                wx.hideTabBarRedDot({
+                wx.removeTabBarBadge({
                     index: 1,
                 })
             }  

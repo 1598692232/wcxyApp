@@ -350,6 +350,7 @@ Page({
         Util.ajax('notice', 'get', reqData).then(data => {
             var num
             var num2
+            var numarr = []
             var data0 = data.list?data.list:[]
             data0.map((item,i) => {
                 item.count = 0
@@ -368,6 +369,7 @@ Page({
                                 self.setData({
                                     systemCount:num2
                                 })
+                                numarr.push(1)
                             }
                         })
                     }else if(thisItemData.timestamp){
@@ -375,6 +377,7 @@ Page({
                             if(v.created_at > thisItemData.timestamp){
                                 item.count += 1
                                 num = item.count
+                                numarr.push(1)
                             }
                         })
                     }
@@ -418,13 +421,23 @@ Page({
                     time_at: data.content.time_at
                 })
             }, res => {})
-
+            var noticenum = 0
+            numarr.forEach((v,i) => {
+                noticenum += v
+            })
             if(num>0){
-                wx.showTabBarRedDot({
+                // wx.showTabBarRedDot({
+                //     index: 1,
+                // })
+                wx.setTabBarBadge({
                     index: 1,
+                    text: noticenum.toString()
                 })
             }else{
-                wx.hideTabBarRedDot({
+                // wx.hideTabBarRedDot({
+                //     index: 1,
+                // })
+                wx.removeTabBarBadge({
                     index: 1,
                 })
             }  
@@ -449,7 +462,8 @@ Page({
             url: '/pages/notice_system_info/notice_system_info?content_id='+ content_id
         })
         this.setData({
-            popupShow: false
+            popupShow: false,
+            systemCount: 0
         })
     },
     // 关闭系统消息的弹窗
@@ -465,8 +479,10 @@ Page({
         userItem.timestamp = timestamp
         wx.setStorageSync(store.login_id.toString(), sumData)
         this.setData({
-            popupShow: false
+            popupShow: false,
+            systemCount: 0
         })
+        this.hasRedDots()
     },
     recordStart: function (e) {
       this.data.myProjectList.map(item => {

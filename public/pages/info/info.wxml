@@ -32,9 +32,13 @@
             <audio src="{{url}}" id="myAudio" bindplay="audioStartPlay"
             controls loop style="display: none" bindtimeupdate="audioUpdate"></audio>
             <view class="info-audio">
+                <view class="info-share" bindtap="createShare" wx:if="{{!share && !isFocus && !fullScreen}}" >
+                    <image src="./img/share.png" mode="aspectFit" ></image>
+                </view>
                 <view class="info-audio-icon">
                     <image src="./img/mp3.png" mode="aspectFit" ></image>
                 </view>
+
                 <view class="info-audio-control">
                     <view class="info-audio-play" bindtap="toggleAudio">
                         <image src="./img/play.png" mode="aspectFit" wx:if="{{audioPause}}"></image>
@@ -57,6 +61,9 @@
       
         <view class="info-pic"  wx:if="{{info.file_type == 'image'}}" style="height:{{videoHeight}}px"> 
             <image src="{{info.cover_img[0]}}" mode="aspectFit"></image>
+            <view class="info-share" bindtap="createShare" wx:if="{{!share && !isFocus && !fullScreen}}" >
+                <image src="./img/share.png" mode="aspectFit" ></image>
+            </view>
         </view>
     </view>
 
