@@ -1,5 +1,5 @@
 <view class="share-list-box" style="height:100%">
-    <scroll-view style="height:{{scrollHeight}}px;" scroll-y bindscrolltolower="lower" lower-threshold="{{800}}">
+    <scroll-view style="height:{{scrollHeight}}px;" scroll-y bindscrolltolower="lower" lower-threshold="{{600}}">
         <block wx:if="{{collectionList.length>0}}">
             <view class="share-list share-list2 {{item.isTouchMove ? 'touch-move-active' : ''}}" wx:for="{{collectionList}}" wx:key="index"
             data-index="{{index}}" data-code="{{item.code}}" data-password="{{item.password}}" data-id="{{item.id}}" data-count="{{item.files_count}}"

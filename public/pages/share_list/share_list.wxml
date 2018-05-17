@@ -1,5 +1,5 @@
 <view class="share-list-box" style="height:100%">
-    <scroll-view style="height:{{scrollHeight}}px;" scroll-y bindscrolltolower="lower" lower-threshold="{{800}}">
+    <scroll-view style="height:{{scrollHeight}}px;" scroll-y bindscrolltolower="lower" lower-threshold="{{600}}">
         <block wx:if="{{shareList.length>0}}">
             <view class="share-list" wx:for="{{shareList}}" wx:key="index" data-code="{{item.code}}" data-password="{{item.password}}" data-id="{{item.id}}" data-count="{{item.files_count}}" bindtap="toShareInfo">
                 <block wx:if="{{item.files_count !== 0}}">
