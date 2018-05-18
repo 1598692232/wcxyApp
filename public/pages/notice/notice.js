@@ -90,7 +90,7 @@ Page({
             var num
             var numarr = []
             var data0 = data.list?data.list:[]
-            console.log(data.list,'data.list')
+            // console.log(data.list,'data.list')
             data0.map((item,i) => {
         // ----------------------  
         // 在localstorage里

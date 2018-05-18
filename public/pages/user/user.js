@@ -21,19 +21,28 @@ Page({
     member_jindu: '',
     redDot: false
   },
- 
-  onLoad() {
-    let self = this  
-    wx.getSystemInfo({
-      success(res) {
-          self.setData({
-              scrollHeight: res.windowHeight 
-          })
-      }
-    });
-
+  onShow: function () {  
+    // 页面显示  
+    let self = this
     let store = wx.getStorageSync('app')
-    let reqData = Object.assign({}, {token: store.token},{login_id:store.login_id})
+    let reqData = Object.assign({},{login_id: store.login_id},{token: store.token})
+    Util.ajax('user/info', 'get', reqData).then(json => {
+        self.setData({
+            realName: json.realname?json.realname:wx.getStorageSync('user_info').nickName,
+            avatar:  json.avatar?json.avatar:wx.getStorageSync('user_info').avatarUrl,
+        })
+    }, res => {
+        wx.showModal({
+            title: '提示',
+            content: res.data.msg,
+            showCancel: false
+        })
+    }) 
+    self.setData({
+        redDot: wx.getStorageSync('red_dot')
+    })
+
+    
     Util.ajax('usage', 'get', reqData).then((data) => {
         let project_count = `${Math.floor(((data.project_count / data.project_max) * 100))}`
         let member_count = `${Math.floor(((data.member_count / data.member_max) * 100))}`
@@ -61,6 +70,18 @@ Page({
               showCancel: false
           })
       })
+  },  
+  onLoad() {
+    let self = this  
+    wx.getSystemInfo({
+      success(res) {
+          self.setData({
+              scrollHeight: res.windowHeight 
+          })
+      }
+    });
+
+    
   },
   onReady: function () {  
     let self = this
@@ -136,27 +157,7 @@ Page({
 
       
   },  
-  onShow: function () {  
-    // 页面显示  
-    let self = this
-    let store = wx.getStorageSync('app')
-    let reqData = Object.assign({},{login_id: store.login_id},{token: store.token})
-    Util.ajax('user/info', 'get', reqData).then(json => {
-        self.setData({
-            realName: json.realname?json.realname:wx.getStorageSync('user_info').nickName,
-            avatar:  json.avatar?json.avatar:wx.getStorageSync('user_info').avatarUrl,
-        })
-    }, res => {
-        wx.showModal({
-            title: '提示',
-            content: res.data.msg,
-            showCancel: false
-        })
-    }) 
-    self.setData({
-        redDot: wx.getStorageSync('red_dot')
-    })
-  },  
+  
   // loginOut() {
   //     wx.navigateTo({
   //       url: '/pages/signin/signin?login_out=1'
