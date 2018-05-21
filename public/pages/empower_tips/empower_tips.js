@@ -59,7 +59,7 @@ Page({
                 backIndex: true
             })
         }
-        let title = options.tips?'授权失败':'登录'
+        let title = options.tips?'授权失败':'登录成功'
         wx.setNavigationBarTitle({title: title})
     },
     backIndex() {
