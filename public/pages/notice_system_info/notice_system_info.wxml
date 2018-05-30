@@ -2,10 +2,10 @@
     <block wx:if="{{isSystem==1}}">
         <view class="item" wx:for="{{noticeListInfo}}" wx:key="index">
             <view class="title">
-                {{item.title1}}
+                <text>{{item.title1}}</text>
             </view>
             <view class="content" wx:for="{{item.content1}}" wx:key="index">
-                {{item}}
+                <text>{{item}}</text>
             </view>
         </view>
     </block>

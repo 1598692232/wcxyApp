@@ -132,6 +132,11 @@ Page({
             numarr.forEach((v,i) => {
                 noticenum += v
             })
+            if(noticenum>99){
+                noticenum = '99+'
+            }else{
+                noticenum = noticenum
+            }
             if(num>0){
                 wx.setTabBarBadge({
                     index: 1,

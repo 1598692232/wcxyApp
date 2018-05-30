@@ -98,8 +98,12 @@
       </view>
       <view class="content2" wx:if="{{isSystem==1}}">
         <view class="item2" wx:for="{{noticeListInfo}}" wx:key="{{index}}">
-          <view class="title2">{{item.title1}}</view>
-          <view class="text2" wx:for="{{item.content1}}" wx:key="{{index}}">{{item}}</view>
+          <view class="title2">
+            <text>{{item.title1}}</text>
+          </view>
+          <view class="text2" wx:for="{{item.content1}}" wx:key="{{index}}">
+            <text>{{item}}</text>
+          </view>
         </view>
       </view>
       <view class="content2" wx:if="{{isSystem==2}}">

@@ -266,7 +266,8 @@
     text-align: justify;
     padding: 10px 12px 35px;
     line-height: 18px;
-    min-height: 180px;
+    height: 180px;
+    overflow: scroll!important;
 }
 .systemNotification .content2 .item2{
     margin-bottom: 12px;
@@ -281,6 +282,8 @@
     position: absolute;
     left: 0;
     bottom: 0;
+    z-index: 22;
+    background: #fff;
     border-top: 1px solid #F1F3F6;
     display: flex;
 }
