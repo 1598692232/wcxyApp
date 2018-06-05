@@ -22,6 +22,8 @@
         <view class="user-control">
             <view class="login-out" bindtap="scanSignin">确认登录</view>
         </view>
-        <view class="quit" bindtap="scanQuit">拒绝</view>
+        <view class="user-control2">
+            <view class="quit" bindtap="scanQuit">取消</view>            
+        </view>
     </view>
 </view>

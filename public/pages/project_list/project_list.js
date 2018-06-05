@@ -241,8 +241,12 @@ Page({
     },
     toMemberList(e) {
         let self = this
-        self.setData({
-            showMemberDrop: true
+        // self.setData({
+        //     showMemberDrop: true
+        // })
+        let toMemberUrl = '/pages/project_member/project_member?isAdmin=' + self.data.isAdmin + '&project_id=' + self.data.projectID + '&title=' + self.data.title
+        wx.navigateTo({
+            url:toMemberUrl,
         })
     },
     MembertoProject(e) {
