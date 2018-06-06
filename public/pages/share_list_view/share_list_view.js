@@ -16,6 +16,7 @@ Page({
         viewCount: null,
         enterShareLink: '',
         passwordModal: false,
+        code:'',
         password: '',
         shareName: '',
         manager: app.data.staticImg.manager,

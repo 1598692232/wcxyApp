@@ -8,7 +8,8 @@ Page({
         memberList:[],
         isAdmin: true,
         projectID: 0,
-        title: ''
+        title: '',
+        showDelete: false
     },
 	onLoad(options) {
         let self = this
@@ -16,7 +17,77 @@ Page({
             projectID: options.project_id,
             title: options.title
         })
-        console.log(options.isAdmin,'isAdmin')
+        if(options.scene){
+            wx.login({
+                success: function(res) {
+                    if (res.code) {
+                        let store = wx.getStorageSync('app')
+                        let empowers = wx.getStorageSync('user_info')
+                        let reqData = Object.assign({},{code: res.code})
+                        Util.ajax('auth/login', 'post', reqData).then(json => {
+                            Util.setStorage('user_info', json)
+                            let data = Object.assign({}, store, json)
+                            if(json.avatar==false) {
+                                wx.getUserInfo({
+                                    withCredentials: true,
+                                    success: function(res) {
+                                        var userInfo = res.userInfo
+                                        var nickName = userInfo.nickName
+                                        var avatarUrl = userInfo.avatarUrl?userInfo.avatarUrl:manager
+                                        var gender = userInfo.gender //性别 0：未知、1：男、2：女
+                                    
+                                        let stores = wx.getStorageSync('user_info')
+                                        let newStorage2 = Object.assign({}, stores)
+                                        newStorage2.nickName = nickName
+                                        newStorage2.avatarUrl = avatarUrl
+                                        Util.setStorage('user_info', newStorage2)
+
+                                        let reqData2 = Object.assign({},{login_id:json.login_id},{token:json.token},{nick_name: nickName},{avatar: avatarUrl})
+                                        if(json.avatar==false){
+                                            Util.ajax('user/info', 'post', reqData2).then((data) => {
+                                                wx.setStorage({
+                                                    key: 'user_info',
+                                                    data: data
+                                                })
+                                                let empower = wx.getStorageSync('user_info')
+                                                let nickName = empower.nickName
+                                            }, res => {
+                                                wx.showModal({
+                                                    title: '提示',
+                                                    content: res.data.msg,
+                                                    showCancel: false
+                                                })
+                                            })
+                                        }  
+                                    },
+                                    fail: function() {
+                                        wx.reLaunch({
+                                            url: '/pages/empower_tips/empower_tips?tips=2'+'&share_code=' + res.code
+                                        })
+                                    }
+                                })
+                            }
+
+                            Util.setStorage('app', data).then(() => {
+                                Util.getStorage('app').then((res) => {
+                                                
+                                })
+                            })
+                        }, res => {
+                            wx.showModal({
+                                title: '提示',
+                                content: res.data.msg,
+                                showCancel: false
+                            })
+                        })
+                    }
+                }
+            })
+        }
+        // self.setData({
+        //     projectID: wx.getStorageSync('project_id'),
+        //     title: wx.getStorageSync('project_name')
+        // })
         if(options.isAdmin == 'true'){
             self.setData({
                 isAdmin: true
@@ -26,13 +97,7 @@ Page({
                 isAdmin: false
             })
         }
-        console.log(options.shareTickets,'shareTickets')
-        wx.getShareInfo({
-            shareTicket: options.shareTickets,
-            success: function (res) {
-                console.log(res,'getShareInfo')
-            }
-        })
+        console.log(options.shareTickets,'shareTickets6666')
     },
     onShow() {
         wx.showShareMenu({
@@ -63,7 +128,26 @@ Page({
             })
         })
     },
+    // 生成邀请链接
+    toAddMemberBtn() {
+        let store = wx.getStorageSync('app')
+        let reqData = Object.assign({},{
+            login_id:store.login_id,
+            token: store.token,
+            project_id: wx.getStorageSync('project_id')
+        })
+        Util.ajax('invite/link', 'post', reqData).then(json => {
+            console.log(json,'json88888')
+        }, res => {
+            wx.showModal({
+                title: '提示',
+                content: res.msg,
+                showCancel: false
+            })
+        })
+    },
     onShareAppMessage: function (res) {
+        let self = this
         if (res.from === 'button') {
             // 来自页面内转发按钮
         }
@@ -72,12 +156,22 @@ Page({
         let projectName = wx.getStorageSync('project_name');
         return {
           title: realname + '邀请您进入' + projectName + '的项目',
-          path: '/pages/project_member/project_member',
+          path: '/pages/empower_signin/empower_signin',
           imageUrl: './img/xinyue_share.png',
           success: function(res) {
+            console.log(res.shareTickets[0])
+            wx.getShareInfo({
+                shareTicket: res.shareTickets[0],
+                success: function (res) { 
+                    console.log(res,'success_res');
+                    console.log(res.encryptedData,'encryptedData');
+                },
+                fail: function (res) { console.log(res,'fail_res') },
+                complete: function (res) { console.log(res,'complete_res') }
+            })
             // 邀请成功
             wx.showToast({
-                title: '邀请成功',
+                title: '发送邀请成功',
                 icon: 'success'
             })
             setTimeout(function(){
@@ -156,6 +250,48 @@ Page({
                 }
             }
         }) 
+    },
+    // 显示删除项目成员的删除按钮
+    toDelMemberBtn() {
+        let self = this
+        if (self.data.memberList.length == 1) {
+            wx.showToast({
+                title: '您暂无成员可以删除',
+                icon: 'none',
+                duration: 2000
+            })
+            return
+        }
+        self.setData({
+            showDelete: !self.data.showDelete
+        })
+    },
+    // 删除项目成员
+    toDelMember(e) {
+        let self = this
+        let store = wx.getStorageSync('app')
+        let reqData = Object.assign({},{
+            login_id : store.login_id,
+            token: store.token,
+            member_id: e.currentTarget.dataset.id,
+            project_id: wx.getStorageSync('project_id'),
+            _method: 'delete'
+        })
+        Util.ajax('member', 'post', reqData).then(json => {
+            console.log(json,'json')
+            wx.showToast({
+                title: '删除成功',
+                icon: 'success',
+                duration: 2000
+            })
+            self.onShow()
+        }, res => {
+            wx.showModal({
+                title: '提示',
+                content: res.msg,
+                showCancel: false
+            })
+        })
     },
     //验证邮箱
     isEmail (str) {

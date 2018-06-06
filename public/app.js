@@ -6,8 +6,8 @@ App({
   data: {
     staticImg: img
   },
-  onLaunch: function () {
-    // console.log(wx.getStorageSync('app'), 'local')
+  onLaunch: function (options) {
+    console.log(options,'app_options')
     wx.login({
       success: function(res) {
         if (res.code) {
@@ -16,9 +16,9 @@ App({
               // token: '',
               // login_id: '',
               // sessionid: '',
-              host: 'https://www.uxinyue.com',
+              // host: 'https://www.uxinyue.com',
               // host: 'http://www.uxinyue.com:81',
-              // host: 'http://10.255.1.23:7777',
+              host: 'http://10.255.1.23:7777',
               // host: 'http://106.14.134.19',
               // host: 'http://111.231.106.53',
               // host: 'https://www.uxinyue.com',
