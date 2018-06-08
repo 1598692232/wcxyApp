@@ -107,17 +107,26 @@
         </view>
       </view>
       <view class="content2" wx:if="{{isSystem==2}}">
-          <view class="item2 accountUpdate">
-            <view class="title2">您的账户通过系统自动升级为Lv.{{grade}}！</view>
-            <view class="text2">
-              <view>1、新的套餐容量为{{storage_max}}GB；</view>
-              <view>2、{{project_max}}项目数；</view>
-              <view>3、{{member_max}}人员数；</view>
-              <view>4、有效期为{{time_at}}天。</view>
-            </view>
+        <view class="item2 accountUpdate">
+          <view class="title2">您的账户通过系统自动升级为Lv.{{grade}}！</view>
+          <view class="text2">
+            <view>1、新的套餐容量为{{storage_max}}GB；</view>
+            <view>2、{{project_max}}项目数；</view>
+            <view>3、{{member_max}}人员数；</view>
+            <view>4、有效期为{{time_at}}天。</view>
           </view>
         </view>
-      <view class="foot">
+      </view>
+      <view class="content2" wx:if="{{isSystem==3}}">
+        <view class="text2">
+          <text>{{accountInfo}}</text>
+        </view>
+      </view>
+      <view class="foot" wx:if="{{isSystem==3}}">
+          <view class="btn more" bindtap="toSystemInfo2">取消</view>
+          <view class="btn know" bindtap="toKnow2">确定</view>
+        </view>
+      <view class="foot" wx:if="{{isSystem!=3}}">
         <view class="btn more" bindtap="toSystemInfo">了解更多</view>
         <view class="btn know" bindtap="toKnow">我知道了</view>
       </view>

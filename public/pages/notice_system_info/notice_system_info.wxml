@@ -23,6 +23,13 @@
             </view>
         </view>
     </block>
+    <block wx:if="{{isSystem==3}}">
+        <view class="item">
+            <view class="content">
+                <text>{{noticeInfo3.content}}</text>
+            </view>
+        </view>
+    </block>
     
     <!-- <view class="item">
         <view class="title">

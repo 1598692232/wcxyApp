@@ -15,7 +15,8 @@ Page({
         storage_max: '',
         project_max: '',
         member_max: '',
-        time_at: ''
+        time_at: '',
+        noticeInfo3: ''
     },
 
     onLoad(options) {
@@ -72,6 +73,7 @@ Page({
                     break
             }
             self.setData({
+                noticeInfo3: data,
                 noticeListInfoTitle: data.content_name,
                 noticeListInfo: data.content.list,
                 isSystem: data.type,

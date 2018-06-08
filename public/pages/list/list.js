@@ -471,8 +471,43 @@ Page({
             systemCount: 0
         })
     },
+    // 跳转至系统消息详情
+    toSystemInfo2(e) {
+        let self = this
+        var timestamp = Date.parse(new Date());
+        timestamp = timestamp / 1000;
+        // 点击时设置时间戳
+        let store = wx.getStorageSync('app')
+        var sumData = wx.getStorageSync(store.login_id.toString())
+        var userItem = sumData.noticeList0.find((v) => {
+            return v.id == -1
+        })
+        userItem.timestamp = timestamp
+        wx.setStorageSync(store.login_id.toString(), sumData)
+        this.setData({
+            popupShow: false,
+            systemCount: 0
+        })
+    },
     // 关闭系统消息的弹窗
     toKnow() {
+        var timestamp = Date.parse(new Date());
+        timestamp = timestamp / 1000;
+        // 点击时设置时间戳
+        let store = wx.getStorageSync('app')
+        var sumData = wx.getStorageSync(store.login_id.toString())
+        var userItem = sumData.noticeList0.find((v) => {
+            return v.id == -1
+        })
+        userItem.timestamp = timestamp
+        wx.setStorageSync(store.login_id.toString(), sumData)
+        this.setData({
+            popupShow: false,
+            systemCount: 0
+        })
+        this.hasRedDots()
+    },
+    toKnow2() {
         var timestamp = Date.parse(new Date());
         timestamp = timestamp / 1000;
         // 点击时设置时间戳
