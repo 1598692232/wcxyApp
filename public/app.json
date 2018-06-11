@@ -21,7 +21,8 @@
     "pages/empower_scan/empower_scan",
     "pages/empower_tips/empower_tips",
     "pages/collection/collection",
-    "pages/project_setting/setting"
+    "pages/project_setting/setting",
+    "pages/project_member/project_member"
   ],
   "window": {
     "backgroundTextStyle": "dark",

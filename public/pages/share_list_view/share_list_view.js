@@ -16,6 +16,7 @@ Page({
         viewCount: null,
         enterShareLink: '',
         passwordModal: false,
+        code:'',
         password: '',
         shareName: '',
         manager: app.data.staticImg.manager,
@@ -341,7 +342,6 @@ Page({
         let codeUrl = encodeURIComponent('code=' + this.data.code);
         let store = wx.getStorageSync('app');
         let projectName = wx.getStorageSync('project_name');
-
         return {
           title: this.data.shareName,
           path: '/pages/share_list_view/share_list_view?scene=' + codeUrl,

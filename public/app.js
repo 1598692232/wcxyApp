@@ -6,8 +6,8 @@ App({
   data: {
     staticImg: img
   },
-  onLaunch: function () {
-    // console.log(wx.getStorageSync('app'), 'local')
+  onLaunch: function (options) {
+    console.log(options,'app_options')
     wx.login({
       success: function(res) {
         if (res.code) {

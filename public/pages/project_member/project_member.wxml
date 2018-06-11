@@ -1,0 +1,31 @@
+<view class="project_member">
+    <view class="members">
+        <view class="member_list_box" wx:for="{{memberList}}" wx:key="index">
+            <view class="member_list">
+                <image src="{{item.avatar}}"></image>
+                <view class="member_name">{{item.realname}}</view>
+                <view class="delete_member" wx:if="{{item.type=='member' && showDelete}}" bindtap="toDelMember" data-id="{{item.user_id}}">
+                    <image src="./img/delete_member.png"></image>
+                </view>
+            </view>
+        </view>
+        <view class="member_list_box" wx:if="{{isAdmin}}">
+            <view class="member_list" bindtap="toAddMemberBtn">
+                <button class="btn add" open-type="share">
+                    <image src="./img/add.svg" mode="aspectFit"></image>
+                </button>
+            </view> 
+        </view>
+        <view class="member_list_box" wx:if="{{isAdmin}}">
+            <view class="member_list" bindtap="toDelMemberBtn">
+                <view class="btn delete">
+                    <image src="./img/delete.svg" mode="aspectFit"></image>
+                </view>
+            </view>  
+        </view>                              
+    </view>
+    <view class="project_btn">
+        <view class="project_text" wx:if="{{isAdmin}}" bindtap="toDelProject">删除项目</view>
+        <view class="project_text" wx:else bindtap="toQuitProject">退出项目</view>
+    </view>
+</view>
