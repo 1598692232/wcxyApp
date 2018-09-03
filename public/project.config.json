@@ -29,7 +29,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": -1,
+			"current": 9,
 			"list": [
 				{
 					"id": 0,
@@ -42,14 +42,14 @@
 					"id": 1,
 					"name": "info",
 					"pathName": "pages/info/info",
-					"query": "scene=code%3d7b3f9ae0a1e0d08c",
+					"query": "scene=code%3d9ce8dde554fcc968",
 					"scene": "1011"
 				},
 				{
 					"id": 2,
 					"name": "info",
 					"pathName": "pages/info/info",
-					"query": "project_id=P1661511345288&id=801",
+					"query": "scene=name%3D280edf50-161314041d0-0004-e632-f3f-94298%E7%9A%84%E5%89%AF%E6%9C%AC%26id%3D10427%26username%3D%E6%B3%A1%E6%B3%A1oO%E6%B0%B4%E6%B5%81%26share%3D1%26project_id%3DP2101525406210%26review%3D1%26share_all_version%3D1",
 					"scene": "1011"
 				},
 				{
@@ -95,7 +95,7 @@
 					"id": 9,
 					"name": "share_list_view",
 					"pathName": "pages/share_list_view/share_list_view",
-					"query": "scene=code%3d087eb884a3c4fb87",
+					"query": "scene=code%3d9ce8dde554fcc968",
 					"scene": "1011"
 				},
 				{
