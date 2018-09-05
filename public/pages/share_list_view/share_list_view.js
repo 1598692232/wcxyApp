@@ -27,7 +27,10 @@ Page({
         templateShow: false,
         needNickName: false,
         collect: false,
-        isShare: false
+        isShare: false,
+        fullScreenId: 0,
+        videoPNo: '540',
+        PNoShow: false
     },
     onLoad(options) {
         let self = this;
@@ -141,8 +144,16 @@ Page({
                 });
 
                 self.shareList = data.list;
+                self.shareList = data.list.map((item, k) => {
+                    if (item.file_type == 'video') {
+                        item.activeP = '540';
+                        item.activeUrl = item.project_file.resolution[0].src;
+                    }
+                    return item;
+                });
+
                 self.setData({
-                    shareList: data.list.length > 3 ? data.list.slice(0, 3) : data.list,
+                    shareList: self.shareList.length > 3 ? self.shareList.slice(0, 3) : self.shareList,
                     qrCode: data.qr_code,
                     deadline: data.deadline.toString().length>4?Util.getTimeDate(data.deadline):data.deadline,
                     fileCount: data.file_count,
@@ -267,8 +278,15 @@ Page({
                 }
             });
             self.shareList = data.list;
+            self.shareList = data.list.map((item, k) => {
+                if (item.file_type == 'video') {
+                    item.activeP = '540';
+                    item.activeUrl = item.project_file.resolution[0].src;
+                }
+                return item;
+            });
             self.setData({
-                shareList: data.list.length > 3 ? data.list.slice(0, 3) : data.list,
+                shareList: self.shareList.length > 3 ? self.shareList.slice(0, 3) : self.shareList,
                 qrCode: data.qr_code,
                 deadline: data.deadline.toString().length>4?Util.getTimeDate(data.deadline):data.deadline,
                 fileCount: data.file_count,
@@ -511,6 +529,50 @@ Page({
         wx.reLaunch({
             url: '/pages/empower_signin/empower_signin'
         })
+    },
+
+
+    handleFullScreen(e) {
+        if (e.detail.fullScreen) {
+            this.setData({
+                fullScreenId: e.currentTarget.dataset.id
+            });
+        } else {
+            this.setData({
+                fullScreenId: 0
+            });
+        }
+        console.log()
+      
+    },
+
+    togglePSelectShow() {
+        this.setData({
+            PNoShow: !this.data.PNoShow
+        });
+    },
+
+    changeVideoUrl(e) {
+        let shareList = JSON.parse(JSON.stringify(this.data.shareList));
+        
+        new Promise((resolve, reject) => {
+            shareList = shareList.map((item, k) => {
+                if (item.id == this.data.fullScreenId) {
+                    let res = item.project_file.resolution.filter((it, k) => {
+                        return it.resolution ==  e.currentTarget.dataset.resolution;
+                    })[0];
+                    item.activeUrl = res.src;
+                    item.activeP = res.resolution;
+                }
+                return item;
+            });
+            this.setData({
+                shareList
+            });
+            resolve();
+        }).then(() => {
+            this.togglePSelectShow();
+        });
     }
 
 })

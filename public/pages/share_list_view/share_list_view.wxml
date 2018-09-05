@@ -51,10 +51,27 @@
             <block wx:if="{{item.file_type == 'video'}}">
                 <view class="list info-ext" style="width:{{videoWidth}}px;height:{{videoHeight}}px;overflow:hidden;">
                     <view wx:if="{{item.doc_status===1}}">
-                        <video src="{{item.url}}" data-id="{{item.id}}" id="media{{item.id}}" poster="{{item.cover_img[0]}}"
+                        <video src="{{item.activeUrl}}" data-id="{{item.id}}" id="media{{item.id}}" poster="{{item.cover_img[0]}}"
                         objectFit="contain" controls bindplay="changeCurrentPlayId" data-type="{{item.file_type}}"
-                        style="width:{{videoWidth}}px;height:{{videoHeight}}px;"
-                        ></video>
+                        style="width:{{videoWidth}}px;height:{{videoHeight}}px;" bindfullscreenchange="handleFullScreen"
+                        >
+                        <cover-view class="video-select-btn-p" catchtap="togglePSelectShow" wx:if="{{fullScreenId == item.id && !PNoShow}}">
+                            {{item.activeP}}P
+                        </cover-view>
+                        <cover-view class="video-select-btn-body" wx:if="{{fullScreenId == item.id && PNoShow}}" >
+                            <cover-view class="video-select-btn-body-p" 
+                            bindtap="changeVideoUrl" 
+                            data-id="{{item.id}}" 
+                            data-resolution="{{it.resolution}}"  
+                            wx:for="{{item.project_file.resolution}}"  
+                            wx:for-item="it"
+                            wx:key="{{index}}" 
+                            style="color: {{it.resolution == item.activeP ? '#1144d5' : ''}}"
+                            >
+                                {{it.resolution}}P
+                            </cover-view>
+                        </cover-view>
+                        </video>
                     </view>
                     <view wx:else>
                         <image src="./img/file.png" mode="aspectFit" class="info-ext-bg"></image>
