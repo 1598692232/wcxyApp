@@ -93,6 +93,9 @@ Page({
         } 
     },
     onShow() {
+        wx.setNavigationBarTitle({
+            title: 'XINYUE新阅'
+        })
         this.setData({
             systemNotification: wx.getStorageSync('notification')
         })

@@ -37,8 +37,16 @@ Page({
         againInput: false,
         selectAll: false,
         size: 0,
-        count: 0
-	},
+        count: 0,
+        transferStatus: false,
+        startUpload: false,
+        text: ''
+    },
+    onHide(){
+        this.setData({
+            startUpload: false
+        })
+    },
   setListData(projectId){
     let self = this
     let store = wx.getStorageSync('app')
@@ -505,6 +513,7 @@ Page({
     },
     uploadOSS(file,uploadType){
       console.log(file)
+      let filearr = file.split('//')
       let self = this
       let result = false
       let store = wx.getStorageSync('app')
@@ -512,12 +521,16 @@ Page({
       let reqData = Object.assign({}, store, {
         project_id: self.data.projectID,
         top_id: self.data.topId,
-        filename: "tmp_" + file.split('_')[1],
+        // filename: "tmp_" + filearr[filearr.length-1],
+        filename: filearr[filearr.length-1],
       })
-      wx.showLoading()
+    //   wx.showLoading()
        Util.ajax('createoss', 'post', reqData).then(json => {
          console.log(json)
-         wx.uploadFile({
+         self.setData({
+            startUpload: true
+        })
+         const uploadTask = wx.uploadFile({
            url: json.host,
            filePath: file,
            name: 'file',
@@ -544,18 +557,47 @@ Page({
                    }
                  }, 3000);
                  return true
-               }
-               console.log(self.data)
-               self.initList(self.data.projectID, self.data.projectName)
-               wx.hideLoading()
-               wx.showToast({
-                 title: '文件已上传',
-                 icon: 'success',
-                 duration: 3000
-               })
-               return true
+               }else{
+                self.initList(self.data.projectID, self.data.projectName)
+                wx.hideLoading()
+                self.setData({
+                    transferStatus: true,
+                    startUpload: false
+                })
+                wx.showToast({
+                  title: '文件已上传',
+                  icon: 'success',
+                  duration: 3000
+                })
+                return true
+               }               
              }
          })
+         uploadTask.onProgressUpdate((res) => {
+            if(res.progress>=100){
+                self.setData({
+                    text: '正在转码'
+                })
+            }else{
+                self.setData({
+                    text: res.progress + '%'
+                })
+            }
+            if(res.progress>=100){
+                let interval = setInterval(function(){
+                    if (self.data.transferStatus) {
+                        self.setData({
+                            transferStatus: true
+                        })
+                        clearInterval(interval)
+                    }else{
+                        if(uploadType === 'void'){
+                            self.getChangeCodeStatus(json.doc_id)
+                        }
+                    }
+                }, 3000);
+            }
+        })
        })
     },
     uploadFile() {
@@ -600,6 +642,10 @@ Page({
       Util.ajax('cell/transcode', 'get', reqData).then(json => {
         console.log(json)
         if(json.transcode_state != -1){
+            self.setData({
+                transferStatus: true,
+                startUpload: false
+            })
           self.initList(self.data.projectID, self.data.projectName)
           wx.showToast({
             title: '文件已上传',

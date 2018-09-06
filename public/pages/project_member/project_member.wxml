@@ -9,7 +9,7 @@
                 </view>
             </view>
         </view>
-        <view class="member_list_box" wx:if="{{isAdmin}}">
+        <!-- <view class="member_list_box" wx:if="{{isAdmin}}">
             <view class="member_list" bindtap="toAddMemberBtn">
                 <button class="btn add" open-type="share">
                     <image src="./img/add.svg" mode="aspectFit"></image>
@@ -22,7 +22,7 @@
                     <image src="./img/delete.svg" mode="aspectFit"></image>
                 </view>
             </view>  
-        </view>                              
+        </view>                               -->
     </view>
     <view class="project_btn">
         <view class="project_text" wx:if="{{isAdmin}}" bindtap="toDelProject">删除项目</view>

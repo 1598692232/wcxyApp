@@ -38,17 +38,17 @@
 						<view class="join-member-li" wx:for="{{txList}}" wx:key="index" wx:if="{{txList.length < 5}}">
 								<image src="{{item.avatar}}" class="join-member-tx" mode="scaleToFill"></image>
 						</view>
-						<view class="join-member-li join-member-li-more">
+						<!-- <view class="join-member-li join-member-li-more">
 								<view class="add">+</view>
-						</view>
+						</view> -->
 					</block>
 					<block wx:if="{{txList.length >= 5}}">
 						<view class="join-member-li" wx:for="{{txFiveList}}" wx:key="index" >
 								<image src="{{item.avatar}}" class="join-member-tx" mode="scaleToFill"></image>
 						</view>
-						<view class="join-member-li join-member-li-more">
+						<!-- <view class="join-member-li join-member-li-more">
 								<view class="add">+</view>
-						</view>
+						</view> -->
 					</block>
 				</view>
 			</scroll-view>
@@ -60,17 +60,17 @@
 						<view class="join-member-li" wx:for="{{txList}}" wx:key="index" wx:if="{{txList.length < 5}}">
 								<image src="{{item.avatar}}" class="join-member-tx" mode="scaleToFill"></image>
 						</view>
-						<view class="join-member-li join-member-li-more">
+						<!-- <view class="join-member-li join-member-li-more">
 								<view class="add">+</view>
-						</view>
+						</view> -->
 					</block>
 					<block wx:if="{{txList.length >= 5}}">
 						<view class="join-member-li" wx:for="{{txFiveList}}" wx:key="index" >
 								<image src="{{item.avatar}}" class="join-member-tx" mode="scaleToFill"></image>
 						</view>
-						<view class="join-member-li join-member-li-more">
+						<!-- <view class="join-member-li join-member-li-more">
 								<view class="add">+</view>
-						</view>
+						</view> -->
 					</block>
 				</view>
 			</scroll-view>
@@ -310,6 +310,34 @@
 		</view>
 	</view>
 	
+</view>
+
+<view class="mask" wx:if="{{startUpload}}">
+    <view class="loading">
+        <view class="spinner">
+            <view class="spinner-container container1">
+                <view class="circle circle1"></view>
+                <view class="circle circle2"></view>
+                <view class="circle circle3"></view>
+                <view class="circle circle4"></view>
+            </view>
+            <view class="spinner-container container2">
+                <view class="circle circle1"></view>
+                <view class="circle circle2"></view>
+                <view class="circle circle3"></view>
+                <view class="circle circle4"></view>
+            </view>
+            <view class="spinner-container container3">
+                <view class="circle circle1"></view>
+                <view class="circle circle2"></view>
+                <view class="circle circle3"></view>
+                <view class="circle circle4"></view>
+            </view>
+        </view>
+        <view class="loading_title">
+            {{text}}
+        </view>
+    </view>
 </view>
 
 
