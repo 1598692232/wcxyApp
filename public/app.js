@@ -7,7 +7,7 @@ App({
     staticImg: img
   },
   onLaunch: function (options) {
-    console.log(options,'app_options')
+    // console.log(options,'app_options')
     wx.login({
       success: function(res) {
         if (res.code) {

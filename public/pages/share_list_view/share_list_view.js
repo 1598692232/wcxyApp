@@ -148,6 +148,7 @@ Page({
                     if (item.file_type == 'video') {
                         item.activeP = '540';
                         item.activeUrl = item.project_file.resolution[0].src;
+                        item.currentTime = 0;
                     }
                     return item;
                 });
@@ -282,6 +283,7 @@ Page({
                 if (item.file_type == 'video') {
                     item.activeP = '540';
                     item.activeUrl = item.project_file.resolution[0].src;
+                    item.currentTime = 0;
                 }
                 return item;
             });
@@ -572,6 +574,29 @@ Page({
             resolve();
         }).then(() => {
             this.togglePSelectShow();
+            let currentVideo = shareList.filter((item, k) => {
+                return item.id == this.data.fullScreenId;
+            })[0];
+            setTimeout(() => {
+                let video = wx.createVideoContext('media' + this.data.fullScreenId)
+                video.seek(currentVideo.currentTime);
+                video.play();       
+            }, 300)
+        });
+    },
+
+    videoTimeUpdate(e){
+        let shareList = JSON.parse(JSON.stringify(this.data.shareList));
+
+        shareList = shareList.map((item, k) => {
+            if (item.file_type == 'video' && e.target.dataset.id == item.id) {
+                item.currentTime = e.detail.currentTime;
+            }
+            return item;
+        });
+
+        this.setData({
+            shareList
         });
     }
 

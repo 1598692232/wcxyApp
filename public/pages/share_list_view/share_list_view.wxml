@@ -54,6 +54,7 @@
                         <video src="{{item.activeUrl}}" data-id="{{item.id}}" id="media{{item.id}}" poster="{{item.cover_img[0]}}"
                         objectFit="contain" controls bindplay="changeCurrentPlayId" data-type="{{item.file_type}}"
                         style="width:{{videoWidth}}px;height:{{videoHeight}}px;" bindfullscreenchange="handleFullScreen"
+                        bindtimeupdate="videoTimeUpdate"
                         >
                         <cover-view class="video-select-btn-p" catchtap="togglePSelectShow" wx:if="{{fullScreenId == item.id && !PNoShow}}">
                             {{item.activeP}}P
