@@ -75,14 +75,14 @@ Page({
             self.setData({
                 noticeInfo3: data,
                 noticeListInfoTitle: data.content_name,
-                noticeListInfo: data.content.list,
+                noticeListInfo: data.content.list?data.content.list:[],
                 isSystem: data.type,
                 accountInfo: data.content,
                 grade: grade,
-                storage_max: data.content.storage_max,
+                storage_max: data.content.storage_max?data.content.storage_max:'',
                 project_max: data.content.project_max =="不限制的"?data.content.project_max:data.content.project_max+"个",
                 member_max: data.content.member_max =="不限制的"?data.content.member_max:data.content.member_max+"个",
-                time_at: data.content.time_at
+                time_at: data.content.time_at?data.content.time_at:''
             })
             wx.setNavigationBarTitle({title: self.data.noticeListInfoTitle})
             wx.hideLoading()
