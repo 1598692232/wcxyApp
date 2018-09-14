@@ -1008,7 +1008,7 @@
     background: #161515;
     overflow: hidden;
     box-sizing: border-box;
-    padding: 10px 60px 20px 12px;
+    padding: 10px 60px 20px 60px;
 }
 
 .info-footer-comment-btn-body{
@@ -1033,6 +1033,21 @@
 .comment-btn-icon image{
     width: 15px;
     height: 15px;
+}
+
+.record-commit-btn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10rpx;
+    background: #292A2F;
+    padding:0;
+}
+
+.record-commit-btn .comment-btn-text{
+    color:#fff;
+    width: 100%;
+    text-align: center;
 }
 
 .comment-btn-text{
@@ -1137,6 +1152,24 @@
     line-height: 44px;
     color: #9b9b9b;
     font-size: 12px;
+}
+
+.comment-comment-toggle-type{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    height: 44px;
+    width: 44px;
+    background: #292A2F;
+    border-radius: 50%;
+}
+
+.toggle-type-comment-img{
+    width: 44rpx;
+    height: 44rpx;
 }
 
 .info-share{

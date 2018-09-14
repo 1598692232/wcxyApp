@@ -1,0 +1,2 @@
+<button bindtap="startRecord">按下说话</button>
+<button bindtap="stopRecord">停止说话</button>

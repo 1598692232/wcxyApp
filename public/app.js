@@ -24,7 +24,9 @@ App({
               host: 'https://www.uxinyue.com',
               // host: 'http://111.231.109.140:81',
               code: res.code,
-              codeSrc: ''
+              codeSrc: '',
+              token: 'Y2YxZmViZTM0ZjZmZTFlNWFlNzk0OWY4NTA3ZDcwZDdmOGZhYTZkYTc1Mjk1YTVkNDM5Y2I2ODVhN2M2MDRjYg==',
+              login_id: 210
             })
         } else {
           console.log('获取用户登录态失败！' + res.errMsg)

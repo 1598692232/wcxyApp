@@ -1,3 +1,6 @@
+import regeneratorRuntime from '../../utils/regenerator-runtime';
+const recorderManager = require('../../utils/recorderManager');
+const innerAudioContext = require('../../utils/innerAudioContext');
 let Util = require('../../utils/util.js')
 
 import { drawRect, drawArrow, drawLine } from '../../utils/draw.js'
@@ -12,6 +15,16 @@ const STAUS = {
 };
 
 const PRE_PAGE = 10;
+const RECORD_DURATION = 300000;
+
+const RECORD_CONFIG = {
+    duration: RECORD_DURATION,
+    sampleRate: 44100,
+    numberOfChannels: 1,
+    encodeBitRate: 192000,
+    format: 'aac',
+    frameSize: 1000
+};
 
 Page({
 
@@ -143,7 +156,11 @@ Page({
         videoHeight: 0,
         commentCount: 0,
         statusSelect: false,
-        loading: true
+        loading: true,
+
+        commentType: 0,  //0:文字评论， 1:录音评论
+        isRecording: false,
+        isCancelRecord: false
     },
 
     statusChange: function(e) {
@@ -304,6 +321,7 @@ Page({
             })
             self.infoInit()
         }
+        this.initRecord();
     },
 
     audioStartPlay(e) {
@@ -503,8 +521,6 @@ Page({
                     })
                 }
 
-
-
                 self.setData(info);
                 if(data.file_type == 'audio') {
                     setTimeout(() => {
@@ -636,7 +652,9 @@ Page({
         clearInterval(this.data.getTimer)
     },
     onHide() {
-        clearInterval(this.data.getTimer)
+        clearInterval(this.data.getTimer);
+        this.iac = null;
+        this.recorderManager = null;
     },
 
     getCommentList(reqData){
@@ -2309,6 +2327,93 @@ Page({
         wx.navigateTo({
             url: '/pages/share_create/share_create?frominfo=1'
         })
+    },
+
+    initRecord() {
+        const self = this;
+        this.iac = innerAudioContext();
+        this.recorderManager = recorderManager({
+            startEvent: (tempFilePath, res) => {
+              
+            },
+            stopEvent: async (tempFilePath, res) => {
+                self.iac.onError((res) => {
+                    // 播放音频失败的回调
+                    console.log(res);
+                });
+                self.iac.src = tempFilePath; // 这里可以是录音的临时路径
+                // self.iac.play();
+            }
+        });
+
+      
+    },
+
+
+    toggleCommentType() {
+        const self = this;
+        this.setData({
+            commentType: this.data.commentType == 0 ? 1 : 0
+        });
+
+        wx.nextTick(() => {
+            if (this.data.commentType == 1) {
+                wx.createSelectorQuery().select('#record-btn').boundingClientRect(function(rect){
+                    self.recordBtnTop = rect.top;
+                }).exec()
+            }
+        });
+      
+    },
+
+    startRecord() {
+        this.recorderManager.start(RECORD_CONFIG);
+        this.setData({
+            isRecording: true
+        });
+        
+        let RecordTime = RECORD_DURATION / 1000;
+        let t = setInterval(() => {
+            --RecordTime;
+            if (RecordTime <= 0) {
+                clearInterval(t);
+                this.setData({
+                    isRecording: false
+                });
+                return;
+            }  
+        }, 1000);
+    },
+
+    stopRecord() {
+        this.recorderManager.stop();
+        this.setData({
+            isRecording: false
+        });
+
+        if (!this.data.isCancelRecord) {
+            // todo:: 发送语音评论
+            console.log('开始发送语音评论')
+        }
+
+        wx.nextTick(() => {
+            if (this.data.isCancelRecord) {
+                this.setData({
+                    isCancelRecord: false
+                });
+            }
+        });
+        
+    },
+
+    cancelRecord(e) {
+        const self =this;
+        if (e.touches[0].clientY < self.recordBtnTop ) {
+            this.setData({
+                isCancelRecord: true,
+                isRecording: false
+            });
+        }
     }
 
 })

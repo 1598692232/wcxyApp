@@ -3,7 +3,7 @@
 <view class="section tc"  wx:if="{{!passwordModal}}">
     <view style="width: 100%;height:{{videoHeight}}px;position:relative;" id="play-body">
         <block wx:if="{{info.file_type == 'video'}}">
-            <video id="myVideo" class="info-video" src="{{url}}" enable-danmu controls objectFit="contain" bindplay="listenerPlay"
+            <video id="myVideo" class="info-video" src="{{url}}" enable-danmu controls objectFit="contain" bindplay="listenerPlay" muted
             autoplay bindtimeupdate="getVideoTime" bindpause="getVideoTime2" bindfullscreenchange="handleFullScreen" controls="{{!isFocus}}">
                 <cover-view class="video-select-btn-p" catchtap="showPSelect" wx:if="{{fullScreen && !videoClicked}}">
                     {{pNo}}P
@@ -176,16 +176,30 @@
 
   </scroll-view>
 <!-- wx:if="{{!isFocus && !isIOS}}" -->
-  <view class="info-footer-comment-btn" bindtap="inputFocus" wx:if="{{!isFocus}}">
-      <view class="info-footer-comment-btn-body">
+  <view class="info-footer-comment-btn" wx:if="{{!isFocus}}">
+        <view class="comment-comment-toggle-type" wx:if="{{!isFocus}}" bindtap="toggleCommentType">
+            <image src="./img/jp.jpg" class="toggle-type-comment-img" mode="aspectFit" wx:if="{{commentType == 0}}"></image>
+            <image src="./img/ad.jpg" class="toggle-type-comment-img" mode="aspectFit" wx:else></image>
+        </view>
+        <view class="info-footer-comment-btn-body" bindtap="inputFocus" wx:if="{{commentType == 0}}">
             <!-- <view class="comment-btn-icon">
                 <image src="./img/comment-icon.png"></image>
             </view> -->
             <view class="comment-btn-text">发表评论</view>
-      </view>
-      <view class="comment-comment-count" wx:if="{{!isFocus}}">
-        {{commentCount > 99 ? '99+' : commentCount}}
-    </view>
+        </view>
+        <view class="info-footer-comment-btn-body record-commit-btn" wx:else>
+            <view class="comment-btn-text" 
+                bindtouchstart="startRecord" 
+                bindtouchend="stopRecord" 
+                bindtouchmove="cancelRecord"
+                id="record-btn"
+                >
+                {{!isRecording ? '按住说话' : '松开结束'}}
+            </view>
+        </view>
+        <view class="comment-comment-count" wx:if="{{!isFocus}}">
+            {{commentCount > 99 ? '99+' : commentCount}}
+        </view>
   </view>
 
 </view>
@@ -393,6 +407,10 @@
           </view>
         </scroll-view>
     </view> -->
+</view>
+
+<view>
+    
 </view>
 
 
