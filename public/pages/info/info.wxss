@@ -1191,3 +1191,31 @@
     height: 30px;
 }
 
+.record-wrap-fix{
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 300rpx;
+    height: 300rpx;
+    left: 50%;
+    top:50%;
+    margin-top: -150rpx;
+    margin-left: -150rpx;
+    z-index: 100;
+    background: #757575;
+    border-radius: 10rpx;
+}
+
+.record-wrap-fix image{
+    width: 85px;
+    height: 85px;
+}
+
+.record-wrap-text{
+    color: #fff;
+    margin-top: 10rpx;
+    font-size: 26rpx;
+}
+

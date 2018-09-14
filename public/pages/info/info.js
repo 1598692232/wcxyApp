@@ -2409,6 +2409,11 @@ Page({
     cancelRecord(e) {
         const self =this;
         if (e.touches[0].clientY < self.recordBtnTop ) {
+            wx.showToast({
+                title: '已取消录音',
+                duration: 1000,
+                icon: 'none'
+            });
             this.setData({
                 isCancelRecord: true,
                 isRecording: false

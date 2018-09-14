@@ -409,9 +409,11 @@
     </view> -->
 </view>
 
-<view>
-    
+<view class="record-wrap-fix" wx:if="{{isRecording}}">
+    <image src="./img/record.gif" mode="aspectFit"></image>  
+    <view class="record-wrap-text">手指上滑，取消发送</view>
 </view>
+
 
 
 
