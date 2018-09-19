@@ -120,7 +120,21 @@
 
   <!-- bindscrolltolower="loadMore" -->
   <scroll-view scroll-y="true" lower-threshold="{{150}}" bindscrolltolower="getMoreComment" style="height: {{scrollHeight}}px" class="list-body" wx:if="{{!isFocus}}">
-   
+    <!-- 语音评论测试代码 -->
+    <view class="comment-master">
+      <view class="comment-tou">
+        <!-- <image src=""></image> -->
+      </view>
+      <view class="comment-master-text" bindtap="toPosition" data-record="{{testRecord}}">
+          <view class="comment-header clearfix">
+              <text class="comment-name">2222222</text>
+          </view>
+          
+      </view>
+    </view>
+    <!-- 语音评论测试代码 - end -->
+
+
     <view wx:if="{{commentList.length > 0}}">
             <view class="list-body-cover" wx:if="{{isFocus}}"></view>
     <!-- 评论 -->
@@ -132,7 +146,7 @@
           <view class="comment-tou">
             <image src="{{item.avatar}}"></image>
           </view>
-          <view class="comment-master-text" data-time="{{item.media_time}}" data-index="{{index}}" data-id="{{item.id}}"  bindtap="toPosition">
+          <view class="comment-master-text" data-time="{{item.media_time}}" data-index="{{index}}" data-id="{{item.id}}" data-record="{{item.record}}" bindtap="toPosition">
               <view class="comment-header clearfix">
                   <text class="comment-name" style="color: {{item.nameColor ? item.nameColor : ''}}">{{item.realname}}</text>
                   <text class="comment-timer" style="background: {{commentActiveIndex == item.id ? '#1125e5' : '#535353'}}" wx:if="{{item.media_time >= 0}}">{{item.comment_time}}</text>
@@ -163,6 +177,8 @@
                 </view>
             </view>
         </view>
+
+        
     </view>
     <!-- 评论 end -->
       
@@ -176,31 +192,31 @@
 
   </scroll-view>
 <!-- wx:if="{{!isFocus && !isIOS}}" -->
-  <view class="info-footer-comment-btn" wx:if="{{!isFocus}}">
-        <view class="comment-comment-toggle-type" wx:if="{{!isFocus}}" bindtap="toggleCommentType">
-            <image src="./img/jp.jpg" class="toggle-type-comment-img" mode="aspectFit" wx:if="{{commentType == 0}}"></image>
-            <image src="./img/ad.jpg" class="toggle-type-comment-img" mode="aspectFit" wx:else></image>
-        </view>
-        <view class="info-footer-comment-btn-body" bindtap="inputFocus" wx:if="{{commentType == 0}}">
-            <!-- <view class="comment-btn-icon">
-                <image src="./img/comment-icon.png"></image>
+    <view class="info-footer-comment-btn" wx:if="{{!isFocus}}">
+            <!-- <view class="comment-comment-toggle-type" wx:if="{{!isFocus}}" bindtap="toggleCommentType">
+                <image src="./img/jp.jpg" class="toggle-type-comment-img" mode="aspectFit" wx:if="{{commentType == 0}}"></image>
+                <image src="./img/ad.jpg" class="toggle-type-comment-img" mode="aspectFit" wx:else></image>
             </view> -->
-            <view class="comment-btn-text">发表评论</view>
-        </view>
-        <view class="info-footer-comment-btn-body record-commit-btn" wx:else>
-            <view class="comment-btn-text" 
-                bindtouchstart="startRecord" 
-                bindtouchend="stopRecord" 
-                bindtouchmove="cancelRecord"
-                id="record-btn"
-                >
-                {{!isRecording ? '按住说话' : '松开结束'}}
+            <view class="info-footer-comment-btn-body" bindtap="inputFocus">
+                <!-- <view class="comment-btn-icon">
+                    <image src="./img/comment-icon.png"></image>
+                </view> -->
+                <view class="comment-btn-text">发表评论</view>
             </view>
-        </view>
-        <view class="comment-comment-count" wx:if="{{!isFocus}}">
-            {{commentCount > 99 ? '99+' : commentCount}}
-        </view>
-  </view>
+            <!-- <view class="info-footer-comment-btn-body record-commit-btn" wx:else>
+                <view class="comment-btn-text" 
+                    bindtouchstart="startRecord" 
+                    bindtouchend="stopRecord" 
+                    bindtouchmove="cancelRecord"
+                    id="record-btn"
+                    >
+                    {{!isRecording ? '按住说话' : '松开结束'}}
+                </view>
+            </view> -->
+            <view class="comment-comment-count" wx:if="{{!isFocus}}">
+                {{commentCount > 99 ? '99+' : commentCount}}
+            </view>
+    </view>
 
 </view>
 
@@ -340,9 +356,38 @@
                     <!-- <input placeholder="发表评论..." focus="{{isFocus}}" cursor-spacing="10" name="commentText" style="color:#fff,line-height: 44px;padding-left:5px;display:none" bindinput="changeBtn"  
                     bindfocus="commentFocus" value="{{commentText}}" fixed="{{true}}" adjust-position="{{false}}" confirm-hold="false"/>  -->
     
-                    <textarea value="{{commentText}}" focus="{{isFocus}}"  show-confirm-bar="{{false}}"
-                        cursor-spacing="5" bindinput="changeCommentText"  adjust-position="{{adjustPosition}}"
-                            placeholder="发表评论..."></textarea>
+                    <textarea value="{{commentText}}" 
+                        focus="{{isFocus}}"  
+                        show-confirm-bar="{{false}}"
+                        cursor-spacing="5" 
+                        bindinput="changeCommentText"  
+                        adjust-position="{{adjustPosition}}"
+                        placeholder="发表评论..."
+                        wx:if="{{commentType == 0}}"
+                        >
+                    </textarea>
+
+                    <view class="push-comment-input-body" wx:else>
+                        <view class="record-commit-btn" style="background: {{ isRecording ? '#ddd' : ''}}">
+                            <view class="comment-btn-text" 
+                                bindtouchstart="startRecord" 
+                                bindtouchend="stopRecord" 
+                                bindtouchmove="cancelRecord"
+                                id="record-btn"
+                                >
+                                {{!isRecording ? '按住说话' : '松开结束'}}
+                            </view>
+                        </view>
+                        <view class="record-cancel-text">手指上滑，取消操作</view>
+                    </view>
+                   
+
+                    <!--  wx:if="{{isFocus}}" -->
+                    <view class="comment-comment-toggle-type" bindtap="toggleCommentType">
+                        <image src="./img/jp.jpg" class="toggle-type-comment-img" mode="aspectFit" wx:if="{{commentType != 0}}"></image>
+                        <image src="./img/ad.jpg" class="toggle-type-comment-img" mode="aspectFit" wx:else></image>
+                    </view>
+                    
                 </view>
             </view>
     
