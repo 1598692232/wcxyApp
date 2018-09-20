@@ -29,11 +29,11 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 25,
+			"current": 0,
 			"list": [
 				{
 					"id": 0,
-					"name": "info-test",
+					"name": "info-test录音功能",
 					"pathName": "pages/info/info",
 					"query": "scene=name%3D280edf50-161314041d0-0004-e632-f3f-94298%E7%9A%84%E5%89%AF%E6%9C%AC%202%26id%3D6498%26username%3D%E6%B3%A1%E6%B3%A1oO%E6%B0%B4%E6%B5%81%26share%3D1%26project_id%3DP2101525406210%26review%3D1%26share_all_version%3D1",
 					"scene": "1011"

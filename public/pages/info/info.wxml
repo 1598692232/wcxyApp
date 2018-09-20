@@ -120,67 +120,60 @@
 
   <!-- bindscrolltolower="loadMore" -->
   <scroll-view scroll-y="true" lower-threshold="{{150}}" bindscrolltolower="getMoreComment" style="height: {{scrollHeight}}px" class="list-body" wx:if="{{!isFocus}}">
-    <!-- 语音评论测试代码 -->
-    <view class="comment-master">
-      <view class="comment-tou">
-        <!-- <image src=""></image> -->
-      </view>
-      <view class="comment-master-text" bindtap="toPosition" data-record="{{testRecord}}">
-          <view class="comment-header clearfix">
-              <text class="comment-name">2222222</text>
-          </view>
-          
-      </view>
-    </view>
-    <!-- 语音评论测试代码 - end -->
-
 
     <view wx:if="{{commentList.length > 0}}">
-            <view class="list-body-cover" wx:if="{{isFocus}}"></view>
-    <!-- 评论 -->
-    <view class="comment-body" wx:for="{{commentList}}" wx:key="index" style="background: {{commentActiveIndex == item.id ? '#1E1F23' : ''}}">
-        <!-- 评论区 -->
-        <view class="comment-master {{item.delTranstion}}" bindtouchstart="delTouchStart" bindtouchmove="delTouchMove"  
-        bindtouchend="delTouchEnd" style="transform: translateX({{item.translateX}}px);border-top: {{index == 0 ? 0 : ''}} "  
-        data-index="{{index}}">
-          <view class="comment-tou">
-            <image src="{{item.avatar}}"></image>
-          </view>
-          <view class="comment-master-text" data-time="{{item.media_time}}" data-index="{{index}}" data-id="{{item.id}}" data-record="{{item.record}}" bindtap="toPosition">
-              <view class="comment-header clearfix">
-                  <text class="comment-name" style="color: {{item.nameColor ? item.nameColor : ''}}">{{item.realname}}</text>
-                  <text class="comment-timer" style="background: {{commentActiveIndex == item.id ? '#1125e5' : '#535353'}}" wx:if="{{item.media_time >= 0}}">{{item.comment_time}}</text>
-              </view>
-              <view class="comment-body1">
-                 <text>{{item.content}} </text>
-                 <view class="comment-do clearfix">
-                   <text catchtap="toBackPage" data-index="{{item.id}}" data-doc-id="{{doc_id}}" data-avatar="{{item.avatar}}">回复</text>
-                 </view>
-              </view>
-          </view>
-           <view class='comment-del' bindtap="handleDelComment" data-index="{{index}}" style="background: {{item.delColor}}" data-userid="{{item.user_id}}">
-              删除
-          </view>
-        </view>
-
-        <!-- 回复区 -->
-        <view class="comment-back" wx:if="{{item.replies.length > 0}}" catchtap="toBackPage" data-index="{{item.id}}" data-doc-id="{{doc_id}}" data-avatar="{{item.avatar}}">
-            <text class="comment-look-back" wx:if="{{item.replies.length > 1}}">查看{{item.replies.length - 1}}条往期的回复</text>
-            <view class="back-body">
-                <view class="back-tou">
-                    <image src="{{item.replies[item.replies.length - 1].avatar != '' ? item.replies[item.replies.length - 1].avatar : tx}}"></image>
+        <view class="list-body-cover" wx:if="{{isFocus}}"></view>
+        <!-- 评论 -->
+        <view class="comment-body" wx:for="{{commentList}}" wx:key="index" style="background: {{commentActiveIndex == item.id ? '#1E1F23' : ''}}">
+            <!-- 评论区 -->
+            <view class="comment-master {{item.delTranstion}}" bindtouchstart="delTouchStart" bindtouchmove="delTouchMove"  
+            bindtouchend="delTouchEnd" style="transform: translateX({{item.translateX}}px);border-top: {{index == 0 ? 0 : ''}} "  
+            data-index="{{index}}">
+            <view class="comment-tou">
+                <image src="{{item.avatar}}"></image>
+            </view>
+            <view class="comment-master-text" data-time="{{item.media_time}}" data-index="{{index}}" data-id="{{item.id}}" bindtap="toPosition">
+                <view class="comment-header clearfix">
+                    <text class="comment-name" style="color: {{item.nameColor ? item.nameColor : ''}}">{{item.realname}}</text>
+                    <view class="comment-record" wx:if="{{item.record}}">
+                        <view class="comment-record-body">
+                            <image src="./img/audio.gif" mode="aspectFit" wx:if="{{commentPlayId == item.id && commentPlaying}}"></image>
+                            <image src="./img/audio-static.jpg" mode="aspectFit" wx:else></image>
+                            <text>{{commentPlayId == item.id && commentPlaying ? commentPlayTimer + "'" : item.record.duration + "'"}}</text>
+                        </view>
+                    </view>
+                    <text class="comment-timer" style="background: {{commentActiveIndex == item.id ? '#1125e5' : '#535353'}}" wx:if="{{item.media_time >= 0}}">{{item.comment_time}}</text>
                 </view>
-
-                <view class="back-info">
-                    <text class="back-name">{{item.replies[item.replies.length - 1].realname}}</text>
-                    <text class="back-text">{{item.replies[item.replies.length - 1].content}}</text>
+                <view class="comment-body1">
+                    <text>{{item.content}} </text>
+                    <view class="comment-do clearfix">
+                    <text catchtap="toBackPage" data-index="{{item.id}}" data-doc-id="{{doc_id}}" data-avatar="{{item.avatar}}">回复</text>
+                    </view>
                 </view>
             </view>
-        </view>
+            <view class='comment-del' bindtap="handleDelComment" data-index="{{index}}" style="background: {{item.delColor}}" data-userid="{{item.user_id}}">
+                删除
+            </view>
+            </view>
 
-        
-    </view>
-    <!-- 评论 end -->
+            <!-- 回复区 -->
+            <view class="comment-back" wx:if="{{item.replies.length > 0}}" catchtap="toBackPage" data-index="{{item.id}}" data-doc-id="{{doc_id}}" data-avatar="{{item.avatar}}">
+                <text class="comment-look-back" wx:if="{{item.replies.length > 1}}">查看{{item.replies.length - 1}}条往期的回复</text>
+                <view class="back-body">
+                    <view class="back-tou">
+                        <image src="{{item.replies[item.replies.length - 1].avatar != '' ? item.replies[item.replies.length - 1].avatar : tx}}"></image>
+                    </view>
+
+                    <view class="back-info">
+                        <text class="back-name">{{item.replies[item.replies.length - 1].realname}}</text>
+                        <text class="back-text">{{item.replies[item.replies.length - 1].content}}</text>
+                    </view>
+                </view>
+            </view>
+
+            
+        </view>
+        <!-- 评论 end -->
       
     </view>
 
