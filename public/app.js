@@ -17,14 +17,16 @@ App({
               // login_id: '',
               // sessionid: '',
               // host: 'https://www.uxinyue.com',
-              // host: 'http://www.uxinyue.com:81',
+              host: 'http://www.uxinyue.com:81',
               // host: 'http://10.255.1.23:7777',
               // host: 'http://106.14.134.19',
               // host: 'http://111.231.106.53',
-              host: 'https://www.uxinyue.com',
+              // host: 'https://www.uxinyue.com',
               // host: 'http://111.231.109.140:81',
               code: res.code,
-              codeSrc: ''
+              codeSrc: '',
+              token: 'NDE1ZjI5ZGI2Mjg4ZGI5YjJkNjIzNTUyYTc2ZmNlYjNiY2VkZjMwMGQ2NDYxNTk1MzA4OTY1YWZjZmUxYzM3MQ==',
+              login_id: 210
             })
         } else {
           console.log('获取用户登录态失败！' + res.errMsg)

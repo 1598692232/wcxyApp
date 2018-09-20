@@ -517,7 +517,7 @@ Page({
       let self = this
       let result = false
       let store = wx.getStorageSync('app')
-      console.log(store)
+    //   console.log(store)
       let reqData = Object.assign({}, store, {
         project_id: self.data.projectID,
         top_id: self.data.topId,
@@ -526,7 +526,6 @@ Page({
       })
     //   wx.showLoading()
        Util.ajax('createoss', 'post', reqData).then(json => {
-         console.log(json)
          self.setData({
             startUpload: true
         })

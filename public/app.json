@@ -22,7 +22,8 @@
     "pages/empower_tips/empower_tips",
     "pages/collection/collection",
     "pages/project_setting/setting",
-    "pages/project_member/project_member"
+    "pages/project_member/project_member",
+    "pages/testRecord/testRecord"
   ],
   "window": {
     "backgroundTextStyle": "dark",

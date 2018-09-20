@@ -177,6 +177,15 @@
     padding: 0 10px;
 }
 
+.info-footer-comment-btn-body{
+    position: relative;
+    height:44px;
+    width: 100%;
+    background: #292A2F;
+    padding-left: 12px;
+    border-radius: 22px;
+    box-sizing: border-box;
+}
 
 
 

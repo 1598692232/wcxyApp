@@ -1,7 +1,11 @@
+import regeneratorRuntime from '../../utils/regenerator-runtime';
+const recorderManager = require('../../utils/recorderManager');
+const innerAudioContext = require('../../utils/innerAudioContext');
 let Util = require('../../utils/util.js')
 
 import { drawRect, drawArrow, drawLine } from '../../utils/draw.js'
 const app = getApp();
+const COMMENT_RECORD_PREFIXER = '<_XY_WXRECORD>';
 
 const STAUS = {
     0: '移除标签',
@@ -12,6 +16,16 @@ const STAUS = {
 };
 
 const PRE_PAGE = 10;
+const RECORD_DURATION = 300000;
+
+const RECORD_CONFIG = {
+    duration: RECORD_DURATION,
+    sampleRate: 44100,
+    numberOfChannels: 1,
+    encodeBitRate: 192000,
+    format: 'mp3',
+    frameSize: 1000
+};
 
 Page({
 
@@ -143,7 +157,16 @@ Page({
         videoHeight: 0,
         commentCount: 0,
         statusSelect: false,
-        loading: true
+        loading: true,
+
+        commentType: 0,  //0:文字评论， 1:录音评论
+        isRecording: false,
+        isCancelRecord: false,
+        commentPlayId: 0,
+        commentPlayTimer: 0,
+        commentPlaying: false
+
+        // testRecord: COMMENT_RECORD_PREFIXER + 'http://tmp/wx84ff824de3e1f6b6.o6zAJs2vrQ4zu8YNs5FvF1BKGb8U.p7JGQ4DB99vD07dc97cf8d5c0303768191656ff06cb0.durationTime=1984.aac'
     },
 
     statusChange: function(e) {
@@ -304,6 +327,7 @@ Page({
             })
             self.infoInit()
         }
+        this.initRecord();
     },
 
     audioStartPlay(e) {
@@ -503,8 +527,6 @@ Page({
                     })
                 }
 
-
-
                 self.setData(info);
                 if(data.file_type == 'audio') {
                     setTimeout(() => {
@@ -636,7 +658,9 @@ Page({
         clearInterval(this.data.getTimer)
     },
     onHide() {
-        clearInterval(this.data.getTimer)
+        clearInterval(this.data.getTimer);
+        this.iac = null;
+        this.recorderManager = null;
     },
 
     getCommentList(reqData){
@@ -694,6 +718,11 @@ Page({
                 let appStore = wx.getStorageSync('app');
                 json.list.map(item => {
                     item.comment_time = Util.timeToMinAndSec(item.media_time)
+                    item.record = null
+                    if (item.content.indexOf(COMMENT_RECORD_PREFIXER) > -1) {
+                        item.record = JSON.parse(JSON.parse(item.content)[COMMENT_RECORD_PREFIXER]);
+                        item.content = ''
+                    }
                     // item.media_time = parseInt(item.media_time)
                     item.avatar = item.avatar == '' ? self.data.tx : item.avatar
                     item.background = ''
@@ -710,7 +739,6 @@ Page({
                         item.delColor = '#ddd'
                     }
                 });
-
                 fn(json.list); 
             }, res => {
                 if (doCommentAjaxing) {
@@ -1339,12 +1367,16 @@ Page({
         })
     },
 
-	// 发送评论
-    sendComment(e) {
+	// 发送评论 record：录音路径
+    sendComment(record) {
         let self = this
         this.commentClick = false
         let res = wx.getStorageSync('app')
         let pids = wx.getStorageSync('project_ids')
+
+        self.setData({
+            commentType: 0,
+        });
         
         let returnTosignin = (text, isLogin) => {
             let infoData = {
@@ -1453,13 +1485,20 @@ Page({
             });
         }
 
+
         let reqData = Object.assign({}, store, {
-	    	content: self.data.commentText,
  			media_time: self.data.focusTime,
  			doc_id: self.data.doc_id,
             project_id: wx.getStorageSync('project_id'),
             label: JSON.stringify(self.data.commentDraw),
         });
+
+        // 判断是否有录音
+        if(record) {
+            reqData.content = JSON.stringify(record);
+        } else {
+            reqData.content = self.data.commentText;
+        }
 
         if (!self.data.needTime) {
             delete reqData.media_time;
@@ -1467,98 +1506,121 @@ Page({
         
         delete reqData.code;
 
-        Util.ajax('comment', 'post', reqData).then(json => {
-            let list = self.data.commentList
+        let ajaxSend = () => {
+            Util.ajax('comment', 'post', reqData).then(json => {
+                wx.hideLoading();
+                let list = self.data.commentList
+    
+                if (self.data.info.file_type == 'video') {
+                    self.data.cxtShowBlock.clearRect(0, 0, self.data.firstCanvasWidth, self.data.firstCanvasHeight);
+                    self.data.cxtShowBlock.clearRect(0, 0, self.data.firstCanvasWidth, self.data.firstCanvasHeight)
+                    self.data.cxt.clearRect(0, 0, self.data.firstCanvasWidth, self.data.firstCanvasHeight)
+                    self.data.cxtShowBlock.draw();
+                    self.data.cxt.draw();
+                }
+    
+                if (self.data.info.file_type == "audio") {
+                    self.audioCtx.play();
+                    self.setData({
+                        audioPause: false
+                    })
+                }
+    
+                wx.showToast({
+                    title: '评论成功！！'
+                });
+    
+                let newComment = {
+                    // content: self.data.commentText,
+                    comment_time: Util.timeToMinAndSec(self.data.focusTime),
+                    media_time: self.data.needTime ? self.data.focusTime : -1,
+                    doc_id: self.data.doc_id,
+                    project_id: wx.getStorageSync('project_id'),
+                    id: json.id,
+                    realname: wx.getStorageSync('user_info').realname,
+                    avatar: wx.getStorageSync('user_info').avatar == '' ? self.data.tx : wx.getStorageSync('user_info').avatar,
+                    background: '',
+                    translateX: '',
+                    delTranstion: '',
+                    delColor: '#f00',
+                    user_id: wx.getStorageSync('app').login_id,
+                    label: JSON.stringify(self.data.commentDraw),
+                    record: null
+                }
 
-            if (self.data.info.file_type == 'video') {
-                self.data.cxtShowBlock.clearRect(0, 0, self.data.firstCanvasWidth, self.data.firstCanvasHeight);
-                self.data.cxtShowBlock.clearRect(0, 0, self.data.firstCanvasWidth, self.data.firstCanvasHeight)
-                self.data.cxt.clearRect(0, 0, self.data.firstCanvasWidth, self.data.firstCanvasHeight)
-                self.data.cxtShowBlock.draw();
-                self.data.cxt.draw();
-            }
+                // 判断是否有录音
+                if(record) {
+                    newComment.content = '';
+                    newComment.record = JSON.parse(record[COMMENT_RECORD_PREFIXER]);
+                } else {
+                    newComment.content = self.data.commentText;
+                }
 
-            if (self.data.info.file_type == "audio") {
-                self.audioCtx.play();
+                list.unshift(newComment)
                 self.setData({
-                    audioPause: false
+                    commentList: list,
+                    commentText: '',
+                    commentTextTemp: '',
+                    isFocus: false,
+                    commentDraw: [],
+                    commentDrawTemp: []
                 })
-            }
-
-            wx.showToast({
-                title: '评论成功！！'
-            });
-
-            let newComment = {
-                content: self.data.commentText,
-                comment_time: Util.timeToMinAndSec(self.data.focusTime),
-                media_time: self.data.needTime ? self.data.focusTime : -1,
-                doc_id: self.data.doc_id,
-                project_id: wx.getStorageSync('project_id'),
-                id: json.id,
-                realname: wx.getStorageSync('user_info').realname,
-                avatar: wx.getStorageSync('user_info').avatar == '' ? self.data.tx : wx.getStorageSync('user_info').avatar,
-                background: '',
-                translateX: '',
-                delTranstion: '',
-                delColor: '#f00',
-                user_id: wx.getStorageSync('app').login_id,
-                label: JSON.stringify(self.data.commentDraw)
-            }
-            list.unshift(newComment)
-            self.setData({
-                commentList: list,
-                commentText: '',
-                commentTextTemp: '',
-                isFocus: false,
-                commentDraw: [],
-                commentDrawTemp: []
-            })
-
-            // setTimeout(() => {
-            //     this.setData({
-            //         isFocus: false,
-            //     });
-            // }, 800)
-
-            // self.data.commentDraw = [];
-            // self.data.commentDrawTemp = [];
-
-        }, res => {
-            // wx.showModal({
-            //     title: '提示',
-            //     content: '发表评论失败，请重新登录！',
-            //     // showCancel: false,
-            //     success: function(res) {
-            //         if (res.confirm) {
-            //             wx.navigateTo({url: '/pages/signin/signin'})
-            //         }
-            //     }
-            // })
-
-            if (self.data.info.file_type = "audio") {
-                self.audioCtx.play();
-
+    
                 // setTimeout(() => {
-                //     self.setData({
+                //     this.setData({
                 //         isFocus: false,
                 //     });
-                // }, 800);
-            }
-        }).then((res) => {
-            if (self.data.info.file_type == 'video') {
-                self.videoCtx.play()
-                self.data.videoPause = false   
-            }
-            if (self.data.info.file_type == 'audio') {
-                self.audioCtx.play();
-                self.setData({
-                    audioPause: false
-                })
-            }    
-            self.data.sendComment = false
-        })
+                // }, 800)
+    
+                // self.data.commentDraw = [];
+                // self.data.commentDrawTemp = [];
+    
+            }, res => {
+                wx.hideLoading();
+                // wx.showModal({
+                //     title: '提示',
+                //     content: '发表评论失败，请重新登录！',
+                //     // showCancel: false,
+                //     success: function(res) {
+                //         if (res.confirm) {
+                //             wx.navigateTo({url: '/pages/signin/signin'})
+                //         }
+                //     }
+                // })
+    
+                if (self.data.info.file_type = "audio") {
+                    self.audioCtx.play();
+    
+                    // setTimeout(() => {
+                    //     self.setData({
+                    //         isFocus: false,
+                    //     });
+                    // }, 800);
+                }
+            }).then((res) => {
+                wx.hideLoading();
+                if (self.data.info.file_type == 'video') {
+                    self.videoCtx.play()
+                    self.data.videoPause = false   
+                }
+                if (self.data.info.file_type == 'audio') {
+                    self.audioCtx.play();
+                    self.setData({
+                        audioPause: false
+                    })
+                }    
+                self.data.sendComment = false
+            })
+        }
 
+        ajaxSend();
+
+        // 判断是否有录音
+        // if (record) {
+            
+        // } else {
+        //     ajaxSend();
+        // }
     },
 
 	 //跳到指定时间播放
@@ -1657,9 +1719,49 @@ Page({
         this.audioCtx.play();
      },
 
+    //  处理录音评论播放
+     handleRecord(record) {
+        this.iac.src = record.path; // 这里可以是录音的临时路径
+        this.iac.play();
+        let commentPlayTimer = parseInt(record.duration);
+        this.setData({ commentPlayTimer });
+        let t = setInterval(() => {
+            if (commentPlayTimer <= 0) {
+                clearInterval(t);
+                this.setData({
+                    commentPlayTimer: 0,
+                    commentPlaying: false
+                });
+                return;
+            }
+            commentPlayTimer--;
+            this.setData({ commentPlayTimer });
+        }, 1000)
+        //todo::评论语音播放gif图显示
+     },
+
      toPosition(e) {
+        //这边先用record测试点击效果，实际为content字段
+        // let record = e.currentTarget.dataset.record;
+        // console.log(this.data.testRecord.indexOf(COMMENT_RECORD_PREFIXER))
+        // let recordPath = this.data.testRecord.substring(this.data.testRecord.indexOf(COMMENT_RECORD_PREFIXER) + COMMENT_RECORD_PREFIXER.length);
+        // this.handleRecord(recordPath);
+        // return;
+        // end
+
+        // 判断是否是点击的录音评论
+        let currentComment = this.data.commentList.filter((item, k ) => {
+            return item.id == e.currentTarget.dataset.id
+        })[0];
+        if (currentComment.record) {
+            this.setData({
+                commentPlayId: currentComment.id,
+                commentPlaying: true
+            });
+            this.handleRecord(currentComment.record);
+        }
        
-         this.data.videoCurrentTimeInt = new Date().getTime();
+        this.data.videoCurrentTimeInt = new Date().getTime();
         if (this.data.info.file_type == 'video') {
             this.setData({
                 currentVideoTime: Util.formatVideoTime(e.currentTarget.dataset.time),
@@ -1777,7 +1879,6 @@ Page({
         } else { 
             let url = `/pages/call_back/call_back?commentId=${e.currentTarget.dataset.index}
             &docId=${this.data.info.id}&projectId=${this.data.project_id}&avatar=${e.currentTarget.dataset.avatar}`;
-            // console.log(url)
             wx.navigateTo({ url })
         }
 	 	
@@ -2205,7 +2306,6 @@ Page({
                 })
             }
         }, res => {
-            console.log(res,'res')
             wx.showModal({
                 title: '提示',
                 content: res.data.msg,
@@ -2308,6 +2408,177 @@ Page({
         wx.setStorageSync('share_created', 0);
         wx.navigateTo({
             url: '/pages/share_create/share_create?frominfo=1'
+        })
+    },
+
+    initRecord() {
+        const self = this;
+        this.recordPath = '';
+        // this.commentPlayId = 0;
+        // this.commentPlayTimer = 0;
+        this.iac = innerAudioContext();
+
+        self.iac.onCanplay(res => {
+            console.log(res, '可以播放')
+        });
+
+        self.iac.onError((res) => {
+            // 播放音频失败的回调
+            wx.showToast({
+                title: '播放失败',
+                icon: 'none'
+            });
+        });
+
+        this.recorderManager = recorderManager({
+            startEvent: (tempFilePath, res) => {
+              
+            },
+            stopEvent:(tempFilePath, res) => {
+                if (res.duration < 1000 && !self.data.isCancelRecord) {
+                    wx.showToast({
+                        title: '录音过短，请重新录音',
+                        icon: 'none'
+                    });
+                    self.setData({
+                        isRecording: false
+                    });
+                    return;
+                }
+
+                if (self.data.isCancelRecord) return;
+          
+                self.recordPath = tempFilePath;
+                self.iac.src = tempFilePath; // 这里可以是录音的临时路径
+                // self.iac.play();
+                // wx.showLoading({
+                //     mask: true
+                // });
+                self.uploadRecord(res);
+                // self.sendComment(tempFilePath);
+                
+            }
+        });
+
+      
+    },
+
+
+    toggleCommentType() {
+        const self = this;
+        this.setData({
+            commentType: this.data.commentType == 0 ? 1 : 0
+        });
+
+        wx.nextTick(() => {
+            if (this.data.commentType == 1) {
+                wx.createSelectorQuery().select('#record-btn').boundingClientRect(function(rect){
+                    self.recordBtnTop = rect.top;
+                }).exec()
+            }
+        });
+      
+    },
+
+    startRecord() {
+        this.recorderManager.start(RECORD_CONFIG);
+        this.setData({
+            isRecording: true
+        });
+        
+        let RecordTime = RECORD_DURATION / 1000;
+        let t = setInterval(() => {
+            --RecordTime;
+            if (RecordTime <= 0) {
+                clearInterval(t);
+                this.setData({
+                    isRecording: false
+                });
+                return;
+            }  
+        }, 1000);
+    },
+
+    stopRecord() {
+        this.recorderManager.stop();
+        this.setData({
+            isRecording: false
+        });
+
+        wx.nextTick(() => {
+            setTimeout(() => {
+                if (this.data.isCancelRecord) {
+                    this.setData({
+                        isCancelRecord: false
+                    });
+                }
+            }, 500);
+        });
+        
+    },
+
+    cancelRecord(e) {
+        const self =this;
+        if (e.touches[0].clientY < self.recordBtnTop ) {
+            wx.showToast({
+                title: '已取消录音',
+                duration: 1000,
+                icon: 'none'
+            });
+            this.setData({
+                isCancelRecord: true,
+                isRecording: false
+            });
+        }
+    },
+
+    // 上传音频
+    uploadRecord(record) {
+        const self = this;
+        let store = wx.getStorageSync('app')
+        let reqData = Object.assign({}, store, {
+            filename: record.tempFilePath,
+        });
+        Util.ajax('voice', 'post', reqData).then(json => {
+            const uploadTask = wx.uploadFile({
+                url: json.host,
+                filePath: record.tempFilePath,
+                name: 'file',
+                formData: {
+                    "key": json.object_key,
+                    "OSSAccessKeyId": json.accessid,
+                    "policy": json.policy,
+                    "signature": json.signature,
+                    'success_action_status': '200',
+                },
+                success: function (uploadReslut) {
+                  if (uploadReslut.statusCode != 200) {
+                    failc(new Error('上传错误:' + JSON.stringify(res)))
+                    // self.commentBlur();
+                    wx.showToast({
+                        title: '评论失败，请检查网络状态是否良好',
+                        icon: 'none'
+                    });
+                    return false;
+                  }
+                  
+                 
+                }
+            });
+
+            // 语音最终上传格式为{"<_XY_WXRECORD>":"{\"path\":\"https://xinyuetest.oss-cn-shanghai.aliyuncs.com/wx_voice/c07cbfc9437570293be49cbe918fa92c-2dd9df7bb57c8dd4363a976bf140b63a.mp3\",\"duration\":2,\"fileSize\":12936}"}
+            uploadTask.onProgressUpdate((res) => {
+                if(res.progress>=100){
+                    let finalRecord = {}
+                    let tmpRecord = {
+                        path: json.host + '/' + json.object_key,
+                        duration: Math.ceil(record.duration / 1000),
+                        fileSize: record.fileSize
+                    }
+                    finalRecord[COMMENT_RECORD_PREFIXER] = JSON.stringify(tmpRecord)
+                    self.sendComment(finalRecord);
+                }
+            });
         })
     }
 
