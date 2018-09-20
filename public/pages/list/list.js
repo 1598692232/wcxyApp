@@ -37,10 +37,16 @@ Page({
         tsy: '',
         tex: '',
         showDel: false,
+        invite_code: ''
     },
 
-    onLoad() {
+    onLoad(options) {
         let self = this
+        if(options.invite_code){
+            self.setData({
+                invite_code: options.invite_code
+            })
+        }
         wx.showLoading()
 
         Util.getSystemInfo().then(res => {
@@ -117,7 +123,39 @@ Page({
 
             self.animation = animation
 
-            self.initList()
+            if(self.data.invite_code){
+                let reqData = Object.assign({},{
+                    login_id:store.login_id,
+                    token: store.token,
+                    invite_code: self.data.invite_code
+                })
+                Util.ajax('link/join', 'post', reqData).then(json => {
+                    console.log(json,'link/join,json')
+                    wx.showModal({
+                        title: '提示',
+                        content: '加入项目成功',
+                        showCancel: false
+                    })
+                    self.setData({
+                        currentTab: 1,
+                        invite_code: ''
+                    })
+                    self.initList()
+                }, res => {
+                    wx.showModal({
+                        title: '提示',
+                        content: res.data.msg,
+                        showCancel: false
+                    })
+                    self.setData({
+                        invite_code: ''
+                    })
+                    self.initList()
+                }) 
+            }else{
+                self.initList()
+            }
+            
         // }
 
         

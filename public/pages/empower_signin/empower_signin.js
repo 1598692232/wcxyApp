@@ -9,10 +9,21 @@ Page({
         avatar: '',
         toUserInfo: false,
         manager: app.data.staticImg.manager,
-        popupArr: []
+        popupArr: [],
+        invite_code: ''
     },
-	onLoad() {
+	onLoad(options) {
+        console.log(options,'options6666')
         let self = this
+        if(options.invite_code){
+            self.setData({
+                invite_code: options.invite_code
+            })
+        }else{
+            self.setData({
+                invite_code: ''
+            })
+        }
         wx.getSystemInfo({
             success(res) {
                 self.setData({
@@ -106,7 +117,7 @@ Page({
                                 })
                             }else{
                                 wx.reLaunch({
-                                    url: '/pages/list/list'
+                                    url: '/pages/list/list?invite_code=' + self.data.invite_code 
                                 })
                             }
                         }, res => {
@@ -179,7 +190,7 @@ Page({
                              
                     if(json.avatar&&json.phone){
                         wx.reLaunch({
-                            url: '/pages/list/list'
+                            url: '/pages/list/list?invite_code=' + self.data.invite_code 
                         })
                     }
                     self.hasRedDots()   
