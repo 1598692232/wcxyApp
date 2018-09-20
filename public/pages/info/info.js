@@ -1759,6 +1759,9 @@ Page({
                 commentPlaying: true
             });
             this.handleRecord(currentComment.record);
+        } else {
+            this.iac.src = ''; 
+            this.iac.pause();
         }
        
         this.data.videoCurrentTimeInt = new Date().getTime();
