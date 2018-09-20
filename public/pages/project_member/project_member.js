@@ -9,7 +9,8 @@ Page({
         isAdmin: true,
         projectID: 0,
         title: '',
-        showDelete: false
+        showDelete: false,
+        invite_code: ''
     },
 	onLoad(options) {
         let self = this
@@ -97,7 +98,6 @@ Page({
                 isAdmin: false
             })
         }
-        console.log(options.shareTickets,'shareTickets6666')
     },
     onShow() {
         wx.showShareMenu({
@@ -127,17 +127,18 @@ Page({
                 showCancel: false
             })
         })
-    },
-    // 生成邀请链接
-    toAddMemberBtn() {
-        let store = wx.getStorageSync('app')
-        let reqData = Object.assign({},{
+        
+        // 生成邀请链接
+        // let store = wx.getStorageSync('app')
+        let reqData2 = Object.assign({},{
             login_id:store.login_id,
             token: store.token,
             project_id: wx.getStorageSync('project_id')
         })
-        Util.ajax('invite/link', 'post', reqData).then(json => {
-            console.log(json,'json88888')
+        Util.ajax('invite/link', 'post', reqData2).then(json => {
+            self.setData({
+                invite_code: json.invite_code
+            })
         }, res => {
             wx.showModal({
                 title: '提示',
@@ -148,6 +149,7 @@ Page({
     },
     onShareAppMessage: function (res) {
         let self = this
+        console.log(self.data.invite_code,'invite_code666')
         if (res.from === 'button') {
             // 来自页面内转发按钮
         }
@@ -156,27 +158,14 @@ Page({
         let projectName = wx.getStorageSync('project_name');
         return {
           title: realname + '邀请您进入' + projectName + '的项目',
-          path: '/pages/empower_signin/empower_signin',
+          path: '/pages/empower_signin/empower_signin?invite_code=' + self.data.invite_code,
           imageUrl: './img/xinyue_share.png',
           success: function(res) {
-            console.log(res.shareTickets[0])
-            wx.getShareInfo({
-                shareTicket: res.shareTickets[0],
-                success: function (res) { 
-                    console.log(res,'success_res');
-                    console.log(res.encryptedData,'encryptedData');
-                },
-                fail: function (res) { console.log(res,'fail_res') },
-                complete: function (res) { console.log(res,'complete_res') }
-            })
             // 邀请成功
             wx.showToast({
                 title: '发送邀请成功',
                 icon: 'success'
             })
-            setTimeout(function(){
-                wx.hideLoading()
-            },2000)
           },
           fail: function(res) {
             // 转发失败
@@ -277,21 +266,35 @@ Page({
             project_id: wx.getStorageSync('project_id'),
             _method: 'delete'
         })
-        Util.ajax('member', 'post', reqData).then(json => {
-            console.log(json,'json')
-            wx.showToast({
-                title: '删除成功',
-                icon: 'success',
-                duration: 2000
-            })
-            self.onShow()
-        }, res => {
-            wx.showModal({
-                title: '提示',
-                content: res.msg,
-                showCancel: false
-            })
-        })
+        wx.showModal({
+            title: '提示',
+            content: '是否要删除好友' + e.currentTarget.dataset.realname + '？',
+            success: function(res) {
+              if (res.confirm) {
+                console.log('用户点击确定')
+                Util.ajax('member', 'post', reqData).then(json => {
+                    // console.log(json,'json')
+                    wx.showToast({
+                        title: '删除成功',
+                        icon: 'success',
+                        duration: 2000
+                    })
+                    self.onShow()
+                }, res => {
+                    wx.showModal({
+                        title: '提示',
+                        content: res.msg,
+                        showCancel: false
+                    })
+                })
+              } else if (res.cancel) {
+                console.log('用户点击取消')
+                self.setData({
+                    showDelete: false
+                })
+              }
+            }
+          })
     },
     //验证邮箱
     isEmail (str) {
