@@ -3,7 +3,7 @@
 <view class="section tc"  wx:if="{{!passwordModal}}">
     <view style="width: 100%;height:{{videoHeight}}px;position:relative;" id="play-body">
         <block wx:if="{{info.file_type == 'video'}}">
-            <video id="myVideo" class="info-video" src="{{url}}" enable-danmu controls objectFit="contain" bindplay="listenerPlay" muted
+            <video id="myVideo" class="info-video" src="{{url}}" enable-danmu controls objectFit="contain" bindplay="listenerPlay"
             autoplay bindtimeupdate="getVideoTime" bindpause="getVideoTime2" bindfullscreenchange="handleFullScreen" controls="{{!isFocus}}">
                 <cover-view class="video-select-btn-p" catchtap="showPSelect" wx:if="{{fullScreen && !videoClicked}}">
                     {{pNo}}P
