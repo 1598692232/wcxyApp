@@ -1,10 +1,10 @@
 <view class="project_member">
     <view class="members">
         <view class="member_list_box" wx:for="{{memberList}}" wx:key="index">
-            <view class="member_list">
+            <view class="member_list" bindtap="{{item.type=='member' && showDelete?'toDelMember':''}}" data-id="{{item.user_id}}" data-realname="{{item.realname}}">
                 <image src="{{item.avatar}}"></image>
                 <view class="member_name">{{item.realname}}</view>
-                <view class="delete_member" wx:if="{{item.type=='member' && showDelete}}" bindtap="toDelMember" data-id="{{item.user_id}}" data-realname="{{item.realname}}">
+                <view class="delete_member" wx:if="{{item.type=='member' && showDelete}}">
                     <image src="./img/delete_member.png"></image>
                 </view>
             </view>
