@@ -25,8 +25,8 @@ App({
               // host: 'http://111.231.109.140:81',
               code: res.code,
               codeSrc: '',
-              token: 'MzA4ZmQ5ZjViYzI4YzkzZjhkZGY5OWEzNzZlMDRjMTQ5OGQyNDhlNjU2M2I1ZDRlOTFmYjNlOWIwN2RjNGFjMA==',
-              login_id: 210
+              // token: 'MzA4ZmQ5ZjViYzI4YzkzZjhkZGY5OWEzNzZlMDRjMTQ5OGQyNDhlNjU2M2I1ZDRlOTFmYjNlOWIwN2RjNGFjMA==',
+              // login_id: 210
             })
         } else {
           console.log('获取用户登录态失败！' + res.errMsg)
