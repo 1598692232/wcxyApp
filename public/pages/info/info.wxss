@@ -1054,7 +1054,7 @@
     padding:0;
     width: 160rpx;
     height: 160rpx;
-    box-shadow: inset 0 1px 7px 0 #174BB3;
+    /* box-shadow: inset 0 1px 7px 0 #174BB3; */
 }
 
 .record-commit-btn .comment-btn-text{
