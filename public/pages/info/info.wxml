@@ -135,17 +135,17 @@
             <view class="comment-master-text" data-time="{{item.media_time}}" data-index="{{index}}" data-id="{{item.id}}" bindtap="toPosition">
                 <view class="comment-header clearfix">
                     <text class="comment-name" style="color: {{item.nameColor ? item.nameColor : ''}}">{{item.realname}}</text>
-                    <view class="comment-record" wx:if="{{item.record}}">
-                        <view class="comment-record-body">
-                            <image src="./img/audio.gif" mode="aspectFit" wx:if="{{commentPlayId == item.id && commentPlaying}}"></image>
-                            <image src="./img/audio-static.jpg" mode="aspectFit" wx:else></image>
-                            <text>{{commentPlayId == item.id && commentPlaying ? commentPlayTimer + "'" : item.record.duration + "'"}}</text>
-                        </view>
-                    </view>
                     <text class="comment-timer" style="background: {{commentActiveIndex == item.id ? '#1125e5' : '#535353'}}" wx:if="{{item.media_time >= 0}}">{{item.comment_time}}</text>
                 </view>
                 <view class="comment-body1">
-                    <text>{{item.content}} </text>
+                    <view class="comment-record" wx:if="{{item.record}}">
+                        <view class="comment-record-body">
+                            <image src="../../img/audio.gif" mode="aspectFit" wx:if="{{commentPlayId == item.id && commentPlaying}}"></image>
+                            <image src="../../img/audio-static.jpg" mode="aspectFit" wx:else></image>
+                            <text>{{commentPlayId == item.id && commentPlaying ? commentPlayTimer + "'" : item.record.duration + "'"}}</text>
+                        </view>
+                    </view>
+                    <text wx:else>{{item.content}} </text>
                     <view class="comment-do clearfix">
                     <text catchtap="toBackPage" data-index="{{item.id}}" data-doc-id="{{doc_id}}" data-avatar="{{item.avatar}}">回复</text>
                     </view>
@@ -157,16 +157,23 @@
             </view>
 
             <!-- 回复区 -->
-            <view class="comment-back" wx:if="{{item.replies.length > 0}}" catchtap="toBackPage" data-index="{{item.id}}" data-doc-id="{{doc_id}}" data-avatar="{{item.avatar}}">
+            <view class="comment-back" wx:if="{{item.callFirst}}" catchtap="toBackPage" data-index="{{item.id}}" data-doc-id="{{doc_id}}" data-avatar="{{item.avatar}}">
                 <text class="comment-look-back" wx:if="{{item.replies.length > 1}}">查看{{item.replies.length - 1}}条往期的回复</text>
                 <view class="back-body">
                     <view class="back-tou">
-                        <image src="{{item.replies[item.replies.length - 1].avatar != '' ? item.replies[item.replies.length - 1].avatar : tx}}"></image>
+                        <image src="{{item.callFirst.avatar != '' ? item.callFirst.avatar : tx}}"></image>
                     </view>
 
                     <view class="back-info">
-                        <text class="back-name">{{item.replies[item.replies.length - 1].realname}}</text>
-                        <text class="back-text">{{item.replies[item.replies.length - 1].content}}</text>
+                        <text class="back-name">{{item.callFirst.realname}}</text>
+                        <view class="comment-record" wx:if="{{item.callFirst.record}}">
+                            <view class="comment-record-body">
+                                <image src="../../img/audio.gif" mode="aspectFit" wx:if="{{commentPlayId == item.callFirst.id && commentPlaying}}"></image>
+                                <image src="../../img/audio-static.jpg" mode="aspectFit" wx:else></image>
+                                <text>{{commentPlayId == item.callFirst.id && commentPlaying ? commentPlayTimer + "'" : item.callFirst.record.duration + "'"}}</text>
+                            </view>
+                        </view>
+                        <text class="back-text" wx:else>{{item.callFirst.content}}</text>
                     </view>
                 </view>
             </view>
@@ -377,8 +384,8 @@
 
                     <!--  wx:if="{{isFocus}}" -->
                     <view class="comment-comment-toggle-type" bindtap="toggleCommentType">
-                        <image src="./img/jp.jpg" class="toggle-type-comment-img" mode="aspectFit" wx:if="{{commentType != 0}}"></image>
-                        <image src="./img/ad.jpg" class="toggle-type-comment-img" mode="aspectFit" wx:else></image>
+                        <image src="../../img/jp.jpg" class="toggle-type-comment-img" mode="aspectFit" wx:if="{{commentType != 0}}"></image>
+                        <image src="../../img/ad.jpg" class="toggle-type-comment-img" mode="aspectFit" wx:else></image>
                     </view>
                     
                 </view>
@@ -448,7 +455,7 @@
 </view>
 
 <view class="record-wrap-fix" wx:if="{{isRecording}}">
-    <image src="./img/record.gif" mode="aspectFit"></image>  
+    <image src="../../img/record.gif" mode="aspectFit"></image>  
     <view class="record-wrap-text">手指上滑，取消发送</view>
 </view>
 

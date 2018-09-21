@@ -50,14 +50,16 @@
     color: #6b6b77;
 }
 .comment-timer {
-    float: right;
     padding:0 7px;
     line-height: 20px;
     font-size:14px;
     font-weight: bold;
-    background: #1125e5;
+    background-color: #535353;
     border-radius: 3px;
     color: #fff;
+    position:absolute;
+    top:0;
+    right:0;
 }
 .comment-body1{
     font-size: 14px;
@@ -177,6 +179,29 @@
     padding: 0 10px;
 }
 
+.push-comment {
+    position: relative;
+    padding-left: 55px;
+}
+
+.toggle-comment-type{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    width: 44px;
+    height: 44px;
+    border-radius: 3px;
+    background: #2d303e;
+    top: 5px;
+    left:5px;
+}
+
+.toggle-comment-type image{
+    width: 50rpx;
+    height: 50rpx;
+}
+
 .info-footer-comment-btn-body{
     position: relative;
     height:44px;
@@ -187,7 +212,80 @@
     box-sizing: border-box;
 }
 
+.comment-record{
+    display: flex;
+    align-items: center;
+    height: 30px;
+    width: 100%;
+    max-width: 400rpx;
+    margin-top: 20rpx;
+}
 
+.comment-record-body{
+    display: flex;
+    align-items: center;
+    padding-right: 10rpx;
+    height: 100%;
+    width: 100%;
+    padding-left: 10rpx;
+    background: #0345C7;
+    /* background: #fff; */
+    border-radius: 4rpx;
+}
+
+.comment-record text{
+    color:#fff;
+    font-size: 20rpx;
+    margin-left: 10rpx;
+}
+
+.comment-record image{
+    position: relative;
+    top:0;
+    width: 30rpx;
+    height: 30rpx;
+}
+
+.record-comment{
+    width: 100%;
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    height: 44px;
+    background:#2d303e;
+    border-radius:3px;
+    font-size:26rpx;
+}
+
+.record-wrap-fix{
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 300rpx;
+    height: 300rpx;
+    left: 50%;
+    top:50%;
+    margin-top: -150rpx;
+    margin-left: -150rpx;
+    z-index: 100;
+    background: rgba(0,0,0,0.5);
+    border-radius: 10rpx;
+}
+
+.record-wrap-fix image{
+    width: 85px;
+    height: 85px;
+}
+
+.record-wrap-text{
+    color: #fff;
+    margin-top: 10rpx;
+    font-size: 26rpx;
+}
 
 
 

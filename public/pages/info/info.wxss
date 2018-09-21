@@ -1250,24 +1250,25 @@
     height: 100%;
     align-items: center;
     height: 30px;
-    position: relative;
-    left: 20rpx;
-    max-width: 200rpx;
+    width: 100%;
+    max-width: 400rpx;
+    margin-top: 20rpx;
 }
 
 .comment-record-body{
     display: flex;
     align-items: center;
-    padding-right: 10rpx;
-    height: 32rpx;
-    /* background: #0345C7; */
-    background: #fff;
+    padding:0 10rpx;
+    height: 100%;
+    width: 100%;
+    background: #0345C7;
     border-radius: 4rpx;
 }
 
 .comment-record text{
-    /* color:#fff; */
+    color:#fff;
     font-size: 20rpx;
+    margin-left: 20rpx;
 }
 
 .comment-record image{

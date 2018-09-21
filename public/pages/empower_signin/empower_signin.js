@@ -13,7 +13,6 @@ Page({
         invite_code: ''
     },
 	onLoad(options) {
-        console.log(options,'options6666')
         let self = this
         if(options.invite_code){
             self.setData({

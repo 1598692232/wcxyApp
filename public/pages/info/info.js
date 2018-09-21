@@ -738,6 +738,17 @@ Page({
                     } else {
                         item.delColor = '#ddd'
                     }
+
+                    // 取出最近一条回复处理
+                    item.callFirst = null;
+                    if (item.replies.length > 0) {
+                        item.callFirst = item.replies[0];
+                        item.callFirst.record = null;
+                        if (item.callFirst.content.indexOf(COMMENT_RECORD_PREFIXER) > -1) {
+                            item.callFirst.record = JSON.parse(JSON.parse(item.callFirst.content)[COMMENT_RECORD_PREFIXER]);
+                            item.callFirst.content = '';
+                        }
+                    }
                 });
                 fn(json.list); 
             }, res => {
@@ -1725,9 +1736,9 @@ Page({
         this.iac.play();
         let commentPlayTimer = parseInt(record.duration);
         this.setData({ commentPlayTimer });
-        let t = setInterval(() => {
+        this.recordTimer = setInterval(() => {
             if (commentPlayTimer <= 0) {
-                clearInterval(t);
+                clearInterval(this.recordTimer);
                 this.setData({
                     commentPlayTimer: 0,
                     commentPlaying: false
@@ -1748,7 +1759,7 @@ Page({
         // this.handleRecord(recordPath);
         // return;
         // end
-
+        clearInterval(this.recordTimer);
         // 判断是否是点击的录音评论
         let currentComment = this.data.commentList.filter((item, k ) => {
             return item.id == e.currentTarget.dataset.id
@@ -2420,6 +2431,7 @@ Page({
         // this.commentPlayId = 0;
         // this.commentPlayTimer = 0;
         this.iac = innerAudioContext();
+        this.recordTimer = null;
 
         self.iac.onCanplay(res => {
             console.log(res, '可以播放')

@@ -4,32 +4,57 @@
 		    <!-- 评论 -->
 		    <view class="comment-body">
 		        <!-- 评论区 -->
-		        <view class="comment-master">
+		        <view class="comment-master" bindtap="recordPlay">
 		          <view class="comment-tou">
 		            <image src="{{avatar}}"></image>
 		          </view>
 		          <view class="comment-master-text">
 		              <view class="comment-header clearfix">
-		                  <text class="comment-name">{{currentComment.realname}}</text>
+						  <text class="comment-name">{{currentComment.realname}}</text>
 		                  <text class="comment-timer">{{currentComment.comment_time}}</text>
 		              </view>
 		              <view class="comment-body1">
-		                 <text>{{currentComment.content}}</text>
+						<view class="comment-record" wx:if="{{currentComment.record}}">
+							<view class="comment-record-body">
+								<image src="../../img/audio.gif" mode="aspectFit" wx:if="{{commentPlayId == currentComment.id && commentPlaying}}"></image>
+								<image src="../../img/audio-static.jpg" mode="aspectFit" wx:else></image>
+								<text>{{commentPlayId == currentComment.id && commentPlaying ? commentPlayTimer + "'" : currentComment.record.duration + "'"}}</text>
+							</view>
+						</view>
+		                 <text wx:else>{{currentComment.content}}</text>
 		              </view>
 		          </view>
 		        </view>
 
 		        <!-- 回复区 -->
 		        <view class="comment-back">
-		            <view class="back-body {{item.delTranstion}}" wx:for="{{callList}}" wx:key="index"  bindtouchstart="delTouchStart" bindtouchmove="delTouchMove"  bindtouchend="delTouchEnd" style="transform: translateX({{item.translateX}}px);" data-index="{{index}}">
+					<view class="back-body {{item.delTranstion}}" 
+						wx:for="{{callList}}"
+					 	wx:key="index"  
+						bindtouchstart="delTouchStart" 
+						bindtouchmove="delTouchMove"  
+						bindtouchend="delTouchEnd" 
+						style="transform: translateX({{item.translateX}}px);" 
+						data-index="{{index}}"
+						bindtap="recordPlay"
+						data-callid="{{item.id}}"
+						>
 		                <view class="back-tou">
 		                    <image src="{{item.avatar}}"></image>
 		                </view>
 
 		                <view class="back-info">
-		                    <text class="back-name">{{item.realname}}</text>
-		                    <text class="back-text">{{item.content}}</text>
-		                </view>
+							<text class="back-name">{{item.realname}}</text>
+							<view class="comment-record" wx:if="{{item.record}}">
+								<view class="comment-record-body">
+									<image src="../../img/audio.gif" mode="aspectFit" wx:if="{{commentPlayId == item.id && commentPlaying}}"></image>
+									<image src="../../img/audio-static.jpg" mode="aspectFit" wx:else></image>
+									<text>{{commentPlayId == item.id && commentPlaying ? commentPlayTimer + "'" : item.record.duration + "'"}}</text>
+								</view>
+							</view>
+							<text class="back-text" wx:else>{{item.content}}</text>
+						</view>
+					
 						 <view class='comment-del' bindtap="handleDelComment" data-index="{{index}}"
 						  data-userid="{{item.user_id}}" style="background: {{item.delColor}}">
 			              删除
@@ -42,15 +67,35 @@
 
 	</scroll-view>
 
-	  <view class="push-comment callback-comment">
-	   <form bindsubmit="sendComment">
-	      <view class="push-comment-input clearfix">
-			  <input placeholder="回复评论..."  cursor-spacing="20" name="commentText" value="{{commentText}}" style="color:#fff"/>
-	          <button class="send-commit"  form-type="submit">
-	              发送
-	          </button>
-	      </view>
-	    </form>
-	  </view>
+	    <view class="push-comment callback-comment">
+			<view class="toggle-comment-type" bindtap="toggleCommentType">
+				<image src="../../img/jp.jpg" mode="aspectFit" wx:if="{{commentType != 0}}"></image>
+				<image src="../../img/ad.jpg" mode="aspectFit" wx:else></image>
+			</view>
+			
+			<view class="record-comment"
+			 wx:if="{{commentType != 0}}"
+			 bindtouchstart="startRecord" 
+			 bindtouchend="stopRecord" 
+			 bindtouchmove="cancelRecord"
+			 id="record-btn">
+				<text>{{!isRecording ? '按住说话' : '松开结束'}}</text>
+			</view>
 
+			<form bindsubmit="sendComment" wx:else>
+				<view class="push-comment-input call-input clearfix">
+					<input placeholder="回复评论..."  cursor-spacing="20" name="commentText" value="{{commentText}}" style="color:#fff"/>
+					<button class="send-commit"  form-type="submit">
+						发送
+					</button>
+				</view>
+			</form>
+	   </view>
+
+</view>
+
+
+<view class="record-wrap-fix" wx:if="{{isRecording}}">
+	<image src="../../img/record.gif" mode="aspectFit"></image>  
+	<view class="record-wrap-text">手指上滑，取消发送</view>
 </view>
