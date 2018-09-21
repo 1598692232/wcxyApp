@@ -531,4 +531,12 @@ Page({
         }, 1000)
         //todo::评论语音播放gif图显示
     },
+
+    onHide() {
+        clearInterval(this.data.getTimer);
+        this.iac.pause();
+        this.iac.src = '';
+        this.iac = null;
+        this.recorderManager = null;
+    }
 })

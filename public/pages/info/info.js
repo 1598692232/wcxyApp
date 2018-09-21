@@ -659,6 +659,8 @@ Page({
     },
     onHide() {
         clearInterval(this.data.getTimer);
+        this.iac.pause();
+        this.iac.src = '';
         this.iac = null;
         this.recorderManager = null;
     },
