@@ -17,7 +17,6 @@ const app = getApp();
 Page({
 
     data: {
-        scrollHeight: 0,
         callList: [],
         commentIsFocus: false,
         commentText: '',
@@ -55,11 +54,6 @@ Page({
     onShow() {
         let self = this
         Util.getSystemInfo().then(res => {
-            self.setData({
-                scrollHeight: res.windowHeight - 54,
-            })
-        }).then(() => {
-
             let store = wx.getStorageSync('app')
             let reqData = Object.assign({}, store, {
                 doc_id: self.data.docId,
@@ -79,7 +73,6 @@ Page({
                     currentComment[0].record = JSON.parse(JSON.parse(currentComment[0].content)[COMMENT_RECORD_PREFIXER]);
                     currentComment[0].content = '';
                     currentComment[0].recordWidth = Math.ceil(currentComment[0].record.duration / 10) / 6 * wx.getSystemInfoSync().windowWidth 
-
                 }
     
                 currentComment[0].replies.map(item => {
@@ -167,6 +160,7 @@ Page({
              if(record) {
                 newCall.content = '';
                 newCall.record = JSON.parse(record[COMMENT_RECORD_PREFIXER]);
+                newCall.recordWidth = Math.ceil(newCall.record.duration / 10) / 6 * wx.getSystemInfoSync().windowWidth;
             } else {
                 newCall.content = e.detail.value.commentText;
             }

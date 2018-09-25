@@ -4,6 +4,7 @@
 }
 .list-body{
     box-sizing: border-box;
+    height: calc(100vh - 54px);
 }
 .comment-body{
     width: 100%;

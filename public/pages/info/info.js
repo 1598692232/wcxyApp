@@ -293,10 +293,13 @@ Page({
         self.commentAjaxing = false;
         self.commentGeted = false;
         self.commentClick = true;
+        self.pageHide = null; //处理判断页面是否切换了，监听到视频暂停的时候评论框不再focus
+        self.pageFirstShow = true;//处理判断页面第一次进来，监听到视频暂停的时候不再focus
 
         if (this.videoCtx) {
             this.videoCtx.play();
         }
+
         self.setData({
             isFocus: false,
             loading: true
@@ -657,6 +660,7 @@ Page({
     onUnload() {
         clearInterval(this.data.getTimer)
     },
+
     onHide() {
         clearInterval(this.data.getTimer);
         this.iac.pause();
@@ -1571,6 +1575,7 @@ Page({
                 if(record) {
                     newComment.content = '';
                     newComment.record = JSON.parse(record[COMMENT_RECORD_PREFIXER]);
+                    newComment.recordWidth = Math.ceil(newComment.record.duration / 10) / 6 * wx.getSystemInfoSync().windowWidth
                 } else {
                     newComment.content = self.data.commentText;
                 }
@@ -1772,14 +1777,15 @@ Page({
         let currentComment = this.data.commentList.filter((item, k ) => {
             return item.id == e.currentTarget.dataset.id
         })[0];
-        if (currentComment.record) {
+        
+        if (currentComment.record && currentComment.record != '') {
             this.setData({
                 commentPlayId: currentComment.id,
                 commentPlaying: true
             });
             this.handleRecord(currentComment.record);
         } else {
-            this.iac.src = ''; 
+            // this.iac.src = ''; 
             this.iac.pause();
         }
        
@@ -1803,6 +1809,11 @@ Page({
 
     // 获取播放时间
     getVideoTime(e) {
+        if (this.pageFirstShow) {
+            this.pageFirstShow = false;
+            return;
+        }
+ 
         // && this.data.videoTime != 0
         if (this.data.videoTime != parseInt(e.detail.currentTime)) {
             this.data.videoCurrentTimeInt = new Date().getTime();
@@ -1815,6 +1826,7 @@ Page({
     },
 
     getVideoTime2(e) {
+        if (this.pageHide) return; 
         this.data.videoPause = true;
         this.data.focusTime = this.data.videoTime;
         if (this.data.fullScreen) return; 
@@ -1865,6 +1877,7 @@ Page({
          // let commentCurrent = JSON.stringify(this.data.commentList[e.currentTarget.dataset.index])
          
          this.commetClick = true;
+         this.pageHide = true;
          if (this.data.info.file_type == 'video') {
              this.videoCtx.pause()
          }
@@ -2320,6 +2333,7 @@ Page({
     inputFocus(e) {
         let self = this
         let store = wx.getStorageSync('app')
+        this.iac.pause();
         let reqData = Object.assign({},{login_id: store.login_id},{token: store.token})
         Util.ajax('user/info', 'get', reqData).then(json => {
             if(json.phone == false){

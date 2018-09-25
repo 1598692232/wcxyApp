@@ -1,5 +1,5 @@
  <view class="call-back" >
- 	<scroll-view scroll-y="true" class="list-body" style="height: {{scrollHeight}}px">
+ 	<scroll-view scroll-y="true" class="list-body">
  		<view style="padding: 0 10px;">
 		    <!-- 评论 -->
 		    <view class="comment-body">
