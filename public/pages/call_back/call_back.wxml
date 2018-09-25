@@ -15,7 +15,7 @@
 		              </view>
 		              <view class="comment-body1">
 						<view class="comment-record" wx:if="{{currentComment.record}}">
-							<view class="comment-record-body">
+							<view class="comment-record-body" style="width: {{currentComment.recordWidth}}px">
 								<image src="../../img/audio.gif" mode="aspectFit" wx:if="{{commentPlayId == currentComment.id && commentPlaying}}"></image>
 								<image src="../../img/audio-static.jpg" mode="aspectFit" wx:else></image>
 								<text>{{commentPlayId == currentComment.id && commentPlaying ? commentPlayTimer + "'" : currentComment.record.duration + "'"}}</text>
@@ -46,7 +46,7 @@
 		                <view class="back-info">
 							<text class="back-name">{{item.realname}}</text>
 							<view class="comment-record" wx:if="{{item.record}}">
-								<view class="comment-record-body">
+								<view class="comment-record-body" style="width: {{item.recordWidth}}px">
 									<image src="../../img/audio.gif" mode="aspectFit" wx:if="{{commentPlayId == item.id && commentPlaying}}"></image>
 									<image src="../../img/audio-static.jpg" mode="aspectFit" wx:else></image>
 									<text>{{commentPlayId == item.id && commentPlaying ? commentPlayTimer + "'" : item.record.duration + "'"}}</text>

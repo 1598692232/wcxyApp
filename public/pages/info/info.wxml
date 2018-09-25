@@ -139,7 +139,7 @@
                 </view>
                 <view class="comment-body1">
                     <view class="comment-record" wx:if="{{item.record}}">
-                        <view class="comment-record-body">
+                        <view class="comment-record-body" style="width: {{item.recordWidth}}px">
                             <image src="../../img/audio.gif" mode="aspectFit" wx:if="{{commentPlayId == item.id && commentPlaying}}"></image>
                             <image src="../../img/audio-static.jpg" mode="aspectFit" wx:else></image>
                             <text>{{commentPlayId == item.id && commentPlaying ? commentPlayTimer + "'" : item.record.duration + "'"}}</text>
@@ -167,7 +167,7 @@
                     <view class="back-info">
                         <text class="back-name">{{item.callFirst.realname}}</text>
                         <view class="comment-record" wx:if="{{item.callFirst.record}}">
-                            <view class="comment-record-body">
+                            <view class="comment-record-body" style="width: {{item.callFirst.recordWidth}}px">
                                 <image src="../../img/audio.gif" mode="aspectFit" wx:if="{{commentPlayId == item.callFirst.id && commentPlaying}}"></image>
                                 <image src="../../img/audio-static.jpg" mode="aspectFit" wx:else></image>
                                 <text>{{commentPlayId == item.callFirst.id && commentPlaying ? commentPlayTimer + "'" : item.callFirst.record.duration + "'"}}</text>

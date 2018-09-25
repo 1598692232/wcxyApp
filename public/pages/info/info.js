@@ -721,15 +721,19 @@ Page({
                 json.list.map(item => {
                     item.comment_time = Util.timeToMinAndSec(item.media_time)
                     item.record = null
+                    item.recordWidth = ''
                     if (item.content.indexOf(COMMENT_RECORD_PREFIXER) > -1) {
                         item.record = JSON.parse(JSON.parse(item.content)[COMMENT_RECORD_PREFIXER]);
                         item.content = ''
+                        item.recordWidth = Math.ceil(item.record.duration / 10) / 6 * wx.getSystemInfoSync().windowWidth 
                     }
                     // item.media_time = parseInt(item.media_time)
                     item.avatar = item.avatar == '' ? self.data.tx : item.avatar
                     item.background = ''
                     item.translateX = ''
                     item.delTranstion = ''
+             
+
                     if (self.data.commentActiveIndex == item.id) {
                         item.timeBackground = '#1125e5'
                     } else {
@@ -746,9 +750,11 @@ Page({
                     if (item.replies.length > 0) {
                         item.callFirst = item.replies[0];
                         item.callFirst.record = null;
+                        item.callFirst.recordWidth = '';
                         if (item.callFirst.content.indexOf(COMMENT_RECORD_PREFIXER) > -1) {
                             item.callFirst.record = JSON.parse(JSON.parse(item.callFirst.content)[COMMENT_RECORD_PREFIXER]);
                             item.callFirst.content = '';
+                            item.callFirst.recordWidth = Math.ceil(item.callFirst.record.duration / 10) / 6 * wx.getSystemInfoSync().windowWidth 
                         }
                     }
                 });

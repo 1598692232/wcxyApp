@@ -73,11 +73,13 @@ Page({
                 })
     
                 currentComment[0].comment_time = Util.timeToMinAndSec(currentComment[0].media_time);
-
+                currentComment[0].recordWidth = '';
                 currentComment[0].record = null;
                 if (currentComment[0].content.indexOf(COMMENT_RECORD_PREFIXER) > -1) {
                     currentComment[0].record = JSON.parse(JSON.parse(currentComment[0].content)[COMMENT_RECORD_PREFIXER]);
                     currentComment[0].content = '';
+                    currentComment[0].recordWidth = Math.ceil(currentComment[0].record.duration / 10) / 6 * wx.getSystemInfoSync().windowWidth 
+
                 }
     
                 currentComment[0].replies.map(item => {
@@ -91,8 +93,10 @@ Page({
                     }
 
                     item.record = null;
+                    item.recordWidth = '';
                     if (item.content.indexOf(COMMENT_RECORD_PREFIXER) > -1) {
                         item.record = JSON.parse(JSON.parse(item.content)[COMMENT_RECORD_PREFIXER]);
+                        item.recordWidth = Math.ceil(item.record.duration / 10) / 6 * wx.getSystemInfoSync().windowWidth 
                         item.content = ''
                     }
                 })

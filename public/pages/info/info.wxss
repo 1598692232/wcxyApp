@@ -1260,14 +1260,14 @@
     align-items: center;
     padding:0 10rpx;
     height: 100%;
-    width: 100%;
+    max-width: 100%;
     background: #0345C7;
-    border-radius: 4rpx;
+    border-radius: 15px;
 }
 
 .comment-record text{
     color:#fff;
-    font-size: 20rpx;
+    font-size: 26rpx;
     margin-left: 20rpx;
 }
 
