@@ -94,7 +94,16 @@ Page({
       wx.showToast({
         title:'创建成功',
       });
-      console.log(json);
+
+      wx.setStorage({
+        key: 'project_id',
+        data: json.id
+      });
+      wx.setStorage({
+          key: 'project_name',
+          data: params.name
+      });
+      
       wx.navigateTo({
         url: '/pages/project_list/project_list?project_id=' + json.id + '&projectName=' + params.name
         + '&project_type=admin'
