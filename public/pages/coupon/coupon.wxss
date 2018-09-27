@@ -1,0 +1,74 @@
+.coupon{
+    width: 100%;
+    background: rgb(47, 93, 217);
+}
+.coupon-top{
+    width: 100%;
+    height: 619rpx;
+    position: relative;
+}
+.coupon-top .pic{
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+.top-text{
+    width: 572rpx;
+    height: 165rpx;
+    position: absolute;
+    left: 0;right: 0;
+    top: 327rpx;
+    margin: auto;
+    display: flex;
+}
+.top-text .left{
+    width: 198rpx;
+    text-align: center;
+    line-height: 165rpx;
+    font-size: 47rpx;
+    color: #F84B30;
+    font-weight: 600;
+}
+.top-text .left .money{
+    font-size: 24rpx;
+    font-weight: 400;
+}
+.top-text .right{
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.top-text .right .text{
+    color: #F84B30;
+    margin-left: 62rpx;
+}
+.top-text .right .text1{
+    font-size: 40rpx;
+    line-height: 57rpx;
+    letter-spacing: 2rpx;
+}
+.top-text .right .text2{
+    font-size: 25rpx;
+    line-height: 36rpx;
+    letter-spacing: 1.27rpx;
+    margin-top: 7rpx;
+}
+
+
+.receive{
+    width: 364rpx;
+    height: 88rpx;
+    background: #F5A623;
+    border-radius: 100rpx;
+    position: absolute;
+    left: 0;right: 0;
+    margin: auto;
+    bottom: 0;
+
+    font-size: 34rpx;
+    line-height: 88rpx;
+    color: #FFFFFF;
+    letter-spacing: 0;
+    text-align: center;
+}

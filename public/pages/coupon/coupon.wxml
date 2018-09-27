@@ -1,0 +1,22 @@
+<view class="coupon" style="height:{{scrollHeight}}px">
+    <view class="coupon-top">
+        <image src="./img/background.png" mode="aspectFill" class="pic"/>
+        <view class="top-text">
+            <view class="left">
+                <text class="money">￥</text>50
+            </view>
+            <view class="right">
+                <view class="text text1">新阅代金券</view>
+                <view class="text text2">2018年12月31日到期</view>
+            </view>
+        </view>
+        <view class="receive">
+            立即领取X1
+        </view>
+    </view>
+
+    <view class="get-more">
+        <text>获得更多代金券</text>
+    </view>
+</view>
+<!-- <official-account></official-account> -->

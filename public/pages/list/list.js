@@ -51,7 +51,8 @@ Page({
 
         Util.getSystemInfo().then(res => {
             self.setData({
-                scrollHeight: res.windowHeight - 82,
+                // scrollHeight: res.windowHeight - 82,
+                scrollHeight: res.windowHeight - 114,
                 listInfoWidth: res.windowWidth - 110,
                 liWidth: res.windowWidth - 110
             })
@@ -660,5 +661,10 @@ Page({
       wx.navigateTo({
         url: url
       })
+    },
+    toCoupon: function(){
+        wx.navigateTo({
+            url: '/pages/coupon/coupon'
+        })
     }
 })

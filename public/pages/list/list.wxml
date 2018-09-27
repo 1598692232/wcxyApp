@@ -1,4 +1,8 @@
 <view style="height: 100%;"> 
+  <view class="top-tips" bindtap="toCoupon">
+    领取最高60元代金券，购买新阅服务更省钱<text class="now-take">马上领取</text>
+  </view>
+
    <view class="search-projects flex-wrp">
       <view class="search-projects-body" bindtap="searchFocus">
          <view class="search-input" animation="{{animationData}}">

@@ -29,7 +29,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 25,
+			"current": 26,
 			"list": [
 				{
 					"id": 0,
@@ -205,6 +205,13 @@
 					"name": "test-callback 录音回复",
 					"pathName": "pages/call_back/call_back",
 					"query": "commentId=7192&docId=14185&projectId=P2101532600914&avatar=https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTL1r1x64yPgvoczCZ9wlGbrUugUfhx7R5M0SalXIGfzNKn46Lk4exzCBh4Lebncf5q6gXYkKqg1Wg/132"
+				},
+				{
+					"id": 26,
+					"name": "coupon",
+					"pathName": "pages/coupon/coupon",
+					"query": "",
+					"scene": "1011"
 				}
 			]
 		}

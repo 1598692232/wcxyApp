@@ -23,7 +23,8 @@
     "pages/collection/collection",
     "pages/project_setting/setting",
     "pages/project_member/project_member",
-    "pages/testRecord/testRecord"
+    "pages/testRecord/testRecord",
+    "pages/coupon/coupon"
   ],
   "window": {
     "backgroundTextStyle": "dark",
