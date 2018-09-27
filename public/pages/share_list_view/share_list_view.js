@@ -127,72 +127,74 @@ Page({
             let scene = decodeURIComponent(options.scene).split('=');
             let params = wx.getStorageSync('app');
             delete params.code;
-            params = Object.assign({}, params, {share_code: scene[1]});
+            // params = Object.assign({}, params, {share_code: scene[1]});
             wx.setStorageSync('share_code', scene[1])
             self.setData({
                 code: scene[1],
             })
-
-            // 分享页面的请求
-            Util.ajax('sharefilelist', 'get', params).then(data => {          
-                data.list.forEach(item => {
-                    item.comment_count = item.comment_count>99?99:item.comment_count
-                    item.create_at_text = Util.getCreateTime(item.create_at)
-                    if (item.file_type == "audio") {
-                        item.audioPause = true
-                    }
+            setTimeout(function(){
+                params = Object.assign({}, params, {
+                    share_code: scene[1],
+                    login_id: wx.getStorageSync('user_info').login_id,
+                    token: wx.getStorageSync('user_info').token
                 });
-
-                self.shareList = data.list;
-                self.shareList = data.list.map((item, k) => {
-                    if (item.file_type == 'video') {
-                        item.activeP = '540';
-                        item.activeUrl = item.project_file.resolution[0].src;
-                        item.currentTime = 0;
-                    }
-                    return item;
-                });
-
-                self.setData({
-                    shareList: self.shareList.length > 3 ? self.shareList.slice(0, 3) : self.shareList,
-                    qrCode: data.qr_code,
-                    deadline: data.deadline.toString().length>4?Util.getTimeDate(data.deadline):data.deadline,
-                    fileCount: data.file_count,
-                    viewCount: data.view_count,
-                    projectId: data.project_id,
-                    passwordModal: false,
-                    shareName: data.share_name,
-                    review: data.review,
-                    share_all_version: data.share_all_version,
-                    people: data.share_people,
-                    pc_link: data.pc_link,
-                    collect_status: data.collect_status
-                });
-                wx.setNavigationBarTitle({title: data.share_name})
-            }, res => {
-                if (res.data.status == -4) {    
-                    self.setData({
-                        passwordModal: true,
-                    })
-                    wx.getClipboardData({
-                        success: function(res){
-                            if(res.data.toString().length>4){
-                                var data2 = res.data.slice(-4)     
-                            }else{
-                                var data2 = res.data
-                            }
-                            wx.setClipboardData({
-                                data: data2
-                            })
+                // 分享页面的请求
+                Util.ajax('sharefilelist', 'get', params).then(data => {          
+                    data.list.forEach(item => {
+                        item.comment_count = item.comment_count>99?99:item.comment_count
+                        item.create_at_text = Util.getCreateTime(item.create_at)
+                        if (item.file_type == "audio") {
+                            item.audioPause = true
                         }
-                    })
-                } 
-                // wx.showModal({
-                //     title: '提示',
-                //     content: res.data.msg,
-                //     showCancel: false
-                // });
-            })
+                    });
+
+                    self.shareList = data.list;
+                    self.shareList = data.list.map((item, k) => {
+                        if (item.file_type == 'video') {
+                            item.activeP = '540';
+                            item.activeUrl = item.project_file.resolution[0].src;
+                            item.currentTime = 0;
+                        }
+                        return item;
+                    });
+
+                    self.setData({
+                        shareList: self.shareList.length > 3 ? self.shareList.slice(0, 3) : self.shareList,
+                        qrCode: data.qr_code,
+                        deadline: data.deadline.toString().length>4?Util.getTimeDate(data.deadline):data.deadline,
+                        fileCount: data.file_count,
+                        viewCount: data.view_count,
+                        projectId: data.project_id,
+                        passwordModal: false,
+                        shareName: data.share_name,
+                        review: data.review,
+                        share_all_version: data.share_all_version,
+                        people: data.share_people,
+                        pc_link: data.pc_link,
+                        collect_status: data.collect_status
+                    });
+                    wx.setNavigationBarTitle({title: data.share_name})
+                }, res => {
+                    if (res.data.status == -4) {    
+                        self.setData({
+                            passwordModal: true,
+                        })
+                        wx.getClipboardData({
+                            success: function(res){
+                                if(res.data.toString().length>4){
+                                    var data2 = res.data.slice(-4)     
+                                }else{
+                                    var data2 = res.data
+                                }
+                                wx.setClipboardData({
+                                    data: data2
+                                })
+                            }
+                        })
+                    } 
+                })
+            },1500)
+            
         } 
 
         Util.getSystemInfo().then(result => {

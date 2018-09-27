@@ -15,7 +15,7 @@
     </view>
     <view class="backIndex" wx:if="{{needEmpower}}">
         <view class="user-control">
-            <button class="login-out" open-type="getUserInfo" bindgetuserinfo="userInfoHandler">重新授权</button>
+            <button class="login-out" open-type="getUserInfo" bindgetuserinfo="userInfoHandler">授权登录</button>
         </view>
     </view>
     <view class="xinyue">www.xinyue.io</view>

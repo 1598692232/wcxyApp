@@ -45,21 +45,37 @@
       </view> 
     </view>
   </view>
-  <view class="user_info_title remainingTime">
-    <text class="remaining_time">剩余时间</text>
+  <view class="user_info_title user_info_title2">
+    <view class="remaining_time">
+      <text>剩余时间</text>
+    </view>
     <text class="time">{{end_at}}</text>
   </view>
   <!-- <view class="user_info_title">
     <text class="remaining_time">切换账号</text>
     <text class="time">></text>
   </view> -->
-  <view class="user_info_title collection" bindtap="toCollection">
-    <text class="remaining_time">收藏夹</text>
-    <view class="red_dot" wx:if="{{!redDot}}"></view>
+  <view class="user_info_title user_info_title2" bindtap="toCollection">
+    <view class="remaining_time">
+      <text>收藏夹</text>
+      <!-- <view class="red_dot" wx:if="{{!redDot}}"></view> -->
+    </view>
     <view class="list_icon">
       <image src="./img/to.png"></image>
     </view>
   </view>
+
+  <navigator target="miniProgram" class="user_info_title user_info_title2"
+    app-id="wx9f0ca9e649e69541" path="/pages/loading/loading"
+    version="release" bindsuccess="bindsuccess">
+      <view class="remaining_time">
+        <text>创建名片</text>
+        <view class="red_dot" wx:if="{{!redDot}}"></view>
+      </view>
+      <view class="list_icon">
+        <image src="./img/to.png"></image>
+      </view>
+  </navigator>
   <!-- <view class="user-control">
     <button class="login-out" bindtap="loginOut">退出账号</button>
   </view> -->
