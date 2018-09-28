@@ -1391,7 +1391,7 @@ Page({
     },
 
 	// 发送评论 record：录音路径
-    sendComment(record) {
+    sendComment(e, record) {
         let self = this
         this.commentClick = false
         let res = wx.getStorageSync('app')
@@ -1399,6 +1399,7 @@ Page({
 
         self.setData({
             commentType: 0,
+            isRecording: false
         });
         
         let returnTosignin = (text, isLogin) => {
@@ -1580,7 +1581,7 @@ Page({
                     newComment.content = self.data.commentText;
                 }
 
-                list.unshift(newComment)
+                list.unshift(newComment);
                 self.setData({
                     commentList: list,
                     commentText: '',
@@ -1588,7 +1589,7 @@ Page({
                     isFocus: false,
                     commentDraw: [],
                     commentDrawTemp: []
-                })
+                });
     
                 // setTimeout(() => {
                 //     this.setData({
@@ -2460,6 +2461,11 @@ Page({
         });
 
         self.iac.onError((res) => {
+            self.setData({
+                commentPlayId: 0,
+                commentPlaying: false
+            });
+            
             // 播放音频失败的回调
             wx.showToast({
                 title: '播放失败',
@@ -2546,7 +2552,8 @@ Page({
             setTimeout(() => {
                 if (this.data.isCancelRecord) {
                     this.setData({
-                        isCancelRecord: false
+                        isCancelRecord: false,
+                        isRecording: false
                     });
                 }
             }, 500);
@@ -2613,7 +2620,7 @@ Page({
                         fileSize: record.fileSize
                     }
                     finalRecord[COMMENT_RECORD_PREFIXER] = JSON.stringify(tmpRecord)
-                    self.sendComment(finalRecord);
+                    self.sendComment(null, finalRecord);
                 }
             });
         })

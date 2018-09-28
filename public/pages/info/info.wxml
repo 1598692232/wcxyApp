@@ -193,15 +193,15 @@
   </scroll-view>
 <!-- wx:if="{{!isFocus && !isIOS}}" -->
     <view class="info-footer-comment-btn" wx:if="{{!isFocus}}">
-            <!-- <view class="comment-comment-toggle-type" wx:if="{{!isFocus}}" bindtap="toggleCommentType">
-                <image src="./img/jp.jpg" class="toggle-type-comment-img" mode="aspectFit" wx:if="{{commentType == 0}}"></image>
-                <image src="./img/ad.jpg" class="toggle-type-comment-img" mode="aspectFit" wx:else></image>
-            </view> -->
+            <view class="comment-comment-toggle-type" wx:if="{{!isFocus}}" bindtap="toggleCommentType">
+                <image src="../../img/jp.jpg" class="toggle-type-comment-img" mode="aspectFit" wx:if="{{commentType != 0}}"></image>
+                <image src="../../img/ad.jpg" class="toggle-type-comment-img" mode="aspectFit" wx:else></image>
+            </view>
             <view class="info-footer-comment-btn-body" bindtap="inputFocus">
                 <!-- <view class="comment-btn-icon">
                     <image src="./img/comment-icon.png"></image>
                 </view> -->
-                <view class="comment-btn-text">发表评论</view>
+                <view class="comment-btn-text">{{commentType == 0 ? '发表评论' : '语音发表评论'}}</view>
             </view>
             <!-- <view class="info-footer-comment-btn-body record-commit-btn" wx:else>
                 <view class="comment-btn-text" 
@@ -213,9 +213,9 @@
                     {{!isRecording ? '按住说话' : '松开结束'}}
                 </view>
             </view> -->
-            <view class="comment-comment-count" wx:if="{{!isFocus}}">
+            <!-- <view class="comment-comment-count" wx:if="{{!isFocus}}">
                 {{commentCount > 99 ? '99+' : commentCount}}
-            </view>
+            </view> -->
     </view>
 
 </view>
@@ -383,7 +383,7 @@
                    
 
                     <!--  wx:if="{{isFocus}}" -->
-                    <view class="comment-comment-toggle-type" bindtap="toggleCommentType">
+                    <view class="comment-comment-toggle-type focus" bindtap="toggleCommentType">
                         <image src="../../img/jp.jpg" class="toggle-type-comment-img" mode="aspectFit" wx:if="{{commentType != 0}}"></image>
                         <image src="../../img/ad.jpg" class="toggle-type-comment-img" mode="aspectFit" wx:else></image>
                     </view>
