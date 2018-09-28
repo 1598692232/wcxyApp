@@ -48,6 +48,11 @@ Page({
                 content: '账号需要实名认证，请点击授权。',
                 tips: 3
             })
+        } else if (options.tips==4) {
+            self.setData({
+                content: '账号需要实名认证，请点击授权。',
+                tips: 4
+            })
         } else if (options.sign==1) {
             self.setData({
                 content: '恭喜您，登录成功！',
@@ -93,6 +98,10 @@ Page({
             }else if( self.data.tips==3 ){
                 wx.reLaunch({
                     url: '/pages/empower_scan/empower_scan'
+                })
+            }else if( self.data.tips==4 ){
+                wx.reLaunch({
+                    url: '/pages/coupon/coupon'
                 })
             }
         }, res => {

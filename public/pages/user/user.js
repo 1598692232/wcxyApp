@@ -175,4 +175,10 @@ Page({
         url: '/pages/collection/collection'
     })
   },
+//   跳转至我的优惠券页面
+  toCoupon(){
+    wx.navigateTo({
+        url: '/pages/my_coupon/my_coupon'
+    })
+  }
 })

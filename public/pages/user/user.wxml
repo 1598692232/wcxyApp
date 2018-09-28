@@ -70,12 +70,23 @@
     version="release" bindsuccess="bindsuccess">
       <view class="remaining_time">
         <text>创建名片</text>
-        <view class="red_dot" wx:if="{{!redDot}}"></view>
+        <!-- <view class="red_dot" wx:if="{{!redDot}}"></view> -->
       </view>
       <view class="list_icon">
         <image src="./img/to.png"></image>
       </view>
   </navigator>
+
+  <view class="user_info_title user_info_title2" bindtap="toCoupon">
+    <view class="remaining_time">
+      <text>我的代金券</text>
+      <!-- <view class="red_dot" wx:if="{{!redDot}}"></view> -->
+    </view>
+    <view class="list_icon">
+      <image src="./img/to.png"></image>
+    </view>
+  </view>
+
   <!-- <view class="user-control">
     <button class="login-out" bindtap="loginOut">退出账号</button>
   </view> -->

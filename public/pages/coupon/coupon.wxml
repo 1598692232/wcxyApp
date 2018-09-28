@@ -1,4 +1,5 @@
-<view class="coupon" style="height:{{scrollHeight}}px">
+<scroll-view scroll-y style="height: {{scrollHeight}}px;" scroll-top="{{scrollTop}}">
+<view class="coupon">
     <view class="coupon-top">
         <image src="./img/background.png" mode="aspectFill" class="pic"/>
         <view class="top-text">
@@ -6,17 +7,168 @@
                 <text class="money">￥</text>50
             </view>
             <view class="right">
-                <view class="text text1">新阅代金券</view>
-                <view class="text text2">2018年12月31日到期</view>
+                <view class="text">
+                    <view class="text1">新阅代金券</view>
+                    <view class="text2">2018年12月31日到期</view>
+                </view>
             </view>
         </view>
-        <view class="receive">
-            立即领取X1
+        <view class="receive" bindtap="receive">
+            立即领取<text>X1</text>
         </view>
     </view>
 
-    <view class="get-more">
-        <text>获得更多代金券</text>
+    <view class="get-more" bindtap="getMore">
+        <text>获得更多代金券 ></text>
+    </view>
+
+    <view class="module">
+        <view class="title">
+            <view class="icon">
+                <view class="line" style="margin-right:4rpx;"></view>
+                <view class="circle"></view>
+            </view>
+            <view class="text">如何获得更多代金券</view>
+            <view class="icon">
+                <view class="circle" style="margin-right:4rpx;"></view>
+                <view class="line"></view>
+            </view>
+        </view>
+        <view class="content">
+            转发代金券被领取后，您可再获得50元新阅代金券，最多累计6张代金券。代金券在购买新阅产品时
+直接抵扣。
+        </view>
+    </view>
+
+    <view class="share">
+        <button open-type="share">
+            立即转发获得更多
+        </button>
+    </view>
+
+    <view class="module">
+        <view class="title">
+            <view class="icon">
+                <view class="line" style="margin-right:4rpx;"></view>
+                <view class="circle"></view>
+            </view>
+            <view class="text">领取详情</view>
+            <view class="icon">
+                <view class="circle" style="margin-right:4rpx;"></view>
+                <view class="line"></view>
+            </view>
+        </view>
+        <view class="count-box">
+            <view class="count-pic">
+                <image src="./img/quan.png" class="quan" mode="aspectFit"/>
+            </view>
+            <view class="count">您已获取6张</view>
+        </view>
+
+        <view class="list">
+            <view class="left">
+                <view class="avatar">
+                    <image src="" mode="aspectFit" />
+                </view>
+                <view class="info">
+                    <text>小肉丸</text> 领取了你的代金券
+                </view>
+            </view>
+            <view class="time">昨天18:35</view>
+        </view>
+        <view class="list">
+            <view class="left">
+                <view class="avatar">
+                    <image src="" mode="aspectFit" />
+                </view>
+                <view class="info">
+                    <text>小肉丸</text> 领取了你的代金券
+                </view>
+            </view>
+            <view class="time">昨天18:35</view>
+        </view>
+        <view class="list">
+            <view class="left">
+                <view class="avatar">
+                    <image src="" mode="aspectFit" />
+                </view>
+                <view class="info">
+                    <text>小肉丸</text> 领取了你的代金券
+                </view>
+            </view>
+            <view class="time">昨天18:35</view>
+        </view>
+        <view class="list">
+            <view class="left">
+                <view class="avatar">
+                    <image src="" mode="aspectFit" />
+                </view>
+                <view class="info">
+                    <text>小肉丸</text> 领取了你的代金券
+                </view>
+            </view>
+            <view class="time">昨天18:35</view>
+        </view>
+        <view class="list">
+            <view class="left">
+                <view class="avatar">
+                    <image src="" mode="aspectFit" />
+                </view>
+                <view class="info">
+                    <text>小肉丸</text> 领取了你的代金券
+                </view>
+            </view>
+            <view class="time">昨天18:35</view>
+        </view>
+
+        <view class="total">
+            累计<text class="money"><text>¥</text>300</text>
+        </view>
+    </view>
+
+    <view class="module">
+        <view class="title">
+            <view class="icon">
+                <view class="line" style="margin-right:4rpx;"></view>
+                <view class="circle"></view>
+            </view>
+            <view class="text">新阅专业版</view>
+            <view class="icon">
+                <view class="circle" style="margin-right:4rpx;"></view>
+                <view class="line"></view>
+            </view>
+        </view>
+        <view class="content">
+            随时随地与团队同步沟通，审阅分享视频。超大存储空间，视频轻松存，不占本地空间、一键分享，随时点开随时查看
+        </view>
+    </view>
+
+    <view class="module">
+        <view class="title">
+            <view class="icon">
+                <view class="line" style="margin-right:4rpx;"></view>
+                <view class="circle"></view>
+            </view>
+            <view class="text">活动规则</view>
+            <view class="icon">
+                <view class="circle" style="margin-right:4rpx;"></view>
+                <view class="line"></view>
+            </view>
+        </view>
+        <view class="content content2">
+            <view>1、代金券在购买新阅专业服务时抵扣，可叠加使用；</view>
+            <view>2、剩余券不兑现、不找零，可下次使用；</view>
+            <view>3、截止时间：12月31日，逾期作废</view>
+        </view>
+    </view>
+
+    <view class="use">
+        使用
+    </view>
+
+    <view class="back" bindtap="back">
+        返回首页
     </view>
 </view>
+</scroll-view>
 <!-- <official-account></official-account> -->

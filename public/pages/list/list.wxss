@@ -348,7 +348,7 @@
     text-align: center;
 }
 .now-take{
-    color: #B40016;
-    border-bottom: 1px solid #B40016;
+    color: #D9422A;
+    border-bottom: 1px solid #D9422A;
     margin-left: 10px;
 }

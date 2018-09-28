@@ -1,0 +1,51 @@
+<view class="my_coupon">
+    <view class="count">您当前共有3张代金券</view>
+
+    <view class="list">
+        <image src="./img/quan.png" mode="aspectFill"/>
+        <view class="top-text">
+            <view class="left">
+                <text class="money">￥</text>50
+            </view>
+            <view class="right">
+                <view class="text">
+                    <view class="text1">新阅代金券</view>
+                    <view class="text2">2018年12月31日到期</view>
+                </view>
+            </view>
+        </view>
+    </view>
+    <view class="list">
+        <image src="./img/quan.png" mode="aspectFill"/>
+        <view class="top-text">
+            <view class="left">
+                <text class="money">￥</text>50
+            </view>
+            <view class="right">
+                <view class="text">
+                    <view class="text1">新阅代金券</view>
+                    <view class="text2">2018年12月31日到期</view>
+                </view>
+            </view>
+        </view>
+    </view>
+    <view class="list">
+        <image src="./img/quan.png" mode="aspectFill"/>
+        <view class="top-text">
+            <view class="left">
+                <text class="money">￥</text>50
+            </view>
+            <view class="right">
+                <view class="text">
+                    <view class="text1">新阅代金券</view>
+                    <view class="text2">2018年12月31日到期</view>
+                </view>
+            </view>
+        </view>
+    </view>
+
+    <view class="tips">
+        <view>注意事项：</view>
+        <view>代金券在购买新阅专业服务时抵扣，可叠加使用；剩余券不兑现、不找零，可下次使用；截止时间：12月31日，逾期作废。</view>
+    </view>
+</view>

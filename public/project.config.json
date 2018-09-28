@@ -29,7 +29,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 26,
+			"current": 27,
 			"list": [
 				{
 					"id": 0,
@@ -212,6 +212,12 @@
 					"pathName": "pages/coupon/coupon",
 					"query": "",
 					"scene": "1011"
+				},
+				{
+					"id": -1,
+					"name": "my_coupon",
+					"pathName": "pages/my_coupon/my_coupon",
+					"query": ""
 				}
 			]
 		}

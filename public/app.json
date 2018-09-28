@@ -24,7 +24,8 @@
     "pages/project_setting/setting",
     "pages/project_member/project_member",
     "pages/testRecord/testRecord",
-    "pages/coupon/coupon"
+    "pages/coupon/coupon",
+    "pages/my_coupon/my_coupon"
   ],
   "window": {
     "backgroundTextStyle": "dark",
