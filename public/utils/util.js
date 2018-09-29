@@ -28,6 +28,18 @@ const getCreateTime = time => {
   }
 }
 
+const getCouponTime = time => {
+    if(time.toString().length<=10){
+        time=time*1000
+    }
+    var date = new Date(time)
+    var month = date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1;
+    var day = date.getDate()<10 ? '0'+date.getDate() : date.getDate(); 
+    var hour  = date.getHours()<10 ? '0'+date.getHours() : date.getHours();
+    var minute = date.getMinutes()<10 ? '0'+date.getMinutes():date.getMinutes();
+    return month+'.'+day+'\n'+hour+':'+minute
+}
+
 const getCreateTimeDate = time => {
     if(time.toString().length<=10){
         time=time*1000
@@ -193,5 +205,6 @@ module.exports = {
   setStorage: setStorage,
   getStorage: getStorage,
   getSystemInfo: getSystemInfo,
-  formatVideoTime
+  formatVideoTime,
+  getCouponTime: getCouponTime
 }

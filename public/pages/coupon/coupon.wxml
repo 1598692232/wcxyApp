@@ -9,12 +9,12 @@
             <view class="right">
                 <view class="text">
                     <view class="text1">新阅代金券</view>
-                    <view class="text2">2018年12月31日到期</view>
+                    <view class="text2">2018年11月30日到期</view>
                 </view>
             </view>
         </view>
         <view class="receive" bindtap="receive">
-            立即领取<text>X1</text>
+            立即领取<text wx:if="{{re_state}}">X{{promotion_count}}</text>
         </view>
     </view>
 
@@ -62,67 +62,23 @@
             <view class="count-pic">
                 <image src="./img/quan.png" class="quan" mode="aspectFit"/>
             </view>
-            <view class="count">您已获取6张</view>
+            <view class="count">您已获取{{promotion_count}}张</view>
         </view>
 
-        <view class="list">
+        <view class="list" wx:for="{{list}}" wx:key="unique">
             <view class="left">
                 <view class="avatar">
-                    <image src="" mode="aspectFit" />
+                    <image src="{{item.avatar}}" mode="aspectFit" />
                 </view>
                 <view class="info">
-                    <text>小肉丸</text> 领取了你的代金券
+                    <text>{{item.realname}}</text> 领取了你的代金券
                 </view>
             </view>
-            <view class="time">昨天18:35</view>
-        </view>
-        <view class="list">
-            <view class="left">
-                <view class="avatar">
-                    <image src="" mode="aspectFit" />
-                </view>
-                <view class="info">
-                    <text>小肉丸</text> 领取了你的代金券
-                </view>
-            </view>
-            <view class="time">昨天18:35</view>
-        </view>
-        <view class="list">
-            <view class="left">
-                <view class="avatar">
-                    <image src="" mode="aspectFit" />
-                </view>
-                <view class="info">
-                    <text>小肉丸</text> 领取了你的代金券
-                </view>
-            </view>
-            <view class="time">昨天18:35</view>
-        </view>
-        <view class="list">
-            <view class="left">
-                <view class="avatar">
-                    <image src="" mode="aspectFit" />
-                </view>
-                <view class="info">
-                    <text>小肉丸</text> 领取了你的代金券
-                </view>
-            </view>
-            <view class="time">昨天18:35</view>
-        </view>
-        <view class="list">
-            <view class="left">
-                <view class="avatar">
-                    <image src="" mode="aspectFit" />
-                </view>
-                <view class="info">
-                    <text>小肉丸</text> 领取了你的代金券
-                </view>
-            </view>
-            <view class="time">昨天18:35</view>
+            <view class="time">{{item.time}}</view>
         </view>
 
         <view class="total">
-            累计<text class="money"><text>¥</text>300</text>
+            累计<text class="money"><text>¥</text>{{voucher}}</text>
         </view>
     </view>
 
@@ -156,19 +112,25 @@
             </view>
         </view>
         <view class="content content2">
-            <view>1、代金券在购买新阅专业服务时抵扣，可叠加使用；</view>
-            <view>2、剩余券不兑现、不找零，可下次使用；</view>
-            <view>3、截止时间：12月31日，逾期作废</view>
+            <view>1、本次发放的代金券仅限在购买新阅产品中使用抵扣，并可叠加使用，但单次使用中代金券叠加不得超过4张；</view>
+            <view>2、在活动期间，认领的代金券不可转让，不找零，不兑换，仅限认领人账户使用；</view>
+            <view>3、本次活动最终截止日期：2018年11月30日，逾期作废；</view>
+            <view>4、活动期间单个账户最多可领取6张代金券；</view>
+            <view>5、如有疑问请拨打400-650-0116。</view>
         </view>
     </view>
 
-    <view class="use">
+    <!-- <view class="use">
         使用
-    </view>
+    </view> -->
 
     <view class="back" bindtap="back">
         返回首页
     </view>
+
+    <view class="tips">扫一扫小程序，关注“XINYUE新阅”微信公众号，快来get更多新阅使用技巧。</view>
+    <!-- <view class="tips">扫一扫小程序，关注“XINYUE新阅”微信公众号，去使用代金券吧。</view> -->
+
+    <official-account></official-account>
 </view>
 </scroll-view>
-<!-- <official-account></official-account> -->

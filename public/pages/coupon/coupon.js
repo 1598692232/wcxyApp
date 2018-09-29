@@ -6,13 +6,19 @@ Page({
         scrollHeight: '',
         manager: app.data.staticImg.manager,
         needNickName: false,
-        scrollTop: 0
+        scrollTop: 0,
+        share_user_id: '',
+        re_state: 0,
+        promotion_count: 0,
+        voucher: 0,
+        list: []
     },
     onLoad: function(options){
+        let scene = decodeURIComponent(options.scene).split('=')[1];
         let self = this
+        
         wx.getSystemInfo({
             success(res) {
-                console.log(res,'res666')
                 self.setData({
                     scrollHeight: res.windowHeight
                 })
@@ -23,11 +29,25 @@ Page({
             success: function(res) {
                 if (res.code) {
                     let store = wx.getStorageSync('app')
-                    let empowers = wx.getStorageSync('user_info')
                     let reqData = Object.assign({},{code: res.code})
                     Util.ajax('auth/login', 'post', reqData).then(json => {
                         Util.setStorage('user_info', json)
                         let data = Object.assign({}, store, json)
+                        Util.setStorage('app', data)
+                        if(scene){
+                            self.setData({
+                                share_user_id: scene
+                            })
+                        }else if(options.share_user_id){
+                            self.setData({
+                                share_user_id: options.share_user_id
+                            })
+                        }else{
+                            self.setData({
+                                share_user_id: json.login_id
+                            })
+                        }
+                        console.log(self.data.share_user_id,'share_user_id666')
                         if(json.avatar==false) {
                             self.setData({
                                 needNickName: true
@@ -72,9 +92,14 @@ Page({
                                     })
                                 }
                             })
+                        }else{
+                            let reqData = Object.assign({}, {
+                                login_id: json.login_id,
+                                token: json.token
+                            })
+                            self.initInfo(reqData)
                         }
 
-                        Util.setStorage('app', data)
                     }, res => {
                         wx.showModal({
                             title: '提示',
@@ -86,14 +111,36 @@ Page({
             }
         })
     },
+    initInfo(reqData){
+        let self = this
+        Util.ajax('receive/user', 'get', reqData).then(json => {
+            json.list.map((v,i) => {
+                v.time = Util.getCouponTime(v.created_at)
+            })
+            self.setData({
+                re_state: json.re_state,
+                promotion_count: json.promotion_count,
+                voucher: json.voucher,
+                list: json.list
+            })
+        }, res => {
+            wx.showModal({
+                title: '提示',
+                content: res.data.msg,
+                showCancel: false
+            })
+        })
+    },
     // 分享
     onShareAppMessage: function (res) {
+        let self = this
+        let store = wx.getStorageSync('app')
         if (res.from === 'button') {
             // 来自页面内转发按钮
         }
         return {
           title: '快来领新阅代金券，最高可领取300元',
-          path: '/pages/coupon/coupon',
+          path: '/pages/coupon/coupon?share_user_id=' + store.login_id,
           imageUrl: './img/share.png',
           success: function(res) {
             // 转发成功
@@ -123,23 +170,32 @@ Page({
     },
     // 立即领取
     receive(){
+        let self = this
         let store = wx.getStorageSync('app')
-        let reqData = Object.assign({}, store, {
-            // project_id: wx.getStorageSync('project_id')
+        let reqData = Object.assign({}, {
+            login_id: store.login_id,
+            token: store.token,
+            share_user_id: self.data.share_user_id
         })
-        // Util.ajax('member/project', 'get', reqData).then(json => {
-        //     console.log(json,'json666')
+        Util.ajax('receive/card', 'post', reqData).then(json => {
+            console.log(json,'json666')
             wx.showModal({
                 title: '提示',
                 content: '恭喜您，领取成功',
                 showCancel: false
             })
-        // }, res => {
-        //     wx.showModal({
-        //         title: '提示',
-        //         content: res.data.msg,
-        //         showCancel: false
-        //     })
-        // })
+
+            let reqData2 = Object.assign({}, {
+                login_id: store.login_id,
+                token: store.token
+            })
+            self.initInfo(reqData2)
+        }, res => {
+            wx.showModal({
+                title: '提示',
+                content: res.data.msg,
+                showCancel: false
+            })
+        })
     }
 })
