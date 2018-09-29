@@ -1018,7 +1018,7 @@
     background: #161515;
     overflow: hidden;
     box-sizing: border-box;
-    padding: 10px 60px 20px 10px;
+    padding: 10px 10px 20px 60px;
 }
 
 .info-footer-comment-btn-body{
@@ -1184,13 +1184,20 @@
     justify-content: center;
     align-items: center;
     position: absolute;
-    right: 0;
-    top: 0;
+    left: 10px;
+    top: 10px;
     height: 44px;
     width: 44px;
-    /* background: #292A2F; */
+    background: #292A2F;
     border-radius: 50%;
     z-index: 100;
+}
+
+.comment-comment-toggle-type.focus{
+    right: 0;
+    top:0;
+    left: auto;
+    background: transparent;
 }
 
 .toggle-type-comment-img{

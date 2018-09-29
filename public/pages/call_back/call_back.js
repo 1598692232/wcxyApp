@@ -114,7 +114,10 @@ Page({
      // 发送评论
      sendComment(e, record) {
         let self = this
-        wx.showLoading()
+        self.setData({
+            isRecording: false
+        });
+        wx.showLoading();
         let store = wx.getStorageSync('app')
         let reqData = Object.assign({}, store, {
             // content: e.detail.value.commentText,
@@ -131,8 +134,6 @@ Page({
         } else {
             reqData.content = e.detail.value.commentText;
         }
-
-
 
         if (self.data.sendCallback) return
         self.data.sendCallback = true
@@ -324,6 +325,10 @@ Page({
         });
 
         self.iac.onError((res) => {
+            self.setData({
+                commentPlayId: 0,
+                commentPlaying: false
+            });
             // 播放音频失败的回调
             wx.showToast({
                 title: '播放失败',
@@ -410,7 +415,8 @@ Page({
             setTimeout(() => {
                 if (this.data.isCancelRecord) {
                     this.setData({
-                        isCancelRecord: false
+                        isCancelRecord: false,
+                        isRecording: false
                     });
                 }
             }, 500);
