@@ -13,8 +13,9 @@
                 </view>
             </view>
         </view>
-        <view class="receive" bindtap="receive">
-            立即领取<text wx:if="{{re_state}}">X{{promotion_count}}</text>
+        <view class="receive" bindtap="receive" style="background: {{re_state ? '#ddd' : ''}}">
+            <text wx:if="{{re_state}}">已领取X{{promotion_count}}</text>
+            <text wx:else>立即领取</text>
         </view>
     </view>
 

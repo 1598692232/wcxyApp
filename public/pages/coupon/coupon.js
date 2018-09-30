@@ -47,7 +47,7 @@ Page({
                                 share_user_id: json.login_id
                             })
                         }
-                        console.log(self.data.share_user_id,'share_user_id666')
+
                         if(json.avatar==false) {
                             self.setData({
                                 needNickName: true
@@ -117,6 +117,7 @@ Page({
             json.list.map((v,i) => {
                 v.time = Util.getCouponTime(v.created_at)
             })
+            console.log(json, 'json')
             self.setData({
                 re_state: json.re_state,
                 promotion_count: json.promotion_count,
@@ -178,7 +179,6 @@ Page({
             share_user_id: self.data.share_user_id
         })
         Util.ajax('receive/card', 'post', reqData).then(json => {
-            console.log(json,'json666')
             wx.showModal({
                 title: '提示',
                 content: '恭喜您，领取成功',
