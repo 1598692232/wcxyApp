@@ -11,7 +11,8 @@ Page({
         re_state: 0,
         promotion_count: 0,
         voucher: 0,
-        list: []
+        list: [],
+        getState: 0
     },
     onLoad: function(options){
         let scene = decodeURIComponent(options.scene).split('=')[1];
@@ -111,19 +112,21 @@ Page({
             }
         })
     },
-    initInfo(reqData){
+    initInfo(reqData, success){
         let self = this
         Util.ajax('receive/user', 'get', reqData).then(json => {
             json.list.map((v,i) => {
                 v.time = Util.getCouponTime(v.created_at)
             })
             console.log(json, 'json')
+
             self.setData({
                 re_state: json.re_state,
                 promotion_count: json.promotion_count,
                 voucher: json.voucher,
-                list: json.list
-            })
+                list: json.list,
+            });
+            success && success();
         }, res => {
             wx.showModal({
                 title: '提示',
@@ -183,14 +186,22 @@ Page({
                 title: '提示',
                 content: '恭喜您，领取成功',
                 showCancel: false
-            })
+            });
 
             let reqData2 = Object.assign({}, {
                 login_id: store.login_id,
                 token: store.token
-            })
-            self.initInfo(reqData2)
+            });
+
+            self.initInfo(reqData2, () => {
+                self.setData({
+                    getState: 1
+                });
+            });
         }, res => {
+            self.setData({
+                getState: 1
+            });
             wx.showModal({
                 title: '提示',
                 content: res.data.msg,

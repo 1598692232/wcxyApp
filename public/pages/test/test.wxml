@@ -1,5 +1,9 @@
 <!-- <video enable-danmu danmu-btn controls src="http://qiniu-xpc0.xpccdn.com/5b7b83b742d40.mp4" ></video> -->
 
-<video src="http://wxsnsdy.tc.qq.com/105/20210/snsdyvideodownload?filekey=30280201010421301f0201690402534804102ca905ce620b1241b726bc41dcff44e00204012882540400&bizid=1023&hy=SH&fileparam=302c020101042530230204136ffd93020457e3c4ff02024ef202031e8d7f02030f42400204045a320a0201000400" enable-danmu danmu-btn controls></video>
+<video 
+bindtimeupdate="timeupdate"
+src="http://wxsnsdy.tc.qq.com/105/20210/snsdyvideodownload?filekey=30280201010421301f0201690402534804102ca905ce620b1241b726bc41dcff44e00204012882540400&bizid=1023&hy=SH&fileparam=302c020101042530230204136ffd93020457e3c4ff02024ef202031e8d7f02030f42400204045a320a0201000400" enable-danmu danmu-btn controls></video>
 
-<video enable-danmu danmu-btn controls src="http://video2.uxinyue.com/Act-ss-mp4-ld/debfc7c9ee82420a9bdc7494a59caa5a/0fbd4dcfbf5da1ade81d2033382d657f-8037a94ff2398a16b485f792618d61e9.mp4?OSSAccessKeyId=LTAILWCfmthKUqkk&Expires=1538303155&Signature=dbr7y9g45%2B212lZ%2BTcB4ipbV2Z8%3D" ></video>
+<!-- <video enable-danmu danmu-btn controls src="http://video2.uxinyue.com/Act-ss-mp4-ld/debfc7c9ee82420a9bdc7494a59caa5a/0fbd4dcfbf5da1ade81d2033382d657f-8037a94ff2398a16b485f792618d61e9.mp4?OSSAccessKeyId=LTAILWCfmthKUqkk&Expires=1538303155&Signature=dbr7y9g45%2B212lZ%2BTcB4ipbV2Z8%3D" ></video> -->
+
+<video enable-danmu danmu-btn controls src="http://xinyuetest.oss-cn-shanghai.aliyuncs.com/doc/xinyue_website_video2.mp4" ></video>

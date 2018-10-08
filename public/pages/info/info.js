@@ -1343,8 +1343,9 @@ Page({
             self.videoCtx.pause();
         }
 
-        ms = (ms / 1000) <= 0.5 ? (ms / 1000) : 0.5;
-        self.data.focusTime =  self.data.videoTime + ms + 0.49;
+        // ms = (ms / 1000) <= 0.5 ? (ms / 1000) : 0.5;
+        // self.data.focusTime =  self.data.videoTime + ms + 0.49;
+        self.data.focusTime =  self.data.videoTime;
     },
     
     commentBlur() {
@@ -1816,11 +1817,12 @@ Page({
         }
  
         // && this.data.videoTime != 0
-        if (this.data.videoTime != parseInt(e.detail.currentTime)) {
-            this.data.videoCurrentTimeInt = new Date().getTime();
-        }
+        // if (this.data.videoTime != parseInt(e.detail.currentTime)) {
+        //     this.data.videoCurrentTimeInt = new Date().getTime();
+        // }
       
-        this.data.videoTime = parseInt(e.detail.currentTime);
+        // this.data.videoTime = parseInt(e.detail.currentTime);
+        this.data.videoTime = e.detail.currentTime
         this.setData({
             currentVideoTime: Util.formatVideoTime(this.data.videoTime)
         });
