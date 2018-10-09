@@ -145,7 +145,7 @@ Page({
         return {
           title: '快来领新阅代金券，最高可领取300元',
           path: '/pages/coupon/coupon?share_user_id=' + store.login_id,
-          imageUrl: './img/share.jpg',
+          imageUrl: './img/share.png',
           success: function(res) {
             // 转发成功
             wx.showToast({

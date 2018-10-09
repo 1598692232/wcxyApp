@@ -13,8 +13,8 @@
                 </view>
             </view>
         </view>
-        <view class="receive" bindtap="receive" style="background: {{getState == 1 ? '#ddd' : ''}}">
-            <text wx:if="{{getState}}">已领取X{{promotion_count}}</text>
+        <view class="receive" bindtap="receive" style="background: {{re_state != 0 ? '#ddd' : '#F5A623'}}">
+            <text wx:if="{{re_state}}">已领取X{{promotion_count}}</text>
             <text wx:else>立即领取</text>
         </view>
     </view>
@@ -71,7 +71,10 @@
                 <view class="avatar">
                     <image src="{{item.avatar}}" mode="aspectFit" />
                 </view>
-                <view class="info">
+                <view class="info" wx:if="{{item.self == 0}}">
+                    你领取了<text>{{item.realname}}</text> 的代金券
+                </view>
+                <view class="info" wx:else>
                     <text>{{item.realname}}</text> 领取了你的代金券
                 </view>
             </view>
