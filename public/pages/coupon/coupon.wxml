@@ -62,22 +62,25 @@
             <view class="count-pic">
                 <image src="./img/quan.png" class="quan" mode="aspectFit"/>
             </view>
-            <view class="count">您已获取{{promotion_count}}张</view>
+            <view class="count" wx:if="{{promotion_count>=6}}">您已获取{{promotion_count}}张,达到最大领取量</view>
+            <view class="count" wx:else>您已获取{{promotion_count}}张</view>
         </view>
 
-        <view class="list" wx:for="{{list}}" wx:key="unique">
-            <view class="left">
-                <view class="avatar">
-                    <image src="{{item.avatar}}" mode="aspectFit" />
+        <view class="list-box">
+            <view class="list" wx:for="{{list}}" wx:key="unique">
+                <view class="left">
+                    <view class="avatar">
+                        <image src="{{item.avatar}}" mode="aspectFit" />
+                    </view>
+                    <view class="info" wx:if="{{item.self == 0}}">
+                        你领取了 <text>{{item.realname}}</text> 的代金券
+                    </view>
+                    <view class="info" wx:else>
+                        <text>{{item.realname}}</text> 领取了你的代金券
+                    </view>
                 </view>
-                <view class="info" wx:if="{{item.self == 0}}">
-                    你领取了<text>{{item.realname}}</text> 的代金券
-                </view>
-                <view class="info" wx:else>
-                    <text>{{item.realname}}</text> 领取了你的代金券
-                </view>
+                <view class="time">{{item.time}}</view>
             </view>
-            <view class="time">{{item.time}}</view>
         </view>
 
         <view class="total">
