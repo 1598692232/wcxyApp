@@ -1,5 +1,20 @@
 let Util = require('../../utils/util.js')
-const app = getApp()
+const app = getApp();
+
+
+function  getUrlParam(urlStr) {
+    let o = {};
+
+    if (urlStr.indexOf('&') == -1) {
+        o[urlStr.split('=')[0]] = urlStr.split('=')[1];
+    } else {
+        let pa = urlStr.split('&');
+        pa.forEach((item, k) => {
+            o[item.split('=')[0]] = item.split('=')[1];
+        });
+    }
+    return o;
+}
 
 Page({
     data: {
@@ -34,13 +49,16 @@ Page({
     },
     onLoad(options) {
         let self = this;
+        let urlParams = getUrlParam(decodeURIComponent(options.scene));
+
         if(options.scene){
+
             wx.login({
                 success: function(res) {
                     if (res.code) {
                         let store = wx.getStorageSync('app')
                         let empowers = wx.getStorageSync('user_info')
-                        let reqData = Object.assign({},{code: res.code})
+                        let reqData = Object.assign({},{code: res.code, share_code: urlParams.code, share_user_id: urlParams.share_user_id })
                         Util.ajax('auth/login', 'post', reqData).then(json => {
                             Util.setStorage('user_info', json)
                             let data = Object.assign({}, store, json)
@@ -65,7 +83,13 @@ Page({
                                         self.setData({
                                             needNickName: false
                                         })
-                                        let reqData2 = Object.assign({},{login_id:json.login_id},{token:json.token},{nick_name: nickName},{avatar: avatarUrl})
+                                        let reqData2 = Object.assign({},{
+                                            login_id:json.login_id,
+                                            token:json.token,
+                                            nick_name: nickName,
+                                            avatar: avatarUrl
+                                        })
+                                        console.log(reqData2, 'reqData2')
                                         if(json.avatar==false){
                                             Util.ajax('user/info', 'post', reqData2).then((data) => {
                                                 wx.setStorage({
@@ -114,7 +138,7 @@ Page({
             let params = {};
             params = {
                 share_code: options.code,
-                password: options.password
+                password: options.password,
             }
             
             self.setData({
@@ -124,19 +148,18 @@ Page({
             wx.setStorageSync('share_code', options.code)
             this.initList(params);
         } else {
-            let scene = decodeURIComponent(options.scene).split('=');
             let params = wx.getStorageSync('app');
             delete params.code;
-            // params = Object.assign({}, params, {share_code: scene[1]});
-            wx.setStorageSync('share_code', scene[1])
+            wx.setStorageSync('share_code', urlParams.code)
             self.setData({
-                code: scene[1],
+                code: urlParams.code,
             })
             setTimeout(function(){
                 params = Object.assign({}, params, {
-                    share_code: scene[1],
+                    share_code: urlParams.code,
                     login_id: wx.getStorageSync('user_info').login_id,
-                    token: wx.getStorageSync('user_info').token
+                    token: wx.getStorageSync('user_info').token,
+                    share_user_id: urlParams.share_user_id 
                 });
                 // 分享页面的请求
                 Util.ajax('sharefilelist', 'get', params).then(data => {          
@@ -361,8 +384,8 @@ Page({
             // 来自页面内转发按钮
         }
         // let passwordUrl = this.data.password == '' ?  '&password=""' :  ''
-        let codeUrl = encodeURIComponent('code=' + this.data.code);
         let store = wx.getStorageSync('app');
+        let codeUrl = encodeURIComponent('code=' + this.data.code + '&share_user_id=' + store.login_id);
         let projectName = wx.getStorageSync('project_name');
         return {
           title: this.data.shareName,
