@@ -29,7 +29,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 10,
+			"current": 9,
 			"list": [
 				{
 					"id": 0,
@@ -95,7 +95,7 @@
 					"id": 9,
 					"name": "share_list_view",
 					"pathName": "pages/share_list_view/share_list_view",
-					"query": "scene=code%3d9ce8dde554fcc968",
+					"query": "code=15d3f5e3bf0f6d33&password=pgqk&name=泡泡oO水流分享的sdsadas (2)",
 					"scene": "1011"
 				},
 				{

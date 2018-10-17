@@ -49,10 +49,10 @@ Page({
     },
     onLoad(options) {
         let self = this;
-        let urlParams = getUrlParam(decodeURIComponent(options.scene));
-
+        this.urlParams =null;
         if(options.scene){
-
+            let urlParams = getUrlParam(decodeURIComponent(options.scene));
+            this.urlParams = urlParams;
             wx.login({
                 success: function(res) {
                     if (res.code) {
@@ -89,7 +89,6 @@ Page({
                                             nick_name: nickName,
                                             avatar: avatarUrl
                                         })
-                                        console.log(reqData2, 'reqData2')
                                         if(json.avatar==false){
                                             Util.ajax('user/info', 'post', reqData2).then((data) => {
                                                 wx.setStorage({
@@ -134,11 +133,12 @@ Page({
                 isShare: true
             })
         }
+
         if (options.password != undefined) {
             let params = {};
             params = {
                 share_code: options.code,
-                password: options.password,
+                password: options.password
             }
             
             self.setData({
@@ -150,16 +150,17 @@ Page({
         } else {
             let params = wx.getStorageSync('app');
             delete params.code;
-            wx.setStorageSync('share_code', urlParams.code)
+            wx.setStorageSync('share_code', this.urlParams.code)
             self.setData({
-                code: urlParams.code,
+                code: this.urlParams.code,
             })
-            setTimeout(function(){
+            setTimeout(() => {
                 params = Object.assign({}, params, {
-                    share_code: urlParams.code,
+                    share_code: this.urlParams.code,
                     login_id: wx.getStorageSync('user_info').login_id,
                     token: wx.getStorageSync('user_info').token,
-                    share_user_id: urlParams.share_user_id 
+                    share_user_id: this.urlParams.share_user_id,
+                    type: '小程序'
                 });
                 // 分享页面的请求
                 Util.ajax('sharefilelist', 'get', params).then(data => {          
@@ -277,7 +278,9 @@ Page({
         // })
         let params = {
             share_code: this.data.code,
-            password: this.data.password
+            password: this.data.password,
+            share_user_id: this.urlParams.share_user_id,
+            type: '小程序'
         }
         let store = wx.getStorageSync('user_info')
         let avatar = store.avatar
