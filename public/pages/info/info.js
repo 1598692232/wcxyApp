@@ -1,4 +1,6 @@
 import regeneratorRuntime from '../../utils/regenerator-runtime';
+import {recordPageStart, pageStayStorage, playStorage, saveStoragePlayTime} from '../../utils/burying_point/local_record';
+import {PAGE_TYPES, FILE_PLAY_TIME} from '../../utils/burying_point/constants';
 const recorderManager = require('../../utils/recorderManager');
 const innerAudioContext = require('../../utils/innerAudioContext');
 let Util = require('../../utils/util.js')
@@ -295,6 +297,7 @@ Page({
         self.commentClick = true;
         self.pageHide = null; //处理判断页面是否切换了，监听到视频暂停的时候评论框不再focus
         self.pageFirstShow = true;//处理判断页面第一次进来，监听到视频暂停的时候不再focus
+        recordPageStart(PAGE_TYPES[4]);
 
         if (this.videoCtx) {
             this.videoCtx.play();
@@ -658,10 +661,29 @@ Page({
     },
 
     onUnload() {
+        const fileInfo = this.data.info;
+        wx.getStorageSync(FILE_PLAY_TIME)
+		playStorage(
+			fileInfo.project_id, 
+			fileInfo.id, 
+			wx.getStorageSync(FILE_PLAY_TIME), 
+			fileInfo.file_type
+        );
+        pageStayStorage();
+        wx.setStorageSync(FILE_PLAY_TIME, 0);
         clearInterval(this.data.getTimer)
     },
 
     onHide() {
+        const fileInfo = this.data.info;
+		playStorage(
+			fileInfo.project_id, 
+			fileInfo.id, 
+			wx.getStorageSync(FILE_PLAY_TIME), 
+			fileInfo.file_type
+        );
+        pageStayStorage();
+        wx.setStorageSync(FILE_PLAY_TIME, 0);
         clearInterval(this.data.getTimer);
         this.iac.pause();
         this.iac.src = '';
@@ -1811,11 +1833,12 @@ Page({
 
     // 获取播放时间
     getVideoTime(e) {
+        saveStoragePlayTime(e.detail.currentTime);
         if (this.pageFirstShow) {
             this.pageFirstShow = false;
             return;
         }
- 
+
         // && this.data.videoTime != 0
         // if (this.data.videoTime != parseInt(e.detail.currentTime)) {
         //     this.data.videoCurrentTimeInt = new Date().getTime();

@@ -1,6 +1,8 @@
 //index.js
 //获取应用实例
-let Util = require('../../utils/util.js')
+let Util = require('../../utils/util.js');
+import {recordPageStart, pageStayStorage} from '../../utils/burying_point/local_record';
+import {PAGE_TYPES} from '../../utils/burying_point/constants';
 const app = getApp()
 
 Page({
@@ -21,7 +23,19 @@ Page({
     member_jindu: '',
     redDot: false
   },
+
+    onHide() {
+        pageStayStorage();
+    },
+
+
+    onUnload() {
+        pageStayStorage();
+    },
+
   onShow: function () {  
+    recordPageStart(PAGE_TYPES[7]);
+
     // 页面显示  
     let self = this
     let store = wx.getStorageSync('app')

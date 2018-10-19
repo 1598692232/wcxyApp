@@ -1,4 +1,6 @@
 let Util = require('../../utils/util.js')
+import {recordPageStart, pageStayStorage} from '../../utils/burying_point/local_record';
+import {PAGE_TYPES} from '../../utils/burying_point/constants';
 const app = getApp()
 
 Page({
@@ -24,8 +26,19 @@ Page({
             })
         })
     },
+
+    onHide() {
+        pageStayStorage();
+    },
+
+
+    onUnload() {
+        pageStayStorage();
+    },
+
     onShow() {
         let self = this
+        recordPageStart(PAGE_TYPES[6]);
         // count为true则不显示
         self.setData({
             count: wx.getStorageSync('notification')

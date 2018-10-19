@@ -1,4 +1,6 @@
-let Util = require('../../utils/util.js')
+let Util = require('../../utils/util.js');
+import {recordPageStart, pageStayStorage} from '../../utils/burying_point/local_record';
+import {PAGE_TYPES} from '../../utils/burying_point/constants';
 const app = getApp();
 
 
@@ -235,6 +237,13 @@ Page({
     onShow() {
         let self = this
         self.pageCount = 1;
+        console.log(this.urlParams, 'this.urlParams')
+        if (!this.urlParams) {
+            recordPageStart(PAGE_TYPES[2]);
+        } else {
+            recordPageStart(PAGE_TYPES[3]);
+        }
+
         // 获取参与成员头像姓名
         let store = wx.getStorageSync('app')
         let reqData = Object.assign({}, store, {
@@ -245,7 +254,12 @@ Page({
         })
     },
 
+    onUnload() {
+        pageStayStorage();
+    },
+
     onHide() {
+        pageStayStorage();
         this.data.shareList.forEach((item, key) => {
             if (item.file_type == 'video') {
                 let videoCtx = wx.createVideoContext('media' + item.id);

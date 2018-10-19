@@ -1,4 +1,6 @@
-let Util = require('../../utils/util.js')
+let Util = require('../../utils/util.js');
+import {recordPageStart, pageStayStorage} from '../../utils/burying_point/local_record';
+import {PAGE_TYPES} from '../../utils/burying_point/constants';
 const app = getApp()
 const PRE_PAGE = 10;
 
@@ -12,6 +14,16 @@ Page({
         currentTab: 0,
         collectionList: []
     },
+
+    onHide() {
+        pageStayStorage();
+    },
+
+
+    onUnload() {
+        pageStayStorage();
+    },
+    
     onLoad(options) {
         let self = this;
         self.setData({
@@ -25,6 +37,8 @@ Page({
         })
     },
     onShow() {
+        recordPageStart(PAGE_TYPES[8]);
+        
         let self = this
         self.setData({
             collectionList: [],

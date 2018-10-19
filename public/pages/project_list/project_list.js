@@ -1,5 +1,7 @@
 let Util = require('../../utils/util.js')
 var getSizeFun = require('../../utils/dateTimePicker.js');
+import {recordPageStart, pageStayStorage} from '../../utils/burying_point/local_record';
+import {PAGE_TYPES} from '../../utils/burying_point/constants';
 const app = getApp()
 
 const PIC_TYPE = ['jpg', 'jpeg', 'png', 'gif', 'tiff'];
@@ -42,60 +44,67 @@ Page({
         startUpload: false,
         text: ''
     },
+
+    onUnload() {
+        pageStayStorage();
+    },
+
     onHide(){
+        pageStayStorage();
         this.setData({
             startUpload: false
+        });
+    },
+
+    setListData(projectId){
+        let self = this
+        let store = wx.getStorageSync('app')
+        let reqData = Object.assign({}, store, {
+        project_id: projectId,
+        doc_id: self.data.topId
+        })
+
+        Util.ajax('project/file', 'get', reqData).then(json => {
+        json.list.map(item => {
+            item.created_time = Util.getCreateTime(item.created_at)
+            let sec = item.project_file.time % 60
+            item.project_file.time = Util.timeToMinAndSec(item.project_file.time)
+            item.user_info.avatar = item.user_info.avatar == '' ? self.data.tx : item.user_info.avatar
+            item.size_text = (item.size / Math.pow(1024, 2)).toFixed(2)
+            item.selected = false
+        })
+        self.setData({
+            videoList: json.list
+        })
+        }, res => {
+        wx.showModal({
+            title: '提示',
+            content: '文件获取失败！',
+        })
         })
     },
-  setListData(projectId){
-    let self = this
-    let store = wx.getStorageSync('app')
-    let reqData = Object.assign({}, store, {
-      project_id: projectId,
-      doc_id: self.data.topId
-    })
+    initList(projectId, projectName){
+        let self = this
+        wx.showLoading()
+        Util.getSystemInfo().then(result => {
+            self.setData({
+            liWidth: result.windowWidth - 160,
+            query: wx.createSelectorQuery(),
+            scrollHeight: result.windowHeight,
+            scrollNumberHeight: result.windowHeight - 263
+            })
+            wx.setNavigationBarTitle({ title: projectName })
 
-    Util.ajax('project/file', 'get', reqData).then(json => {
-      json.list.map(item => {
-        item.created_time = Util.getCreateTime(item.created_at)
-        let sec = item.project_file.time % 60
-        item.project_file.time = Util.timeToMinAndSec(item.project_file.time)
-        item.user_info.avatar = item.user_info.avatar == '' ? self.data.tx : item.user_info.avatar
-        item.size_text = (item.size / Math.pow(1024, 2)).toFixed(2)
-        item.selected = false
-      })
-      self.setData({
-        videoList: json.list
-      })
-    }, res => {
-      wx.showModal({
-        title: '提示',
-        content: '文件获取失败！',
-      })
-    })
-  },
-  initList(projectId, projectName){
-    let self = this
-    wx.showLoading()
-    Util.getSystemInfo().then(result => {
-      self.setData({
-        liWidth: result.windowWidth - 160,
-        query: wx.createSelectorQuery(),
-        scrollHeight: result.windowHeight,
-        scrollNumberHeight: result.windowHeight - 263
-      })
-      wx.setNavigationBarTitle({ title: projectName })
-
-      let wh = result.windowHeight
-      self.setListData(projectId)
-      self.setData({
-        breadcrumbList: [{ id: 0, name: projectName }],
-        scrollHeight: result.windowHeight,
-        scrollNumberHeight: result.windowHeight - 263,
-        breadcrumbWidth: 100
-      });
-    })
-  },
+            let wh = result.windowHeight
+            self.setListData(projectId)
+            self.setData({
+            breadcrumbList: [{ id: 0, name: projectName }],
+            scrollHeight: result.windowHeight,
+            scrollNumberHeight: result.windowHeight - 263,
+            breadcrumbWidth: 100
+            });
+        })
+    },
 	onLoad(options) {
         let self = this
         if(options.project_type==='admin'){
@@ -118,6 +127,7 @@ Page({
 
     onShow() {
         let self = this
+        recordPageStart(PAGE_TYPES[1]);
         // 创建分享成功之后返回处理
         let shareCreated = wx.getStorageSync('share_created');
         if (shareCreated == 1) {

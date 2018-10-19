@@ -1,6 +1,8 @@
 var Util = require('../../utils/util.js');
 const recorderManager = require('../../utils/recorderManager');
 const innerAudioContext = require('../../utils/innerAudioContext');
+import {recordPageStart, pageStayStorage} from '../../utils/burying_point/local_record';
+import {PAGE_TYPES} from '../../utils/burying_point/constants';
 
 const COMMENT_RECORD_PREFIXER = '<_XY_WXRECORD>';
 const RECORD_DURATION = 300000;
@@ -51,8 +53,14 @@ Page({
         })
     },
 
+
+    onUnload() {
+        pageStayStorage();
+    },
+
     onShow() {
         let self = this
+        recordPageStart(PAGE_TYPES[5]);
         Util.getSystemInfo().then(res => {
             let store = wx.getStorageSync('app')
             let reqData = Object.assign({}, store, {
@@ -537,6 +545,7 @@ Page({
     },
 
     onHide() {
+        pageStayStorage();
         clearInterval(this.data.getTimer);
         this.iac.pause();
         this.iac.src = '';

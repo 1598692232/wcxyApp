@@ -1,4 +1,6 @@
-let Util = require('../../utils/util.js')
+let Util = require('../../utils/util.js');
+import {recordPageStart, pageStayStorage} from '../../utils/burying_point/local_record';
+import {PAGE_TYPES} from '../../utils/burying_point/constants';
 const app = getApp()
 
 Page({
@@ -99,7 +101,17 @@ Page({
             })
         } 
     },
+
+    onHide() {
+        pageStayStorage();
+    },
+
+    onUnload() {
+        pageStayStorage();
+    },
+
     onShow() {
+        recordPageStart(PAGE_TYPES[0]);
         wx.setNavigationBarTitle({
             title: 'XINYUE新阅'
         })
