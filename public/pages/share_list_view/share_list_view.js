@@ -1,5 +1,5 @@
 let Util = require('../../utils/util.js');
-import {recordPageStart, pageStayStorage} from '../../utils/burying_point/local_record';
+import {recordPageStart, pageStayStorage, relayStorage} from '../../utils/burying_point/local_record';
 import {PAGE_TYPES} from '../../utils/burying_point/constants';
 const app = getApp();
 
@@ -404,6 +404,7 @@ Page({
         let store = wx.getStorageSync('app');
         let codeUrl = encodeURIComponent('code=' + this.data.code + '&share_user_id=' + store.login_id);
         let projectName = wx.getStorageSync('project_name');
+        relayStorage('转发', this.data.code);
         return {
           title: this.data.shareName,
           path: '/pages/share_list_view/share_list_view?scene=' + codeUrl,
@@ -414,6 +415,7 @@ Page({
                 title: '转发成功',
                 icon: 'success'
             })
+
             setTimeout(function(){
                 wx.hideLoading()
             },2000)
@@ -481,7 +483,10 @@ Page({
         wx.setClipboardData({
             data: '链接:' + self.data.pc_link + more + copypass + self.data.password,
             success: function(res) {
-                self.setData({copyTip:true}),  
+                self.setData({copyTip:true});
+
+                relayStorage('复制链接及密码', self.data.code);
+
                 wx.showToast({
                     title: '已复制到剪贴板',
                     icon: 'success'

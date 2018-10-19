@@ -6,9 +6,9 @@ import {
     PAGE_NAME,
     All_RECORD
 } from './constants';
-import { ajax } from '../util';
-// import { Base64 } from 'js-base64';
-// var Base64 = require('js-base64').Base64;
+
+var Util = require('../util');
+import Base64 from '../base64';
 
 /**
  *对Date的扩展，将 Date 转化为指定格式的String
@@ -75,7 +75,7 @@ export function pageStayStorage() {
 export function relayStorage(trans_button, share_code) {
     let o = {
         log_type: 'relay',
-        trans_button, // 项目页转发，内页转发
+        trans_button, // 复制链接及密码
         share_code,
     };
     recordAll(o);
@@ -129,22 +129,21 @@ export function recordPageEnd() {
 // 轮询发送埋点
 function sendRecord() {
     let data = wx.getStorageSync(All_RECORD);
-    data = Base64.encode(data);
+    let base64 = new Base64();
+    data = base64.encode(data);
     recordPageEnd();
     pageStayStorage();
-    post ('/save/log', {
+    Util.ajax('save/log2', 'post', {
         data, 
         login_id: wx.getStorageSync('user_info').login_id,
         token: wx.getStorageSync('user_info').token,
-    }).then((res) => {
-        if (res.data.status == 1) {
-            wx.setStorageSync(All_RECORD, '[]');
-        }
-    });
+    }).then(json => {
+        wx.setStorageSync(All_RECORD, '[]');
+    })
 }
 
-// window.recordTimer = setInterval(() => {
-//     sendRecord();
-// }, 60000);
+let recordTimer = setInterval(() => {
+    sendRecord();
+}, 30000);
 
 
