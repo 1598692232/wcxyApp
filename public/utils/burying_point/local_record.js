@@ -36,7 +36,6 @@ Date.prototype.format = function (fmt) {
 
 //记录所有的记录
 export function recordAll(o) {
-   
     let allRecord = wx.getStorageSync(All_RECORD);;
    
     if (!allRecord) {
@@ -53,7 +52,6 @@ export function recordAll(o) {
     });
 
     wx.setStorageSync(All_RECORD, JSON.stringify(allRecord));
-    console.log(JSON.parse(wx.getStorageSync(All_RECORD)), 999);
 }
 
 // 记录当前页面时间
@@ -72,11 +70,12 @@ export function pageStayStorage() {
 }
 
 // 记录转发操作
-export function relayStorage(trans_button, share_code) {
+export function relayStorage(trans_button, share_code, share_user_id) {
     let o = {
         log_type: 'relay',
         trans_button, // 复制链接及密码
         share_code,
+        share_user_id
     };
     recordAll(o);
 }

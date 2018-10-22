@@ -1796,12 +1796,13 @@ Page({
         // this.handleRecord(recordPath);
         // return;
         // end
+        if (this.data.commentPlaying && e.currentTarget.dataset.id == this.data.commentPlayId ) return;
         clearInterval(this.recordTimer);
         // 判断是否是点击的录音评论
         let currentComment = this.data.commentList.filter((item, k ) => {
             return item.id == e.currentTarget.dataset.id
         })[0];
-        
+
         if (currentComment.record && currentComment.record != '') {
             this.setData({
                 commentPlayId: currentComment.id,
@@ -1810,7 +1811,7 @@ Page({
             this.handleRecord(currentComment.record);
         } else {
             // this.iac.src = ''; 
-            this.iac.pause();
+            // this.iac.pause();
         }
        
         this.data.videoCurrentTimeInt = new Date().getTime();

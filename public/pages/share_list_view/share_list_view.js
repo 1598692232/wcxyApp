@@ -237,7 +237,6 @@ Page({
     onShow() {
         let self = this
         self.pageCount = 1;
-        console.log(this.urlParams, 'this.urlParams')
         if (!this.urlParams) {
             recordPageStart(PAGE_TYPES[2]);
         } else {
@@ -404,7 +403,7 @@ Page({
         let store = wx.getStorageSync('app');
         let codeUrl = encodeURIComponent('code=' + this.data.code + '&share_user_id=' + store.login_id);
         let projectName = wx.getStorageSync('project_name');
-        relayStorage('转发', this.data.code);
+        relayStorage('转发', this.data.code, this.urlParams ? this.urlParams.share_user_id : store.login_id);
         return {
           title: this.data.shareName,
           path: '/pages/share_list_view/share_list_view?scene=' + codeUrl,
@@ -485,7 +484,7 @@ Page({
             success: function(res) {
                 self.setData({copyTip:true});
 
-                relayStorage('复制链接及密码', self.data.code);
+                relayStorage('复制链接及密码', self.data.code, this.urlParams ? this.urlParams.share_user_id : store.login_id);
 
                 wx.showToast({
                     title: '已复制到剪贴板',
@@ -591,7 +590,6 @@ Page({
                 fullScreenId: 0
             });
         }
-        console.log()
       
     },
 
