@@ -29,7 +29,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 9,
+			"current": 10,
 			"list": [
 				{
 					"id": 0,
@@ -102,7 +102,7 @@
 					"id": 10,
 					"name": "share_list_view",
 					"pathName": "pages/share_list_view/share_list_view",
-					"query": "scene=code%3D787ee92120d2e869%26share_user_id%3D210",
+					"query": "scene=code%3D8c1dc8a036fc48b5%26share_user_id%3D210",
 					"scene": "1011"
 				},
 				{
